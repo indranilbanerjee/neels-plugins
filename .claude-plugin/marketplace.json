@@ -1,0 +1,46 @@
+{
+  "name": "neels-plugins",
+  "owner": {
+    "name": "Indranil Banerjee",
+    "email": "indranilbanerjee21@gmail.com"
+  },
+  "metadata": {
+    "description": "Neel's Plugin Marketplace — AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, analytics, business intelligence, and more.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "digital-marketing-pro",
+      "source": {
+        "source": "github",
+        "repo": "indranilbanerjee/digital-marketing-pro"
+      },
+      "description": "Comprehensive digital marketing execution system with 25 specialist agents, 16 integrated modules, 115 slash commands, 67 MCP integrations, agency operations, multilingual support, and quality assurance layer. Covers SEO, AEO, GEO, content marketing, paid ads, social media, email marketing, CRM, analytics, brand strategy, influencer marketing, and more.",
+      "version": "2.2.0",
+      "author": {
+        "name": "Indranil Banerjee",
+        "email": "indranilbanerjee21@gmail.com"
+      },
+      "homepage": "https://github.com/indranilbanerjee/digital-marketing-pro",
+      "repository": "https://github.com/indranilbanerjee/digital-marketing-pro",
+      "license": "MIT",
+      "keywords": [
+        "marketing",
+        "digital-marketing",
+        "seo",
+        "aeo",
+        "geo",
+        "content-marketing",
+        "paid-ads",
+        "social-media",
+        "email-marketing",
+        "analytics",
+        "agency-operations",
+        "crm",
+        "multilingual",
+        "brand-strategy"
+      ],
+      "category": "marketing"
+    }
+  ]
+}
