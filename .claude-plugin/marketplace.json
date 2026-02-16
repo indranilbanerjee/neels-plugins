@@ -48,8 +48,8 @@
         "source": "github",
         "repo": "indranilbanerjee/contentforge"
       },
-      "description": "Enterprise multi-agent content production pipeline. Transform requirements into publication-ready, fact-checked, brand-compliant, SEO-optimized content in 20-30 minutes through 9-phase autonomous pipeline. Features: zero hallucinations (three-layer verification), Phase 6.5 Humanizer (removes AI patterns), 5-dimension quality scoring, multi-brand support, industry compliance (Pharma/BFSI/Healthcare/Legal).",
-      "version": "1.0.0",
+      "description": "Enterprise multi-agent content production with batch processing (4-5x faster), content refresh, multilingual support (15+ languages), platform integrations (WordPress/Notion/Webflow/HubSpot), and analytics. Transform requirements into publication-ready content in 20-30 minutes through 9-phase autonomous pipeline. Features: zero hallucinations (three-layer verification), Phase 6.5 Humanizer, 5-dimension quality scoring, A/B testing, video scripts, social adaptation.",
+      "version": "2.0.0",
       "author": {
         "name": "Indranil Banerjee",
         "email": "indranilbanerjee21@gmail.com"
@@ -71,6 +71,11 @@
         "humanization",
         "natural-language",
         "content-pipeline",
+        "batch-processing",
+        "multilingual",
+        "content-refresh",
+        "cms-integration",
+        "analytics",
         "claude-code",
         "claude-plugin"
       ],
