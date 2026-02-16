@@ -49,7 +49,7 @@
         "repo": "indranilbanerjee/contentforge"
       },
       "description": "Enterprise multi-agent content production with batch processing (4-5x faster), content refresh, multilingual support (15+ languages), platform integrations (WordPress/Notion/Webflow/HubSpot), and analytics. Transform requirements into publication-ready content in 20-30 minutes through 9-phase autonomous pipeline. Features: zero hallucinations (three-layer verification), Phase 6.5 Humanizer, 5-dimension quality scoring, A/B testing, video scripts, social adaptation.",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "author": {
         "name": "Indranil Banerjee",
         "email": "indranilbanerjee21@gmail.com"
