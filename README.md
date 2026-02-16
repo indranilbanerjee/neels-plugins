@@ -31,6 +31,7 @@ A custom plugin marketplace for **Claude Code** and **Claude Cowork** — built 
 | Plugin | Version | Description |
 |--------|---------|-------------|
 | **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 2.2.0 | Comprehensive digital marketing execution system with 25 specialist agents, 16 integrated modules, 115 slash commands, 67 MCP integrations, agency operations, multilingual support, and quality assurance layer. |
+| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 1.0.0 | Enterprise multi-agent content production pipeline. Transform requirements into publication-ready content in 20-30 minutes through 9-phase autonomous pipeline with zero hallucinations, Phase 6.5 Humanizer, 5-dimension quality scoring, and multi-brand support. |
 
 ---
 
