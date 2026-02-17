@@ -5,7 +5,58 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-02-17
+
+### 🐛 Fixed
+
+**CRITICAL: Resolved "Manage Plugin shows nothing" regression from v1.0.1**
+
+v1.0.1 introduced a critical regression where plugins would install without crashing, but "Manage Plugin" would show nothing and redirect back to the platform. The root cause was a misunderstanding of how `"strict": false` works in marketplace.json.
+
+**What `"strict": false` actually does:**
+- The marketplace entry becomes the **ENTIRE definition** of the plugin
+- The plugin's own `plugin.json` is completely ignored
+- Only components explicitly declared in marketplace.json are loaded
+
+By setting `"strict": false` with only `"mcpServers": []` declared, we told Claude Code to install the plugin with **zero components** (no skills, agents, or hooks), which caused the empty plugin management UI.
+
+**Fix implemented:**
+- **Removed `"strict": false`** from both plugin entries (digital-marketing-pro and contentforge)
+- Kept `"mcpServers": []` to suppress MCP auto-loading
+- With default `strict: true`, the plugin's own plugin.json is the authority, and the marketplace entry supplements it
+- Skills, agents, and hooks now auto-discover correctly from the plugin repos
+
+### ✅ Expected Outcome
+
+- ✅ Plugins install without Claude Desktop crashing (MCP still suppressed)
+- ✅ **"Manage Plugin" now shows all 115 skills + 25 agents** (digital-marketing-pro)
+- ✅ **"Manage Plugin" now shows all 3 skills** (contentforge)
+- ✅ All plugin functionality works immediately after installation
+- ✅ MCP integrations remain opt-in (no auto-loading of unconfigured servers)
+
+### 📝 Technical Notes
+
+The correct marketplace.json configuration uses default `strict: true` (implicit):
+```json
+{
+  "name": "digital-marketing-pro",
+  "source": { "source": "github", "repo": "indranilbanerjee/digital-marketing-pro" },
+  "mcpServers": [],
+  ...
+}
+```
+
+**No `"strict": false` declaration.** The `mcpServers: []` field in the marketplace entry supplements/overrides the plugin's MCP configuration while allowing skills, agents, and hooks to auto-discover from the plugin repo's default locations.
+
+---
+
 ## [1.0.1] - 2026-02-17
+
+### ⚠️ Known Issue
+
+This version introduced a regression where "Manage Plugin" shows nothing after installation. **Upgrade to v1.0.2 immediately.**
+
+### 🐛 Fixed
 
 ### 🐛 Fixed
 
