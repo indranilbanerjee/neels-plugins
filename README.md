@@ -1,5 +1,9 @@
 # Neel's Plugin Marketplace
 
+[![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)](CHANGELOG.md)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Plugins](https://img.shields.io/badge/plugins-2-orange.svg)](#-available-plugins)
+
 A custom plugin marketplace for **Claude Code** and **Claude Cowork** — built and maintained by [Indranil Banerjee](https://www.linkedin.com/in/askneelnow/).
 
 ---
