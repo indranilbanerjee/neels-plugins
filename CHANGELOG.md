@@ -5,7 +5,52 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2026-02-17
+
+### 🐛 Fixed
+
+**CRITICAL: Actually prevented MCP auto-loading (v1.0.2's approach didn't work)**
+
+v1.0.2's marketplace-level `"mcpServers": []` approach **FAILED** — users still saw "24 MCP servers failed" errors because the `.mcp.json` files in plugin repos were being auto-discovered regardless of marketplace configuration.
+
+**Root cause identified:**
+- `.mcp.json` at plugin root is auto-discovered by Claude Code's plugin loader
+- Marketplace `"mcpServers": []` only **adds** to what the plugin declares, it **cannot suppress** files already in the repo
+- The only way to prevent auto-loading is to **rename the file** so it's not discovered
+
+**Fix implemented:**
+- **Renamed `.mcp.json` → `.mcp.json.example`** in both plugin repos (digital-marketing-pro v2.2.1, contentforge v2.0.2)
+- Updated plugin READMEs with copy instructions: `cp .mcp.json.example .mcp.json`
+- Removed useless `"mcpServers": []` declarations from marketplace.json (they never worked)
+- MCP integrations now **truly opt-in** — file must be manually copied and configured
+
+### ✅ Expected Outcome
+
+- ✅ **NO MCP servers auto-load** on plugin installation (file doesn't exist with discoverable name)
+- ✅ **NO "X MCP servers failed" errors** on startup
+- ✅ Plugins install cleanly without any MCP-related failures
+- ✅ "Manage Plugin" shows all 115 skills + 25 agents (digital-marketing-pro) and 3 skills (contentforge)
+- ✅ Users who want MCP integrations copy `.mcp.json.example` to `.mcp.json` and configure credentials
+
+### 📝 Technical Notes
+
+The marketplace `"mcpServers"` field is a **component path field** that specifies **additional** MCP configs to load on top of what the plugin repo already declares. An empty array `[]` means "add no additional servers" — it does **NOT** mean "suppress the servers declared by the plugin repo itself."
+
+The only reliable way to prevent `.mcp.json` auto-discovery is to not have the file at that exact location. Renaming it to `.mcp.json.example` prevents auto-discovery.
+
+**Plugin versions updated:**
+- digital-marketing-pro: 2.2.0 → 2.2.1 (`.mcp.json` renamed)
+- contentforge: 2.0.1 → 2.0.2 (`.mcp.json` renamed)
+
+---
+
 ## [1.0.2] - 2026-02-17
+
+### ⚠️ Known Issue
+
+This version's marketplace-level `"mcpServers": []` approach **did not work** — MCP servers were still being auto-loaded from plugin repos. **Upgrade to v1.0.3 immediately.**
+
+### 🐛 Fixed
 
 ### 🐛 Fixed
 
