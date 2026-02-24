@@ -5,6 +5,19 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-02-24
+
+### Updated
+
+**Plugin version bumps reflecting bug fix releases:**
+- digital-marketing-pro: 2.2.0 → **2.2.1** — Fixed CLI argument mismatches in 8 SKILL.md files, removed undefined `${CLAUDE_PLUGIN_ROOT}` from 53 files, fixed content-scorer.py and hallucination-detector.py bugs, simplified hooks.json
+- contentforge: 2.0.1 → **2.0.2** — Added YAML frontmatter to all 10 agents for Cowork routing, replaced 5 invented MCP tool names in Output Manager with adaptive approach
+
+### Fixed
+- ContentForge description: "9-phase autonomous pipeline" → "10-agent autonomous pipeline" (was undercounting Agent 06.5 Humanizer)
+
+---
+
 ## [1.0.3] - 2026-02-17
 
 ### 🐛 Fixed
