@@ -5,6 +5,33 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-02-25
+
+### Changed — HTTP Connector Architecture
+
+Both plugins rebuilt to follow Anthropic's official plugin pattern with HTTP-only MCP connectors.
+
+**digital-marketing-pro 2.2.1 → 2.3.0:**
+- New `.mcp.json` with 14 HTTP connectors (Slack, Canva, Figma, HubSpot, Amplitude, Notion, Ahrefs, Similarweb, Klaviyo, Google Calendar, Gmail, Stripe, Asana, Webflow)
+- New `CONNECTORS.md` with 12 connector categories
+- Minimal `plugin.json` (4 fields, matching Anthropic's format)
+- Script path resolution: setup.py now outputs plugin root at session start
+- `.mcp.json.example` preserved for Claude Code users wanting full 67-server npx config
+
+**contentforge 2.0.2 → 2.1.0:**
+- New `.mcp.json` with 6 HTTP connectors (Notion, Canva, Webflow, Slack, Gmail, Google Calendar)
+- New `CONNECTORS.md` with connector categories
+- Minimal `plugin.json` (4 fields)
+- Agent names normalized to kebab-case for proper Cowork routing
+- Removed non-standard `skill_type` field from skill frontmatter
+- `.mcp.json.example` preserved for Google Sheets/Drive (npx only)
+
+### Marketplace
+
+- Simplified plugin descriptions to match Anthropic's concise style
+- Removed `homepage`, `repository`, `email` from plugin entries
+- Marketplace version 1.0.4 → 1.1.0
+
 ## [1.0.4] - 2026-02-24
 
 ### Updated

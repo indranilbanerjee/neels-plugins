@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "neels-plugins",
-  "version": "1.0.4",
-  "description": "Neel's Plugin Marketplace — AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, analytics, business intelligence, and more.",
+  "version": "1.1.0",
+  "description": "Neel's Plugin Marketplace — AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, content production, analytics, and more.",
   "owner": {
     "name": "Indranil Banerjee",
     "email": "indranilbanerjee21@gmail.com"
@@ -14,28 +14,21 @@
         "source": "github",
         "repo": "indranilbanerjee/digital-marketing-pro"
       },
-      "description": "Comprehensive digital marketing execution system with 25 specialist agents, 16 integrated modules, 115 slash commands, 67 MCP integrations, agency operations, multilingual support, and quality assurance layer. Covers SEO, AEO, GEO, content marketing, paid ads, social media, email marketing, CRM, analytics, brand strategy, influencer marketing, and more.",
-      "version": "2.2.1",
+      "description": "Plan, execute, and measure digital marketing across all channels. 25 specialist agents handle strategy, SEO, paid ads, content, email, social, PR, analytics, CRO, and agency operations — with brand voice enforcement, quality evaluation, multilingual support, and persistent campaign memory.",
+      "version": "2.3.0",
       "author": {
-        "name": "Indranil Banerjee",
-        "email": "indranilbanerjee21@gmail.com"
+        "name": "Indranil Banerjee"
       },
-      "homepage": "https://github.com/indranilbanerjee/digital-marketing-pro",
-      "repository": "https://github.com/indranilbanerjee/digital-marketing-pro",
       "license": "MIT",
       "keywords": [
         "marketing",
         "digital-marketing",
         "seo",
-        "aeo",
-        "geo",
         "content-marketing",
         "paid-ads",
         "social-media",
-        "email-marketing",
         "analytics",
         "agency-operations",
-        "crm",
         "multilingual",
         "brand-strategy"
       ],
@@ -47,36 +40,23 @@
         "source": "github",
         "repo": "indranilbanerjee/contentforge"
       },
-      "description": "Enterprise multi-agent content production with batch processing (4-5x faster), content refresh, multilingual support (15+ languages), platform integrations (WordPress/Notion/Webflow/HubSpot), and analytics. Transform requirements into publication-ready content in 20-30 minutes through 10-agent autonomous pipeline. Features: zero hallucinations (three-layer verification), Phase 6.5 Humanizer, 5-dimension quality scoring, A/B testing, video scripts, social adaptation.",
-      "version": "2.0.2",
+      "description": "Transform content requirements into publication-ready articles through a 10-agent autonomous production pipeline. Research, draft, edit, and deliver with brand compliance, fact-checking, and platform-ready formatting.",
+      "version": "2.1.0",
       "author": {
-        "name": "Indranil Banerjee",
-        "email": "indranilbanerjee21@gmail.com"
+        "name": "Indranil Banerjee"
       },
-      "homepage": "https://github.com/indranilbanerjee/contentforge",
-      "repository": "https://github.com/indranilbanerjee/contentforge",
       "license": "MIT",
       "keywords": [
         "content-generation",
         "multi-agent",
-        "ai",
         "seo",
         "marketing",
-        "automation",
         "enterprise",
-        "quality-assurance",
         "fact-checking",
         "brand-compliance",
-        "humanization",
-        "natural-language",
-        "content-pipeline",
         "batch-processing",
         "multilingual",
-        "content-refresh",
-        "cms-integration",
-        "analytics",
-        "claude-code",
-        "claude-plugin"
+        "content-refresh"
       ],
       "category": "content"
     }
