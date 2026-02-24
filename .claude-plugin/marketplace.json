@@ -1,11 +1,11 @@
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "neels-plugins",
-  "version": "1.1.0",
-  "description": "Neel's Plugin Marketplace — AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, content production, analytics, and more.",
   "owner": {
-    "name": "Indranil Banerjee",
-    "email": "indranilbanerjee21@gmail.com"
+    "name": "Indranil Banerjee"
+  },
+  "metadata": {
+    "description": "AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, content production, analytics, and more.",
+    "version": "1.2.0"
   },
   "plugins": [
     {
@@ -14,8 +14,8 @@
         "source": "github",
         "repo": "indranilbanerjee/digital-marketing-pro"
       },
-      "description": "Plan, execute, and measure digital marketing across all channels. 25 specialist agents handle strategy, SEO, paid ads, content, email, social, PR, analytics, CRO, and agency operations — with brand voice enforcement, quality evaluation, multilingual support, and persistent campaign memory.",
-      "version": "2.3.0",
+      "description": "Plan, execute, and measure digital marketing across all channels. 25 specialist agents handle strategy, SEO, paid ads, content, email, social, PR, analytics, CRO, and agency operations.",
+      "version": "2.3.1",
       "author": {
         "name": "Indranil Banerjee"
       },
@@ -28,9 +28,7 @@
         "paid-ads",
         "social-media",
         "analytics",
-        "agency-operations",
-        "multilingual",
-        "brand-strategy"
+        "agency-operations"
       ],
       "category": "marketing"
     },
@@ -40,7 +38,7 @@
         "source": "github",
         "repo": "indranilbanerjee/contentforge"
       },
-      "description": "Transform content requirements into publication-ready articles through a 10-agent autonomous production pipeline. Research, draft, edit, and deliver with brand compliance, fact-checking, and platform-ready formatting.",
+      "description": "Transform content requirements into publication-ready articles through a 10-agent autonomous production pipeline.",
       "version": "2.1.0",
       "author": {
         "name": "Indranil Banerjee"
@@ -52,11 +50,7 @@
         "seo",
         "marketing",
         "enterprise",
-        "fact-checking",
-        "brand-compliance",
-        "batch-processing",
-        "multilingual",
-        "content-refresh"
+        "fact-checking"
       ],
       "category": "content"
     }

@@ -5,6 +5,25 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-02-25
+
+### Fixed — Marketplace Schema & Agent Registration
+
+**Root cause investigation of persistent installation failures:**
+
+Three separate issues identified:
+
+1. **marketplace.json structure wrong** — `version` and `description` were at top level instead of under documented `metadata` object. `$schema` referenced a non-existent URL (returns 404). Undocumented top-level fields may cause silent validation failure in Claude Code's strict schema validator.
+
+2. **2 DM Pro agents missing YAML frontmatter** — `localization-specialist.md` and `quality-assurance.md` had no `---` frontmatter block. Without frontmatter, agent registration fails, potentially causing installation rollback.
+
+3. **Cowork VM EXDEV bug (platform-level)** — [Issue #25444](https://github.com/anthropics/claude-code/issues/25444): Cowork's VM tries `fs.rename()` across different filesystem mounts during plugin installation, failing with EXDEV. Affects ALL third-party marketplace plugins. Not fixable from plugin side.
+
+**Fixes applied:**
+- Restructured marketplace.json: moved `version`/`description` into `metadata` object, removed `$schema`, removed `email` from owner
+- digital-marketing-pro 2.3.0 → 2.3.1: added YAML frontmatter to 2 agents
+- Marketplace version 1.1.0 → 1.2.0
+
 ## [1.1.0] - 2026-02-25
 
 ### Changed — HTTP Connector Architecture
