@@ -5,6 +5,32 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-02-25
+
+### Fixed — SSH Host Key Verification Failure in Cowork VM
+
+**Root cause found in Claude debug logs** (`C:\Users\indra\AppData\Roaming\Claude\logs\main.log`):
+
+```
+✘ Failed to install plugin "digital-marketing-pro@neels-plugins":
+  Failed to clone repository: Host key verification failed.
+  fatal: Could not read from remote repository.
+```
+
+The Cowork VM doesn't have GitHub's SSH host key in `known_hosts`. When plugins use `"source": "github"`, the VM tries to `git clone` via SSH and fails because it can't verify GitHub's identity.
+
+Anthropic's Marketing plugin installs fine because it uses relative path sources within the same marketplace repo — no git clone needed.
+
+**Fix:** Changed both plugin sources from `"source": "github"` to `"source": "url"` with explicit HTTPS URLs. This forces HTTPS cloning which doesn't require SSH host key verification.
+
+```json
+// Before (fails — uses SSH)
+"source": { "source": "github", "repo": "indranilbanerjee/digital-marketing-pro" }
+
+// After (works — uses HTTPS)
+"source": { "source": "url", "url": "https://github.com/indranilbanerjee/digital-marketing-pro.git" }
+```
+
 ## [1.2.0] - 2026-02-25
 
 ### Fixed — Marketplace Schema & Agent Registration
