@@ -1,6 +1,6 @@
 # Neel's Plugin Marketplace
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-2-orange.svg)](#-available-plugins)
 
@@ -34,8 +34,8 @@ A custom plugin marketplace for **Claude Code** and **Claude Cowork** — built 
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 2.2.0 | Comprehensive digital marketing execution system with 25 specialist agents, 16 integrated modules, 115 slash commands, 67 MCP integrations, agency operations, multilingual support, and quality assurance layer. |
-| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 2.0.1 | Enterprise multi-agent content production with batch processing (4-5x faster), content refresh, multilingual support, platform integrations (WordPress/Notion/Webflow/HubSpot), and analytics. Zero hallucinations, Phase 6.5 Humanizer, A/B testing, video scripts, social adaptation. |
+| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 2.4.0 | Plan, execute, and measure digital marketing across all channels. 25 specialist agents, 117 skills, 14 HTTP connectors, connector discovery and onboarding. |
+| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 3.0.0 | Enterprise content production pipeline with 12 agents, 17 skills, and zero hallucinations. Research, draft, fact-check, humanize, publish, translate, and repurpose. |
 
 ---
 

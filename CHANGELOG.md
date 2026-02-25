@@ -5,6 +5,15 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-02-25
+
+### Changed
+
+- Updated contentforge to v3.0.0 — Complete modernization: 14 new skills, 2 new agents (Social Adapter, Translator), 4 agent upgrades (Output Manager, SEO Optimizer, Humanizer, Reviewer), connector infrastructure, comprehensive user guide
+- Updated marketplace descriptions and version references in README.md
+
+---
+
 ## [1.4.0] - 2026-02-25
 
 ### Changed
@@ -255,5 +264,13 @@ The root cause was identified: when users installed plugins from the neels-plugi
 
 ---
 
+[1.5.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.4.0...v1.5.0
+[1.4.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.3.0...v1.4.0
+[1.3.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.2.0...v1.3.0
+[1.2.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.0.4...v1.1.0
+[1.0.4]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.0.3...v1.0.4
+[1.0.3]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/indranilbanerjee/neels-plugins/releases/tag/v1.0.0
