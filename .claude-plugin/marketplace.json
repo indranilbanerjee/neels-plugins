@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, content production, analytics, and more.",
-    "version": "1.3.0"
+    "version": "1.4.0"
   },
   "plugins": [
     {
@@ -15,7 +15,7 @@
         "url": "https://github.com/indranilbanerjee/digital-marketing-pro.git"
       },
       "description": "Plan, execute, and measure digital marketing across all channels. 25 specialist agents handle strategy, SEO, paid ads, content, email, social, PR, analytics, CRO, and agency operations.",
-      "version": "2.3.1",
+      "version": "2.4.0",
       "author": {
         "name": "Indranil Banerjee"
       },
