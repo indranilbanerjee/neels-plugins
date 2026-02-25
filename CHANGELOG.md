@@ -5,6 +5,16 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-02-26
+
+### Changed
+
+- Updated digital-marketing-pro to v2.5.0 — adds 7 command files visible in Customize panel (brand-setup, campaign-plan, seo-audit, content-engine, performance-report, competitor-analysis, email-sequence)
+- Updated contentforge to v3.1.0 — adds 7 command files visible in Customize panel (create-content, content-brief, social-adapt, publish, translate, brand-setup, audit-content), new `/cf:help` and `/cf:add-integration` skills
+- Updated marketplace.json and README.md with current plugin versions and descriptions
+
+---
+
 ## [1.5.0] - 2026-02-25
 
 ### Changed
