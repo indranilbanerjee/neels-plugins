@@ -14,7 +14,7 @@
         "source": "url",
         "url": "https://github.com/indranilbanerjee/digital-marketing-pro.git"
       },
-      "description": "Plan, execute, and measure digital marketing across all channels. 25 specialist agents handle strategy, SEO, paid ads, content, email, social, PR, analytics, CRO, and agency operations.",
+      "description": "Plan, execute, and measure digital marketing across all channels. 25 specialist agents, 118 skills, 14 HTTP connectors, connector discovery and onboarding.",
       "version": "2.4.0",
       "author": {
         "name": "Indranil Banerjee"
@@ -38,7 +38,7 @@
         "source": "url",
         "url": "https://github.com/indranilbanerjee/contentforge.git"
       },
-      "description": "Enterprise content production pipeline with 12 agents, 17 skills, and zero hallucinations. Research, draft, fact-check, humanize, publish, translate, and repurpose.",
+      "description": "Enterprise content production pipeline with 12 agents, 18 skills, and zero hallucinations. Research, draft, fact-check, humanize, publish, translate, and repurpose.",
       "version": "3.0.0",
       "author": {
         "name": "Indranil Banerjee"

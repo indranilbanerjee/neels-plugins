@@ -34,8 +34,8 @@ A custom plugin marketplace for **Claude Code** and **Claude Cowork** — built 
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 2.4.0 | Plan, execute, and measure digital marketing across all channels. 25 specialist agents, 117 skills, 14 HTTP connectors, connector discovery and onboarding. |
-| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 3.0.0 | Enterprise content production pipeline with 12 agents, 17 skills, and zero hallucinations. Research, draft, fact-check, humanize, publish, translate, and repurpose. |
+| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 2.4.0 | Plan, execute, and measure digital marketing across all channels. 25 specialist agents, 118 skills, 14 HTTP connectors, connector discovery and onboarding. |
+| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 3.0.0 | Enterprise content production pipeline with 12 agents, 18 skills, and zero hallucinations. Research, draft, fact-check, humanize, publish, translate, and repurpose. |
 
 ---
 
