@@ -5,6 +5,18 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-03-03
+
+### Changed
+
+- Updated contentforge to v3.3.0:
+  - **v3.2.0**: New Phase 3.5 Visual Asset Annotator agent (13 agents total) — auto-generates matplotlib data charts from verified statistics, creates structured `<!-- VISUAL: ... -->` and `<!-- INTERNAL-LINK: ... -->` markers, embeds charts in .docx with TODO boxes for human-action visuals
+  - **v3.3.0**: Google Sheets tracking + Google Drive delivery via Python scripts with service account — `sheets-tracker.py` (init, add-row, get-pending, update-row, mark-complete) and `drive-uploader.py` (upload, ensure-folders, upload-assets with Brand/Type/Year/Month hierarchy)
+  - **Audit fixes**: requirement_id collision prevention, query injection fix for apostrophe brand names, priority validation, error checking between script calls
+- Updated marketplace.json and README.md with current plugin versions and descriptions
+
+---
+
 ## [1.6.0] - 2026-02-26
 
 ### Changed
