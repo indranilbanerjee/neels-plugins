@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, content production, analytics, and more.",
-    "version": "1.7.0"
+    "version": "1.8.0"
   },
   "plugins": [
     {
@@ -38,8 +38,8 @@
         "source": "url",
         "url": "https://github.com/indranilbanerjee/contentforge.git"
       },
-      "description": "Enterprise content production pipeline with 13 agents, 7 commands, 18 skills, and zero hallucinations. Research, draft, annotate visuals, fact-check, humanize, publish, translate, and repurpose — with data chart generation, structured internal linking, Google Sheets tracking, and Google Drive delivery.",
-      "version": "3.3.0",
+      "description": "Enterprise content production pipeline with 13 agents, 7 commands, 18 skills, 10 industry knowledge packs, and zero hallucinations. Research, draft with subject matter expertise, annotate visuals, fact-check with domain-specific validation, humanize, publish, translate, and repurpose — with auto-generated brand key files, data chart generation, structured internal linking, Google Sheets tracking, and Google Drive delivery.",
+      "version": "3.4.0",
       "author": {
         "name": "Indranil Banerjee"
       },
