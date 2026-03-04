@@ -5,6 +5,22 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-03-04
+
+### Changed
+- **contentforge** updated from v3.3.0 to v3.4.0
+  - 10 industry knowledge packs for subject matter expertise (pharma, BFSI, healthcare, technology, B2B SaaS, legal, eCommerce, consumer goods, real estate, education)
+  - Brand-setup Step F: auto-generated brand key files from website analysis
+  - Phase 3 SME Calibration via industry knowledge packs
+  - Phase 4 domain-specific validation (terminology, regulatory, evidence standards)
+  - Pipeline documentation corrected to 10-phase (Phase 3.5 Visual Asset Annotator)
+  - Version alignment across all files (plugin.json, hooks.json, README)
+
+### Updated
+- Marketplace metadata version bumped to 1.8.0
+
+---
+
 ## [1.7.0] - 2026-03-03
 
 ### Changed
@@ -174,8 +190,6 @@ This version's marketplace-level `"mcpServers": []` approach **did not work** �
 
 ### 🐛 Fixed
 
-### 🐛 Fixed
-
 **CRITICAL: Resolved "Manage Plugin shows nothing" regression from v1.0.1**
 
 v1.0.1 introduced a critical regression where plugins would install without crashing, but "Manage Plugin" would show nothing and redirect back to the platform. The root cause was a misunderstanding of how `"strict": false` works in marketplace.json.
@@ -222,8 +236,6 @@ The correct marketplace.json configuration uses default `strict: true` (implicit
 ### ⚠️ Known Issue
 
 This version introduced a regression where "Manage Plugin" shows nothing after installation. **Upgrade to v1.0.2 immediately.**
-
-### 🐛 Fixed
 
 ### 🐛 Fixed
 
@@ -286,6 +298,9 @@ The root cause was identified: when users installed plugins from the neels-plugi
 
 ---
 
+[1.8.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.7.0...v1.8.0
+[1.7.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.6.0...v1.7.0
+[1.6.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/indranilbanerjee/neels-plugins/compare/v1.2.0...v1.3.0
