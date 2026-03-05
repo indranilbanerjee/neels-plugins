@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, content production, analytics, and more.",
-    "version": "1.8.0"
+    "version": "1.10.0"
   },
   "plugins": [
     {
@@ -14,8 +14,8 @@
         "source": "url",
         "url": "https://github.com/indranilbanerjee/digital-marketing-pro.git"
       },
-      "description": "Plan, execute, and measure digital marketing across all channels. 25 specialist agents, 7 commands, 118 skills, 14 HTTP connectors, connector discovery and onboarding.",
-      "version": "2.5.0",
+      "description": "Plan, execute, and measure digital marketing across all channels. 25 specialist agents, 7 commands, 118 skills, 14 HTTP connectors, connector discovery and onboarding. All skills with argument-hint autocomplete, 17 execution skills with safety guards, and structured evals.",
+      "version": "2.5.1",
       "author": {
         "name": "Indranil Banerjee"
       },
@@ -38,8 +38,8 @@
         "source": "url",
         "url": "https://github.com/indranilbanerjee/contentforge.git"
       },
-      "description": "Enterprise content production pipeline with 13 agents, 7 commands, 18 skills, 10 industry knowledge packs, and zero hallucinations. Research, draft with subject matter expertise, annotate visuals, fact-check with domain-specific validation, humanize, publish, translate, and repurpose — with auto-generated brand key files, data chart generation, structured internal linking, Google Sheets tracking, and Google Drive delivery.",
-      "version": "3.4.0",
+      "description": "Enterprise content production pipeline with 13 agents, 7 commands, 19 skills, 10 industry knowledge packs, and zero hallucinations. Research, draft with subject matter expertise, annotate visuals, fact-check with domain-specific validation, humanize, publish, translate, and repurpose — with pipeline performance tracking, multi-backend I/O (Google Sheets, Airtable, local), backend migration, auto-generated brand key files, data chart generation, structured internal linking, and structured evals.",
+      "version": "3.5.0",
       "author": {
         "name": "Indranil Banerjee"
       },
