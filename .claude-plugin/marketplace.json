@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, content production, analytics, and more.",
-    "version": "1.16.0"
+    "version": "1.17.0"
   },
   "plugins": [
     {
@@ -15,7 +15,7 @@
         "url": "https://github.com/indranilbanerjee/digital-marketing-pro.git"
       },
       "description": "Plan, execute, and measure digital marketing across all channels. 25 specialist agents, 7 commands, 141 skills, 14 HTTP connectors, connector discovery and onboarding. v2.6 adds 6 SEO sub-skills, expanded schema markup (18 types with deprecation tracking), Google SEO quick reference, and DataForSEO integration.",
-      "version": "2.6.0",
+      "version": "2.7.0",
       "author": {
         "name": "Indranil Banerjee"
       },

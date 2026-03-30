@@ -1,6 +1,6 @@
 # Neel's Plugin Marketplace
 
-[![Version](https://img.shields.io/badge/version-1.16.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.17.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-2-orange.svg)](#-available-plugins)
 
@@ -34,7 +34,7 @@ A custom plugin marketplace for **Claude Code** and **Claude Cowork** — built 
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 2.6.0 | Plan, execute, and measure digital marketing across all channels. 25 specialist agents, 7 commands, 141 skills, 14 HTTP connectors. v2.6 adds 6 SEO sub-skills, expanded schema markup (18 types), Google SEO reference, and DataForSEO integration. |
+| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 2.7.0 | Plan, execute, and measure digital marketing across all channels. 25 specialist agents, 7 commands, 141 skills, 14 HTTP connectors. v2.6 adds 6 SEO sub-skills, expanded schema markup (18 types), Google SEO reference, and DataForSEO integration. |
 | **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 3.8.0 | Enterprise content production pipeline with 13 agents, 19 skills, 9 HTTP connectors, 6 evals. v3.7 adds SERP-informed title curation, pre-flight brand validation, scoring fixes, per-phase tracking, expanded brand profiles. |
 
 ---

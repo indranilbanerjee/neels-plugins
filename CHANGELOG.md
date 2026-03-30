@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.17.0] - 2026-03-31
+
+### Changed
+- **digital-marketing-pro** updated from v2.6.0 to v2.7.0
+  - All 141 skill descriptions trimmed to <130 chars (skill discovery budget optimization)
+  - maxTurns added to all 25 agents (runaway execution prevention)
+  - launch-plan protected with disable-model-invocation (18 total)
+  - SessionStart timeout wrapper on setup.py
+  - 169 files changed, zero feature changes
+
+### Updated
+- Marketplace metadata version bumped to 1.17.0
+
+---
+
 ## [1.16.0] - 2026-03-31
 
 ### Changed
