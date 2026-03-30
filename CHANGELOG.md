@@ -5,6 +5,19 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.15.0] - 2026-03-31
+
+### Changed
+- **contentforge** updated from v3.7.0 to v3.7.1
+  - User guidance overhaul: Quick Start in SessionStart, progressive brand setup, expanded troubleshooting
+  - Phase progress indicators in agents 01, 03, 07 with ETAs and conditional post-decision updates
+  - Token tracking reframed as Pipeline Complexity metrics (words, sources, loops — not token estimates)
+
+### Updated
+- Marketplace metadata version bumped to 1.15.0
+
+---
+
 ## [1.14.0] - 2026-03-31
 
 ### Changed
