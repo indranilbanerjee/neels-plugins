@@ -5,6 +5,23 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2026-03-30
+
+### Changed
+- **digital-marketing-pro** updated from v2.5.1 to v2.6.0
+  - 6 new SEO sub-skills: programmatic-seo, competitor-pages, image-seo-audit, page-seo-analysis, sitemap-manager, seo-plan
+  - schema-generator.py expanded from 9 to 18 types with deprecation warnings (HowTo, FAQPage)
+  - 2 new reference files: schema-templates.json (12 JSON-LD templates), google-seo-reference.md (E-E-A-T, CWV, spam policies)
+  - seo-specialist agent updated with all new skills and reference files
+  - DataForSEO MCP integration added (live SERP data, keyword research, backlinks, 9 API modules)
+  - All new skills include user-invocable: true and argument-hint per convention
+  - Counts: 141 skills, 148 reference files, 68 npx integrations
+
+### Updated
+- Marketplace metadata version bumped to 1.11.0
+
+---
+
 ## [1.8.0] - 2026-03-04
 
 ### Changed
