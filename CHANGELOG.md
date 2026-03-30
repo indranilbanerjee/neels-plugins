@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.16.0] - 2026-03-31
+
+### Changed
+- **contentforge** updated from v3.7.1 to v3.8.0
+  - Agent compression: 11,503 → 4,957 lines (-57%). ALL quality gates and logic preserved.
+  - maxTurns on all 13 agents (prevents runaway execution)
+  - Skill descriptions trimmed to <130 chars (fits discovery budget)
+  - 4 more execution skills protected with disable-model-invocation
+  - 31 files changed, 7,620 lines removed, ~20,000 tokens saved per pipeline run
+
+### Updated
+- Marketplace metadata version bumped to 1.16.0
+
+---
+
 ## [1.15.0] - 2026-03-31
 
 ### Changed
