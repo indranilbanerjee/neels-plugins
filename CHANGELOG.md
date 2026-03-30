@@ -5,6 +5,26 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.13.0] - 2026-03-31
+
+### Changed
+- **contentforge** updated from v3.5.1 to v3.6.0
+  - Optional AI image generation via fal.ai (HTTP) and Replicate (HTTP) — works in both Cowork and Claude Code
+  - 3 additional npx image gen servers: Stability AI, nanobanana (Gemini), mcp-imagenate (multi-provider)
+  - Phase 3.5 Visual Asset Annotator: user opt-in, feature/contextual/diagram generation, approval flow
+  - Phase 6 SEO: feature image og:image meta tag awareness
+  - Phase 8 Output: AI image embedding with attribution
+  - Phase 10 Social: Canva MCP social graphics generation
+  - effort frontmatter on all 16 skills
+  - SubagentStart hook (brand injection) and Stop hook (quality gate)
+  - ${CLAUDE_PLUGIN_DATA} persistent storage with legacy fallback
+  - 29 files changed, 9 HTTP connectors (was 7), 4 hooks (was 2)
+
+### Updated
+- Marketplace metadata version bumped to 1.13.0
+
+---
+
 ## [1.12.0] - 2026-03-30
 
 ### Changed
