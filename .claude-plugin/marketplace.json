@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, content production, analytics, and more.",
-    "version": "1.13.0"
+    "version": "1.14.0"
   },
   "plugins": [
     {
@@ -38,8 +38,8 @@
         "source": "url",
         "url": "https://github.com/indranilbanerjee/contentforge.git"
       },
-      "description": "Enterprise content production pipeline with 13 agents, 7 commands, 19 skills, 10 industry knowledge packs, and zero hallucinations. v3.6 adds optional AI image generation (feature images, contextual illustrations, social graphics) via fal.ai/Replicate with human-in-the-loop approval, SubagentStart brand injection hook, Stop quality gate hook, effort frontmatter on all skills.",
-      "version": "3.6.0",
+      "description": "Enterprise content production pipeline with 13 agents, 7 commands, 19 skills, 9 HTTP connectors, 10 industry knowledge packs, 6 evals. v3.7 adds SERP-informed title curation, pre-flight brand validation, scoring consistency fixes (industry thresholds, dimension minimums), per-phase performance tracking, and expanded brand profiles (visual identity, content pillars, competitor analysis, audience personas).",
+      "version": "3.7.0",
       "author": {
         "name": "Indranil Banerjee"
       },

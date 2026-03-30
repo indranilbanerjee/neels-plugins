@@ -5,6 +5,24 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.14.0] - 2026-03-31
+
+### Changed
+- **contentforge** updated from v3.6.0 to v3.7.0
+  - Title curation overhaul: SERP reconnaissance, content-type-specific angles, brand personality adaptation, guardrails validation, 60-char SERP limit, anti-clickbait
+  - Pre-flight brand validation: completeness check before pipeline, regulated industry guardrails enforcement
+  - Phase 3 + Phase 5: empty guardrails now report "SKIPPED" with scoring penalty instead of false "zero violations"
+  - Scoring fixes: GEO as SEO sub-score, industry threshold overrides, dimension minimums, rounding precision
+  - Tracking: per-phase timing columns, token estimates, guardrails status, pipeline performance in output
+  - Brand template: visual_identity, content_pillars, competitor_analysis fields
+  - Brand setup: 4 new steps (audience personas, competitors, pillars, visual identity)
+  - 3 new evals (6 total), 16 files changed, 31 audit findings addressed
+
+### Updated
+- Marketplace metadata version bumped to 1.14.0
+
+---
+
 ## [1.13.0] - 2026-03-31
 
 ### Changed
