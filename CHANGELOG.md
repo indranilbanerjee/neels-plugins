@@ -5,6 +5,19 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.0] - 2026-03-30
+
+### Changed
+- **contentforge** updated from v3.5.0 to v3.5.1
+  - Mandatory title curation step before pipeline starts — generates 4-5 SEO-optimized title options, user selects before Phase 1 Research begins
+  - Pipeline no longer auto-selects titles from topics
+  - Updated: create-content command, contentforge skill, Phase 1 agent, README pipeline diagram
+
+### Updated
+- Marketplace metadata version bumped to 1.12.0
+
+---
+
 ## [1.11.0] - 2026-03-30
 
 ### Changed
