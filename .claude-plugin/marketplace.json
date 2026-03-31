@@ -1,39 +1,43 @@
 {
   "name": "neels-plugins",
   "owner": {
-    "name": "Indranil Banerjee"
+    "name": "Indranil Banerjee",
+    "email": "neel@neelverse.com"
   },
   "metadata": {
     "description": "Marketing plugins for Claude Code and Cowork",
-    "version": "2.0.0"
+    "version": "2.1.0"
   },
   "plugins": [
     {
       "name": "digital-marketing-pro",
-      "source": "./digital-marketing-pro",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/indranilbanerjee/digital-marketing-pro.git"
+      },
       "description": "Full-stack digital marketing with 25 agents, 141 skills, and 14 HTTP connectors",
       "version": "2.7.0",
-      "author": {
-        "name": "Indranil Banerjee"
-      }
+      "strict": true
     },
     {
       "name": "contentforge",
-      "source": "./contentforge",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/indranilbanerjee/contentforge.git"
+      },
       "description": "Enterprise content production pipeline with 13 agents and 19 skills",
       "version": "3.8.0",
-      "author": {
-        "name": "Indranil Banerjee"
-      }
+      "strict": true
     },
     {
       "name": "socialforge",
-      "source": "./socialforge",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/indranilbanerjee/socialforge.git"
+      },
       "description": "Social media calendar automation with asset-first compositing",
       "version": "1.3.0",
-      "author": {
-        "name": "Indranil Banerjee"
-      }
+      "strict": true
     }
   ]
 }
