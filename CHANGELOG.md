@@ -5,6 +5,20 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.22.0] - 2026-03-31
+
+### Changed
+- **socialforge** updated from v1.2.0 to v1.3.0
+  - Persistent storage via ${CLAUDE_PLUGIN_DATA} across all 11 scripts
+  - Google Drive asset source support (Cowork platform integration + Claude Code local)
+  - Cloudinary HTTP MCP (10th connector, professional DAM)
+  - 10 HTTP connectors total, all Cowork+Claude Code compatible
+
+### Updated
+- Marketplace metadata version bumped to 1.22.0
+
+---
+
 ## [1.21.0] - 2026-03-31
 
 ### Changed
