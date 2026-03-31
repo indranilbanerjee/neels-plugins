@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+"""
+setup.py
+========
+ContentForge session startup script.
+
+Validates the plugin environment on session start:
+- Checks Python version (3.8+ required)
+- Reports plugin root and scripts directory paths
+- Validates .mcp.json exists and is valid JSON
+- Reports connector count
+- Checks Google integration status (credentials, pip packages)
+
+Called by hooks/hooks.json SessionStart hook.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+PLUGIN_ROOT = Path(__file__).resolve().parent.parent
+MCP_JSON = PLUGIN_ROOT / ".mcp.json"
+SCRIPTS_DIR = PLUGIN_ROOT / "scripts"
+
+# Persistent data: prefer ${CLAUDE_PLUGIN_DATA} (official, survives updates),
+# fall back to ~/.claude-marketing/ (legacy)
+import os
+PLUGIN_DATA = Path(os.environ.get("CLAUDE_PLUGIN_DATA", ""))
+if not PLUGIN_DATA or not PLUGIN_DATA.exists():
+    PLUGIN_DATA = Path.home() / ".claude-marketing"
+GOOGLE_CREDS_DEFAULT = PLUGIN_DATA / "google-credentials.json"
+
+
+def check_google_integration():
+    """Check Google Sheets/Drive integration status."""
+    status = {"credentials": False, "packages": False}
+
+    # Check credentials file
+    if GOOGLE_CREDS_DEFAULT.exists():
+        try:
+            data = json.loads(GOOGLE_CREDS_DEFAULT.read_text(encoding="utf-8"))
+            if "client_email" in data:
+                status["credentials"] = True
+                status["service_account_email"] = data["client_email"]
+        except (json.JSONDecodeError, KeyError):
+            pass
+
+    # Check pip packages
+    try:
+        import gspread  # noqa: F401
+        from google.oauth2.service_account import Credentials  # noqa: F401
+        from googleapiclient.discovery import build  # noqa: F401
+        status["packages"] = True
+    except ImportError:
+        pass
+
+    return status
+
+
+def main():
+    errors = []
+
+    # Check Python version
+    if sys.version_info < (3, 8):
+        errors.append(f"Python 3.8+ required (found {sys.version})")
+
+    # Report paths
+    print(f"PLUGIN_ROOT={PLUGIN_ROOT}")
+    print(f"SCRIPTS_DIR={SCRIPTS_DIR}")
+
+    # Validate .mcp.json
+    if MCP_JSON.exists():
+        try:
+            data = json.loads(MCP_JSON.read_text(encoding="utf-8"))
+            servers = data.get("mcpServers", {})
+            print(f"CONNECTORS={len(servers)} HTTP connectors loaded")
+        except json.JSONDecodeError as e:
+            errors.append(f".mcp.json is invalid JSON: {e}")
+    else:
+        print("CONNECTORS=0 (no .mcp.json found)")
+
+    # Check Google integration
+    google = check_google_integration()
+    if google["credentials"]:
+        print(f"GOOGLE_CREDENTIALS=configured ({google.get('service_account_email', 'found')})")
+    else:
+        print("GOOGLE_CREDENTIALS=not_configured (sheets/drive scripts will prompt for setup)")
+
+    if google["packages"]:
+        print("GOOGLE_PACKAGES=installed")
+    else:
+        print("GOOGLE_PACKAGES=not_installed (will auto-install on first script run)")
+
+    # Report persistent data directory
+    print(f"PLUGIN_DATA={PLUGIN_DATA}")
+
+    # Check Airtable integration
+    airtable_token = os.environ.get("AIRTABLE_TOKEN")
+    if airtable_token:
+        print("AIRTABLE_TOKEN=configured")
+    else:
+        print("AIRTABLE_TOKEN=not_configured")
+
+    # Report available tracking backends
+    backends = ["local"]
+    if airtable_token:
+        backends.append("airtable")
+    if google["credentials"]:
+        backends.append("google_sheets")
+    print(f"TRACKING_BACKENDS={', '.join(backends)}")
+
+    if errors:
+        for err in errors:
+            print(f"ERROR: {err}", file=sys.stderr)
+        sys.exit(1)
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
