@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Marketing plugins for Claude Code and Cowork — strategy, content, social media.",
-    "version": "1.23.0"
+    "version": "1.24.0"
   },
   "plugins": [
     {
       "name": "digital-marketing-pro",
       "source": {
-        "type": "url",
+        "source": "url",
         "url": "https://github.com/indranilbanerjee/digital-marketing-pro.git"
       },
       "description": "Full-stack digital marketing. 25 agents, 141 skills, 14 HTTP connectors. Strategy, SEO, ads, content, email, social, analytics, agency ops.",
@@ -26,7 +26,7 @@
     {
       "name": "contentforge",
       "source": {
-        "type": "url",
+        "source": "url",
         "url": "https://github.com/indranilbanerjee/contentforge.git"
       },
       "description": "Enterprise content pipeline. 13 agents, 19 skills, 10 industry packs. Research, draft, fact-check, humanize, publish — zero hallucinations.",
@@ -41,7 +41,7 @@
     {
       "name": "socialforge",
       "source": {
-        "type": "url",
+        "source": "url",
         "url": "https://github.com/indranilbanerjee/socialforge.git"
       },
       "description": "Social media calendar automation. Asset-first compositing, 4 creative modes, carousels, multi-brand, approval workflows.",
