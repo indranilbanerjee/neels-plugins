@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "AI-powered plugins for Claude Code and Claude Cowork. Marketing automation, content production, analytics, and more.",
-    "version": "1.18.0"
+    "version": "1.19.0"
   },
   "plugins": [
     {
@@ -60,8 +60,8 @@
         "source": "url",
         "url": "https://github.com/indranilbanerjee/socialforge.git"
       },
-      "description": "Agency-grade social media calendar automation with asset-first compositing. 14 skills, 17 scripts, 5 agents, 18 commands, 8 carousel templates, 9 HTTP connectors. 4 creative modes, multi-brand, multi-tier approval, compliance checking.",
-      "version": "1.0.0",
+      "description": "Agency-grade social media calendar automation with asset-first compositing. 14 skills, 17 scripts, 5 agents, 18 commands, 8 carousel templates, 9 HTTP connectors. Full documentation: user guide, testing guide, connectors guide, contribution guidelines.",
+      "version": "1.0.1",
       "author": {
         "name": "Indranil Banerjee"
       },
