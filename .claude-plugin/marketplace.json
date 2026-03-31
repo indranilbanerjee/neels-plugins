@@ -5,38 +5,47 @@
   },
   "metadata": {
     "description": "Marketing plugins for Claude Code and Cowork",
-    "version": "1.27.0"
+    "version": "1.29.0"
   },
   "plugins": [
     {
       "name": "digital-marketing-pro",
       "source": {
         "source": "url",
-        "url": "https://github.com/indranilbanerjee/digital-marketing-pro.git"
+        "url": "https://github.com/indranilbanerjee/digital-marketing-pro.git",
+        "sha": "31cdfc6eb0370a2b5b1c960e40e942bf350dce2c"
       },
       "description": "Full-stack digital marketing with 25 agents, 141 skills, and 14 HTTP connectors",
       "version": "2.7.0",
-      "strict": true
+      "author": {
+        "name": "Indranil Banerjee"
+      }
     },
     {
       "name": "contentforge",
       "source": {
         "source": "url",
-        "url": "https://github.com/indranilbanerjee/contentforge.git"
+        "url": "https://github.com/indranilbanerjee/contentforge.git",
+        "sha": "0784109d09e317ea6d5a4db368d866b78ef9b6cb"
       },
       "description": "Enterprise content production pipeline with 13 agents and 19 skills",
       "version": "3.8.0",
-      "strict": true
+      "author": {
+        "name": "Indranil Banerjee"
+      }
     },
     {
       "name": "socialforge",
       "source": {
         "source": "url",
-        "url": "https://github.com/indranilbanerjee/socialforge.git"
+        "url": "https://github.com/indranilbanerjee/socialforge.git",
+        "sha": "551e6a04999ea66262a49165fd2b32f01ed13dc5"
       },
       "description": "Social media calendar automation with asset-first compositing",
       "version": "1.3.0",
-      "strict": true
+      "author": {
+        "name": "Indranil Banerjee"
+      }
     }
   ]
 }
