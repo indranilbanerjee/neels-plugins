@@ -1,9 +1,0 @@
-[submodule "digital-marketing-pro"]
-	path = digital-marketing-pro
-	url = https://github.com/indranilbanerjee/digital-marketing-pro.git
-[submodule "contentforge"]
-	path = contentforge
-	url = https://github.com/indranilbanerjee/contentforge.git
-[submodule "socialforge"]
-	path = socialforge
-	url = https://github.com/indranilbanerjee/socialforge.git
