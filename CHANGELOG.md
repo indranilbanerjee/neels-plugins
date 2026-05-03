@@ -5,6 +5,26 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.1] - 2026-05-03
+
+### Changed — DMP Skill-Count Sync (147 → 149)
+
+Description correction. The DMP v3.2.0 release added 2 new skills (`/dm:check` and `/dm:status`) on top of the 147 that existed at v3.1.x, bringing the total to 149. The marketplace metadata + plugin table description in v2.7.0 referenced the pre-v3.2 count of 147 skills.
+
+This release updates:
+- `.claude-plugin/marketplace.json` digital-marketing-pro description: "147 skills" → "149 skills (141 atomic + 6 v3.0 methodology + 2 v3.2 quality-and-status)"; also surfaces "10 top commands"
+- `README.md` plugin table for digital-marketing-pro: same correction
+- `README.md` version badge: 2.7.0 → 2.7.1
+- Marketplace metadata version: 2.7.0 → 2.7.1
+
+No plugin version changes. Pure metadata correction. The DMP plugin itself is still at 3.2.0 (this fix happens in the marketplace catalog only).
+
+#### Why the count drifted
+
+DMP v3.2.0 was released as `feat(v3.2.0): close v3.1 hook-removal gaps with explicit replacements` and bumped DMP plugin version to 3.2.0 with the correct internal count. The marketplace metadata was bumped to 2.7.0 the same day but in a separate commit window where the description text was carried forward from the v3.1.1 era when DMP had 147 skills. The DMP plugin's own README already shows 149 (corrected in DMP commit `a4a546c` "docs: update stale skill/script/command counts across all v3.2 docs"). This release brings the marketplace catalog back in sync.
+
+---
+
 ## [2.7.0] - 2026-05-03
 
 ### Changed — Documentation Sync + DMP v3.2.0 Bump

@@ -8,7 +8,7 @@
   },
   "metadata": {
     "description": "Marketing plugins for Claude Code and Anthropic Cowork. All plugins ship zero global hooks and zero auto-connecting MCPs for clean multi-plugin coexistence; comply with the Anthropic Software Directory Policy; HTTP MCP connectors are Cowork-compatible. Every plugin (where applicable) ships a .mcp.json.connectors-reference catalog documenting Cowork-compatible aggregator paths (Pipedream, Composio, Zapier, Make.com) for services with no first-party HTTP MCP.",
-    "version": "2.7.0",
+    "version": "2.7.1",
     "homepage": "https://github.com/indranilbanerjee/neels-plugins",
     "license": "MIT",
     "keywords": ["marketing", "content", "social-media", "seo", "brand", "agency", "claude-code", "claude-cowork"]
@@ -20,7 +20,7 @@
         "source": "github",
         "repo": "indranilbanerjee/digital-marketing-pro"
       },
-      "description": "End-to-end digital marketing engagement methodology. v3.0 introduced the 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Update-Back Rule, and Living Project Instruction File on top of 25 specialist agents, 147 skills, 68 Python scripts, and 14 HTTP MCP connectors covering 16 industry profiles and 16 privacy-law jurisdictions. v3.1 removed all global hooks. v3.1.1 added a .mcp.json.connectors-reference catalog with 25+ HTTP MCPs and Pipedream/Composio/Zapier aggregator paths for the ~60 services previously only available via stdio/npx. v3.2 closes v3.1's hook-removal gaps with explicit on-demand replacements: /dm:check (pre-publish gate), /dm:status (richer brand snapshot), embedded mandatory hallucination check inside content/email/social/PR agents, opt-in auto_save_insights brand flag, and a documented hook re-enable pattern at the user's own settings level.",
+      "description": "End-to-end digital marketing engagement methodology. v3.0 introduced the 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Update-Back Rule, and Living Project Instruction File on top of 25 specialist agents, 149 skills (141 atomic + 6 v3.0 methodology + 2 v3.2 quality-and-status), 68 Python scripts, and 14 HTTP MCP connectors covering 16 industry profiles and 16 privacy-law jurisdictions. v3.1 removed all global hooks. v3.1.1 added a .mcp.json.connectors-reference catalog with 25+ HTTP MCPs and Pipedream/Composio/Zapier aggregator paths for the ~60 services previously only available via stdio/npx. v3.2 closes v3.1's hook-removal gaps with explicit on-demand replacements: /dm:check (pre-publish gate), /dm:status (richer brand snapshot), embedded mandatory hallucination check inside content/email/social/PR agents, opt-in auto_save_insights brand flag, and a documented hook re-enable pattern at the user's own settings level.",
       "version": "3.2.0",
       "author": {
         "name": "Indranil Banerjee"

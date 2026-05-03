@@ -1,6 +1,6 @@
 # Neel's Plugin Marketplace
 
-[![Version](https://img.shields.io/badge/version-2.7.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.7.1-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Cowork](https://img.shields.io/badge/Cowork-compatible-brightgreen.svg)](#-platform-compatibility)
@@ -41,7 +41,7 @@ In Cowork: Settings → Plugins → Add Marketplace → paste `indranilbanerjee/
 
 | Plugin | Version | What it does |
 |--------|---------|--------------|
-| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.2.0 | End-to-end digital marketing engagement methodology. v3.0 introduced the 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, and Living Project Instruction File on top of 25 specialist agents, 147 skills, 68 Python scripts, and 14 HTTP MCP connectors. v3.1 removed all global hooks; v3.1.1 added Cowork-compatible aggregator MCPs. v3.2 closes the v3.1 hook-removal gaps with explicit replacements: `/dm:check` pre-publish gate, `/dm:status` brand snapshot, embedded hallucination checks in content/email/social/PR agents, opt-in `auto_save_insights` flag. |
+| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.2.0 | End-to-end digital marketing engagement methodology. v3.0 introduced the 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, and Living Project Instruction File on top of 25 specialist agents, 149 skills (141 atomic + 6 v3.0 methodology + 2 v3.2 quality-and-status), 68 Python scripts, 10 top commands, and 14 HTTP MCP connectors. v3.1 removed all global hooks; v3.1.1 added Cowork-compatible aggregator MCPs. v3.2 closes the v3.1 hook-removal gaps with explicit replacements: `/dm:check` pre-publish gate, `/dm:status` brand snapshot, embedded hallucination checks in content/email/social/PR agents, opt-in `auto_save_insights` flag. |
 | **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 3.9.1 | Enterprise content production pipeline with 13 agents, 19 skills, and 16 opt-in HTTP MCP connectors. v3.9 ships a 29-pattern AI-detection humanizer (adapted from Wikipedia: Signs of AI writing + blader/humanizer), a self-critique meta-pass, and optional voice calibration from a writing sample. v3.9.1 adds Cowork-compatible aggregator MCPs (Pipedream, Composio, Zapier, Make) for Google Sheets/Drive and other services. |
 | **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.5.1 | Agency-grade social media calendar automation with asset-first compositing. 19 commands, 15 skills, 5 agents, 18 scripts, 10 HTTP connectors (all Cowork-compatible). AI image generation via Vertex AI (Nano Banana 2/Pro), video generation via WaveSpeed (Kling v3.0 Pro). v1.5 ships zero global hooks; credential status now via `/sf:status` on demand. v1.5.1 hardened the plugin manifest. |
 
