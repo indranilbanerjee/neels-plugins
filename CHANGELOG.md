@@ -5,6 +5,24 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-05-03
+
+### Changed — Multi-Plugin Coexistence Sweep
+
+The same global-hook issue that prompted contentforge v3.9.0 earlier today affected the other two marketing plugins. Both fixed in matching releases.
+
+- **digital-marketing-pro** updated from v2.7.0 to v3.1.0 — combines the v3.0.0 release (12-Part Engagement Methodology, Four Core Documents, Two-Views Model, Decision Matrix, Living Project Instruction File on top of 25 agents + 141 skills) with v3.1.0 hook hygiene (removed the `PreToolUse mcp_.*` matcher that was gating every MCP call from every installed plugin through DMP's brand-compliance prompt — the most acute multi-plugin-coexistence issue in the marketing suite).
+- **socialforge** updated from v1.4.0 to v1.5.0 — removed all 4 global hooks (SessionStart credential banner, PreToolUse Write/Edit compliance check, SubagentStart brand-context injection, Stop image-approval verification). Credential status now via `/sf:status` on demand instead of every-Claude-Code-launch banner.
+
+### Background
+
+Audit confirmed via current Claude Code docs (May 2026) that plugin hooks fire globally on every operation regardless of working directory. There is no per-directory or per-project scoping. Plugins that registered SessionStart/PreToolUse/Stop hooks were imposing latency, token cost, and noise on every Claude Code session in every project — even unrelated ones — until removed. All three marketing plugins now ship with empty `hooks/hooks.json` and preserve their prior config in `hooks/hooks-reference.example.json` for users who specifically want a behavior back.
+
+### Updated
+- Marketplace metadata version bumped to 2.4.0
+
+---
+
 ## [2.3.0] - 2026-05-03
 
 ### Changed
