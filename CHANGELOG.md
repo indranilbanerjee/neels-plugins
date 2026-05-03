@@ -5,6 +5,41 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2026-05-03
+
+### Changed — Documentation Sync + DMP v3.2.0 Bump
+
+Sweep to bring marketplace metadata + plugin home pages back in sync after the rapid v3.9.x ContentForge / v3.1.x DMP / v1.5.x SocialForge releases of the same day.
+
+#### digital-marketing-pro v3.1.1 → v3.2.0
+
+DMP v3.2.0 closes the gaps left by v3.1's hook-removal:
+- New `/dm:check` command — explicit pre-publish gate replacing the global `PreToolUse` hook (no more drive-by checks on every Write/Edit, but still an opt-in safety net before publishing)
+- New `/dm:status` command — richer on-demand brand snapshot replacing the global `SessionStart` banner
+- Embedded mandatory hallucination check inside content-creator, email-specialist, social-media-manager, pr-outreach agents (in-context, not global)
+- Opt-in `auto_save_insights` brand flag for ambient learning capture (off by default)
+- Documented hook re-enable pattern at the user's own settings level (do NOT bring back the `PreToolUse mcp_.*` matcher — it intercepts every MCP call from every plugin)
+
+#### Marketplace README sync
+
+- Plugin table updated: DMP 3.1.0 → 3.2.0 with new v3.2 features summary; SocialForge 1.5.0 → 1.5.1 with manifest hardening note
+- Version badge bumped to 2.7.0
+- ContentForge entry already current (3.9.1)
+
+#### ContentForge README sync (v3.9.1)
+
+ContentForge's README was stuck at v3.8.0 in its header even after the v3.9.0 humanizer overhaul + v3.9.1 Cowork aggregators were shipped. README now correctly shows v3.9.1 with a full "What's New in v3.9.x" section.
+
+#### SocialForge README sync (v1.5.1)
+
+SocialForge's "Current Release" section was stuck at v1.4.0 even after v1.5.0 hook removal + v1.5.1 manifest hardening. README now correctly shows v1.5.1.
+
+### Updated
+- Marketplace metadata version bumped to 2.7.0
+- digital-marketing-pro bumped to v3.2.0
+
+---
+
 ## [2.6.0] - 2026-05-03
 
 ### Added — Cowork-Compatible Connectors Across All Three Plugins
