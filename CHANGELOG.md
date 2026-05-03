@@ -5,6 +5,43 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-05-03
+
+### Added — Compliance, Hygiene, Cowork-Compatible Aggregators
+
+Audit of the marketplace surfaced documentation drift and missing compliance-friendly metadata. This release brings everything in sync with the actual plugin states and the Anthropic Software Directory Policy.
+
+#### contentforge updated to v3.9.1
+
+ContentForge v3.9.1 ships Cowork-compatible aggregator MCPs for services that have no first-party HTTP MCP — specifically Google Sheets and Google Drive. The new connector reference catalog includes:
+- Pipedream MCPs (Google Sheets, Google Drive, plus a generic 1000+ service template)
+- Composio MCPs (Google Sheets + 500+ generic apps)
+- Zapier MCP (single endpoint, 8000+ integrations)
+- Make.com MCP (template URL with zone + token substitution)
+
+Plus full `_auth` notes on every catalog entry and explicit Cowork compatibility statements. ContentForge's plugin.json now carries `$schema`, `homepage`, `repository`, `license`, `keywords`, and `author.url` fields that were previously missing.
+
+#### Marketplace metadata hardening
+
+- Added LICENSE file (MIT) — the README already claimed MIT but no LICENSE existed.
+- README rewrites: badges updated from stale v1.23.0 to current v2.5.0; plugin table updated from stale v2.7.0/v3.8.0/v1.3.0 to current v3.1.0/v3.9.1/v1.5.0; added a Platform Compatibility section explicitly mapping which features work in Claude Code CLI vs Anthropic Cowork; added a Compliance section documenting alignment with the Anthropic Software Directory Policy; added a Plugin Coexistence Pattern section documenting the zero-global-hooks + opt-in-MCPs convention all three plugins follow.
+- marketplace.json gained `$schema`, `metadata.homepage`, `metadata.license`, `metadata.keywords`, and `owner.url` fields; each plugin entry gained per-plugin `homepage` and `license` fields.
+
+#### Compliance posture (Anthropic Software Directory Policy)
+
+All three plugins reviewed against the policy:
+- No financial transaction processing ✓
+- No advertising or ad-serving ✓
+- No circumvention of safety guardrails ✓
+- AI-generated images (where supported) require explicit user approval and are produced in a clear marketing-content context ✓
+- All MCP connectors use OAuth 2.0 or API-key auth via the connector provider's official endpoint ✓
+
+### Updated
+- Marketplace metadata version bumped to 2.5.0
+- contentforge bumped to v3.9.1
+
+---
+
 ## [2.4.0] - 2026-05-03
 
 ### Changed — Multi-Plugin Coexistence Sweep
