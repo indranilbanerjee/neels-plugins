@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Marketing plugins for Claude Code and Cowork",
-    "version": "2.2.0"
+    "version": "2.3.0"
   },
   "plugins": [
     {
@@ -28,8 +28,8 @@
         "source": "github",
         "repo": "indranilbanerjee/contentforge"
       },
-      "description": "Enterprise content production pipeline with 13 agents and 19 skills",
-      "version": "3.8.0",
+      "description": "Enterprise content production pipeline with 13 agents, 19 skills, and 9 opt-in HTTP connectors. v3.9 ships a world-class humanizer (29-pattern AI-detection catalog adapted from Wikipedia: Signs of AI writing + blader/humanizer, with self-critique meta-pass and optional voice calibration) plus multi-plugin coexistence fixes (zero global hooks, zero auto-connecting MCP servers).",
+      "version": "3.9.0",
       "author": {
         "name": "Indranil Banerjee"
       },

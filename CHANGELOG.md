@@ -5,6 +5,22 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-05-03
+
+### Changed
+- **contentforge** updated from v3.8.0 to v3.9.0 — world-class humanizer + multi-plugin coexistence fixes
+  - **Humanizer (Phase 6.5):** new 29-pattern AI-detection catalog organized into 5 buckets (content, language/grammar, style, communication, filler/hedging) adapted from Wikipedia: Signs of AI writing (CC BY-SA, WikiProject AI Cleanup) and structured after blader/humanizer (MIT). Adds copula avoidance, em dash overuse, rule of three, false ranges, signposting, persuasive authority tropes, fragmented headers, and ~15 other patterns the prior catalog was missing.
+  - **New Step 7.5 self-critique meta-pass:** the model asks itself "what makes this still obviously AI?", lists tells, makes surgical edits, optionally injects soul (opinions, mixed feelings, first-person, intentional rhythm). Single highest-leverage technique adopted from blader.
+  - **New Step 0.1 voice calibration:** when brand profile includes a `writing_sample` field, analyzes sentence length pattern, word choice level, punctuation habits, and verbal tics, then matches them. Replaces generic personality archetype with real human fingerprint.
+  - **Em dash advice corrected** from 2-3 per 500 words (recommended) to 1-2 per 500 words MAX (em dash overuse is a documented AI tell).
+  - **Multi-plugin coexistence:** removed all 4 global hooks (SessionStart, PreToolUse Write/Edit, SubagentStart, Stop) that previously fired on EVERY operation in EVERY project regardless of working directory. Their work already lives at the right architectural layer (Phase 7 reviewer agent + per-agent rules + Quality Gate). Prior config preserved as reference.
+  - **MCP servers now opt-in:** `.mcp.json` ships empty; the 9-server catalog (Notion, Canva, Webflow, Slack, Gmail, GCal, Figma, fal-ai, Replicate) lives in `.mcp.json.connectors-reference`. Activate via existing `cf-connect` skill or `/contentforge:cf-add-integration`.
+
+### Updated
+- Marketplace metadata version bumped to 2.3.0
+
+---
+
 ## [1.22.0] - 2026-03-31
 
 ### Changed
