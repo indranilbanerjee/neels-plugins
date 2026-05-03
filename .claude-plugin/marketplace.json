@@ -7,8 +7,8 @@
     "url": "https://github.com/indranilbanerjee"
   },
   "metadata": {
-    "description": "Marketing plugins for Claude Code and Anthropic Cowork. All plugins ship zero global hooks and zero auto-connecting MCPs for clean multi-plugin coexistence; comply with the Anthropic Software Directory Policy; HTTP MCP connectors are Cowork-compatible.",
-    "version": "2.5.0",
+    "description": "Marketing plugins for Claude Code and Anthropic Cowork. All plugins ship zero global hooks and zero auto-connecting MCPs for clean multi-plugin coexistence; comply with the Anthropic Software Directory Policy; HTTP MCP connectors are Cowork-compatible. As of v2.6.0 every plugin ships a .mcp.json.connectors-reference catalog documenting Cowork-compatible aggregator paths (Pipedream, Composio, Zapier, Make.com) for services with no first-party HTTP MCP.",
+    "version": "2.6.0",
     "homepage": "https://github.com/indranilbanerjee/neels-plugins",
     "license": "MIT",
     "keywords": ["marketing", "content", "social-media", "seo", "brand", "agency", "claude-code", "claude-cowork"]
@@ -20,8 +20,8 @@
         "source": "github",
         "repo": "indranilbanerjee/digital-marketing-pro"
       },
-      "description": "End-to-end digital marketing engagement methodology. v3.0 introduced the 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Update-Back Rule, and Living Project Instruction File on top of 25 specialist agents, 141 atomic skills, 65 Python scripts, and 14 HTTP MCP connectors covering 16 industry profiles and 16 privacy-law jurisdictions. v3.1 ships zero global hooks for clean multi-plugin coexistence (the prior mcp_.* matcher used to gate every MCP call from every installed plugin — the most acute coexistence issue in the marketing suite).",
-      "version": "3.1.0",
+      "description": "End-to-end digital marketing engagement methodology. v3.0 introduced the 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Update-Back Rule, and Living Project Instruction File on top of 25 specialist agents, 141 atomic skills, 65 Python scripts, and 14 HTTP MCP connectors covering 16 industry profiles and 16 privacy-law jurisdictions. v3.1 ships zero global hooks for clean multi-plugin coexistence. v3.1.1 adds a .mcp.json.connectors-reference catalog with 25+ HTTP MCPs and Pipedream/Composio/Zapier aggregator paths for the ~60 services previously only available via stdio/npx — Cowork users now have a documented HTTP path for every category.",
+      "version": "3.1.1",
       "author": {
         "name": "Indranil Banerjee"
       },
@@ -50,8 +50,8 @@
         "source": "github",
         "repo": "indranilbanerjee/socialforge"
       },
-      "description": "Agency-grade social media calendar automation with asset-first compositing, AI image generation (Vertex AI / Nano Banana Pro), and video generation (WaveSpeed / Kling v3.0 Pro). 19 commands, 15 skills, 5 agents, 18 scripts, 10 HTTP connectors. All AI-generated visuals require explicit user approval before use. v1.5 ships zero global hooks for clean multi-plugin coexistence — credential status now via /sf:status on demand.",
-      "version": "1.5.0",
+      "description": "Agency-grade social media calendar automation with asset-first compositing, AI image generation (Vertex AI / Nano Banana Pro), and video generation (WaveSpeed / Kling v3.0 Pro). 19 commands, 15 skills, 5 agents, 18 scripts, 10 HTTP connectors. All AI-generated visuals require explicit user approval before use. v1.5 ships zero global hooks for clean multi-plugin coexistence — credential status now via /sf:status on demand. v1.5.1 hardens the plugin manifest with $schema, homepage, repository, license, and keywords. All 10 connectors are HTTP — fully Cowork-compatible.",
+      "version": "1.5.1",
       "author": {
         "name": "Indranil Banerjee"
       },

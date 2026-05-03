@@ -5,6 +5,31 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2026-05-03
+
+### Added — Cowork-Compatible Connectors Across All Three Plugins
+
+Cross-plugin sweep applying the v2.5.0 ContentForge pattern (`.mcp.json.connectors-reference` with HTTP MCPs + aggregator paths for stdio-only services) to the other two plugins, plus manifest hardening.
+
+#### digital-marketing-pro v3.1.0 → v3.1.1
+
+Adds [.mcp.json.connectors-reference](https://github.com/indranilbanerjee/digital-marketing-pro/blob/main/.mcp.json.connectors-reference) — sectioned catalog of 25+ HTTP MCPs:
+- First-party marketing MCPs already in active `.mcp.json`: HubSpot, Stripe, Klaviyo, Amplitude, Ahrefs, Similarweb
+- Collaboration/publishing: Notion, Slack, Asana, Webflow, Canva, Figma, Gmail, Google Calendar
+- **Aggregator MCPs for Cowork** — Pipedream entries for Google Analytics, Google Search Console, Google Ads, Google Sheets, Google Drive, Meta Marketing, Mailchimp, LinkedIn, Salesforce, plus generic templates covering Pipedream's 1000+ services. Composio, Zapier, Make.com as alternatives. This is the critical addition — `.mcp.json.example` ships ~60 stdio/npx MCPs that don't work in Cowork; the new catalog gives Cowork users a documented HTTP path for every category.
+- Image/video: fal-ai, Replicate
+
+#### socialforge v1.5.0 → v1.5.1
+
+Plugin manifest hardened to parity with DMP and ContentForge: added `$schema`, `homepage`, `repository.url`, `license`, `author.url`, and a 14-tag `keywords` array. SocialForge does not need an aggregator catalog — all 10 of its connectors are HTTP and Cowork-compatible already.
+
+### Updated
+- Marketplace metadata version bumped to 2.6.0
+- digital-marketing-pro bumped to v3.1.1
+- socialforge bumped to v1.5.1
+
+---
+
 ## [2.5.0] - 2026-05-03
 
 ### Added — Compliance, Hygiene, Cowork-Compatible Aggregators
