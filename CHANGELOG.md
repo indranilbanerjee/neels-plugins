@@ -5,6 +5,24 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.2] - 2026-05-03
+
+### Changed — SocialForge Count Sync (19 cmds → 25, 18 scripts → 19)
+
+The SocialForge entry in the marketplace catalog and the marketplace README plugin table carried stale counts that pre-dated the v1.4 era cleanup which finalized SocialForge at 25 commands and 19 scripts. The plugin itself was correctly tagged v1.5.1 and shipped with the right files; only the catalog descriptions were out of date.
+
+This release updates:
+- `.claude-plugin/marketplace.json` socialforge description: "19 commands ... 18 scripts" → "25 commands ... 19 scripts"
+- `README.md` plugin table for socialforge: same correction
+- `README.md` version badge: 2.7.1 → 2.7.2
+- Marketplace metadata version: 2.7.1 → 2.7.2
+
+In parallel, the SocialForge plugin's own README (`socialforge/README.md`) was updated to match: the header was still showing **Version: 1.4.0** with `4 hooks` listed in the Architecture section despite the plugin being v1.5.1 since the v1.5.0 hook removal. The cross-reference to Digital Marketing Pro in SocialForge's "Neelverse Marketing Suite" section also still claimed "141 skills" — corrected to 149. ContentForge's same cross-reference was also corrected.
+
+No plugin version changes. Pure metadata correction across the marketplace + plugin READMEs to bring catalog text in sync with what is actually shipping.
+
+---
+
 ## [2.7.1] - 2026-05-03
 
 ### Changed — DMP Skill-Count Sync (147 → 149)

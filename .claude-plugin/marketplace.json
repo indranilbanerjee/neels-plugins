@@ -8,7 +8,7 @@
   },
   "metadata": {
     "description": "Marketing plugins for Claude Code and Anthropic Cowork. All plugins ship zero global hooks and zero auto-connecting MCPs for clean multi-plugin coexistence; comply with the Anthropic Software Directory Policy; HTTP MCP connectors are Cowork-compatible. Every plugin (where applicable) ships a .mcp.json.connectors-reference catalog documenting Cowork-compatible aggregator paths (Pipedream, Composio, Zapier, Make.com) for services with no first-party HTTP MCP.",
-    "version": "2.7.1",
+    "version": "2.7.2",
     "homepage": "https://github.com/indranilbanerjee/neels-plugins",
     "license": "MIT",
     "keywords": ["marketing", "content", "social-media", "seo", "brand", "agency", "claude-code", "claude-cowork"]
@@ -50,7 +50,7 @@
         "source": "github",
         "repo": "indranilbanerjee/socialforge"
       },
-      "description": "Agency-grade social media calendar automation with asset-first compositing, AI image generation (Vertex AI / Nano Banana Pro), and video generation (WaveSpeed / Kling v3.0 Pro). 19 commands, 15 skills, 5 agents, 18 scripts, 10 HTTP connectors. All AI-generated visuals require explicit user approval before use. v1.5 ships zero global hooks for clean multi-plugin coexistence — credential status now via /sf:status on demand. v1.5.1 hardens the plugin manifest with $schema, homepage, repository, license, and keywords. All 10 connectors are HTTP — fully Cowork-compatible.",
+      "description": "Agency-grade social media calendar automation with asset-first compositing, AI image generation (Vertex AI / Nano Banana Pro), and video generation (WaveSpeed / Kling v3.0 Pro). 25 commands, 15 skills, 5 agents, 19 scripts, 10 HTTP connectors. All AI-generated visuals require explicit user approval before use. v1.5 ships zero global hooks for clean multi-plugin coexistence — credential status now via /sf:status on demand. v1.5.1 hardens the plugin manifest with $schema, homepage, repository, license, and keywords. All 10 connectors are HTTP — fully Cowork-compatible.",
       "version": "1.5.1",
       "author": {
         "name": "Indranil Banerjee"
