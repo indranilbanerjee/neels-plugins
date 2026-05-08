@@ -43,6 +43,37 @@ DMP v3.2.0 was released as `feat(v3.2.0): close v3.1 hook-removal gaps with expl
 
 ---
 
+## [2.9.0] - 2026-05-09
+
+### Fixed — Slash Command Namespace Consistency Across All Plugins
+
+After the v2.8.0 manifest install fix landed, an audit found that all three plugins inconsistently used short slash command shortcuts (`/cf:`, `/dm:`, `/sf:`) in some docs and runtime files. Claude Code auto-namespaces plugin commands as `/<plugin-name>:<command>` based on the plugin's `name` field, so the canonical forms are `/contentforge:`, `/digital-marketing-pro:`, and `/socialforge:`. Whether the short forms work depends on undocumented namespace strictness in Claude Code; the long forms are guaranteed to work per the documented spec.
+
+#### Coordinated patch release
+
+- **digital-marketing-pro v3.2.1 → v3.2.2** — swept ~600 `/dm:` references across ~50 files (README, getting-started, TESTING-GUIDE, engagement-methodology, multi-brand-guide, brand-guidelines, architecture, v3.2-opt-ins, all 6 agent files, all 149 skill SKILL.md files, command files, and CHANGELOG)
+- **contentforge v3.9.2 → v3.9.3** — swept ~300 `/cf:` references across ~30 files (README, USER-GUIDE, TESTING-GUIDE, UPGRADE-GUIDE, CONNECTORS, CHANGELOG, all 13 agent files, all 19 skill SKILL.md files, all 7 command files, eval JSON files, config files)
+- **socialforge v1.5.2 → v1.5.3** — swept ~200 `/sf:` references across ~30 files (README, USER-GUIDE, TESTING-GUIDE, OPERATIONS, CONNECTORS, CHANGELOG, all 5 agent files, all 15 skill SKILL.md files, all 25 command files, hooks-reference.example.json, references/troubleshooting.md)
+
+Skill filenames preserved in all three plugins — skill names like `cf-help`, `cf-style-guide`, `cf-publish` are skill identifiers (used by the Skill tool), not slash command names. They appear in slash form as `/contentforge:cf-help` etc.
+
+#### Why this matters at runtime
+
+Agent files in all three plugins emit slash command recommendations during execution (e.g., ContentForge's Phase 7 reviewer agent recommends `/contentforge:audit` for low-scoring drafts; DMP's content-creator agent recommends `/digital-marketing-pro:check` after draft acceptance). Before this release, agents were emitting commands with the short prefixes that may not match Claude Code's auto-namespace. After this release, agents emit the canonical form that's guaranteed to fire correctly.
+
+#### What users should do
+
+For users hitting any "command not found" issue with shortcuts: `claude plugin update <plugin>@neels-plugins` to pick up the new version with consistent namespace usage.
+
+If `/cf:`, `/dm:`, `/sf:` shortcuts work in your environment they'll continue to work; this just makes the docs match the documented Claude Code namespace pattern so users have one consistent form to copy from any doc.
+
+### Updated
+- Marketplace metadata version bumped to 2.9.0
+- All 3 plugin entries bumped to their patch versions
+- Marketplace metadata description notes canonical slash command syntax
+
+---
+
 ## [2.8.0] - 2026-05-03
 
 ### Fixed — Plugin Manifest Install Format Across All Three Plugins (CRITICAL)
