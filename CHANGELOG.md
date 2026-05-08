@@ -43,6 +43,38 @@ DMP v3.2.0 was released as `feat(v3.2.0): close v3.1 hook-removal gaps with expl
 
 ---
 
+## [2.8.0] - 2026-05-03
+
+### Fixed — Plugin Manifest Install Format Across All Three Plugins (CRITICAL)
+
+Users reported `claude plugins install` failing with "the manifest's `repository` field is an object when Claude Code expects a string." Diagnosis confirmed two issues introduced by the v2.5–v2.7 manifest-hardening sweep:
+
+1. **`repository` shipped as npm-shorthand object** (`{type: "git", url: "..."}`) instead of the string URL form Claude Code's plugin schema requires.
+2. **`$schema` field**: although `$schema` is a standard JSON convention for editor validation, Claude Code's plugin schema parser rejects unknown top-level keys.
+
+Both issues affected every plugin in the marketplace — anyone trying a fresh install since v2.5.0 hit the error. Workaround in the wild was to clone, patch, and install via local marketplace; this release removes the need for that.
+
+#### Coordinated patch release across all three plugins
+
+- **digital-marketing-pro v3.2.0 → v3.2.1** — manifest fix
+- **contentforge v3.9.1 → v3.9.2** — manifest fix
+- **socialforge v1.5.1 → v1.5.2** — manifest fix
+- **marketplace v2.7.2 → v2.8.0** — manifest fix in marketplace.json + version refs updated to all three patches
+
+#### What users need to do
+
+For users hitting the install error: `claude plugin marketplace update neels-plugins` then re-attempt install.
+
+For existing installs: `claude plugin update <plugin>@neels-plugins` to pick up the patched manifest.
+
+For users who applied the local-marketplace workaround: switch back to the upstream marketplace install once you confirm the fix landed.
+
+### Updated
+- Marketplace metadata version bumped to 2.8.0
+- All 3 plugin entries bumped to their patch versions
+
+---
+
 ## [2.7.0] - 2026-05-03
 
 ### Changed — Documentation Sync + DMP v3.2.0 Bump

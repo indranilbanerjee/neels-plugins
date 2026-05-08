@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-marketplace",
   "name": "neels-plugins",
   "owner": {
     "name": "Indranil Banerjee",
@@ -8,7 +7,7 @@
   },
   "metadata": {
     "description": "Marketing plugins for Claude Code and Anthropic Cowork. All plugins ship zero global hooks and zero auto-connecting MCPs for clean multi-plugin coexistence; comply with the Anthropic Software Directory Policy; HTTP MCP connectors are Cowork-compatible. Every plugin (where applicable) ships a .mcp.json.connectors-reference catalog documenting Cowork-compatible aggregator paths (Pipedream, Composio, Zapier, Make.com) for services with no first-party HTTP MCP.",
-    "version": "2.7.2",
+    "version": "2.8.0",
     "homepage": "https://github.com/indranilbanerjee/neels-plugins",
     "license": "MIT",
     "keywords": ["marketing", "content", "social-media", "seo", "brand", "agency", "claude-code", "claude-cowork"]
@@ -20,8 +19,8 @@
         "source": "github",
         "repo": "indranilbanerjee/digital-marketing-pro"
       },
-      "description": "End-to-end digital marketing engagement methodology. v3.0 introduced the 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Update-Back Rule, and Living Project Instruction File on top of 25 specialist agents, 149 skills (141 atomic + 6 v3.0 methodology + 2 v3.2 quality-and-status), 68 Python scripts, and 14 HTTP MCP connectors covering 16 industry profiles and 16 privacy-law jurisdictions. v3.1 removed all global hooks. v3.1.1 added a .mcp.json.connectors-reference catalog with 25+ HTTP MCPs and Pipedream/Composio/Zapier aggregator paths for the ~60 services previously only available via stdio/npx. v3.2 closes v3.1's hook-removal gaps with explicit on-demand replacements: /dm:check (pre-publish gate), /dm:status (richer brand snapshot), embedded mandatory hallucination check inside content/email/social/PR agents, opt-in auto_save_insights brand flag, and a documented hook re-enable pattern at the user's own settings level.",
-      "version": "3.2.0",
+      "description": "End-to-end digital marketing engagement methodology. v3.0 introduced the 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Update-Back Rule, and Living Project Instruction File on top of 25 specialist agents, 149 skills, 68 Python scripts, and 14 HTTP MCP connectors covering 16 industry profiles and 16 privacy-law jurisdictions. v3.1 removed all global hooks. v3.1.1 added a connectors-reference catalog with 25+ HTTP MCPs and Pipedream/Composio/Zapier aggregator paths for the ~60 services previously only available via stdio/npx. v3.2 closes v3.1's hook-removal gaps with /dm:check, /dm:status, embedded hallucination checks, and an opt-in auto_save_insights flag. v3.2.1 fixes the plugin manifest format so install works.",
+      "version": "3.2.1",
       "author": {
         "name": "Indranil Banerjee"
       },
@@ -35,8 +34,8 @@
         "source": "github",
         "repo": "indranilbanerjee/contentforge"
       },
-      "description": "Enterprise content production pipeline with 13 agents, 19 skills, and 16 opt-in HTTP MCP connectors. v3.9 ships a 29-pattern AI-detection humanizer (adapted from Wikipedia: Signs of AI writing + blader/humanizer), a self-critique meta-pass, and optional voice calibration from a brand writing sample. v3.9.1 adds Cowork-compatible aggregator MCPs (Pipedream, Composio, Zapier, Make.com) covering Google Sheets/Drive and 1000+ other SaaS services for teams that cannot run npx/stdio MCPs.",
-      "version": "3.9.1",
+      "description": "Enterprise content production pipeline with 13 agents, 19 skills, and 16 opt-in HTTP MCP connectors. v3.9 ships a 29-pattern AI-detection humanizer (adapted from Wikipedia: Signs of AI writing + blader/humanizer), a self-critique meta-pass, and optional voice calibration from a brand writing sample. v3.9.1 adds Cowork-compatible aggregator MCPs (Pipedream, Composio, Zapier, Make.com) covering Google Sheets/Drive and 1000+ other SaaS services for teams that cannot run npx/stdio MCPs. v3.9.2 fixes the plugin manifest format so install works.",
+      "version": "3.9.2",
       "author": {
         "name": "Indranil Banerjee"
       },
@@ -50,8 +49,8 @@
         "source": "github",
         "repo": "indranilbanerjee/socialforge"
       },
-      "description": "Agency-grade social media calendar automation with asset-first compositing, AI image generation (Vertex AI / Nano Banana Pro), and video generation (WaveSpeed / Kling v3.0 Pro). 25 commands, 15 skills, 5 agents, 19 scripts, 10 HTTP connectors. All AI-generated visuals require explicit user approval before use. v1.5 ships zero global hooks for clean multi-plugin coexistence — credential status now via /sf:status on demand. v1.5.1 hardens the plugin manifest with $schema, homepage, repository, license, and keywords. All 10 connectors are HTTP — fully Cowork-compatible.",
-      "version": "1.5.1",
+      "description": "Agency-grade social media calendar automation with asset-first compositing, AI image generation (Vertex AI / Nano Banana Pro), and video generation (WaveSpeed / Kling v3.0 Pro). 25 commands, 15 skills, 5 agents, 19 scripts, 10 HTTP connectors. All AI-generated visuals require explicit user approval before use. v1.5 ships zero global hooks for clean multi-plugin coexistence — credential status now via /sf:status on demand. v1.5.1 hardens the plugin manifest with homepage, repository, license, and keywords. v1.5.2 fixes the plugin manifest format so install works. All 10 connectors are HTTP — fully Cowork-compatible.",
+      "version": "1.5.2",
       "author": {
         "name": "Indranil Banerjee"
       },
