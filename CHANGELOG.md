@@ -43,6 +43,20 @@ DMP v3.2.0 was released as `feat(v3.2.0): close v3.1 hook-removal gaps with expl
 
 ---
 
+## [3.0.0] - 2026-05-12
+
+### Fixed — ContentForge v3.9.4: real pipeline orchestration + real .docx output (CRITICAL)
+
+Empirical pipeline run on a test brand surfaced two architectural gaps in ContentForge that made the plugin appear to work without actually doing the work. Bumped marketplace to v3.0.0 to signal this is a meaningful behavior change for ContentForge users.
+
+- **contentforge v3.9.3 → v3.9.4** — fixes pipeline orchestration (SKILL.md now explicitly tells Claude to dispatch each phase via the `Task` tool with the phase's `subagent_type`; previously the description-only spec let Claude collapse the 11-phase pipeline into a single inference pass that skipped real research / fact-checking / humanizer 29-pattern catalog / reviewer scoring) and ships a real `scripts/generate-docx.py` (auto-installs python-docx; produces a Microsoft Word file with title page, full body, and three appendices: SEO Scorecard / Quality Scorecard / Production Details). Phase 8 output-manager now invokes the script as the canonical execution path. Verification is empirical: a successful run produces `pipeline-run.json` (proves phase tracker calls fired), the `.docx` file (proves output-manager actually ran), and `[PHASE-AUDIT]` lines for every phase.
+
+### Updated
+- Marketplace metadata version bumped to 3.0.0
+- contentforge bumped to v3.9.4
+
+---
+
 ## [2.9.0] - 2026-05-09
 
 ### Fixed — Slash Command Namespace Consistency Across All Plugins
