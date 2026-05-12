@@ -43,8 +43,8 @@
         "source": "github",
         "repo": "indranilbanerjee/contentforge"
       },
-      "description": "Enterprise content production pipeline with 13 agents, 19 skills, and 16 opt-in HTTP MCP connectors. v3.9 ships a 29-pattern AI-detection humanizer (adapted from Wikipedia: Signs of AI writing + blader/humanizer), a self-critique meta-pass, and optional voice calibration from a brand writing sample. v3.9.1 adds Cowork-compatible aggregator MCPs (Pipedream, Composio, Zapier, Make.com). v3.9.2 fixed manifest install format. v3.9.3 swept /cf: to /contentforge: across docs and runtime. v3.9.4 fixes pipeline orchestration to actually invoke subagents via Task tool (single-pass generation skipped quality gates and humanizer 29-pattern catalog) and adds scripts/generate-docx.py for real Microsoft Word output with embedded SEO/Quality/Production appendices.",
-      "version": "3.9.4",
+      "description": "Enterprise content production pipeline with 13 agents, 19 skills, and 16 opt-in HTTP MCP connectors. v3.9.5 splits Phase 6 internal linking into three categories — topical (informational), commercial (brand product/service pages), and conversion (audience-matched CTA) — with a new brand_pages schema, inline color-coded Word hyperlinks, Appendix D internal link map, and a stricter reviewer rubric (drops the 'no site structure = full credit' free-pass). v3.9.4 fixes pipeline orchestration to actually invoke subagents via Task tool and adds scripts/generate-docx.py for real Microsoft Word output with embedded SEO/Quality/Production appendices. v3.9 ships a 29-pattern AI-detection humanizer, self-critique meta-pass, and optional voice calibration.",
+      "version": "3.9.5",
       "author": {
         "name": "Indranil Banerjee"
       },
