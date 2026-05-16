@@ -58,8 +58,8 @@
         "source": "github",
         "repo": "indranilbanerjee/socialforge"
       },
-      "description": "Agency-grade social media calendar automation with asset-first compositing, AI image generation (Vertex AI / Nano Banana Pro), and video generation (WaveSpeed / Kling v3.0 Pro). 25 commands, 15 skills, 5 agents, 19 scripts, 10 HTTP connectors. All AI-generated visuals require explicit user approval before use. v1.5 ships zero global hooks for clean multi-plugin coexistence \u2014 credential status now via /socialforge:status on demand. v1.5.1 hardened the plugin manifest. v1.5.2 fixed manifest install format. v1.5.3 swept all /sf: shorthand to /socialforge: across docs and runtime files for namespace consistency. All 10 connectors are HTTP \u2014 fully Cowork-compatible.",
-      "version": "1.5.3",
+      "description": "Agency-grade social media calendar automation with asset-first compositing, AI image generation (Vertex AI Nano Banana Pro), and video generation (WaveSpeed Kling v3.0 Pro). **v1.6.0** adds end-to-end-tested C2PA content provenance for EU AI Act Article 50 compliance (applicable 2 Aug 2026): new scripts/c2pa_sign.py wrapping c2pa-python 0.32, new /socialforge:c2pa-sign skill, and optional auto-sign hooks in generate_image.py + video_postprocess.py that embed machine-readable provenance manifests (brand + generator + prompt + platform + IPTC digital-source-type) before assets hit delivery. Plus May 2026 channel-pack reference (TikTok USDS post-Jan 2026, LinkedIn March 2026 algo + Depth Score, Apple MPP, YouTube AI labeling, Sora deprecation note). 25 commands, 16 skills, 5 agents, 20 scripts, 10 HTTP connectors. v1.5 ships zero global hooks. All 10 connectors are HTTP \u2014 fully Cowork-compatible.",
+      "version": "1.6.0",
       "author": {
         "name": "Indranil Banerjee"
       },
