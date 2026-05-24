@@ -6,8 +6,8 @@
     "url": "https://github.com/indranilbanerjee"
   },
   "metadata": {
-    "description": "Marketing plugins by Indranil Banerjee (https://indranil.in) installable on **5 coding-agent surfaces** from a single source repository: Claude Code + Anthropic Cowork (canonical), OpenAI Codex (`.codex-plugin/plugin.json`), Cursor (`.cursor-plugin/plugin.json`), GitHub Copilot CLI (auto-discovers `.claude-plugin/plugin.json` — no new manifest needed), and Google Antigravity 2.0 CLI (experimental `.antigravity/plugin.json`). All three plugins share a single `skills/` directory across platforms (Agent Skills are an open standard adopted by all 5 surfaces). All plugins ship zero global hooks and zero auto-connecting MCPs for clean multi-plugin coexistence; comply with the Anthropic Software Directory Policy; HTTP MCP connectors are Cowork-compatible. EU AI Act Article 50 ready across all three plugins (C2PA content provenance signing). Slash command syntax is canonical /<plugin-name>:<command> per Claude Code's auto-namespacing; on Codex/Cursor/Copilot/Antigravity, the same workflows invoke via natural-language intent through SKILL.md auto-discovery.",
-    "version": "3.4.1",
+    "description": "Marketing plugins by Indranil Banerjee (https://indranil.in) installable on **5 coding-agent surfaces** from a single source repository: Claude Code + Anthropic Cowork (canonical), OpenAI Codex (`.codex-plugin/plugin.json`), Cursor (`.cursor-plugin/plugin.json`), GitHub Copilot CLI (auto-discovers `.claude-plugin/plugin.json` — no new manifest needed), and Google Antigravity 2.0 CLI (experimental `.antigravity/plugin.json`). All three plugins share a single `skills/` directory across platforms (Agent Skills are an open standard adopted by all 5 surfaces). All plugins ship zero global hooks and zero auto-connecting MCPs for clean multi-plugin coexistence; comply with the Anthropic Software Directory Policy; HTTP MCP connectors are Cowork-compatible. EU AI Act Article 50 ready across all three plugins (C2PA content provenance signing). Full community standards: each plugin ships CODE_OF_CONDUCT.md, SECURITY.md (private vulnerability reporting via GitHub Private Security Advisories), Issue + PR templates, MIT-licensed. Slash command syntax is canonical /<plugin-name>:<command> per Claude Code's auto-namespacing; on Codex/Cursor/Copilot/Antigravity, the same workflows invoke via natural-language intent through SKILL.md auto-discovery.",
+    "version": "3.5.0",
     "homepage": "https://github.com/indranilbanerjee/neels-plugins",
     "license": "MIT",
     "keywords": [
@@ -29,7 +29,7 @@
         "repo": "indranilbanerjee/digital-marketing-pro"
       },
       "description": "The most comprehensive open-source AI marketing plugin — 150 skills, 25 specialist agents, 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Living Project Instruction File. Built for marketing agencies, in-house teams running 50-200 brands, and consultancies. Installs on **5 coding-agent surfaces** — Claude Code + Cowork (canonical), OpenAI Codex, Cursor, GitHub Copilot CLI (auto-discovers .claude-plugin/plugin.json), Google Antigravity 2.0 (experimental). EU AI Act Article 50 ready (C2PA content provenance signing end-to-end tested). 6-platform AEO/GEO audit including Google AI Mode (Gemini 3.5 Flash, ~1B MAUs). 16 privacy-law jurisdictions, 14 HTTP MCP connectors, 69 Python scripts (optional), 167 reference knowledge files, 10 top-level slash commands. **v3.7.1** polish + discoverability pass with rewritten README and corrected asset counts. **v3.7.0** added Copilot CLI + experimental Antigravity install surfaces. **v3.6.0** added Codex + Cursor manifests. **v3.5.0** is a May-2026-ecosystem modernisation pass — six discrete content updates: (1) Google AI Mode added as a first-class AEO/GEO surface across aeo-audit, aeo-geo, ai-visibility-audit.md, geo-monitor, geo-tracker.py — 6 platforms not 5; (2) May 2026 broad core algorithm update triage guidance; (3) EU AI Act Article 50 draft implementing guidelines (8 May 2026; consultation closes 3 June; enforcement 2 August 2026); (4) Meta Advantage+ Leads global + Threads ads + tightened brand-safety filters; (5) Gemini Omni + Nano Banana Pro + Veo 3.1 in ad-creative/content-brief/creative-testing-framework/influencer-brief with mandatory C2PA + Article 50 deepfake disclosure clauses; (6) Claude Code v2.1.149+ /usage per-model cost tracking in agency-dashboard. 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Living Project Instruction File. 25 specialist agents, 150 skills, 71 Python scripts, 10 commands, 14 HTTP MCP connectors, 16 industry profiles, 16 privacy-law jurisdictions.",
-      "version": "3.7.2",
+      "version": "3.7.3",
       "author": {
         "name": "Indranil Banerjee"
       },
@@ -44,7 +44,7 @@
         "repo": "indranilbanerjee/contentforge"
       },
       "description": "Enterprise content production pipeline installable on **5 platforms** — Claude Code + Cowork (canonical), OpenAI Codex, Cursor, GitHub Copilot CLI (auto-discovers .claude-plugin/plugin.json), Google Antigravity 2.0 (experimental). **v3.12.0** is the install-surface expansion to Copilot CLI + Antigravity. **v3.11.0** added Codex + Cursor manifests — see docs/cross-platform-install.md. **v3.10.0** added end-to-end-tested C2PA content provenance for the .docx output (EU AI Act Article 50, applicable 2 Aug 2026) via --c2pa-sign on scripts/generate-docx.py — embeds inline when c2pa-python supports the format, falls back to a verifiable .c2pa.json sidecar otherwise. Plus May 2026 AEO reality update in Phase 6 SEO/GEO optimizer (Google AI Overviews 55% prevalence + 61% organic CTR drop, LLMs.txt companion standard, Profound/Otterly/Conductor measurement integration). v3.9.6 reflects Google's March 2026 schema demotion (FAQ/HowTo/Review on non-primary pages). 13 agents, 19 skills, 8 Python scripts, 16 opt-in HTTP MCP connectors.",
-      "version": "3.12.0",
+      "version": "3.12.1",
       "author": {
         "name": "Indranil Banerjee"
       },
@@ -59,7 +59,7 @@
         "repo": "indranilbanerjee/socialforge"
       },
       "description": "Agency-grade social media calendar automation with asset-first compositing, AI image generation (Vertex AI Nano Banana Pro), and video generation (WaveSpeed Kling v3.0 Pro), installable on **5 platforms** \u2014 Claude Code + Cowork (canonical), OpenAI Codex, Cursor, GitHub Copilot CLI (auto-discovers .claude-plugin/plugin.json), Google Antigravity 2.0 (experimental). **v1.8.0** is the install-surface expansion to Copilot CLI + Antigravity. **v1.7.0** added Codex + Cursor manifests \u2014 see docs/CROSS-PLATFORM-GUIDE.md (rewritten from the old manual-rename instructions). **v1.6.0** added end-to-end-tested C2PA content provenance for EU AI Act Article 50 compliance (applicable 2 Aug 2026): new scripts/c2pa_sign.py wrapping c2pa-python 0.32, new /socialforge:c2pa-sign skill, optional auto-sign hooks in generate_image.py + video_postprocess.py. Plus May 2026 channel-pack reference (TikTok USDS post-Jan 2026, LinkedIn March 2026 algo + Depth Score, Apple MPP, YouTube AI labeling, Sora deprecation note). 25 commands, 16 skills, 5 agents, 20 scripts, 10 HTTP connectors. v1.5 ships zero global hooks. All 10 connectors are HTTP \u2014 fully Cowork-compatible.",
-      "version": "1.8.0",
+      "version": "1.8.1",
       "author": {
         "name": "Indranil Banerjee"
       },
