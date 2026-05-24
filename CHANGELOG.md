@@ -5,6 +5,42 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.1] - 2026-05-25
+
+**Model curator + correctness sweep across the suite.** All three plugins bumped to add a shared model-selection infrastructure and a 13-finding correctness pass.
+
+### Changed
+
+- **digital-marketing-pro: 3.7.3 → 3.7.4** — model curator wired into `scripts/ai-visibility-checker.py` (replaces hardcoded deprecated `claude-sonnet-4-5-20250929` and stale `gpt-4o-mini`); 26 broken Gmail/Calendar/Drive MCP URLs replaced; 51 stale `/dm:X` slash refs rewritten to `/digital-marketing-pro:X`; DPDPA § 1.11 updated to 2025 Rules; 2 skill-name mismatches and 3 missing skill refs fixed; broken `contentauthenticity.org/community/cr-cli` URL replaced. See `digital-marketing-pro/CHANGELOG.md` for the full list.
+- **contentforge: 3.12.1 → 3.12.2** — model curator added; Gmail/Calendar MCP URLs replaced; shorthand `/cf:X` slash refs canonicalised; broken `contentauthenticity.org/community/cr-cli` URL replaced. See `ContentForge/CHANGELOG.md`.
+- **socialforge: 1.8.1 → 1.8.2** — model curator wired into `generate_image.py` / `edit_image.py` / `index_assets.py` / `generate_video.py` (replaces hardcoded deprecated `gemini-2.0-flash`, `gemini-2.0-flash-exp-image-generation`, and `veo-2.0-generate-001`); added `--model` / `--video-model` / `--list-models` flags everywhere; fixed broken `cloud.higgsfield.ai/api-keys` and `gmail/gcal/drive.mcp.claude.com` URLs; shorthand `/sf:X` slash refs canonicalised; fixed a pre-existing arg-order bug where `aspect_ratio` was passed as `duration` in the Kling call site. See `SocialForge/CHANGELOG.md`.
+- **Top-level description** updated to mention the shared model curator (`scripts/model_registry.json` + `resolve_model.py`).
+
+### Quality
+
+- All 4 manifests for each plugin (`.claude-plugin`, `.codex-plugin`, `.cursor-plugin`, `.antigravity`) bumped consistently.
+- Per-plugin `docs/MODEL-CURATOR.md` added documenting alias map, deprecation auto-fall-forward, and the `refresh_models.py` drift workflow.
+- 102 of 103 Python scripts pass `--help` smoke test (1 timeout from pre-existing pip auto-install behaviour).
+- 185 SKILL.md + 43 agents + 69 reference docs swept clean of deprecated model ids, dead URLs, shorthand slash refs, and hardcoded user paths.
+
+## [3.5.0] - 2026-05-24
+
+**Suite parity + community standards.** Brought ContentForge and SocialForge to digital-marketing-pro's baseline:
+
+- All three plugins now ship `CODE_OF_CONDUCT.md`, `SECURITY.md`, `.github/PULL_REQUEST_TEMPLATE.md`, and `.github/ISSUE_TEMPLATE/` files.
+- Star History charts added to all three READMEs.
+- Plugin descriptions and `plugin.json` keywords rewritten/expanded for marketplace discoverability.
+- GitHub repo metadata refreshed via gh CLI (homepage → indranil.in, Discussions enabled, SEO topics added on all three repos).
+- digital-marketing-pro v3.7.3, ContentForge v3.12.1, SocialForge v1.8.1.
+
+## [3.4.x] - 2026-05-24
+
+digital-marketing-pro 3.7.1 README rewrite for organic SEO + indranil.in branding; stale-count sweep across docs; GitHub topics refreshed.
+
+## [3.3.0] - 2026-05-24
+
+DMP 3.7.0 / CF 3.12.0 / SF 1.8.0 — 5-platform install matrix (Claude Code + Codex + Cursor + Copilot CLI + Antigravity experimental).
+
 ## [2.7.2] - 2026-05-03
 
 ### Changed — SocialForge Count Sync (19 cmds → 25, 18 scripts → 19)
