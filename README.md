@@ -1,6 +1,6 @@
 # Neel's Plugin Marketplace
 
-[![Version](https://img.shields.io/badge/version-3.5.5-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.5.6-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Cowork](https://img.shields.io/badge/Cowork-compatible-brightgreen.svg)](#-platform-compatibility)
@@ -127,6 +127,14 @@ If you contribute a plugin to this marketplace, please follow the same pattern.
 ---
 
 ## Updating
+
+> **If you see "/plugin isn't available in this environment"** — you're in **claude.ai web chat**, which does NOT support `/plugin` slash commands at all. Plugins from this marketplace still install and run there (the skills auto-discover and work normally), but you cannot update / uninstall / reinstall them via the `/plugin` command from web chat.
+>
+> **Fix:**
+> 1. **Use the UI in web chat** — click the **Plugins** button at the bottom of the chat → **Manage plugins** → find the plugin → look for Update / Refresh / Remove. If there's no Update button, **Remove** then **Add plugin** → re-install from `indranilbanerjee/neels-plugins`. The re-pull fetches the latest version.
+> 2. **Or switch to Claude Code CLI / Desktop / Cowork** for plugin management — `npm install -g @anthropic-ai/claude-code` or download from [claude.com/code](https://claude.com/code). All three plugins run identically across every platform; you're just choosing where to type management commands.
+>
+> The rest of this section assumes you're on Claude Code CLI / Desktop / Cowork.
 
 There are two paths depending on whether you turned on auto-update during Quick Start step 4.
 

@@ -5,6 +5,17 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.6] - 2026-05-25
+
+**README fix for the "claude.ai web" gotcha across the suite.** User-team report from Shreea via WhatsApp screenshot: `/plugin update contentforge@neels-plugins` in claude.ai web chat returns `"/plugin isn't available in this environment"`. The plugins ARE installed and their skills work, but `/plugin` slash commands are only supported in Claude Code CLI / Desktop / Cowork. Documented across all 4 READMEs (marketplace + 3 plugins) so the next user hitting this finds the recovery path immediately.
+
+### Changed
+
+- **digital-marketing-pro: 3.7.7 → 3.7.8** — README "If you see /plugin isn't available" callout in Updating section.
+- **contentforge: 3.12.4 → 3.12.5** — same.
+- **socialforge: 1.8.2 → 1.8.3** — same.
+- **marketplace `README.md`** — same callout at the top of the Updating section, with explicit recovery paths: (1) **Plugins** UI button at bottom of web chat → **Manage plugins** → Remove + Add for re-pull, OR (2) switch to Claude Code CLI / Desktop / Cowork for management commands.
+
 ## [3.5.5] - 2026-05-25
 
 **DMP v3.7.7 — resumable workflows + visible output folder + 4 more audit gaps fixed.**
