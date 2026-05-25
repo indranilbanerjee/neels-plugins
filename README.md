@@ -82,6 +82,18 @@ All three plugins are designed to comply with the [Anthropic Software Directory 
 
 ---
 
+## 🧠 Shared model curator (v3.5.1+)
+
+All three plugins ship the same model-selection infrastructure under `scripts/`:
+
+- **`model_registry.json`** — single source of truth for every AI model id used by the plugin (Claude / GPT / Gemini / Imagen / Veo / Kling / Higgsfield), with vendor, tier, modality, status, and `replacement_id` for deprecated entries.
+- **`resolve_model.py`** — resolver. Aliases like `latest-balanced-anthropic`, `latest-image-google`, `latest-video-wavespeed` resolve to concrete ids at call time; deprecated ids passed via `--model` auto-fall-forward to their replacement with a stderr warning.
+- **`refresh_models.py`** — polls Anthropic / OpenAI / Google list endpoints with your API keys and reports drift versus the registry.
+
+Why it matters: frontier models change every ~6 weeks. Hardcoding `claude-sonnet-4-5-20250929` or `veo-2.0-generate-001` across dozens of scripts means a provider deprecation silently 404s. The curator prevents that. Each plugin documents the alias map at `docs/MODEL-CURATOR.md`.
+
+---
+
 ## 🔧 For Developers
 
 ### Adding a New Plugin to This Marketplace
