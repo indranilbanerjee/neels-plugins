@@ -5,6 +5,14 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.5] - 2026-05-25
+
+**DMP v3.7.7 — resumable workflows + visible output folder + 4 more audit gaps fixed.**
+
+### Changed
+
+- **digital-marketing-pro: 3.7.6 → 3.7.7** — Direct fix for the user-team feedback that "dm pro also taking too long to process" (Shreea, v3.12.2 cycle). The headline 12-Part `/engagement` workflow now writes per-part checkpoints via the new `scripts/checkpoint-manager.py` so an interruption resumes from the next un-checkpointed part instead of losing 30+ minutes of work. Same for `campaign-plan`, `content-engine`, `seo-audit`, `competitor-analysis`, `campaign-audit`, `launch-campaign`. New `/digital-marketing-pro:resume` command. Plus dual-copy save via the new `scripts/output-publisher.py` — every artifact now lands in `~/Documents/DigitalMarketingPro/{brand}/{workflow}/{YYYY-MM}/` as well as the internal tracking copy. New `/digital-marketing-pro:output-folder` command. Mirrors the ContentForge v3.12.3 pattern. Also an audit pass that caught 4 more broken refs missed by v3.7.6 (2 missing actions + 2 broken slash refs + 2 broken file refs — all fixed; re-audit clean). Verified end-to-end with a 5-scenario simulation that runs in 5.8s.
+
 ## [3.5.4] - 2026-05-25
 
 **DMP v3.7.6 wires the v3.7.5 skill surface to real script actions.**
