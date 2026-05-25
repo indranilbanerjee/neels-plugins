@@ -5,6 +5,14 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.4] - 2026-05-25
+
+**DMP v3.7.6 wires the v3.7.5 skill surface to real script actions.**
+
+### Changed
+
+- **digital-marketing-pro: 3.7.5 → 3.7.6** — Audit pass mirroring the ContentForge v3.12.4 production-simulation fix. The 3 new skills shipped in v3.7.5 (`/validate-profile`, `/campaign-audit`, `/launch-campaign`) referenced 15 script actions that didn't exist in the underlying Python scripts and 2 missing flags on `connector-status.py`. v3.7.6 adds all of them: `inventory` / `automations` / `cadence` / `diagnostic` / `arm-watchdog` to `performance-monitor.py`, `audit-workflows` / `create-campaign` to `crm-sync.py`, `enable-automation` / `schedule-posts` / `notify-influencers` / `pr-send` / `internal-kickoff` to `execution-tracker.py`, plus `--probe-only` and `--no-secrets` flags to `connector-status.py`. Action handlers return structured `stub_implementation` contracts so the orchestrator has a clean response surface; `connector-status.py` flags are fully implemented (probe + recursive secret redaction). All 14 new invocations pass; all 71 DMP scripts still pass `--help`; `/validate-profile` end-to-end simulation passes.
+
 ## [3.5.3] - 2026-05-25
 
 **CF v3.12.4 quality fix discovered via full production simulation.**

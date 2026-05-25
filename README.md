@@ -1,6 +1,6 @@
 # Neel's Plugin Marketplace
 
-[![Version](https://img.shields.io/badge/version-3.5.3-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.5.4-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Cowork](https://img.shields.io/badge/Cowork-compatible-brightgreen.svg)](#-platform-compatibility)
