@@ -5,6 +5,57 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.9] - 2026-05-26
+
+**DMP v3.7.11 — Python-side HTTP executor closes the resolver loop.**
+
+The v3.7.10 resolver returned manifests of "what would be sent." v3.7.11 ships `scripts/connector_executor.py` (stdlib `urllib.request`, no third-party deps) that actually fires those manifests against real APIs for **8 verified connectors**:
+
+| Connector | Env var | Auth | Endpoint example |
+|-----------|---------|------|---------------------|
+| Slack | `SLACK_BOT_TOKEN` | `Authorization: Bearer xoxb-...` + body.ok post-check | `POST /api/chat.postMessage` |
+| HubSpot | `HUBSPOT_PRIVATE_APP_TOKEN` | `Authorization: Bearer pat-...` | `GET /automation/v4/flows`, `POST /marketing/v3/campaigns` (201) |
+| Klaviyo | `KLAVIYO_PRIVATE_KEY` | `Authorization: Klaviyo-API-Key ...` + revision 2026-04-15 | `GET /api/flows`, `PATCH /api/flows/{id}` (vnd.api+json) |
+| SendGrid | `SENDGRID_API_KEY` | `Authorization: Bearer SG.xxx` | `POST /v3/mail/send` (202 success) |
+| Brevo | `BREVO_API_KEY` | `api-key:` header (lowercase, NOT Bearer) | `POST /v3/smtp/email` |
+| Customer.io | `CUSTOMERIO_APP_API_KEY` | `Authorization: Bearer` (App key only) | `POST /v1/send/email` |
+| Mailchimp | `MAILCHIMP_API_KEY` | Basic auth, dc from key suffix | `GET /3.0/automations` |
+| Ahrefs | `AHREFS_API_KEY` | `Authorization: Bearer` | `GET /v3/site-explorer/metrics` |
+
+**25 OAuth-only connectors** (Google Ads, Meta, LinkedIn, TikTok, Twitter OAuth 1.0a, Gmail, Google Calendar, GSC, GA4, Salesforce, Zoho, Buffer, Hootsuite, Cision, Muckrack, etc.) return `execute_blocked_reason: "use MCP path"` with the manifest still returned — Python can't run OAuth flows from a script, so those route through Claude's MCP tools.
+
+**Safety gates:** dry-run by default; write ops require `--execute --confirm`; missing env vars block with `setup_hint_credential`; unresolved `{VAR}` placeholders never fire; every executed call logs to `~/.claude-marketing/{brand}/executions/`.
+
+**Test coverage:** 17 mock-HTTP-server tests in `_shared/dmp_executor_test_harness.py` (stdlib `http.server` in daemon thread — real send-and-receive, not shape inspection). Combined with v3.7.10's 27 resolver scenarios = **44/44 pass**.
+
+New slash command: `/digital-marketing-pro:execute-action` (14 commands total). Plugin counts: 13 → 14 commands, 76 → 77 Python scripts.
+
+### Changed
+
+- `plugins[digital-marketing-pro].version`: 3.7.10 → 3.7.11
+- `plugins[digital-marketing-pro].description` updated with the executor + 8-connector-verified matrix
+- `metadata.version`: 3.5.8 → 3.5.9
+
+## [3.5.8] - 2026-05-26
+
+**DMP v3.7.10 — Connector-aware action resolver replaces 14 unconfigured-only action stubs.**
+
+v3.7.5–v3.7.7 shipped 14 actions across 4 scripts (`performance-monitor`, `crm-sync`, `execution-tracker`, `seo-executor`) as honest-but-static stubs that always returned `status: stub_implementation` regardless of which connectors the user had configured. v3.7.10 introduces `scripts/connector_resolver.py` that probes live `.mcp.json` + env-var state on every call and resolves each action to one of three modes:
+
+- **`real`** — runs end-to-end with no external API (`arm-watchdog` writes `~/.claude-marketing/{brand}/watchdogs/`)
+- **`manifest_ready`** — a matching connector is configured; response includes the exact HTTP request manifest (method, URL, headers, body template, auth pattern) for the orchestrator (Claude via MCP) to execute. Write ops set `approval_required: true`.
+- **`stub_unconfigured`** — no matching connector; response includes manual fallback PLUS copy-paste `.mcp.json` setup snippet, env-var list, and Cowork compatibility note.
+
+New files in DMP: `scripts/_connector_registry.py` (33 connectors, 11 categories) + `scripts/connector_resolver.py` (ACTION_SPECS + manifest builders for 20+ APIs) + `scripts/action-doctor.py` + `commands/doctor.md` (the `/digital-marketing-pro:doctor` slash command) + `_shared/dmp_action_test_harness.py` (27 scenarios, all pass).
+
+Cross-platform verified: no Windows-isms, ASCII output for cp1252 consoles, UTF-8 stdout reconfigure as defensive backstop, no `os.system` / `shell=True`.
+
+### Changed
+
+- `plugins[digital-marketing-pro].version`: 3.7.9 → 3.7.10
+- `plugins[digital-marketing-pro].description` rewritten with 3-mode contract
+- `metadata.version`: 3.5.7 → 3.5.8
+
 ## [3.5.7] - 2026-05-25
 
 **Corrects an inaccuracy in the v3.5.6 README callout across the suite.**
