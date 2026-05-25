@@ -5,6 +5,19 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.7] - 2026-05-25
+
+**Corrects an inaccuracy in the v3.5.6 README callout across the suite.**
+
+v3.5.6 documented the `/plugin isn't available in this environment` gotcha but attributed it only to **claude.ai web chat**. User correction from Indranil after re-reviewing Shreea's screenshot: the chat was in the **Claude Desktop app** (the installed Anthropic chat client), not web. The correct rule is: `/plugin` slash commands are supported only in **Claude Code** (CLI / IDE at claude.com/code) and **Anthropic Cowork** — not in the standard Claude chat app, whether browser OR installed desktop. Both surfaces return the same error.
+
+### Changed
+
+- **digital-marketing-pro: 3.7.8 → 3.7.9** — README callout reworded.
+- **contentforge: 3.12.5 → 3.12.6** — same.
+- **socialforge: 1.8.3 → 1.8.4** — same.
+- **marketplace `README.md`** — same correction, plus expanded the recovery framing so it's clear plugins ARE installed and skills DO work; only the management slash command is blocked.
+
 ## [3.5.6] - 2026-05-25
 
 **README fix for the "claude.ai web" gotcha across the suite.** User-team report from Shreea via WhatsApp screenshot: `/plugin update contentforge@neels-plugins` in claude.ai web chat returns `"/plugin isn't available in this environment"`. The plugins ARE installed and their skills work, but `/plugin` slash commands are only supported in Claude Code CLI / Desktop / Cowork. Documented across all 4 READMEs (marketplace + 3 plugins) so the next user hitting this finds the recovery path immediately.
