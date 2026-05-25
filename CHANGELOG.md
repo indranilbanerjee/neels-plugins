@@ -5,6 +5,25 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.2] - 2026-05-25
+
+**DMP closes 3-skill audit gap; CF fixes 2 production bugs reported by beta users.**
+
+### Changed
+
+- **digital-marketing-pro: 3.7.4 → 3.7.5** — Built the 3 skills the v3.7.4 audit had previously mapped to existing-skill chains. `/validate-profile` (brand profile + connector health, no credential exposure), `/campaign-audit` (cross-channel current-state inventory with 4-tier triage), `/launch-campaign` (multi-channel 14-step launch orchestrator). Skill count 150 → 153.
+- **contentforge: 3.12.2 → 3.12.3** — Fixes two production bugs from the beta-user feedback cycle:
+  1. **Final `.docx` invisible to users.** Pipeline now writes to TWO locations: internal tracking (`~/.claude-marketing/<brand>/tracking/outputs/...`) AND user-visible (`~/Documents/ContentForge/<brand>/<type>/<YYYY-MM>/<slug>.docx`). The completion card surfaces the visible path prominently.
+  2. **No way to resume an interrupted pipeline run.** New `scripts/checkpoint-manager.py` writes each phase output to disk; new `/contentforge:resume` command picks up from the last completed phase. New `/contentforge:output-folder` reveals the visible output folder in the OS file manager.
+- **socialforge: 1.8.2** — unchanged (no new work this cycle).
+
+### Quality
+
+- Per-file content sweep: 188 SKILL.md + 43 agents + 69 reference docs clean (was 185 SKILL.md last cycle; the 3 net new are DMP's campaign-audit + validate-profile + launch-campaign).
+- All 13 plugin.json + marketplace.json files valid JSON.
+- DMP skill count corrected to 153 across README + docs + plugin.json description.
+- CF script count 11 → 12 (added checkpoint-manager.py), command count 7 → 9 (added resume + output-folder).
+
 ## [3.5.1] - 2026-05-25
 
 **Model curator + correctness sweep across the suite.** All three plugins bumped to add a shared model-selection infrastructure and a 13-finding correctness pass.
