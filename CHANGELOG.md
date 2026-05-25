@@ -5,6 +5,14 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.3] - 2026-05-25
+
+**CF v3.12.4 quality fix discovered via full production simulation.**
+
+### Changed
+
+- **contentforge: 3.12.3 → 3.12.4** — Fixes a heading-style quality bug found while running the full production simulation: H1/H2/H3 markdown headings rendered as plain bold text instead of using Word's `Heading 1/2/3` paragraph styles. Impact: no Navigation Pane, no auto-TOC, no PDF bookmarks, screen-reader accessibility regression. Fixed across `render_blocks()`, the 4 appendix headers, and the document title. Re-verified against 4 doc types (whitepaper, article, blog, research paper) — Title=1, H1=1, H2=10-16, H3=0-15 styles now properly applied.
+
 ## [3.5.2] - 2026-05-25
 
 **DMP closes 3-skill audit gap; CF fixes 2 production bugs reported by beta users.**
