@@ -5,6 +5,45 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.0] - 2026-05-27
+
+**Coordinated minor release: distribution & context-efficiency polish across all three plugins.**
+
+Marketplace `metadata.description` and the three per-plugin entries trimmed to ~150 chars each — the description shown in the marketplace browser now reads as one clear sentence per plugin, with long-form positioning living in each plugin's README and `interface.longDescription` (Codex).
+
+### Plugin version bumps
+
+| Plugin | Was | Now |
+|---|---|---|
+| Digital Marketing Pro | 3.8.1 | **3.9.0** |
+| ContentForge | 3.13.0 | **3.14.0** |
+| SocialForge | 1.9.1 | **1.10.0** |
+
+### Changed across all three plugins
+
+- Install-UI descriptions ~150 chars (one clear sentence) — was 600–2000 chars
+- READMEs rewritten pain-first — open with the real scenario the plugin solves, then state the features
+- GitHub repo topics curated to 20-max with platform-skill topics added (`cursor-plugin`, `copilot-cli-plugin`, `gemini-cli-extension`, `google-antigravity`, `claude-cowork`)
+- Context-efficiency callout added to top-10 heaviest skills per plugin (grep-before-read pattern; `${CLAUDE_PLUGIN_DATA}` directory-list-before-open; offset+limit on partial reads)
+
+### Validation
+
+- 190/190 skills pass Codex `[a-z0-9-]+` regex (all 3 plugins)
+- All SKILL.md frontmatter intact (name matches folder, description ≤ 1024 chars)
+- All 5 platform manifests parse cleanly (`.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `.cursor-plugin/plugin.json`, `.github/plugin/plugin.json`, `gemini-extension.json`)
+- All 4 marketplace JSONs parse cleanly (`.claude-plugin/`, `.agents/plugins/`, `.cursor-plugin/`, `.github/plugin/`)
+
+### How to update
+
+```bash
+/plugin update digital-marketing-pro@neels-plugins
+/plugin update contentforge@neels-plugins
+/plugin update socialforge@neels-plugins
+/reload-plugins
+```
+
+If on Cowork / claude.ai / Desktop: Plugins panel → Update.
+
 ## [3.7.1] - 2026-05-27 (coordinated patch: SF connectors-reference + corrected v3.7.0 framing)
 
 **Correction (also 2026-05-27)**: the original v3.7.1 release notes framed this as a Cowork install hazard fix in DMP + SF. That framing was wrong. `.mcp.json` is gitignored in all 3 plugin repos (so credentials never get committed) — my local copies had drifted to populated state, but the published install bundles have never contained `.mcp.json`. Cowork install state for v3.7.0 was already safe; this v3.7.1 patch ships zero functional change to the install path.

@@ -2,7 +2,7 @@
   "name": "neels-marketing-plugins",
   "interface": {
     "displayName": "Neel's Marketing Plugins",
-    "shortDescription": "Marketing plugins by Indranil Banerjee (https://indranil.in) — Digital Marketing Pro, ContentForge, SocialForge. Installable on Claude Code, Anthropic Cowork, OpenAI Codex, Google Antigravity 2.0.",
+    "shortDescription": "Three open-source marketing plugins — Digital Marketing Pro, ContentForge, SocialForge. Runs on Claude Code, Codex, Cursor, Antigravity. MIT-licensed.",
     "developerName": "Indranil Banerjee",
     "category": "Productivity",
     "websiteURL": "https://indranil.in"
@@ -18,7 +18,9 @@
         "installation": "AVAILABLE",
         "authentication": "ON_DEMAND"
       },
-      "category": "Productivity"
+      "category": "Productivity",
+      "description": "Open-source AI marketing plugin for agencies — 153 skills, 25 agents, 12-Part Strategy Flow, EU AI Act ready. Runs on Claude Code, Codex, Cursor, Antigravity.",
+      "version": "3.9.0"
     },
     {
       "name": "contentforge",
@@ -30,7 +32,9 @@
         "installation": "AVAILABLE",
         "authentication": "ON_DEMAND"
       },
-      "category": "Productivity"
+      "category": "Productivity",
+      "description": "Open-source enterprise content pipeline — 21 skills, 13 agents, 29-pattern AI humanizer, real .docx output. Runs on Claude Code, Codex, Cursor, Antigravity.",
+      "version": "3.14.0"
     },
     {
       "name": "socialforge",
@@ -42,7 +46,9 @@
         "installation": "AVAILABLE",
         "authentication": "ON_DEMAND"
       },
-      "category": "Productivity"
+      "category": "Productivity",
+      "description": "Open-source social media engine — asset-first compositing, AI image+video, 7-platform copy adaptation. Runs on Claude Code, Codex, Cursor, Antigravity.",
+      "version": "1.10.0"
     }
   ]
 }

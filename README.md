@@ -1,14 +1,16 @@
 # Neel's Plugin Marketplace
 
-[![Version](https://img.shields.io/badge/version-3.7.0-blue.svg)](CHANGELOG.md)
+> **You run marketing for a single brand, an agency portfolio, or a content team — and you want the same depth across every brand, every article, every campaign, with no per-platform lock-in. You don't want to learn six different "AI marketing" SaaS UIs that all charge per-seat per-month.**
+
+Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, and **Google Antigravity 2.0** — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
+
+[![Version](https://img.shields.io/badge/version-3.8.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Surfaces](https://img.shields.io/badge/installs%20on-5%20agent%20surfaces-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-compatible-brightgreen.svg)](#-platform-compatibility)
 
-A custom plugin marketplace by [Indranil Banerjee](https://www.linkedin.com/in/askneelnow/). All three plugins install on **5 verified agent surfaces** from a single source repo: **Claude Code** (CLI + IDE extensions), **Anthropic Cowork**, **OpenAI Codex** (CLI + IDE + App), **Cursor 2.5+**, **GitHub Copilot CLI**, and **Google Antigravity 2.0** (CLI + IDE) — via the Agent Skills open standard (donated to the Agentic AI Foundation December 2025; adopted by ~40 agent products by May 2026).
-
-All three plugins ship with zero global hooks and zero auto-connecting MCP servers, so they coexist cleanly with other plugins and don't pollute unrelated work. All HTTP MCP connectors are Cowork-compatible.
+A custom plugin marketplace by [Indranil Banerjee](https://www.linkedin.com/in/askneelnow/). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by ~40 agent products by May 2026.
 
 ---
 
