@@ -5,6 +5,15 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.10] - 2026-05-26
+
+**DMP v3.7.12 — code hygiene pass.** Zero behavior change; refactors `connector-status.py` from 973 to 342 lines by importing `CONNECTOR_REGISTRY` and helpers from the v3.7.10 `_connector_registry.py` instead of duplicating them. Removes 4 unused imports across the suite. Adding a connector now means editing one file. All 44 DMP tests (27 resolver + 17 executor mock-HTTP-server) still pass.
+
+### Changed
+
+- `plugins[digital-marketing-pro].version`: 3.7.11 → 3.7.12
+- `metadata.version`: 3.5.9 → 3.5.10
+
 ## [3.5.9] - 2026-05-26
 
 **DMP v3.7.11 — Python-side HTTP executor closes the resolver loop.**
