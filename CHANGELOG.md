@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.14] - 2026-05-26
+
+**ContentForge v3.12.10 — closes the three Cowork+Drive roadmap items + fixes `/plugin` scope error.**
+
+v3.12.9 introduced Cowork+Drive routing for the final `.docx` but left three roadmap items. v3.12.10 ships all three: (1) brand profile read-back from Drive on session start (cf-style-guide Step 0); (2) cross-session checkpoint resume in Cowork (checkpoint-manager auto-marks files for Drive sync, output-manager uploads after each phase, resume command pulls from Drive first); (3) multi-team namespace isolation (cf-cowork-setup asks for Drive root folder name, different teams pick different names).
+
+New `scripts/drive-sync-state.py` is the single source of truth for the local-side state (config, profile hash, per-run pending list). 15-test harness covers all state transitions plus checkpoint-manager integration. All pass.
+
+Also fixed: `/plugin` slash command scope was wrongly documented as working in Cowork. Verified wrong via Indranil's live Cowork testing. `/plugin` works ONLY in Claude Code (CLI + IDE extension); in Cowork, plugin management is via the UI panel. README + MEMORY updated.
+
+### Changed
+
+- `plugins[contentforge].version`: 3.12.9 → 3.12.10
+- `metadata.version`: 3.5.13 → 3.5.14
+
 ## [3.5.13] - 2026-05-26
 
 **ContentForge v3.12.9 — Cowork becomes the recommended team environment, with Google Drive routing.**
