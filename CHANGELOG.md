@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.11] - 2026-05-26
+
+**ContentForge v3.12.7 — Drive MCP autodetect at brand-setup.**
+
+Fixes a real bug from the v3.12.6 testing cycle: even when a user already had a Google Drive MCP configured (Anthropic platform integration, Pipedream / Composio / Zapier / Make Drive aggregator), `/contentforge:brand-setup` ignored it and walked them through the full service-account JSON setup as if no Drive existed. The two Drive code paths (service-account SDK vs MCP tool calls) had no glue.
+
+CF v3.12.7 adds `scripts/detect-drive-mcp.py` (stdlib, probes both `.mcp.json` and the legacy credentials file) and a new **Step G.0** in `brand-setup.md` that runs the probe BEFORE the tracking-backend menu. If a Drive MCP is detected, brand-setup short-circuits to confirmation and skips the service-account flow entirely. Step E (Knowledge Vault verification) now documents two routes: MCP-tool-call route OR service-account-SDK route.
+
+Also fixes 6 phantom slash command references in `brand-setup.md` that pointed to skills under the wrong namespace (`/contentforge:style-guide` instead of `/contentforge:cf-style-guide`, etc.) — users clicking these were getting "command not found" even though the skills existed.
+
+### Changed
+
+- `plugins[contentforge].version`: 3.12.6 → 3.12.7
+- `metadata.version`: 3.5.10 → 3.5.11
+
 ## [3.5.10] - 2026-05-26
 
 **DMP v3.7.12 — code hygiene pass.** Zero behavior change; refactors `connector-status.py` from 973 to 342 lines by importing `CONNECTOR_REGISTRY` and helpers from the v3.7.10 `_connector_registry.py` instead of duplicating them. Removes 4 unused imports across the suite. Adding a connector now means editing one file. All 44 DMP tests (27 resolver + 17 executor mock-HTTP-server) still pass.
