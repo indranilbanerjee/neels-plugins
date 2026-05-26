@@ -5,38 +5,32 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.7.1] - 2026-05-27 (hotfix)
+## [3.7.1] - 2026-05-27 (coordinated patch: SF connectors-reference + corrected v3.7.0 framing)
 
-**Cowork install hazard fix in DMP + SF: bumps plugin versions to v3.8.1 / v1.9.1.**
+**Correction (also 2026-05-27)**: the original v3.7.1 release notes framed this as a Cowork install hazard fix in DMP + SF. That framing was wrong. `.mcp.json` is gitignored in all 3 plugin repos (so credentials never get committed) — my local copies had drifted to populated state, but the published install bundles have never contained `.mcp.json`. Cowork install state for v3.7.0 was already safe; this v3.7.1 patch ships zero functional change to the install path.
 
-Live Cowork-readiness testing of the v3.7.0 release (fetching marketplace.json + each plugin's `.claude-plugin/plugin.json` from GitHub raw, then sweeping for Cowork-incompatible patterns) surfaced that **DMP and SocialForge silently shipped populated `.mcp.json` files** (14 + 10 auto-connecting HTTP MCPs respectively) — meaning a fresh Cowork install would have triggered cascading OAuth prompts on plugin enable, and two of the URLs (gmail.mcp.claude.com, gcal.mcp.claude.com) were stale and returned HTTP 404 anyway.
+What this release **does** add (genuine value):
 
-ContentForge was unaffected — it has had the correct `{"_readme": "...", "mcpServers": {}}` empty state since v3.9.0 (May 2026).
+- **SocialForge gains `.mcp.json.connectors-reference`** — previously SF only shipped `.mcp.json.example` (older naming); now matches DMP + CF naming. 10 connectors with corrected Gmail/Calendar URLs (the old `.claude.com` URLs were retired May 2026, would 404).
+- Coordinated patch version bumps so all manifests reference consistent versions.
 
 ### Plugin version bumps
 
-- `plugins[digital-marketing-pro].version`: 3.8.0 → **3.8.1** (Cowork hotfix)
-- `plugins[contentforge].version`: 3.13.0 (unchanged — was already correct)
-- `plugins[socialforge].version`: 1.9.0 → **1.9.1** (Cowork hotfix)
+- `plugins[digital-marketing-pro].version`: 3.8.0 → **3.8.1**
+- `plugins[contentforge].version`: 3.13.0 (unchanged)
+- `plugins[socialforge].version`: 1.9.0 → **1.9.1**
 - `metadata.version`: 3.7.0 → **3.7.1**
 
-### Fixed
+### What did NOT change
 
-- DMP `.mcp.json` and SF `.mcp.json` now empty `{"mcpServers": {}}` with `_readme` explaining the design (same pattern as CF).
-- SF gains a `.mcp.json.connectors-reference` file (was missing; SF previously only shipped `.mcp.json.example`). 10-entry catalog with corrected Gmail + Calendar URLs.
-- 4 marketplace catalog files all version-bumped: `.claude-plugin/marketplace.json` + `.agents/plugins/marketplace.json` + `.cursor-plugin/marketplace.json` + `.github/plugin/marketplace.json`.
+- v3.7.0's 5-surface native manifests across all 3 plugins unchanged
+- Zero changes to any runtime files (skills, agents, commands, scripts, hooks)
+- Marketplace install commands + Cowork install path unchanged
+- Marketplace structure unchanged
 
-### Not changed
+### Lesson recorded to memory
 
-- v3.7.0's 5-surface native manifests across all 3 plugins unchanged.
-- Zero changes to any runtime files (skills, agents, commands, scripts, hooks).
-- ContentForge unchanged at v3.13.0 (was already correct).
-
-### Verified
-
-- Post-fix re-sweep: all 3 plugins' `.mcp.json` now empty with `_readme` (Cowork-safe install).
-- Live fetch from GitHub raw (the same read path Cowork uses) parses cleanly for all 4 manifests.
-- Version cross-check: marketplace v3.7.1 → DMP 3.8.1 + CF 3.13.0 + SF 1.9.1 matches each plugin's own .claude-plugin/plugin.json.
+`.mcp.json` is gitignored across all 3 plugins. Future "Cowork install hazard" checks must inspect the published GitHub artifact (`curl https://raw.githubusercontent.com/<owner>/<repo>/<branch>/.mcp.json`), not local dev state. If the file returns HTTP 404, the plugin has no MCPs auto-connecting — that's the safe state, not a bug.
 
 ## [3.7.0] - 2026-05-27
 
