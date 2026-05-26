@@ -1,13 +1,14 @@
 # Neel's Plugin Marketplace
 
-[![Version](https://img.shields.io/badge/version-3.6.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.7.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
+[![Surfaces](https://img.shields.io/badge/installs%20on-5%20agent%20surfaces-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-compatible-brightgreen.svg)](#-platform-compatibility)
 
-A custom plugin marketplace for **Claude Code** and **Anthropic Cowork** — built and maintained by [Indranil Banerjee](https://www.linkedin.com/in/askneelnow/).
+A custom plugin marketplace by [Indranil Banerjee](https://www.linkedin.com/in/askneelnow/). All three plugins install on **5 verified agent surfaces** from a single source repo: **Claude Code** (CLI + IDE extensions), **Anthropic Cowork**, **OpenAI Codex** (CLI + IDE + App), **Cursor 2.5+**, **GitHub Copilot CLI**, and **Google Antigravity 2.0** (CLI + IDE) — via the Agent Skills open standard (donated to the Agentic AI Foundation December 2025; adopted by ~40 agent products by May 2026).
 
-All three plugins ship with zero global hooks and zero auto-connecting MCP servers as of May 2026, so they coexist cleanly with other plugins and don't pollute unrelated Claude Code work. All HTTP MCP connectors are Cowork-compatible.
+All three plugins ship with zero global hooks and zero auto-connecting MCP servers, so they coexist cleanly with other plugins and don't pollute unrelated work. All HTTP MCP connectors are Cowork-compatible.
 
 ---
 
@@ -49,11 +50,40 @@ To update manually instead, see the [Updating](#updating) section below.
 
 | Plugin | Version | What it does |
 |--------|---------|--------------|
-| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.7.13 | The most comprehensive open-source AI marketing plugin — 153 skills, 25 specialist agents, 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Living Project Instruction File. Built for marketing agencies, in-house teams running 50–200 brands, and consultancies. EU AI Act Article 50 ready (C2PA content provenance signing). 6-platform AEO/GEO audit including Google AI Mode. 16 privacy-law jurisdictions. 14 HTTP MCP connectors, 77 Python scripts (optional), 167 reference knowledge files, 14 top-level slash commands. v3.7.11 closes the connector-resolver loop with a stdlib urllib HTTP executor that fires manifests against real APIs for 8 verified connectors (Slack, HubSpot, Klaviyo, SendGrid, Brevo, Customer.io, Mailchimp, Ahrefs); 25 OAuth-only connectors return execute_blocked_reason='use MCP path' with the manifest still returned. Test harnesses: 44/44 pass. |
-| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 3.12.11 | Open-source enterprise content production pipeline — 19 skills, 13 specialist agents, 11 quality gates, 29-pattern AI-detection humanizer, fact-checker subagent, three-category internal linking (topical / commercial / authority), real .docx output with embedded SEO + Quality + Production + Internal-Link appendices. EU AI Act Article 50 ready via `--c2pa-sign` on `scripts/generate-docx.py`. v3.12.10 closed three Cowork-with-Drive roadmap items (cross-session checkpoint resume, brand-profile read-back from Drive, multi-team namespace isolation). 16 opt-in HTTP MCP connectors catalogued in `.mcp.json.connectors-reference`. |
-| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.8.5 | Open-source agency-grade social media production engine — calendar parsing, asset-first compositing, AI image generation (Vertex AI Nano Banana Pro), AI video generation (WaveSpeed Kling v3.0 Pro), multi-platform copy adaptation (Instagram, TikTok, LinkedIn, Threads, X, Facebook, YouTube Shorts), human-in-the-loop review galleries, C2PA signing for EU AI Act Article 50 compliance. 16 skills, 25 commands, 5 agents, 22 scripts, 10 HTTP MCP connectors (all Cowork-compatible), 0 global hooks. Four creative modes (ANCHOR_COMPOSE / ENHANCE_EXTEND / STYLE_REFERENCED / PURE_CREATIVE). May 2026 channel pack: TikTok USDS post-Jan 2026, LinkedIn March 2026 algorithm + Depth Score, Apple MPP, YouTube AI labeling, Sora deprecation → defaults to Runway Gen-4 / Veo 3.x / Kling 3.0. |
+| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.8.0 | The most comprehensive open-source AI marketing plugin — 153 skills, 25 specialist agents, 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Living Project Instruction File. Built for marketing agencies, in-house teams running 50–200 brands, and consultancies. EU AI Act Article 50 ready (C2PA content provenance signing). 6-platform AEO/GEO audit including Google AI Mode. 16 privacy-law jurisdictions. 14 HTTP MCP connectors, 77 Python scripts (optional), 167 reference knowledge files, 14 top-level slash commands. v3.7.11 closes the connector-resolver loop with a stdlib urllib HTTP executor that fires manifests against real APIs for 8 verified connectors. Test harnesses: 44/44 pass. **v3.8.0** adds real native manifests for Codex / Antigravity / Cursor / Copilot CLI. |
+| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 3.13.0 | Open-source enterprise content production pipeline — 19 skills, 13 specialist agents, 11 quality gates, 29-pattern AI-detection humanizer, fact-checker subagent, three-category internal linking (topical / commercial / authority), real .docx output with embedded SEO + Quality + Production + Internal-Link appendices. EU AI Act Article 50 ready via `--c2pa-sign` on `scripts/generate-docx.py`. v3.12.10 closed three Cowork-with-Drive roadmap items (cross-session checkpoint resume, brand-profile read-back from Drive, multi-team namespace isolation). 16 opt-in HTTP MCP connectors catalogued in `.mcp.json.connectors-reference`. **v3.13.0** adds real native manifests for Codex / Antigravity / Cursor / Copilot CLI. |
+| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.9.0 | Open-source agency-grade social media production engine — calendar parsing, asset-first compositing, AI image generation (Vertex AI Nano Banana Pro), AI video generation (WaveSpeed Kling v3.0 Pro), multi-platform copy adaptation (Instagram, TikTok, LinkedIn, Threads, X, Facebook, YouTube Shorts), human-in-the-loop review galleries, C2PA signing for EU AI Act Article 50 compliance. 16 skills, 25 commands, 5 agents, 22 scripts, 10 HTTP MCP connectors (all Cowork-compatible), 0 global hooks. Four creative modes (ANCHOR_COMPOSE / ENHANCE_EXTEND / STYLE_REFERENCED / PURE_CREATIVE). May 2026 channel pack. **v1.9.0** adds real native manifests for Codex / Antigravity / Cursor / Copilot CLI. |
 
-> **v3.6.0 (2026-05-26): honest positioning.** The v3.3-v3.5 era claim of installing on 5 coding-agent surfaces (Claude Code + Cowork + OpenAI Codex + Cursor + GitHub Copilot CLI + Google Antigravity 2.0) has been removed. A May 2026 research pass confirmed the Codex / Cursor / Copilot CLI / Antigravity manifests we shipped in those releases did not match the platforms' actual install specs. Supported surfaces from v3.6.0 onwards: **Claude Code (CLI + IDE extensions) and Anthropic Cowork.** Real multi-platform support is on the roadmap — research saved at `memory/{antigravity,codex}-plugin-spec-may-2026.md`. Plugin behavior in Claude Code + Cowork is identical to v3.5.14.
+> **v3.7.0 (2026-05-27): real native manifests for 5 surfaces.** Ships verified-real manifests for OpenAI Codex (`.codex-plugin/plugin.json` per the published OpenAI schema), Google Antigravity 2.0 (`gemini-extension.json` at repo root per Google's `gemini-cli-extensions/data-agent-kit-starter-pack` reference pattern), Cursor 2.5+ (`.cursor-plugin/plugin.json` per the verified Cursor JSON Schema), and GitHub Copilot CLI (`.github/plugin/plugin.json` per the verified GitHub schema). All three plugins ship matching native manifests in their own repos at the same version bump (DMP 3.8.0 / CF 3.13.0 / SF 1.9.0). Replaces the v3.5-v3.6 era invented manifests that were correctly removed in marketplace v3.6.0 on 2026-05-26. Pre-flight verified: all 190 skills across the 3 plugins pass the Codex `[a-z0-9-]` regex.
+
+### Per-platform install commands
+
+```bash
+# Claude Code (CLI + IDE extensions)
+/plugin marketplace add indranilbanerjee/neels-plugins
+/plugin install <plugin-name>@neels-plugins
+
+# Anthropic Cowork — UI only (no /plugin slash commands)
+# Plugins panel → Add marketplace → paste indranilbanerjee/neels-plugins → Install
+
+# OpenAI Codex (CLI + IDE + App)
+codex plugin marketplace add indranilbanerjee/neels-plugins
+codex plugin install <plugin-name>@neels-plugins
+
+# Cursor 2.5+ (in any Agent chat — no marketplace add needed)
+/add-plugin digital-marketing-pro@https://github.com/indranilbanerjee/digital-marketing-pro
+/add-plugin contentforge@https://github.com/indranilbanerjee/contentforge
+/add-plugin socialforge@https://github.com/indranilbanerjee/socialforge
+
+# GitHub Copilot CLI
+copilot plugin marketplace add indranilbanerjee/neels-plugins
+copilot plugin install <plugin-name>@neels-plugins
+
+# Google Antigravity 2.0 CLI (no marketplace concept — install per-plugin URL)
+agy plugin install https://github.com/indranilbanerjee/digital-marketing-pro
+agy plugin install https://github.com/indranilbanerjee/contentforge
+agy plugin install https://github.com/indranilbanerjee/socialforge
+```
 
 ---
 

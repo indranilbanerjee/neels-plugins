@@ -5,6 +5,51 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0] - 2026-05-27
+
+**Real native manifests for 5 verified agent surfaces across the suite.** Coordinates the suite-wide build-out: all three plugins ship verified-real manifests for OpenAI Codex, Google Antigravity 2.0, Cursor 2.5+, and GitHub Copilot CLI in this release.
+
+### Per-surface support (verified-real schemas)
+
+| Surface | Manifest path per plugin | Marketplace path in this repo | Schema source |
+|---|---|---|---|
+| Claude Code (CLI + IDE extensions) + Anthropic Cowork | `.claude-plugin/plugin.json` | `.claude-plugin/marketplace.json` | Claude Code published format |
+| OpenAI Codex (CLI + IDE + App) | `.codex-plugin/plugin.json` | `.agents/plugins/marketplace.json` | `developers.openai.com/codex/plugins/build` |
+| Cursor 2.5+ | `.cursor-plugin/plugin.json` | `.cursor-plugin/marketplace.json` | `cursor.com/schemas/cursor-plugin/plugin.json` |
+| GitHub Copilot CLI | `.github/plugin/plugin.json` | `.github/plugin/marketplace.json` | `docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-creating` |
+| Google Antigravity 2.0 (CLI + IDE) | `gemini-extension.json` (repo root) | (No marketplace concept — install per-plugin via URL) | Per Google's `gemini-cli-extensions/data-agent-kit-starter-pack` reference |
+
+### Plugin version bumps (all coordinated with this release)
+
+- [digital-marketing-pro v3.8.0](https://github.com/indranilbanerjee/digital-marketing-pro/releases/tag/v3.8.0)
+- [contentforge v3.13.0](https://github.com/indranilbanerjee/contentforge/releases/tag/v3.13.0)
+- [socialforge v1.9.0](https://github.com/indranilbanerjee/socialforge/releases/tag/v1.9.0)
+- `metadata.version`: 3.6.0 → **3.7.0** (minor — visible positioning shift)
+
+### Added
+
+- `.agents/plugins/marketplace.json` — Codex marketplace catalog with 3 plugins. Users run `codex plugin marketplace add indranilbanerjee/neels-plugins`.
+- `.cursor-plugin/marketplace.json` — Cursor marketplace catalog with 3 plugins (for Team marketplace + monorepo install patterns).
+- `.github/plugin/marketplace.json` — GitHub Copilot CLI marketplace catalog. Users run `copilot plugin marketplace add indranilbanerjee/neels-plugins`.
+
+### Changed
+
+- `.claude-plugin/marketplace.json` — metadata.description rewritten to advertise 5 verified surfaces with real install commands per platform. Each plugin's description bumped to reflect v3.8.0 / v3.13.0 / v1.9.0 state.
+- `README.md` — version badge 3.6.0 → 3.7.0; added "5 agent surfaces" badge; rewritten hero line; added per-platform install command block under the plugin table; new v3.7.0 callout. Plugin table version cells bumped (DMP 3.7.13 → 3.8.0, CF 3.12.11 → 3.13.0, SF 1.8.5 → 1.9.0) with concise updated descriptions.
+
+### Not changed
+
+- Marketplace structure, primary install command (`/plugin marketplace add indranilbanerjee/neels-plugins`), Cowork install path (Plugins UI panel) — all unchanged.
+- Zero changes to any plugin's runtime files (skills/, commands/, agents/, scripts/, hooks/, .mcp.json).
+- All 3 plugins behave byte-identically in Claude Code + Cowork to their previous release.
+
+### Pre-flight verified
+
+- 190/190 skills across the suite (153 DMP + 21 CF + 16 SF) pass the Codex `[a-z0-9-]` regex
+- SKILL.md frontmatter `name:` field matches each folder
+- Descriptions ≤ 1024 chars (Codex limit)
+- All 16 JSON files across the suite parse cleanly (4 marketplace + 12 plugin manifests)
+
 ## [3.6.0] - 2026-05-26
 
 **Honest positioning across the suite: Claude Code + Cowork only. Removes the v3.3-v3.5 era claim of installing on 5 coding-agent surfaces.**

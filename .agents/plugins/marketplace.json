@@ -1,0 +1,48 @@
+{
+  "name": "neels-marketing-plugins",
+  "interface": {
+    "displayName": "Neel's Marketing Plugins",
+    "shortDescription": "Marketing plugins by Indranil Banerjee (https://indranil.in) — Digital Marketing Pro, ContentForge, SocialForge. Installable on Claude Code, Anthropic Cowork, OpenAI Codex, Google Antigravity 2.0.",
+    "developerName": "Indranil Banerjee",
+    "category": "Productivity",
+    "websiteURL": "https://indranil.in"
+  },
+  "plugins": [
+    {
+      "name": "digital-marketing-pro",
+      "source": {
+        "source": "github",
+        "repo": "indranilbanerjee/digital-marketing-pro"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_DEMAND"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "contentforge",
+      "source": {
+        "source": "github",
+        "repo": "indranilbanerjee/contentforge"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_DEMAND"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "socialforge",
+      "source": {
+        "source": "github",
+        "repo": "indranilbanerjee/socialforge"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_DEMAND"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

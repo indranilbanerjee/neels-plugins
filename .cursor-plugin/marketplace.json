@@ -1,0 +1,30 @@
+{
+  "name": "neels-plugins",
+  "owner": {
+    "name": "Indranil Banerjee",
+    "email": "neel@neelverse.com"
+  },
+  "metadata": {
+    "description": "Marketing plugins by Indranil Banerjee (https://indranil.in) for Cursor 2.5+ — Digital Marketing Pro, ContentForge, SocialForge. Single source repo, all three plugins also install on Claude Code + Cowork + Codex + Antigravity via the Agent Skills open standard.",
+    "version": "3.7.0",
+    "homepage": "https://github.com/indranilbanerjee/neels-plugins",
+    "license": "MIT"
+  },
+  "plugins": [
+    {
+      "name": "digital-marketing-pro",
+      "source": "https://github.com/indranilbanerjee/digital-marketing-pro",
+      "description": "The most comprehensive open-source AI marketing plugin — 153 skills, 25 specialist agents, 12-Part Strategy Flow, EU AI Act Article 50 ready."
+    },
+    {
+      "name": "contentforge",
+      "source": "https://github.com/indranilbanerjee/contentforge",
+      "description": "Open-source enterprise content production pipeline — 19 skills, 13 agents, 29-pattern humanizer, fact-checker, real .docx output with C2PA signing."
+    },
+    {
+      "name": "socialforge",
+      "source": "https://github.com/indranilbanerjee/socialforge",
+      "description": "Open-source agency-grade social media production engine — asset-first compositing, AI image + video generation, multi-platform copy adaptation, C2PA signing."
+    }
+  ]
+}
