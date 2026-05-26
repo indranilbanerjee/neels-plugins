@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.13] - 2026-05-26
+
+**ContentForge v3.12.9 — Cowork becomes the recommended team environment, with Google Drive routing.**
+
+User feedback during the v3.12.8 testing cycle was direct: marketing teams won't use Claude Code CLI; Cowork is the only Anthropic surface friendly enough for non-technical contributors. v3.12.8 told users to switch to local Claude Code as a workaround — which contradicts how teams actually want to work. v3.12.9 fixes this properly.
+
+When ContentForge detects it's running in Cowork AND a Google Drive MCP is connected (Anthropic platform Settings → Integrations is the easiest path), the output-manager agent uploads the final `.docx` to `My Drive/ContentForge/<brand>/<type>/<YYYY-MM>/` instead of the ephemeral sandbox. Brand profiles also save to Drive (persist across sessions). New `/contentforge:cf-cowork-setup` skill is the one-shot wizard that verifies the environment, finds the Drive MCP, creates the canonical Drive folder layout, and stores config for future sessions.
+
+README cross-platform section rewritten — Cowork+Drive is now the **first row, marked Recommended for teams**. Added a "How to pick" decision guide naming the three personas (marketing teams, solo developers, on-prem). The previous "Cowork = partial support, use local instead" framing is gone.
+
+### Changed
+
+- `plugins[contentforge].version`: 3.12.8 → 3.12.9
+- `metadata.version`: 3.5.12 → 3.5.13
+
 ## [3.5.12] - 2026-05-26
 
 **ContentForge v3.12.8 — live metadata in /contentforge:help + honest Cowork documentation.**
