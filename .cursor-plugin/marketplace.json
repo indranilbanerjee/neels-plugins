@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Marketing plugins by Indranil Banerjee (https://indranil.in) for Cursor 2.5+ — Digital Marketing Pro, ContentForge, SocialForge. Single source repo, all three plugins also install on Claude Code + Cowork + Codex + Antigravity via the Agent Skills open standard.",
-    "version": "3.7.0",
+    "version": "3.7.1",
     "homepage": "https://github.com/indranilbanerjee/neels-plugins",
     "license": "MIT"
   },

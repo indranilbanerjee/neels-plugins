@@ -5,6 +5,39 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.1] - 2026-05-27 (hotfix)
+
+**Cowork install hazard fix in DMP + SF: bumps plugin versions to v3.8.1 / v1.9.1.**
+
+Live Cowork-readiness testing of the v3.7.0 release (fetching marketplace.json + each plugin's `.claude-plugin/plugin.json` from GitHub raw, then sweeping for Cowork-incompatible patterns) surfaced that **DMP and SocialForge silently shipped populated `.mcp.json` files** (14 + 10 auto-connecting HTTP MCPs respectively) — meaning a fresh Cowork install would have triggered cascading OAuth prompts on plugin enable, and two of the URLs (gmail.mcp.claude.com, gcal.mcp.claude.com) were stale and returned HTTP 404 anyway.
+
+ContentForge was unaffected — it has had the correct `{"_readme": "...", "mcpServers": {}}` empty state since v3.9.0 (May 2026).
+
+### Plugin version bumps
+
+- `plugins[digital-marketing-pro].version`: 3.8.0 → **3.8.1** (Cowork hotfix)
+- `plugins[contentforge].version`: 3.13.0 (unchanged — was already correct)
+- `plugins[socialforge].version`: 1.9.0 → **1.9.1** (Cowork hotfix)
+- `metadata.version`: 3.7.0 → **3.7.1**
+
+### Fixed
+
+- DMP `.mcp.json` and SF `.mcp.json` now empty `{"mcpServers": {}}` with `_readme` explaining the design (same pattern as CF).
+- SF gains a `.mcp.json.connectors-reference` file (was missing; SF previously only shipped `.mcp.json.example`). 10-entry catalog with corrected Gmail + Calendar URLs.
+- 4 marketplace catalog files all version-bumped: `.claude-plugin/marketplace.json` + `.agents/plugins/marketplace.json` + `.cursor-plugin/marketplace.json` + `.github/plugin/marketplace.json`.
+
+### Not changed
+
+- v3.7.0's 5-surface native manifests across all 3 plugins unchanged.
+- Zero changes to any runtime files (skills, agents, commands, scripts, hooks).
+- ContentForge unchanged at v3.13.0 (was already correct).
+
+### Verified
+
+- Post-fix re-sweep: all 3 plugins' `.mcp.json` now empty with `_readme` (Cowork-safe install).
+- Live fetch from GitHub raw (the same read path Cowork uses) parses cleanly for all 4 manifests.
+- Version cross-check: marketplace v3.7.1 → DMP 3.8.1 + CF 3.13.0 + SF 1.9.1 matches each plugin's own .claude-plugin/plugin.json.
+
 ## [3.7.0] - 2026-05-27
 
 **Real native manifests for 5 verified agent surfaces across the suite.** Coordinates the suite-wide build-out: all three plugins ship verified-real manifests for OpenAI Codex, Google Antigravity 2.0, Cursor 2.5+, and GitHub Copilot CLI in this release.

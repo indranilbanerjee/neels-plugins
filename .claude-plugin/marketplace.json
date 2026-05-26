@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Marketing plugins by Indranil Banerjee (https://indranil.in). Three plugins (Digital Marketing Pro, ContentForge, SocialForge) share a single `skills/` open-standard layout and install on **5 surfaces (verified, real manifests, May 2026): Claude Code (CLI + IDE extensions), Anthropic Cowork, OpenAI Codex (CLI + IDE + App), Cursor 2.5+, and Google Antigravity 2.0 (CLI + IDE)**. v3.7.0 (2026-05-27) ships REAL native manifests per platform (`.codex-plugin/plugin.json` with the OpenAI published schema, `gemini-extension.json` at repo root per Google's reference pattern, `.cursor-plugin/plugin.json` per Cursor 2.5's published JSON schema), replacing the invented manifests correctly removed in v3.6.0 (2026-05-26). All three plugins ship with zero global hooks and zero auto-connecting MCPs for clean multi-plugin coexistence; all comply with the Anthropic Software Directory Policy; HTTP MCP connectors are Cowork-compatible. EU AI Act Article 50 ready across all three plugins (C2PA content provenance signing). Full community standards: each plugin ships CODE_OF_CONDUCT.md, SECURITY.md (private vulnerability reporting via GitHub Private Security Advisories), Issue + PR templates, MIT-licensed. Shared model curator (`scripts/model_registry.json` + `resolve_model.py`) — single source of truth for every model id used by the plugins' scripts, with deprecated-id auto-fall-forward and a `refresh_models.py` drift report against live provider catalogs. Slash command syntax is canonical /<plugin-name>:<command> per Claude Code's auto-namespacing. On Cursor 2.5+, install via `/add-plugin <name>@https://github.com/indranilbanerjee/<repo>`. On Codex, `codex plugin marketplace add indranilbanerjee/neels-plugins`. On Antigravity, `agy plugin install https://github.com/indranilbanerjee/<repo>` per plugin.",
-    "version": "3.7.0",
+    "version": "3.7.1",
     "homepage": "https://github.com/indranilbanerjee/neels-plugins",
     "license": "MIT",
     "keywords": [
@@ -33,7 +33,7 @@
         "repo": "indranilbanerjee/digital-marketing-pro"
       },
       "description": "The most comprehensive open-source AI marketing plugin — 153 skills, 25 specialist agents, 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Living Project Instruction File. Built for marketing agencies, in-house teams running 50–200 brands, and consultancies. **Installs on Claude Code (CLI + IDE extensions), Anthropic Cowork, OpenAI Codex, Cursor 2.5+, and Google Antigravity 2.0** via the Agent Skills open standard. EU AI Act Article 50 ready (C2PA content provenance signing). 6-platform AEO/GEO audit including Google AI Mode. 16 privacy-law jurisdictions. 14 HTTP MCP connectors. 77 Python scripts. 167 reference knowledge files. v3.8.0 (2026-05-27): real native manifests for Codex / Antigravity / Cursor (replacing the v3.6-v3.7 era invented manifests correctly removed in v3.7.13). v3.7.11 closes the connector-resolver loop with stdlib urllib HTTP executor for 8 verified connectors (Slack, HubSpot, Klaviyo, SendGrid, Brevo, Customer.io, Mailchimp, Ahrefs) with credential substitution, write-op --confirm gate, audit logging. Test harnesses: 44/44 pass.",
-      "version": "3.8.0",
+      "version": "3.8.1",
       "author": {
         "name": "Indranil Banerjee"
       },
@@ -63,7 +63,7 @@
         "repo": "indranilbanerjee/socialforge"
       },
       "description": "Open-source agency-grade social media production engine — calendar parsing, asset-first compositing (brand assets are sacred, AI is the creative layer around them), AI image generation (Vertex AI Nano Banana Pro), AI video generation (WaveSpeed Kling v3.0 Pro), multi-platform copy adaptation (Instagram, TikTok, LinkedIn, Threads, X, Facebook, YouTube Shorts), human-in-the-loop review galleries, and C2PA content provenance signing for EU AI Act Article 50 compliance. **16 skills, 25 commands, 5 agents, 22 scripts, 10 HTTP MCP connectors, 0 global hooks.** Four creative modes. **Installs on Claude Code (CLI + IDE extensions), Anthropic Cowork, OpenAI Codex, Cursor 2.5+, and Google Antigravity 2.0** via the Agent Skills open standard. v1.9.0 (2026-05-27): real native manifests for Codex / Antigravity / Cursor (replacing the v1.7-v1.8 era invented manifests correctly removed in v1.8.5). May 2026 channel pack: TikTok USDS post-Jan 2026, LinkedIn March 2026 algorithm + Depth Score, Apple MPP, YouTube AI labeling, Sora deprecation → defaults to Runway Gen-4 / Veo 3.x / Kling 3.0.",
-      "version": "1.9.0",
+      "version": "1.9.1",
       "author": {
         "name": "Indranil Banerjee"
       },
