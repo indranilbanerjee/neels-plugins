@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.12] - 2026-05-26
+
+**ContentForge v3.12.8 — live metadata in /contentforge:help + honest Cowork documentation.**
+
+Two production findings from the v3.12.7 testing cycle:
+
+1. `/contentforge:help` was showing `Version: 3.8.0` on a v3.12.7 install. Skill body had hardcoded version strings + asset counts that drifted out of sync every release. v3.12.8 introduces `scripts/plugin-metadata.py` (single source of truth, reads disk) and rewrites the help skill to call it. Nothing hardcoded anymore.
+
+2. `.docx` files produced in Cowork landed in the Linux sandbox, not in the user's `~/Documents/ContentForge/`. The v3.12.3 dual-copy save doesn't fire in Cowork because the bash sandbox can't write to the Windows/Mac host. README falsely claimed "Full support" for Cowork. v3.12.8 honestly documents Cowork as **Partial Support** with specific limits enumerated, and ships a new `/contentforge:cf-environment` skill that surfaces a per-capability matrix at runtime.
+
+### Changed
+
+- `plugins[contentforge].version`: 3.12.7 → 3.12.8
+- `metadata.version`: 3.5.11 → 3.5.12
+
 ## [3.5.11] - 2026-05-26
 
 **ContentForge v3.12.7 — Drive MCP autodetect at brand-setup.**
