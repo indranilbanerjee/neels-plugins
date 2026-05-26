@@ -5,6 +5,49 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0] - 2026-05-26
+
+**Honest positioning across the suite: Claude Code + Cowork only. Removes the v3.3-v3.5 era claim of installing on 5 coding-agent surfaces.**
+
+A May 2026 deep research pass (saved at `memory/antigravity-plugin-spec-may-2026.md` and `memory/codex-plugin-spec-may-2026.md`) confirmed that the OpenAI Codex / Cursor / GitHub Copilot CLI / Google Antigravity 2.0 manifests we shipped in the v3.3-v3.5 era marketplace releases (along with the v1.7/v1.8 SF + v3.11/v3.12 CF + v3.6/v3.7 DMP underlying plugin manifests) did not match the platforms' actual install specs:
+
+- **Antigravity** uses `gemini-extension.json` at repo root — not `.antigravity/plugin.json` (the path we shipped). Google's reference repo (`gemini-cli-extensions/data-agent-kit-starter-pack`) and the `agy plugin import gemini` migrator both confirm this.
+- **OpenAI Codex** uses the `.codex-plugin/plugin.json` path (that part was right), but the schema we hand-rolled was invented. The real schema is published at `developers.openai.com/codex/plugins/build`.
+- **Cursor** plugin format we shipped was not a real Cursor manifest path.
+- **GitHub Copilot CLI** auto-discovery of `.claude-plugin/plugin.json` was unverified.
+
+Honest position from v3.6.0 onwards: **Claude Code (CLI + IDE extensions) + Anthropic Cowork.** Real OpenAI Codex / Cursor / GitHub Copilot CLI / Google Antigravity 2.0 support is on the roadmap with research complete — build deferred. This release is **minor (3.5.14 → 3.6.0)** because the visible positioning shift is user-facing, not a patch.
+
+### Plugin version bumps (all coordinated honesty cleanup, zero functional change)
+
+- `plugins[digital-marketing-pro].version`: 3.7.12 → **3.7.13**
+- `plugins[contentforge].version`: 3.12.10 → **3.12.11**
+- `plugins[socialforge].version`: 1.8.4 → **1.8.5**
+- `metadata.version`: 3.5.14 → **3.6.0**
+
+### Changed
+
+- `metadata.description` — rewritten to advertise Claude Code (CLI + IDE extensions) + Anthropic Cowork only. Drops the "5 coding-agent surfaces" framing.
+- Each plugin's `description` field — rewritten to drop the "Installs on 5 coding-agent surfaces" claim and the Codex / Cursor / Copilot CLI / Antigravity-specific feature claims. Current state (per-plugin honesty cleanup release content) reflected accurately.
+- `README.md` — version badge bumped (3.5.14 → 3.6.0); plugin table refreshed (DMP 3.4.2 → 3.7.13, CF 3.10.0 → 3.12.11, SF 1.6.0 → 1.8.5) with current concise descriptions; new "v3.6.0: honest positioning" callout under the plugin table.
+
+### Per-plugin cleanup releases (all ship same day)
+
+- **digital-marketing-pro v3.7.13** — removed `.codex-plugin/`, `.cursor-plugin/`, `.antigravity/`, `docs/cross-platform-install.md`; plugin.json description + keywords + README + PR template + SECURITY + CHANGELOG updated; misleading keywords (`openai-codex`, `cursor-plugin`, `github-copilot`, `antigravity`) dropped.
+- **contentforge v3.12.11** — same cleanup pattern (`.codex-plugin/`, `.cursor-plugin/`, `.antigravity/`, `docs/cross-platform-install.md` removed; same metadata + docs sweep).
+- **socialforge v1.8.5** — same cleanup pattern; plus `SOCIALFORGE-COMPLETE-ENGINEERING-SPEC.md` install-surface lines fixed (Gemini image-generation references for Vertex AI Nano Banana Pro untouched — those are model references, not install claims).
+
+### Not changed
+
+- Zero changes to any plugin's `skills/`, `commands/`, `agents/`, `scripts/`, `hooks/hooks.json`, `.mcp.json`, `.mcp.json.connectors-reference`. All 3 plugins behave byte-identically in Claude Code + Cowork to v3.5.14.
+- Marketplace structure, install command (`/plugin marketplace add indranilbanerjee/neels-plugins`), Cowork install path (Plugins UI panel), update procedure — all unchanged.
+- Historical CHANGELOG entries for v3.3.0, v3.4.0, v3.5.x are intact below — they describe what was shipped at the time. v3.6.0 is the correction.
+
+### Verified
+
+- `marketplace.json` parses cleanly with metadata.version=3.6.0 and 3 plugins at 3.7.13 / 3.12.11 / 1.8.5.
+- All 3 plugin `plugin.json` files parse cleanly.
+
 ## [3.5.14] - 2026-05-26
 
 **ContentForge v3.12.10 — closes the three Cowork+Drive roadmap items + fixes `/plugin` scope error.**
