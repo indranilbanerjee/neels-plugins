@@ -5,6 +5,39 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.0] - 2026-06-04
+
+**Coordinated platform refresh: DMP v3.10.0 + SF v1.11.0.**
+
+Triggered by genuine platform changes April–early June 2026 (GSC AI Performance Report, Google Ads API v24, GA4 AI Assistant channel, C2PA 2.3/2.4, EU Code of Practice on AI-generated content).
+
+### Plugin version bumps
+
+| Plugin | Was | Now |
+|---|---|---|
+| Digital Marketing Pro | 3.9.0 | **3.10.0** (skill count 153 → 154) |
+| ContentForge | 3.14.0 | 3.14.0 (no change — these refreshes don't touch CF) |
+| SocialForge | 1.10.0 | **1.11.0** |
+
+### What's new across the suite
+
+- **DMP:** new `/digital-marketing-pro:gsc-ai-performance` skill for the GSC AI Performance Report (rolled out 3 June 2026, UK first); new `skills/context-engine/eu-code-of-practice.md` reference doc for Article 50 voluntary Code of Practice; updates to `aeo-geo`, `aeo-audit`, `c2pa-metadata`, `paid-advertising` (Google Ads API v24 breaking changes), `analytics-insights` + `attribution-report` (GA4 AI Assistant channel).
+- **SF:** `c2pa-sign` skill updated for C2PA Content Credentials 2.3 expanded formats (live video, plain text, OGG Vorbis, large AVI, EXIF) and C2PA Spec 2.4 `c2pa.ai-disclosure` assertion.
+
+### Research provenance
+
+Findings verified against primary sources (`developers.google.com`, `blog.google`, `support.google.com`, `digital-strategy.ec.europa.eu`, `c2pa.org`, `spec.c2pa.org`). Adversarial fact-checking applied before any code change. See DMP v3.10.0 CHANGELOG for full citation list.
+
+### How to update
+
+```bash
+/plugin update digital-marketing-pro@neels-plugins
+/plugin update socialforge@neels-plugins
+/reload-plugins
+```
+
+If on Cowork / claude.ai / Desktop: Plugins panel → Update.
+
 ## [3.8.0] - 2026-05-27
 
 **Coordinated minor release: distribution & context-efficiency polish across all three plugins.**
