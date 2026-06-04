@@ -5,6 +5,13 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.1] - 2026-06-04
+
+**Coordinated patch: DMP icon + composerIcon for awesome-codex-plugins listing.**
+
+- **DMP: 3.10.0 → 3.10.1** — adds `assets/icon.svg` + `.codex-plugin/plugin.json` `interface.composerIcon`. Closes [DMP issue #4](https://github.com/indranilbanerjee/digital-marketing-pro/issues/4) — listing in [awesome-codex-plugins](https://github.com/hashgraph-online/awesome-codex-plugins) (375★).
+- CF / SF unchanged.
+
 ## [3.9.0] - 2026-06-04
 
 **Coordinated platform refresh: DMP v3.10.0 + SF v1.11.0.**
