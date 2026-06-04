@@ -10,7 +10,18 @@ Install three open-source plugins from one marketplace. Same skills, same agents
 [![Surfaces](https://img.shields.io/badge/installs%20on-5%20agent%20surfaces-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-compatible-brightgreen.svg)](#-platform-compatibility)
 
-A custom plugin marketplace by [Indranil Banerjee](https://www.linkedin.com/in/askneelnow/). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by ~40 agent products by May 2026.
+A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by ~40 agent products by May 2026.
+
+---
+
+## What's new in v3.9.0 (June 4, 2026)
+
+Coordinated platform-refresh release: **DMP v3.10.0** + **SF v1.11.0** (ContentForge stays at v3.14.0 — June changes don't touch it). Every claim verified against primary sources before code changes.
+
+- **DMP** ships a new `/digital-marketing-pro:gsc-ai-performance` skill for the Google Search Console AI Performance Report rolled out 3 June 2026, plus a new `skills/context-engine/eu-code-of-practice.md` reference doc for EU AI Act Article 50 transparency. Updates to `aeo-geo`, `aeo-audit`, `c2pa-metadata`, `paid-advertising` (Google Ads API v24 breaking changes), `analytics-insights` + `attribution-report` (GA4 AI Assistant channel group added 13 May 2026).
+- **SF** ships C2PA spec refresh — Content Credentials 2.3 expanded formats + Spec 2.4 `c2pa.ai-disclosure` assertion for Article 50 deployer compliance.
+
+Skill counts: DMP 153 → **154**, CF 21, SF 16 — total **191 across the suite, all passing Codex `[a-z0-9-]+` regex**.
 
 ---
 
