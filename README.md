@@ -14,14 +14,37 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 
 ---
 
+## What's new in v3.10.0 (June 4, 2026) — DMP v3.11.0 SEO expansion
+
+Coordinated release. **DMP bumped 3.10.1 → 3.11.0.** CF + SF unchanged.
+
+### DMP ships 3 new SEO skills + 3 supporting Python scripts
+
+- **`/digital-marketing-pro:keyword-cluster`** — SERP-overlap clustering into pillar+spokes architecture. Four-gate quality scorecard (cannibalisation / orphan / coverage / anchor_diversity).
+- **`/digital-marketing-pro:backlink-gap`** — competitor backlink gap with link-prospect priority scoring (DR + link-overlap + traffic + topical relevance). Auto-detects Ahrefs / Semrush / SE Ranking / Moz exports.
+- **`/digital-marketing-pro:seo-drift`** — snapshot diff (GSC / GSC AI Performance / rank trackers / AEO probes). Auto-classifies growth / decline / reshuffle / stable / new / lost.
+
+### Pattern upgrades across 10 existing SEO skills
+
+- `/digital-marketing-pro:seo-plan` is now a **Confirm-Then-Dispatch dispatcher** — detects fresh specialist outputs (≤30 days), single Y/N prompt (default N) before fan-out, 4-pillar scoring (Technical / Content / Topical / AI Search), the weakest pillar drives the next quarter's lead theme.
+- **Numbered intermediate-file output convention** across 5 heavy workflows — `00-input.md` → `01-...md` → … → `PLAN.md` for resumable, auditable execution.
+- **Quality scorecards** with named gates in 5 skills.
+- **Tips & caveats sections** in 10 SEO skills total.
+- New "How the SEO skills chain together" section in [DMP README](https://github.com/indranilbanerjee/digital-marketing-pro#how-the-seo-skills-chain-together) — 4 canonical workflows documented.
+
+### Skill counts
+
+- **DMP: 154 → 157** (+3 from new SEO skills)
+- CF: 21 (unchanged)
+- SF: 16 (unchanged)
+- **Total: 194 across the suite, all passing Codex `[a-z0-9-]+` regex**
+
 ## What's new in v3.9.0 (June 4, 2026)
 
-Coordinated platform-refresh release: **DMP v3.10.0** + **SF v1.11.0** (ContentForge stays at v3.14.0 — June changes don't touch it). Every claim verified against primary sources before code changes.
+Coordinated platform-refresh release: **DMP v3.10.0** + **SF v1.11.0**. Every claim verified against primary sources before code changes.
 
 - **DMP** ships a new `/digital-marketing-pro:gsc-ai-performance` skill for the Google Search Console AI Performance Report rolled out 3 June 2026, plus a new `skills/context-engine/eu-code-of-practice.md` reference doc for EU AI Act Article 50 transparency. Updates to `aeo-geo`, `aeo-audit`, `c2pa-metadata`, `paid-advertising` (Google Ads API v24 breaking changes), `analytics-insights` + `attribution-report` (GA4 AI Assistant channel group added 13 May 2026).
 - **SF** ships C2PA spec refresh — Content Credentials 2.3 expanded formats + Spec 2.4 `c2pa.ai-disclosure` assertion for Article 50 deployer compliance.
-
-Skill counts: DMP 153 → **154**, CF 21, SF 16 — total **191 across the suite, all passing Codex `[a-z0-9-]+` regex**.
 
 ---
 
