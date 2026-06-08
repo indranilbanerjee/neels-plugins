@@ -4,13 +4,41 @@
 
 Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, and **Google Antigravity 2.0** — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.10.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.11.1-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
-[![Surfaces](https://img.shields.io/badge/installs%20on-5%20agent%20surfaces-success.svg)](#-platform-compatibility)
-[![Cowork](https://img.shields.io/badge/Cowork-compatible-brightgreen.svg)](#-platform-compatibility)
+[![Total skills](https://img.shields.io/badge/skills-195%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
+[![Surfaces](https://img.shields.io/badge/installs%20on-6%20agent%20surfaces-success.svg)](#-platform-compatibility)
+[![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
+
+> 🆕 **June 8, 2026 — marketplace v3.11.0 (DMP v3.12.0):** Cowork team persistence via Drive MCP routing · fallbackModel resilience · model-freshness checks · 49 stdlib tests. [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by ~40 agent products by May 2026.
+
+---
+
+## Which plugin do I need?
+
+| Your job-to-be-done | Install | What's in the box |
+|---|---|---|
+| **Run end-to-end brand-strategy engagements across a portfolio** (agencies, in-house, consultants) | [`digital-marketing-pro`](https://github.com/indranilbanerjee/digital-marketing-pro) | 158 skills · 25 agents · 12-Part Strategy Flow · 6-platform AEO/GEO · EU AI Act Article 50 · Cowork-team-persistent · multi-brand · multi-jurisdiction compliance |
+| **Produce publish-ready long-form content** (blog posts, white papers, case studies, executive briefs) | [`contentforge`](https://github.com/indranilbanerjee/contentforge) | 21 skills · 13 agents · 11 quality gates · 29-pattern AI humanizer · fact-checker · real `.docx` output · C2PA signing |
+| **Produce social media assets at agency scale** (carousels, single-image posts, AI image / video creatives) | [`socialforge`](https://github.com/indranilbanerjee/socialforge) | 16 skills · 25 commands · asset-first compositing · AI image (Vertex AI Nano Banana Pro) · AI video (Kling v3.0 Pro) · C2PA signing |
+
+**The three plugins are complementary, not overlapping.** A typical agency workflow uses all three: DMP for strategy + campaign planning, ContentForge for the long-form articles a campaign produces, SocialForge for the social assets a campaign produces. All three share the same brand-state directory (`~/.claude-marketing/<brand>/`) so a brand profile created in DMP is immediately picked up by CF and SF.
+
+---
+
+## Who this suite is for
+
+| If you're a... | Why this matters |
+|---|---|
+| 🏢 **Marketing agency** (50–200 brands) | One toolchain across every client, audit-trail compliance, new-hire onboarding from 6 weeks → 6 hours, Cowork team persistence so your senior strategists work in browser-based Cowork while your team Drive has every artifact. |
+| 👔 **In-house marketing team** | Single canonical strategy document underwriting every campaign + content piece. No more "the deck and the blog post say different things." |
+| 🚀 **Marketing automation builder** (n8n / Zapier / Make / Pipedream) | DMP's connector-resolver + executor pattern. 8 verified HTTP connectors execute end-to-end; 25 more return manifest-ready specs for OAuth-mediated platforms. |
+| 💼 **Solo consultant** / freelance marketer | Per-engagement billing model: 50–60 canonical files for $15–40 of API spend in ~60 minutes. Installs on Codex / Cursor / Copilot CLI / Antigravity for terminal-native or IDE-native workflows. |
+| 📈 **Growth team** / product marketer | Funnel architecture, attribution, MMM, incrementality testing, retention, churn — all anchored to the strategy document. |
+| 🛡 **Compliance-led marketer** (EU · UK · India · Brazil · California) | EU AI Act Article 50, C2PA content provenance, deepfake disclosure, GDPR + CCPA + DPDPA + LGPD + 12 more jurisdictions baked into every output. |
 
 ---
 

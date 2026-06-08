@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.11.1] - 2026-06-08
+
+**Documentation + discoverability polish — DMP v3.12.1. No runtime changes.**
+
+Added across the suite for market-readiness and search visibility:
+
+- **Marketplace README "Which plugin do I need?" decision matrix** at the top — three-row job-to-be-done table mapping each user goal to the right plugin (DMP / CF / SF) with a one-line summary of what's in each box. Sets up the suite-level value proposition before the longer surface-by-surface install instructions.
+- **Marketplace README "Who this suite is for"** — audience-segmented table covering agencies, in-house teams, automation builders, solo consultants, growth teams, and compliance-led marketers.
+- **Recent-release callout** at the top of marketplace README so visitors see freshness signal immediately.
+- **Total-skills-across-suite badge** (195) for top-of-fold scale signal.
+- **GitHub repo descriptions refreshed** across all 4 repos (DMP / CF / SF / marketplace) for stronger Google search snippets — DMP now correctly says 158 skills (was claiming 150) plus audience callout ("for agencies & in-house teams") + "Cowork team-persistent" badge.
+- **GitHub topics refreshed** with SEO-targeted additions: `claude-skills`, `marketing-agency` on all 4 repos.
+
+DMP shipped corresponding docs upgrade as v3.12.1 (audience use-cases section, comparison-vs-alternatives table, real-workflow copy-paste examples, recent-release callout, 2 new FAQ entries, fixed stale v3.8.0 anchor).
+
 ## [3.11.0] - 2026-06-08
 
 **DMP v3.12.0 — Cowork persistence, fallback models, model-freshness, tests.**
