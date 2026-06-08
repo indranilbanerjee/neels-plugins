@@ -4,14 +4,14 @@
 
 Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, and **Google Antigravity 2.0** — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.12.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.12.1-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-195%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
 [![Surfaces](https://img.shields.io/badge/DMP%20on-8%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
 
-> 🆕 **June 9, 2026 — marketplace v3.12.0 (DMP v3.13.0):** DMP now ships **native Hermes Agent** + **native OpenClaw** plugins. Plus documented compatibility with **35 additional Agent Skills platforms** (Goose, OpenHands, Junie, Roo Code, Gemini CLI, Kiro, Letta, and 28 more). 70-test stdlib suite. [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
+> 🆕 **June 9, 2026 — marketplace v3.12.1 (DMP v3.13.1):** Test suite expanded **70 → 114** with cross-manifest drift detection · new **Troubleshooting** section covers all 8 native platforms · new **5-minute non-developer path** for marketers. [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by ~40 agent products by May 2026.
 

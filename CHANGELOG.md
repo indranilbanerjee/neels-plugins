@@ -5,6 +5,27 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.12.1] - 2026-06-09
+
+**DMP v3.13.1 — Test infrastructure hardening + user-friendliness polish. No runtime changes.**
+
+DMP bumped 3.13.0 → **3.13.1**. CF + SF unchanged.
+
+### What's new in DMP v3.13.1
+
+- **Test suite expanded: 70 → 114 (all passing).** Three new modules with stdlib-unittest:
+  - `tests/test_release_consistency.py` (25 tests) — catches cross-manifest version drift, README badge staleness, CHANGELOG out-of-sync, install commands going missing, critical sections going missing, broken anchor links. The Troubleshooting section's 8-platform coverage is auto-verified.
+  - `tests/test_hermes_edge_cases.py` (10 tests) — Hermes adapter under adverse conditions: missing skills/ directory, empty skills/, malformed YAML frontmatter, `ctx.register_skill` raising per-skill, `ctx=None`, colliding skill names. The adapter never crashes.
+  - `tests/test_openclaw_manifest.py` hardened (6 new tests) — deeper schema validation, kebab-case id check, cross-manifest id-name consistency.
+- **New README "Get started in 5 minutes (non-developer path)"** — 5-step Cowork-based install for marketers who don't live in a terminal. From "click marketplace link" to "12-Part Strategy Flow running" without touching the command line.
+- **New README "Troubleshooting"** — covers common install + first-run issues for all 8 native platforms. Every issue has the exact fix command.
+
+### Files changed
+- `digital-marketing-pro` v3.13.0 → **v3.13.1**
+- All 4 marketplace JSONs bumped: top-level metadata.version 3.12.0 → 3.12.1, DMP entry 3.13.0 → 3.13.1
+- ContentForge unchanged at v3.14.0
+- SocialForge unchanged at v1.11.0
+
 ## [3.12.0] - 2026-06-09
 
 **DMP v3.13.0 — Multi-harness expansion: native Hermes Agent + OpenClaw + 40+ Agent Skills platforms.**
