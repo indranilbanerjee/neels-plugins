@@ -5,6 +5,33 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.11.0] - 2026-06-08
+
+**DMP v3.12.0 — Cowork persistence, fallback models, model-freshness, tests.**
+
+DMP bumped 3.11.0 → **3.12.0**. CF + SF unchanged.
+
+### What's new in DMP v3.12.0
+
+Research-grounded hardening pass after web research confirmed that `${CLAUDE_PLUGIN_DATA}` is NOT persistent across Anthropic Cowork sessions (GitHub issue #51398). Highlights:
+
+- **New `/digital-marketing-pro:cowork-setup` skill + command** — routes brand state through a Google Drive MCP so profiles, plans, and reports survive across Cowork sessions. Mirrors the ContentForge `cf-cowork-setup` pattern. Multi-team isolation via per-team folder names.
+- **`fallbackModel` resilience chain** in `settings.json.example` — Sonnet 4.7 → Sonnet 4.6 → Haiku 4.5. Uses Claude Code v2.1.152's `fallbackModel` setting.
+- **`requiredMinimumVersion: 2.1.157`** in plugin.json — Claude Code refuses to load DMP on older builds.
+- **Model-registry freshness + Cowork+Drive routing status** added to `/digital-marketing-pro:doctor`.
+- **`disable-model-invocation: true`** on 5 true side-effect commands (execute-action, cowork-setup, resume, check, output-folder) for context efficiency.
+- **3 "Read all" eager-load anti-patterns fixed** + Context efficiency callouts on 3 more top-heaviest skills.
+- **CI line-count guard** (`scripts/skill-line-check.py`) keeps every SKILL.md under the documented 500-line guideline.
+- **Test suite** — 49 stdlib-unittest tests covering resolve_model, drive-sync-state, plugin-metadata, skill-line-check, connector_resolver. **All 49 passing.**
+
+Skill count: 157 → **158**.
+
+### Files changed
+- `digital-marketing-pro` v3.11.0 → **v3.12.0**
+- All 4 marketplace JSONs bumped: top-level metadata.version 3.10.0 → 3.11.0, DMP entry 3.11.0 → 3.12.0
+- ContentForge unchanged at v3.14.0
+- SocialForge unchanged at v1.11.0
+
 ## [3.10.0] - 2026-06-04
 
 **DMP v3.11.0 — SEO skill expansion + workflow discipline.**

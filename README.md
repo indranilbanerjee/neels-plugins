@@ -14,30 +14,41 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 
 ---
 
-## What's new in v3.10.0 (June 4, 2026) — DMP v3.11.0 SEO expansion
+## What's new in v3.11.0 (June 8, 2026) — DMP v3.12.0 Cowork persistence + hardening
 
-Coordinated release. **DMP bumped 3.10.1 → 3.11.0.** CF + SF unchanged.
+Coordinated release. **DMP bumped 3.11.0 → 3.12.0.** CF + SF unchanged.
 
-### DMP ships 3 new SEO skills + 3 supporting Python scripts
+Research-grounded hardening pass after web research confirmed `${CLAUDE_PLUGIN_DATA}` is NOT persistent across Anthropic Cowork sessions (GitHub issue #51398). The earlier planned path-migration would NOT have fixed the bug.
 
-- **`/digital-marketing-pro:keyword-cluster`** — SERP-overlap clustering into pillar+spokes architecture. Four-gate quality scorecard (cannibalisation / orphan / coverage / anchor_diversity).
-- **`/digital-marketing-pro:backlink-gap`** — competitor backlink gap with link-prospect priority scoring (DR + link-overlap + traffic + topical relevance). Auto-detects Ahrefs / Semrush / SE Ranking / Moz exports.
-- **`/digital-marketing-pro:seo-drift`** — snapshot diff (GSC / GSC AI Performance / rank trackers / AEO probes). Auto-classifies growth / decline / reshuffle / stable / new / lost.
+### DMP ships a new `/digital-marketing-pro:cowork-setup` skill
 
-### Pattern upgrades across 10 existing SEO skills
+Routes brand state through a Google Drive MCP so profiles, plans, and reports survive across Cowork sessions. Mirrors the proven ContentForge `cf-cowork-setup` pattern. Multi-team isolation via per-team folder names. Falls back to local-only mode on Claude Code.
 
-- `/digital-marketing-pro:seo-plan` is now a **Confirm-Then-Dispatch dispatcher** — detects fresh specialist outputs (≤30 days), single Y/N prompt (default N) before fan-out, 4-pillar scoring (Technical / Content / Topical / AI Search), the weakest pillar drives the next quarter's lead theme.
-- **Numbered intermediate-file output convention** across 5 heavy workflows — `00-input.md` → `01-...md` → … → `PLAN.md` for resumable, auditable execution.
-- **Quality scorecards** with named gates in 5 skills.
-- **Tips & caveats sections** in 10 SEO skills total.
-- New "How the SEO skills chain together" section in [DMP README](https://github.com/indranilbanerjee/digital-marketing-pro#how-the-seo-skills-chain-together) — 4 canonical workflows documented.
+### Platform feature uptake
+
+- **`fallbackModel`** ready in `settings.json.example` (Sonnet 4.7 → Sonnet 4.6 → Haiku 4.5) — uses Claude Code v2.1.152's resilience chain.
+- **`requiredMinimumVersion: 2.1.157`** in plugin.json — older Claude Code builds get a clear upgrade prompt instead of silent feature gaps. From Claude Code v2.1.163.
+- **`disable-model-invocation: true`** on 5 true side-effect commands — context-budget savings without breaking natural-language entry points.
+
+### Hardening + tests
+
+- Model-registry freshness check in `/digital-marketing-pro:doctor` (severity bands: ok / warn / urgent), surfacing the exact `refresh_models.py` invocation when stale.
+- Cowork+Drive routing status in `/doctor` flags `urgent` when Cowork is detected but `cowork-setup` hasn't run.
+- 3 "Read all" eager-load anti-patterns fixed in `growth-plan`, `client-validation-document`, `continuous-improvement-loop`.
+- 3 more top-heaviest skills got Context efficiency callouts (`seo-plan`, `content-engine`, `analytics-insights`).
+- CI line-count guard (`scripts/skill-line-check.py`) — all 158 skills under 500-line threshold.
+- **49 stdlib-unittest tests** (zero third-party deps) covering `resolve_model`, `drive-sync-state`, `plugin-metadata`, `skill-line-check`, `connector_resolver`. All passing.
 
 ### Skill counts
 
-- **DMP: 154 → 157** (+3 from new SEO skills)
+- **DMP: 157 → 158** (+1 cowork-setup)
 - CF: 21 (unchanged)
 - SF: 16 (unchanged)
-- **Total: 194 across the suite, all passing Codex `[a-z0-9-]+` regex**
+- **Total: 195 across the suite, all passing Codex `[a-z0-9-]+` regex**
+
+## What's new in v3.10.0 (June 4, 2026) — DMP v3.11.0 SEO expansion
+
+DMP bumped 3.10.1 → 3.11.0. CF + SF unchanged. Three new SEO skills (keyword-cluster / backlink-gap / seo-drift) + pattern upgrades across 10 existing SEO skills (Confirm-Then-Dispatch dispatcher, numbered intermediate-file output, quality scorecards). See [DMP CHANGELOG.md](https://github.com/indranilbanerjee/digital-marketing-pro/blob/main/CHANGELOG.md) for the full entry.
 
 ## What's new in v3.9.0 (June 4, 2026)
 
