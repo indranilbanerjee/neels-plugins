@@ -5,6 +5,39 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.13.0] - 2026-06-09
+
+**Suite-wide multi-harness parity: CF v3.15.0 + SF v1.12.0 — Hermes + OpenClaw + tests for both.**
+
+DMP already shipped Hermes + OpenClaw + tests in v3.13.0/v3.13.1. This release brings ContentForge + SocialForge into parity so the whole suite behaves consistently across all 8 native platforms.
+
+### ContentForge v3.14.0 → **v3.15.0**
+
+- Native Hermes Agent plugin — `plugin.yaml` + `__init__.py` at repo root. Adapter walks `skills/` and registers all 21 ContentForge skills via `ctx.register_skill()`. Defensive coding (stdlib only, never raises). Install: `hermes plugins install indranilbanerjee/contentforge`.
+- Native OpenClaw manifest — `openclaw.plugin.json` at repo root. `skills: ["./skills"]`. Install: `openclaw plugins install git:github.com/indranilbanerjee/contentforge`.
+- Test suite (0 → 23): Hermes adapter validation + OpenClaw manifest validation + cross-manifest version consistency. `python tests/run_all.py` → 23/23 passing.
+- README "Supported surfaces" table: 6 rows → 8 (added Hermes + OpenClaw) + 35+ Agent Skills platforms callout.
+
+### SocialForge v1.11.0 → **v1.12.0**
+
+- Native Hermes Agent plugin — `plugin.yaml` + `__init__.py` at repo root. Adapter walks `skills/` and registers all 16 SocialForge skills. Install: `hermes plugins install indranilbanerjee/socialforge`.
+- Native OpenClaw manifest — `openclaw.plugin.json` at repo root. Install: `openclaw plugins install git:github.com/indranilbanerjee/socialforge`.
+- Test suite (0 → 23): same structure as CF. `python tests/run_all.py` → 23/23 passing.
+- README "Supported surfaces" table: 6 rows → 8 + 35+ Agent Skills platforms callout.
+
+### Suite total now
+
+- Native platforms across all 3 plugins: **8** (Claude Code · Cowork · Codex · Cursor · Copilot CLI · Antigravity · Hermes · OpenClaw)
+- Documented Agent Skills coverage: **41+ platforms** for any of the 3 plugins
+- Test suites across the 3 plugins: **DMP 114** + CF 23 + SF 23 = **160 tests passing**
+- Marketplace bumped to v3.13.0 covering all 3 entries
+
+### Files changed
+- `digital-marketing-pro` unchanged at **v3.13.1**
+- `contentforge` v3.14.0 → **v3.15.0**
+- `socialforge` v1.11.0 → **v1.12.0**
+- 4 marketplace JSONs: top-level metadata.version 3.12.1 → 3.13.0
+
 ## [3.12.1] - 2026-06-09
 
 **DMP v3.13.1 — Test infrastructure hardening + user-friendliness polish. No runtime changes.**

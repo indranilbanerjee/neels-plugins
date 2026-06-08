@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Three open-source marketing plugins — Digital Marketing Pro, ContentForge, SocialForge. Runs on Claude Code, Codex, Cursor, Antigravity. MIT-licensed.",
-    "version": "3.12.1",
+    "version": "3.13.0",
     "homepage": "https://github.com/indranilbanerjee/neels-plugins",
     "license": "MIT"
   },
@@ -20,14 +20,14 @@
     {
       "name": "contentforge",
       "source": "https://github.com/indranilbanerjee/contentforge",
-      "description": "Open-source enterprise content pipeline — 21 skills, 13 agents, 29-pattern AI humanizer, real .docx output. Runs on Claude Code, Codex, Cursor, Antigravity.",
-      "version": "3.14.0"
+      "description": "Open-source enterprise content production plugin — 21 skills, 13 agents, 11 quality gates, 29-pattern AI humanizer, fact-checker, real .docx output with C2PA signing (EU AI Act Article 50). Now native on Hermes Agent + OpenClaw. Installs on Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes, OpenClaw + 35+ Agent Skills platforms.",
+      "version": "3.15.0"
     },
     {
       "name": "socialforge",
       "source": "https://github.com/indranilbanerjee/socialforge",
-      "description": "Open-source social media engine — asset-first compositing, AI image+video, 7-platform copy adaptation. Runs on Claude Code, Codex, Cursor, Antigravity.",
-      "version": "1.11.0"
+      "description": "Open-source agency-grade social media production plugin — 16 skills, 25 commands, AI image (Nano Banana Pro) + AI video (Kling v3.0 Pro) + C2PA signing (EU AI Act Article 50). Now native on Hermes Agent + OpenClaw. Installs on Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes, OpenClaw + 35+ Agent Skills platforms.",
+      "version": "1.12.0"
     }
   ]
 }
