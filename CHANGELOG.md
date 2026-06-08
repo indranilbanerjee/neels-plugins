@@ -5,6 +5,34 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.10.0] - 2026-06-04
+
+**DMP v3.11.0 — SEO skill expansion + workflow discipline.**
+
+DMP bumped 3.10.1 → **3.11.0**. CF + SF unchanged.
+
+### What's new in DMP v3.11.0
+
+- **3 new SEO skills + 3 new Python scripts:**
+  - `/digital-marketing-pro:keyword-cluster` — pillar+spokes architecture via SERP-overlap clustering with 4-gate quality scorecard
+  - `/digital-marketing-pro:backlink-gap` — competitor backlink-gap analysis with link-prospect priority scoring
+  - `/digital-marketing-pro:seo-drift` — snapshot diff across GSC / GSC AI / rank trackers / AEO probes
+- **`/digital-marketing-pro:seo-plan` is now a Confirm-Then-Dispatch dispatcher** — reads fresh specialist outputs (≤30 days), scores 4 pillars (Technical / Content / Topical / AI Search), uses the weakest pillar as the next quarter's lead theme
+- **Numbered intermediate-file output convention** standardised across 5 heavy SEO workflows — every skill writes `00-input.md`, `01-...md`, …, `PLAN.md` so downstream skills can consume any intermediate file
+- **Quality scorecards** with named gates added to 5 heavy skills — outputs don't ship `status: ready` until gates pass
+- **Tips & caveats sections** added to 10 SEO skills total
+
+Skill count: 154 → **157**. 194/194 skills still pass Codex `[a-z0-9-]+` regex.
+
+### How to update
+
+```bash
+/plugin update digital-marketing-pro@neels-plugins
+/reload-plugins
+```
+
+If on Cowork / claude.ai / Desktop: Plugins panel → Update.
+
 ## [3.9.1] - 2026-06-04
 
 **Coordinated patch: DMP icon + composerIcon for awesome-codex-plugins listing.**
