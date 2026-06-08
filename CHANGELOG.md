@@ -5,6 +5,29 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.12.0] - 2026-06-09
+
+**DMP v3.13.0 — Multi-harness expansion: native Hermes Agent + OpenClaw + 40+ Agent Skills platforms.**
+
+DMP bumped 3.12.1 → **3.13.0**. CF + SF unchanged.
+
+### What's new in DMP v3.13.0
+
+Research-first build pass — every native-manifest claim verified against the platform's official spec docs before any code shipped:
+
+- **Native Hermes Agent plugin** — `plugin.yaml` + `__init__.py` at the DMP repo root. The Python adapter walks `skills/` at register time and exposes all 158 marketing skills to Hermes via `ctx.register_skill()`. Defensive coding (stdlib only, never raises). Install: `hermes plugins install indranilbanerjee/digital-marketing-pro`. Targets Hermes Desktop v0.15.2 (public preview June 2 2026).
+- **Native OpenClaw manifest** — `openclaw.plugin.json` at the DMP repo root. Required `id` + `configSchema`, optional `skills: ["./skills"]` points OpenClaw at our 158 marketing skills. Install: `openclaw plugins install git:github.com/indranilbanerjee/digital-marketing-pro`.
+- **35 additional Agent Skills platforms documented** in README — Goose (Block), OpenHands, OpenCode (sst), Junie (JetBrains), Gemini CLI (Google), Roo Code, Cline / Windsurf, Kiro, Amp, Letta, Mux (Coder), Factory, Workshop, Tabnine, Mistral Vibe, Emdash, Superconductor, Ona, VT Code, Qodo, Piebald, Autohand Code CLI, pi, Command Code, TRAE (ByteDance), Firebender, bub, fast-agent, nanobot (HKUDS), Vita, Snowflake Cortex Code, Databricks Genie Code, Laravel Boost, Spring AI, Agentman, Google AI Edge Gallery.
+- **Test count: 49 → 70.** 21 new stdlib-unittest tests cover the Hermes `plugin.yaml` schema, `__init__.py` import + `register(ctx)` against mock context (all 158 skills register), graceful-degradation on bad ctx, and the OpenClaw manifest schema (id + configSchema required, skills field points at `./skills`, no unexpected fields). All passing.
+
+Native platforms: **6 → 8**. Documented Agent Skills coverage: **6 → 41+**. Zero impact on existing Claude Code / Cowork / Codex / Cursor / Copilot / Antigravity behavior — each platform reads its own manifest path and ignores the others.
+
+### Files changed
+- `digital-marketing-pro` v3.12.1 → **v3.13.0**
+- All 4 marketplace JSONs bumped: top-level metadata.version 3.11.1 → 3.12.0, DMP entry 3.12.1 → 3.13.0
+- ContentForge unchanged at v3.14.0
+- SocialForge unchanged at v1.11.0
+
 ## [3.11.1] - 2026-06-08
 
 **Documentation + discoverability polish — DMP v3.12.1. No runtime changes.**
