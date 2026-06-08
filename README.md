@@ -4,15 +4,15 @@
 
 Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, and **OpenClaw** + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.13.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.13.1-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-195%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-160%20across%20suite-brightgreen.svg)](#whats-new)
+[![Total tests](https://img.shields.io/badge/tests-221%20across%20suite-brightgreen.svg)](#whats-new)
 [![Surfaces](https://img.shields.io/badge/all%203%20plugins-8%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
 
-> 🆕 **June 9, 2026 — marketplace v3.13.0:** Suite-wide parity — **ContentForge v3.15.0 + SocialForge v1.12.0** now ship native **Hermes Agent + OpenClaw** support, matching DMP v3.13.1. All 3 plugins on all 8 native platforms · **160 tests passing** across the suite (DMP 114 + CF 23 + SF 23). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
+> 🆕 **June 9, 2026 — marketplace v3.13.1:** Test-infra polish across the suite — **CF v3.15.1 + SF v1.12.1** add release-consistency suites (+61 tests). Suite total **221 tests passing** (DMP 114 + CF 53 + SF 54). Every cross-manifest version drift, broken anchor, stale install command, and missing critical section is now caught by `python -m unittest discover -s tests` before it ships. v3.13.0 (earlier today) brought CF + SF to native **Hermes Agent + OpenClaw** parity with DMP. All 3 plugins on all **8 native platforms + 35+ Agent Skills clients**. [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -44,6 +44,17 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 ---
 
 ## What's new
+
+### v3.13.1 (June 9, 2026) — Suite-wide test-infrastructure polish
+
+CF v3.15.0 → **v3.15.1** + SF v1.12.0 → **v1.12.1**. DMP unchanged at v3.13.1. Mirrors DMP's v3.13.1 test-infra polish into the other two plugins.
+
+- **CF release-consistency suite** added (`tests/test_release_consistency.py`, +30 tests; CF total **23 → 53**)
+- **SF release-consistency suite** added (+31 tests; SF total **23 → 54**)
+- **Suite total: 160 → 221 tests** passing (DMP 114 + CF 53 + SF 54)
+- Each suite catches: cross-manifest version drift (7 manifest files per plugin), README badge staleness, hero-callout drift, CHANGELOG out-of-sync, install commands going missing, critical README sections going missing, internal anchor links pointing at non-existent headings, byte-identical description sharing across the 5 Claude-family manifests, and skill-count claims that don't match `skills/` directory contents
+- **SF descriptions sharpened**: all 5 Claude-family manifests now lead with `16 skills` (was a generic feature list) — better marketplace search relevance + the new test enforces the count going forward
+- **SF README** fixed: broken internal anchor `#current-release-v182` re-pointed at the live Current Release section
 
 ### v3.13.0 (June 9, 2026) — Suite-wide multi-harness parity
 
@@ -121,8 +132,8 @@ To update manually instead, see the [Updating](#updating) section below.
 | Plugin | Version | What it does |
 |--------|---------|--------------|
 | **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.8.0 | The most comprehensive open-source AI marketing plugin — 153 skills, 25 specialist agents, 12-Part Strategy Flow producing the Four Core Documents (61 explicit steps), Two-Views Model, Decision Matrix, Living Project Instruction File. Built for marketing agencies, in-house teams running 50–200 brands, and consultancies. EU AI Act Article 50 ready (C2PA content provenance signing). 6-platform AEO/GEO audit including Google AI Mode. 16 privacy-law jurisdictions. 14 HTTP MCP connectors, 77 Python scripts (optional), 167 reference knowledge files, 14 top-level slash commands. v3.7.11 closes the connector-resolver loop with a stdlib urllib HTTP executor that fires manifests against real APIs for 8 verified connectors. Test harnesses: 44/44 pass. **v3.8.0** adds real native manifests for Codex / Antigravity / Cursor / Copilot CLI. |
-| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 3.13.0 | Open-source enterprise content production pipeline — 19 skills, 13 specialist agents, 11 quality gates, 29-pattern AI-detection humanizer, fact-checker subagent, three-category internal linking (topical / commercial / authority), real .docx output with embedded SEO + Quality + Production + Internal-Link appendices. EU AI Act Article 50 ready via `--c2pa-sign` on `scripts/generate-docx.py`. v3.12.10 closed three Cowork-with-Drive roadmap items (cross-session checkpoint resume, brand-profile read-back from Drive, multi-team namespace isolation). 16 opt-in HTTP MCP connectors catalogued in `.mcp.json.connectors-reference`. **v3.13.0** adds real native manifests for Codex / Antigravity / Cursor / Copilot CLI. |
-| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.9.0 | Open-source agency-grade social media production engine — calendar parsing, asset-first compositing, AI image generation (Vertex AI Nano Banana Pro), AI video generation (WaveSpeed Kling v3.0 Pro), multi-platform copy adaptation (Instagram, TikTok, LinkedIn, Threads, X, Facebook, YouTube Shorts), human-in-the-loop review galleries, C2PA signing for EU AI Act Article 50 compliance. 16 skills, 25 commands, 5 agents, 22 scripts, 10 HTTP MCP connectors (all Cowork-compatible), 0 global hooks. Four creative modes (ANCHOR_COMPOSE / ENHANCE_EXTEND / STYLE_REFERENCED / PURE_CREATIVE). May 2026 channel pack. **v1.9.0** adds real native manifests for Codex / Antigravity / Cursor / Copilot CLI. |
+| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 3.15.1 | Open-source enterprise content production pipeline — **21 skills**, 13 specialist agents, 11 quality gates, 29-pattern AI-detection humanizer, fact-checker subagent, three-category internal linking (topical / commercial / authority), real .docx output with embedded SEO + Quality + Production + Internal-Link appendices. EU AI Act Article 50 ready via `--c2pa-sign` on `scripts/generate-docx.py`. 16 opt-in HTTP MCP connectors catalogued in `.mcp.json.connectors-reference`. **v3.15.x** ships real native manifests for Codex / Antigravity / Cursor / Copilot CLI / Hermes Agent / OpenClaw — installs on all 8 native platforms + 35+ Agent Skills clients. **53 tests** passing (release-consistency suite added in v3.15.1). |
+| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.12.1 | Open-source agency-grade social media production engine — calendar parsing, asset-first compositing, AI image generation (Vertex AI Nano Banana Pro), AI video generation (WaveSpeed Kling v3.0 Pro), multi-platform copy adaptation (Instagram, TikTok, LinkedIn, Threads, X, Facebook, YouTube Shorts), human-in-the-loop review galleries, C2PA signing for EU AI Act Article 50 compliance. **16 skills**, 25 commands, 5 agents, 22 scripts, 10 HTTP MCP connectors (all Cowork-compatible), 0 global hooks. Four creative modes (ANCHOR_COMPOSE / ENHANCE_EXTEND / STYLE_REFERENCED / PURE_CREATIVE). **v1.12.x** ships real native manifests for Codex / Antigravity / Cursor / Copilot CLI / Hermes Agent / OpenClaw — installs on all 8 native platforms + 35+ Agent Skills clients. **54 tests** passing (release-consistency suite added in v1.12.1). |
 
 > **v3.7.0 (2026-05-27): real native manifests for 5 surfaces.** Ships verified-real manifests for OpenAI Codex (`.codex-plugin/plugin.json` per the published OpenAI schema), Google Antigravity 2.0 (`gemini-extension.json` at repo root per Google's `gemini-cli-extensions/data-agent-kit-starter-pack` reference pattern), Cursor 2.5+ (`.cursor-plugin/plugin.json` per the verified Cursor JSON Schema), and GitHub Copilot CLI (`.github/plugin/plugin.json` per the verified GitHub schema). All three plugins ship matching native manifests in their own repos at the same version bump (DMP 3.8.0 / CF 3.13.0 / SF 1.9.0). Replaces the v3.5-v3.6 era invented manifests that were correctly removed in marketplace v3.6.0 on 2026-05-26. Pre-flight verified: all 190 skills across the 3 plugins pass the Codex `[a-z0-9-]` regex.
 

@@ -5,6 +5,42 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.13.1] - 2026-06-09
+
+**Suite-wide test-infrastructure polish: CF v3.15.1 + SF v1.12.1.**
+
+Mirrors DMP's v3.13.1 release-consistency suite into the other two plugins. Same pattern, same defensive-test style. DMP unchanged at v3.13.1.
+
+### ContentForge v3.15.0 → **v3.15.1**
+
+- New `tests/test_release_consistency.py` (+30 tests; CF total **23 → 53** passing).
+- Covers: 7-manifest version sync, README version-badge sync, README "Just shipped" callout sync, README `## Supported surfaces (vX.Y.Z)` section sync, CHANGELOG header sync, byte-identical descriptions across 5 Claude-family manifests, description mentions actual `21 skills` count, README test-count badge matches reality, 7 native-platform install commands present, 12 critical README sections present, every internal anchor link resolves.
+- README hero "Just shipped" callout updated for v3.15.1 + 53 tests.
+- Test badge bumped 23 → 53.
+
+### SocialForge v1.12.0 → **v1.12.1**
+
+- New `tests/test_release_consistency.py` (+31 tests; SF total **23 → 54** passing).
+- Same checks as CF plus one extra: `## Current Release (vX.Y.Z)` section header must match canonical version (SF's release-notes layout puts the current release in a top-level heading rather than CF's "Release notes" subsection).
+- **Description sharpening**: all 5 Claude-family manifests now lead descriptions with `16 skills` — improves marketplace search relevance + the new test enforces the count going forward.
+- **Fixed**: broken internal anchor `#current-release-v182` (pointed at a renamed v1.8.2 section) re-pointed at the live Current Release section.
+- README hero "Just shipped" callout updated for v1.12.1 + 54 tests.
+- Test badge bumped 23 → 54.
+
+### Marketplace v3.13.0 → **v3.13.1**
+
+- All 4 `marketplace.json` entries (Claude / Cursor / Codex / Copilot) bumped: top-level metadata.version 3.13.0 → 3.13.1, CF plugin entry 3.15.0 → 3.15.1, SF plugin entry 1.12.0 → 1.12.1. DMP unchanged at 3.13.1.
+- README hero callout + plugin table refreshed with current version numbers, current skill counts, current test counts.
+- README badges: version 3.13.0 → 3.13.1, total tests 160 → 221.
+
+### Suite totals after this release
+
+- **All 3 plugins on 8 native platforms** (unchanged from v3.13.0)
+- **221 tests passing** across the suite (DMP 114 + CF 53 + SF 54) — was 160 before
+- **195 skills** across the suite (DMP 158 + CF 21 + SF 16) — unchanged
+
+---
+
 ## [3.13.0] - 2026-06-09
 
 **Suite-wide multi-harness parity: CF v3.15.0 + SF v1.12.0 — Hermes + OpenClaw + tests for both.**
