@@ -2,18 +2,19 @@
 
 > **You run marketing for a single brand, an agency portfolio, or a content team — and you want the same depth across every brand, every article, every campaign, with no per-platform lock-in. You don't want to learn six different "AI marketing" SaaS UIs that all charge per-seat per-month.**
 
-Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, and **Google Antigravity 2.0** — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
+Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, and **OpenClaw** + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
 [![Version](https://img.shields.io/badge/version-3.13.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-195%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Surfaces](https://img.shields.io/badge/DMP%20on-8%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
+[![Total tests](https://img.shields.io/badge/tests-160%20across%20suite-brightgreen.svg)](#whats-new)
+[![Surfaces](https://img.shields.io/badge/all%203%20plugins-8%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
 
 > 🆕 **June 9, 2026 — marketplace v3.13.0:** Suite-wide parity — **ContentForge v3.15.0 + SocialForge v1.12.0** now ship native **Hermes Agent + OpenClaw** support, matching DMP v3.13.1. All 3 plugins on all 8 native platforms · **160 tests passing** across the suite (DMP 114 + CF 23 + SF 23). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 
-A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by ~40 agent products by May 2026.
+A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
 ---
 
@@ -42,37 +43,31 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 
 ---
 
-## What's new in v3.11.0 (June 8, 2026) — DMP v3.12.0 Cowork persistence + hardening
+## What's new
 
-Coordinated release. **DMP bumped 3.11.0 → 3.12.0.** CF + SF unchanged.
+### v3.13.0 (June 9, 2026) — Suite-wide multi-harness parity
 
-Research-grounded hardening pass after web research confirmed `${CLAUDE_PLUGIN_DATA}` is NOT persistent across Anthropic Cowork sessions (GitHub issue #51398). The earlier planned path-migration would NOT have fixed the bug.
+CF v3.14.0 → **v3.15.0** + SF v1.11.0 → **v1.12.0**. DMP unchanged at v3.13.1. Brings ContentForge + SocialForge into native Hermes Agent + native OpenClaw parity with DMP. Now all 3 plugins ship `plugin.yaml` + `__init__.py` (Hermes adapter) + `openclaw.plugin.json` at their repo root, plus a stdlib-unittest suite.
 
-### DMP ships a new `/digital-marketing-pro:cowork-setup` skill
+- **All 3 plugins now on 8 native platforms** (Claude Code · Cowork · Codex · Cursor · Copilot CLI · Antigravity · Hermes Agent · OpenClaw) + 35+ Agent Skills clients
+- **Tests across the suite: 160 passing** (DMP 114 + CF 23 + SF 23) — was 0 in CF + SF before this release
+- Skill counts unchanged: DMP 158 + CF 21 + SF 16 = **195 total**
 
-Routes brand state through a Google Drive MCP so profiles, plans, and reports survive across Cowork sessions. Mirrors the proven ContentForge `cf-cowork-setup` pattern. Multi-team isolation via per-team folder names. Falls back to local-only mode on Claude Code.
+### v3.12.1 (June 9, 2026) — DMP test infrastructure hardening
 
-### Platform feature uptake
+DMP v3.13.0 → **v3.13.1**. CF + SF unchanged. Test suite expanded 70 → 114 with cross-manifest drift detection. New `tests/test_release_consistency.py` (25 tests) catches version drift, README badge staleness, CHANGELOG out-of-sync, install commands going missing, critical sections going missing, broken anchor links. New `tests/test_hermes_edge_cases.py` (10 tests) for adapter resilience. New README sections: "Get started in 5 minutes (non-developer path)" + "Troubleshooting" covering all 8 native platforms.
 
-- **`fallbackModel`** ready in `settings.json.example` (Sonnet 4.7 → Sonnet 4.6 → Haiku 4.5) — uses Claude Code v2.1.152's resilience chain.
-- **`requiredMinimumVersion: 2.1.157`** in plugin.json — older Claude Code builds get a clear upgrade prompt instead of silent feature gaps. From Claude Code v2.1.163.
-- **`disable-model-invocation: true`** on 5 true side-effect commands — context-budget savings without breaking natural-language entry points.
+### v3.12.0 (June 9, 2026) — DMP Hermes Agent + OpenClaw + 40+ Agent Skills
 
-### Hardening + tests
+DMP v3.12.1 → **v3.13.0**. CF + SF unchanged. Native Hermes Agent plugin (plugin.yaml + Python adapter at repo root walking skills/ and registering via `ctx.register_skill()`). Native OpenClaw manifest (openclaw.plugin.json with skills: `["./skills"]`). 35 additional Agent Skills platforms documented (Goose, OpenHands, OpenCode, Junie, Gemini CLI, Roo Code, Kiro, Letta, Amp, and 26 more). Test count 49 → 70.
 
-- Model-registry freshness check in `/digital-marketing-pro:doctor` (severity bands: ok / warn / urgent), surfacing the exact `refresh_models.py` invocation when stale.
-- Cowork+Drive routing status in `/doctor` flags `urgent` when Cowork is detected but `cowork-setup` hasn't run.
-- 3 "Read all" eager-load anti-patterns fixed in `growth-plan`, `client-validation-document`, `continuous-improvement-loop`.
-- 3 more top-heaviest skills got Context efficiency callouts (`seo-plan`, `content-engine`, `analytics-insights`).
-- CI line-count guard (`scripts/skill-line-check.py`) — all 158 skills under 500-line threshold.
-- **49 stdlib-unittest tests** (zero third-party deps) covering `resolve_model`, `drive-sync-state`, `plugin-metadata`, `skill-line-check`, `connector_resolver`. All passing.
+### v3.11.1 (June 8, 2026) — Discoverability + documentation polish
 
-### Skill counts
+DMP v3.12.0 → **v3.12.1**. CF + SF unchanged. README "Who this is for" audience table (agencies / in-house / automation builders / consultants / growth / compliance). "How does this compare?" table vs Anthropic Marketing, Composio Marketing, claude-seo. "Real workflows you'd actually run" with 6 copy-paste examples. Recent-release callout at top. 2 new FAQ entries (Cowork persistence + model freshness). GitHub repo descriptions + topics refreshed across all 4 repos for SEO.
 
-- **DMP: 157 → 158** (+1 cowork-setup)
-- CF: 21 (unchanged)
-- SF: 16 (unchanged)
-- **Total: 195 across the suite, all passing Codex `[a-z0-9-]+` regex**
+### v3.11.0 (June 8, 2026) — DMP Cowork persistence + fallback models + tests
+
+DMP v3.11.0 → **v3.12.0**. CF + SF unchanged. Research-grounded hardening pass after web research confirmed `${CLAUDE_PLUGIN_DATA}` is NOT persistent across Anthropic Cowork sessions ([GitHub issue #51398](https://github.com/anthropics/claude-code/issues/51398)). DMP now ships a new `/digital-marketing-pro:cowork-setup` skill that routes brand state through a Google Drive MCP. Plus `fallbackModel` chain in `settings.json.example`, `requiredMinimumVersion: 2.1.157` in plugin.json, model-registry freshness check in `/doctor`, 49-test stdlib suite.
 
 ## What's new in v3.10.0 (June 4, 2026) — DMP v3.11.0 SEO expansion
 
