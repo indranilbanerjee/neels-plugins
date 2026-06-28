@@ -5,6 +5,39 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.14.1] - 2026-06-28
+
+**Suite-wide README-sync patch + test-coverage extension. Catches the drift class v3.14.0 shipped with.**
+
+DMP v3.14.0 → **v3.14.1** + CF v3.15.2 → **v3.15.3** + SF v1.13.0 → **v1.13.1**.
+
+After v3.14.0 shipped, user flagged that several README sections across the suite still showed stale version refs (DMP's `## Supported surfaces (v3.13.1)` heading + Cowork badge anchor + a 2nd internal anchor + a "What's new" section still ending at v3.13.0; CF's Release notes still ending at v3.15.0; SF's "Current Release" body still describing v1.12.0 content under a v1.13.0 heading). DMP's release-consistency tests were missing the section-heading + anchor-sync + What's-new-freshness checks that CF/SF already had.
+
+### Fixed per plugin
+
+- **DMP** — `## Supported surfaces` heading + 2 anchor links + 3 missing What's new entries (v3.14.1 + v3.14.0 + v3.13.1)
+- **CF** — added v3.15.3 + v3.15.2 + v3.15.1 entries to "## Release notes"
+- **SF** — rewrote "Current Release (v1.13.1)" body with actual v1.13.0 / v1.13.1 content; v1.12.x demoted to "Earlier" sub-sections
+- **Marketplace** — added this v3.14.1 entry + bumped 4 marketplace.json files
+
+### Added (DMP test_release_consistency.py, +3 tests; 120 → 123)
+
+Closes the test-coverage gap permanently for DMP:
+
+- `test_readme_supported_surfaces_heading_matches_canonical` — locks `## Supported surfaces (vX.Y.Z)` heading to canonical
+- `test_readme_supported_surfaces_anchor_links_match_canonical` — verifies all `#supported-surfaces-v…` anchor links match
+- `test_readme_whats_new_section_includes_canonical_version` — verifies the README "What's new" section actually mentions the currently-shipping version
+
+Pre-flight: ran the new tests against the v3.14.0 README state — confirmed they would have caught all 4 staleness issues.
+
+### Suite totals after this release
+
+- 8 native platforms (unchanged) + 35+ documented Agent Skills clients
+- **230 tests passing** (DMP 123 + CF 53 + SF 54) — was 222
+- 195 skills across the suite (unchanged)
+
+---
+
 ## [3.14.0] - 2026-06-28
 
 **June 2026 market-refresh sweep — DMP v3.14.0 + CF v3.15.2 + SF v1.13.0.**
