@@ -4,15 +4,15 @@
 
 Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, and **OpenClaw** + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.13.1-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.14.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-195%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-221%20across%20suite-brightgreen.svg)](#whats-new)
+[![Total tests](https://img.shields.io/badge/tests-222%20across%20suite-brightgreen.svg)](#whats-new)
 [![Surfaces](https://img.shields.io/badge/all%203%20plugins-8%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
 
-> 🆕 **June 9, 2026 — marketplace v3.13.1:** Test-infra polish across the suite — **CF v3.15.1 + SF v1.12.1** add release-consistency suites (+61 tests). Suite total **221 tests passing** (DMP 114 + CF 53 + SF 54). Every cross-manifest version drift, broken anchor, stale install command, and missing critical section is now caught by `python -m unittest discover -s tests` before it ships. v3.13.0 (earlier today) brought CF + SF to native **Hermes Agent + OpenClaw** parity with DMP. All 3 plugins on all **8 native platforms + 35+ Agent Skills clients**. [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
+> 🆕 **June 28, 2026 — marketplace v3.14.0 (June market-refresh sweep):** **DMP v3.14.0 + CF v3.15.2 + SF v1.13.0.** Meta Graph API bumped v20 → v24 (pre-v24 deprecated June 9). Google Ads API v24.1 + v24.2 documented (AI Max + Local Services Ads support). EU AI Act Code of Practice second-draft refresh ahead of Aug 2 deadline. Model registry rebuilt (47 entries verified against Anthropic / OpenAI / Google primary docs). Resolver now auto-rewrites **retired** model IDs (Gemini 2.0 / Veo 2+3 / preview image variants). New `--check-params` scanner protects against Claude Opus 4.7+ HTTP 400. **222 tests passing** (DMP 115 + CF 53 + SF 54). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 

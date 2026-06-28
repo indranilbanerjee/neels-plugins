@@ -5,6 +5,65 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.14.0] - 2026-06-28
+
+**June 2026 market-refresh sweep — DMP v3.14.0 + CF v3.15.2 + SF v1.13.0.**
+
+A coordinated suite-wide refresh triggered by user request to cross-check what shipped, broke, or got deprecated in the marketing-tech ecosystem since the last refresh on 2026-06-09. Every finding verified against primary sources before any code change (Anthropic / OpenAI / Google AI / Google Ads / Google blog / EU Commission).
+
+### Digital Marketing Pro v3.13.1 → **v3.14.0**
+
+The deepest update in the cycle. Coverage:
+
+- **Meta Graph API bumped v20.0 → v24.0** across `scripts/connector_resolver.py` (4 callsites). All pre-v24 Meta Marketing API calls were scheduled to fail 2026-06-09 — DMP's v20 hits would have started returning HTTP 400/410.
+- **Google Ads API v24.1 + v24.2 documented** in `skills/paid-advertising/google-ads.md` — new experiment types (ADOPT_AI_MAX / ADOPT_BROAD_MATCH_KEYWORDS / OPTIMIZE_ASSETS / PMAX_REPLACEMENT_SHOPPING), `mobile_device_platform` segment, `GENERATE_LANDING_PAGE_TEXT` asset automation, first-class Local Services Ads via `google_local_services_info`, beta MultiPartyAuthReview.
+- **EU AI Act Code of Practice second-draft refresh** in `skills/context-engine/eu-code-of-practice.md` — Section 1 two-layered marking, Section 2 dropped AI-generated-vs-AI-assisted taxonomy, operational readiness checklist for Aug 2 applicability date.
+- **I/O 2026 additions** to `skills/aeo-audit/SKILL.md` (Information Agents for AI Pro/Ultra subscribers) + `skills/local-seo/SKILL.md` (Google Agentic Booking expansion to local services / home repair / beauty / pet care).
+- DMP-specific test added: `test_retired_falls_forward_unconditionally` (114 → **115 tests** passing).
+
+### Suite-wide changes (applied to all 3 plugins)
+
+- **Model registry rebuilt** against vendor primary docs (47 entries):
+  - Anthropic: added `claude-opus-4-8` (now recommended frontier), `claude-opus-4-6`, `claude-opus-4-5-20251101`; corrected `claude-sonnet-4-5-20250929` (was mis-marked deprecated, actually active per Anthropic page); deprecated `claude-opus-4-1-20250805`; retired `claude-opus-4-20250514` + `claude-sonnet-4-20250514`.
+  - OpenAI: added `gpt-5.5`, `gpt-5.5-pro`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-image-2`; deprecated full GPT-5 family + o3 family (shutdown 2026-12-11).
+  - Google: added `gemini-3-pro-image` (GA), `gemini-3.1-flash-image` (GA), `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite`, `veo-3.1-generate-preview`; deprecated Gemini 2.5 family (shutdown 2026-10-16) + Imagen 4 (2026-06-15); retired Gemini 2.0 family + Gemini 3 preview image variants + Veo 2/3 family.
+- **Resolver hardened** — `scripts/resolve_model.py` now unconditionally rewrites `retired` model IDs to their `replacement_id` (previously only `deprecated` status fell forward). New test covers this.
+- **`--check-params` scanner** added to `scripts/resolve_model.py` — flags any Python file passing `temperature` / `top_p` / `top_k` near Claude Opus 4.7+ targets (those return HTTP 400). Pre-flight scan across all 3 plugins clean.
+- **`docs/MODEL-CURATOR.md` refreshed** with current alias resolutions + new § "Parameter compatibility — Claude Opus 4.7 and later".
+- **18 alias re-pointings** flow through to every dependent script automatically — `latest-text-anthropic` now → claude-opus-4-8, `latest-text-openai` → gpt-5.5, `latest-image-google` → gemini-3-pro-image (was a retired preview ID), `latest-video-google` → veo-3.1-generate-preview, `latest-image-photoreal-google` → gemini-3-pro-image (Imagen 4 retired path).
+
+### ContentForge v3.15.1 → **v3.15.2** (docs-only sync)
+
+Receives the suite-wide model registry + MODEL-CURATOR + resolver updates. Zero pipeline change. 53/53 tests passing.
+
+### SocialForge v1.12.1 → **v1.13.0** (resolver-routed)
+
+Receives suite-wide updates. `scripts/generate_video.py` and `scripts/compose_creative.py` already route through the resolver, so the corrected `latest-video-google` (→ Veo 3.1 preview) and image aliases flow through automatically. Zero hardcoded ID changes needed. 54/54 tests passing.
+
+### Marketplace v3.13.1 → **v3.14.0**
+
+- All 4 `marketplace.json` files bumped (top-level metadata.version 3.13.1 → 3.14.0; DMP 3.13.1 → 3.14.0; CF 3.15.1 → 3.15.2; SF 1.12.1 → 1.13.0)
+- README hero callout + What's new section refreshed with v3.14.0 summary
+- Total-tests badge stays at 222 (DMP 115 + CF 53 + SF 54)
+
+### Verified against primary sources
+
+- [Claude model deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations) — Opus 4.7+ param 400 + Opus 4.1 deprecation + active model list
+- [OpenAI deprecations](https://developers.openai.com/api/docs/deprecations) — GPT-5 family + o3 sunset Dec 11
+- [Gemini deprecations](https://ai.google.dev/gemini-api/docs/deprecations) — 2.5 family Oct 16 + 2.0 retired Jun 1 + image preview retired Jun 25
+- [Gemini changelog](https://ai.google.dev/gemini-api/docs/changelog) — 3.5 Flash GA May 19 + Nano Banana 2 GA May 28 + Veo 2/3 retired Jun 30 + Imagen 4 deprecated Jun 15
+- [Google Ads API release notes](https://developers.google.com/google-ads/api/docs/release-notes) — v24.1 May 13 + v24.2 June 24
+- [EU Commission Code of Practice (2nd draft)](https://digital-strategy.ec.europa.eu/en/library/commission-publishes-second-draft-code-practice-marking-and-labelling-ai-generated-content) — 5 Mar 2026
+- [Google I/O 2026 Search announcements](https://blog.google/products-and-platforms/products/search/search-io-2026/) — Gemini 3.5 Flash Search backbone + Information Agents + Agentic Booking expansion
+
+### Suite totals after this release
+
+- 8 native platforms (unchanged) + 35+ documented Agent Skills clients
+- **222 tests** passing (DMP 115 + CF 53 + SF 54) — was 221
+- 195 skills across the suite (unchanged)
+
+---
+
 ## [3.13.1] - 2026-06-09
 
 **Suite-wide test-infrastructure polish: CF v3.15.1 + SF v1.12.1.**
