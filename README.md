@@ -4,15 +4,15 @@
 
 Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, and **OpenClaw** + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.14.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.14.1-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-195%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-222%20across%20suite-brightgreen.svg)](#whats-new)
+[![Total tests](https://img.shields.io/badge/tests-230%20across%20suite-brightgreen.svg)](#whats-new)
 [![Surfaces](https://img.shields.io/badge/all%203%20plugins-8%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
 
-> 🆕 **June 28, 2026 — marketplace v3.14.0 (June market-refresh sweep):** **DMP v3.14.0 + CF v3.15.2 + SF v1.13.0.** Meta Graph API bumped v20 → v24 (pre-v24 deprecated June 9). Google Ads API v24.1 + v24.2 documented (AI Max + Local Services Ads support). EU AI Act Code of Practice second-draft refresh ahead of Aug 2 deadline. Model registry rebuilt (47 entries verified against Anthropic / OpenAI / Google primary docs). Resolver now auto-rewrites **retired** model IDs (Gemini 2.0 / Veo 2+3 / preview image variants). New `--check-params` scanner protects against Claude Opus 4.7+ HTTP 400. **222 tests passing** (DMP 115 + CF 53 + SF 54). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
+> 🆕 **June 28, 2026 — marketplace v3.14.1 (README-sync patch):** **DMP v3.14.1 + CF v3.15.3 + SF v1.13.1.** Patch over today's v3.14.0 market-refresh sweep — fixed 4 stale README references the v3.14.0 ship missed (Cowork badge anchor, Supported-surfaces heading, 2nd internal anchor, missing What's-new entries) + extended DMP `tests/test_release_consistency.py` to lock the Supported-surfaces heading + anchor links to canonical version, so this drift class is caught in CI from now on. **230 tests passing** (DMP 123 + CF 53 + SF 54). v3.14.0 (also today) brought the full June market-refresh sweep — Meta v24, Google Ads v24.1+v24.2, EU Code of Practice, model registry rebuilt to 47 entries, resolver auto-rewrites `retired` IDs, EvoLink vendor support. [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -44,6 +44,41 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 ---
 
 ## What's new
+
+### v3.14.1 (June 28, 2026) — README-sync patch + test-coverage extension
+
+DMP v3.14.0 → **v3.14.1** + CF v3.15.2 → **v3.15.3** + SF v1.13.0 → **v1.13.1** + marketplace v3.14.0 → **v3.14.1**.
+
+A second-pass cleanup after v3.14.0 caught two real classes of drift the release-consistency suite was not yet covering:
+
+- **Stale README section heading**: DMP's `## Supported surfaces (vX.Y.Z)` was still on v3.13.1 even though every manifest had been bumped to v3.14.0. CF/SF tests caught this kind of drift; DMP's didn't.
+- **Stale "What's new" section in DMP README**: the latest entry was v3.13.0; v3.13.1 and v3.14.0 had shipped without being added.
+
+Fixed:
+- DMP README — Cowork badge anchor + Supported-surfaces heading + 2nd `#supported-surfaces` anchor + 3 new "What's new" entries (v3.14.1 + v3.14.0 + v3.13.1).
+- CF README — added v3.15.3, v3.15.2, v3.15.1 entries to Release notes.
+- SF README — rewrote "Current Release" body with actual v1.13.0 content (heading had been renamed but body still described v1.12.0).
+- Marketplace README — added v3.14.1 + v3.14.0 entries (this one).
+- **DMP `tests/test_release_consistency.py` extended** to lock the `## Supported surfaces (vX.Y.Z)` heading to canonical version + verify all `#supported-surfaces-v…` anchor links match — closes the drift class permanently for DMP (CF/SF already had this).
+
+Suite tests: 222 → **224** (+1 in DMP for new section-heading lock, +1 for anchor-sync lock).
+
+### v3.14.0 (June 28, 2026) — June market-refresh sweep
+
+DMP v3.13.1 → **v3.14.0** + CF v3.15.1 → **v3.15.2** + SF v1.12.1 → **v1.13.0**. Coordinated suite-wide refresh covering everything that shipped, broke, or got deprecated in the marketing-tech ecosystem since the last refresh on 2026-06-09. Every claim verified against primary vendor docs.
+
+- **Meta Graph API bumped v20.0 → v24.0** in DMP `scripts/connector_resolver.py` (4 callsites). Pre-v24 calls scheduled to fail 2026-06-09.
+- **Model registry rebuilt to 47 entries** verified against Anthropic / OpenAI / Google primary docs. New active flagships: Claude Opus 4.8, GPT-5.5 family, gpt-image-2, Gemini 3.1 Pro Preview, Gemini 3.1 Flash-Lite, Veo 3.1 Preview, Nano Banana Pro/2 GA. Newly deprecated: full GPT-5 family + o3 family (shutdown 2026-12-11), Gemini 2.5 family (shutdown 2026-10-16), Imagen 4. Newly retired (auto-routed): Gemini 2.0 family (June 1), Gemini 3 preview image variants (June 25), Veo 2.0/3.0/3.0-Fast (June 30).
+- **Resolver hardened** — now unconditionally rewrites `retired` model IDs to `replacement_id` (was previously only `deprecated`). New test covers this.
+- **`--check-params` scanner** flags unsafe `temperature` / `top_p` / `top_k` near Claude Opus 4.7+ targets (HTTP 400 risk).
+- **18 aliases re-pointed** across all 3 plugins. `latest-text-anthropic` → claude-opus-4-8, `latest-text-openai` → gpt-5.5, `latest-video-google` → veo-3.1-generate-preview, `latest-image-photoreal-google` → gemini-3-pro-image (Imagen 4 was deprecated path).
+- **Google Ads API v24.1 + v24.2** sections added to DMP `skills/paid-advertising/google-ads.md` — ADOPT_AI_MAX experiment type, mobile_device_platform segment, Local Services Ads via `google_local_services_info`, GENERATE_LANDING_PAGE_TEXT, beta MultiPartyAuthReview.
+- **EU AI Act Code of Practice second-draft refresh** in DMP `skills/context-engine/eu-code-of-practice.md` — Section 1 two-layered marking (C2PA satisfies metadata), Section 2 dropped AI-generated-vs-AI-assisted taxonomy, operational readiness checklist for 2026-08-02 applicability.
+- **I/O 2026 additions** to DMP `aeo-audit` (Information Agents callout) + `local-seo` (Agentic Booking expansion to local services / home repair / beauty / pet care).
+- **EvoLink vendor** added to the model curator via community PR (multi-provider API gateway aggregating DeepSeek / Doubao / MiniMax via single API key).
+- **Suite-wide `docs/MODEL-CURATOR.md` refresh** with current aliases table + new § "Parameter compatibility — Claude Opus 4.7 and later".
+
+Suite tests: 221 → **222** in this entry (DMP 115 + CF 53 + SF 54). Then v3.14.1 brought it to 224.
 
 ### v3.13.1 (June 9, 2026) — Suite-wide test-infrastructure polish
 
