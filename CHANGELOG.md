@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.15.0] - 2026-07-07
+
+**ContentForge v3.16.0 — the Reliability & Truth release.**
+
+CF v3.15.3 → **v3.16.0** across all 4 marketplace.json files; marketplace v3.14.1 → **v3.15.0**. DMP (v3.14.1) and SF (v1.13.1) unchanged.
+
+### Changed
+
+- ContentForge entry version → 3.16.0 in `.claude-plugin/`, `.cursor-plugin/`, `.agents/plugins/`, `.github/plugin/` marketplace.json
+- CF description updated: "11 quality gates" → "10 quality gates" (honest count after the audit), "29-pattern" → "35-pattern AI humanizer"
+
+### Notes
+
+- CF v3.16.0 is a five-layer deep-audit implementation: checkpoint/resume wired into the master skill, file-based phase handoff contract, measured quality gates via `text-metrics.py`, placement-based SEO gate (density retired), Phase 6→6.5 protected-structure manifest, EU AI Act Article 50 disclosure step, TikTok/Bluesky/YouTube Shorts social specs, `_common.py` script hardening (Cowork sync-path fix, atomic writes, UTF-8 guard), .docx image embedding + TOC. CF tests 53 → 143; suite total 320.
+
 ## [3.14.1] - 2026-06-28
 
 **Suite-wide README-sync patch + test-coverage extension. Catches the drift class v3.14.0 shipped with.**
