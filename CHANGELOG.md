@@ -5,6 +5,25 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.16.0] - 2026-07-07
+
+**Digital Marketing Pro v3.15.0 — the Reliability & Truth release.**
+
+DMP v3.14.1 → **v3.15.0** across all 4 marketplace.json files; marketplace v3.15.0 → **v3.16.0**. CF (v3.16.0) and SF (v1.13.1) unchanged.
+
+### Changed
+
+- Digital Marketing Pro entry version → 3.15.0 in `.claude-plugin/`, `.cursor-plugin/`, `.agents/plugins/`, `.github/plugin/` marketplace.json
+- DMP description: "25 agents" → "24 agents" (competitor-intelligence merged into competitive-intel)
+- Marketplace metadata version → 3.16.0 in `.claude-plugin/`, `.cursor-plugin/`, `.github/plugin/` marketplace.json
+- README: version badge → 3.16.0, total-tests badge 320 → **404** (DMP 207 + CF 143 + SF 54), new hero + What's-new entry, DMP plugin row refreshed from stale v3.8.0-era text to current facts (158 skills / 24 agents / 86 scripts / 169 refs / 18 commands / 207 tests), stale SF row version 1.12.1 → 1.13.1
+
+### Notes
+
+- DMP v3.15.0 is a full-repo audit fixing ~200 findings: shared `_common.py` ends the storage split-brain, a doc-vs-argparse contract linter (`check_skill_contracts.py`) locks skill invocations to real flags, all 18 execution skills carry uniform typed-approval gates + `disable-model-invocation: false` (closes DMP issue #6), the Tessl review workflow moved to the `tessl review` CLI (closes DMP issue #8), and `embed-c2pa.py --ai-disclosure` adds the EU AI Act Article 50 assertion. DMP tests 123 → 207.
+
+---
+
 ## [3.15.0] - 2026-07-07
 
 **ContentForge v3.16.0 — the Reliability & Truth release.**
