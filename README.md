@@ -4,13 +4,14 @@
 
 Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, and **OpenClaw** + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.16.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.21.2-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
-[![Total skills](https://img.shields.io/badge/skills-195%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-404%20across%20suite-brightgreen.svg)](#whats-new)
+[![Total skills](https://img.shields.io/badge/skills-196%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
+[![Total tests](https://img.shields.io/badge/tests-502%20across%20suite-brightgreen.svg)](#whats-new)
 [![Surfaces](https://img.shields.io/badge/all%203%20plugins-8%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
+[![Sponsor](https://img.shields.io/badge/sponsor-%E2%9D%A4-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/indranilbanerjee)
 
 > 🆕 **July 7, 2026 — marketplace v3.16.0: Digital Marketing Pro v3.15.0, the Reliability & Truth release.** A full-repo audit (orchestration / agents / skills / commands / scripts / docs-manifests) surfaced ~200 findings — all fixed in one coordinated pass, mirroring ContentForge's v3.16.0. One shared `_common.py` ends the storage split-brain; a new doc-vs-argparse contract linter (`check_skill_contracts.py`) locks every skill invocation to real script flags; all 18 execution skills carry a uniform typed-approval gate + `disable-model-invocation: false` (**closes issue #6**); the Tessl review workflow moved to the `tessl review` CLI (**closes issue #8**); agents consolidated 25 → 24; `embed-c2pa.py` gained the EU AI Act Article 50 `--ai-disclosure` assertion; connectors are honestly opt-in (fictional npm packages purged). DMP tests 123 → **207**. **404 tests passing** (DMP 207 + CF 143 + SF 54). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 
@@ -347,6 +348,26 @@ There is currently no in-product update notification for third-party marketplace
 - Watch this repo on GitHub (Releases) — you'll get an email when we tag a new version
 - Check `CHANGELOG.md` in the individual plugin repos
 - Or just run `/plugin marketplace update neels-plugins` periodically
+
+---
+
+## Star history
+
+[![Star History Chart](https://api.star-history.com/svg?repos=indranilbanerjee/neels-plugins&type=Date)](https://star-history.com/#indranilbanerjee/neels-plugins&Date)
+
+---
+
+## Sponsor this project
+
+This plugin is MIT-licensed, free to use commercially, and collects no telemetry. What
+sponsorship pays for is the unglamorous half of keeping it accurate: platform-API updates
+when a vendor ships a breaking version, model-registry refreshes when a model is retired,
+compliance passes when regulatory guidance moves, and issue triage.
+
+If it saves your team time, you can [sponsor the work](https://github.com/sponsors/indranilbanerjee).
+Sponsors from $25/mo are listed in [SPONSORS.md](SPONSORS.md).
+
+[![Sponsor](https://img.shields.io/badge/sponsor%20on%20GitHub-%E2%9D%A4-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/indranilbanerjee)
 
 ---
 
