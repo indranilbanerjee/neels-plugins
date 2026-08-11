@@ -19,8 +19,8 @@
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "description": "Open-source AI marketing plugin for agencies — 162 skills, 24 agents, 12-Part Strategy Flow, Cowork-persistent, EU AI Act ready. Runs on Claude Code, Codex, Cursor, Antigravity, Hermes Agent, OpenClaw.",
-      "version": "3.18.0"
+      "description": "Open-source AI marketing plugin for agencies — 163 skills, 24 agents, 12-Part Strategy Flow, Cowork-persistent, EU AI Act ready. Runs on Claude Code, Codex, Cursor, Antigravity, Hermes Agent, OpenClaw.",
+      "version": "3.19.0"
     },
     {
       "name": "contentforge",
@@ -34,7 +34,7 @@
       },
       "category": "Productivity",
       "description": "Open-source enterprise content production plugin — 22 skills, 13 agents, 10 quality gates, 41-pattern AI humanizer, fact-checker, real .docx output with C2PA signing (EU AI Act Article 50). Now native on Hermes Agent + OpenClaw. Installs on Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes, OpenClaw + 35+ Agent Skills platforms.",
-      "version": "3.19.4"
+      "version": "3.19.5"
     },
     {
       "name": "socialforge",
