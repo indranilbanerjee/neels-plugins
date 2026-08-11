@@ -47,8 +47,8 @@
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "description": "Open-source agency-grade social media production plugin — 16 skills, 25 commands, AI image (Nano Banana Pro) + AI video (Kling v3.0 Pro) + C2PA signing (EU AI Act Article 50). Now native on Hermes Agent + OpenClaw. Installs on Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes, OpenClaw + 35+ Agent Skills platforms.",
-      "version": "1.14.2"
+      "description": "A monthly content calendar in, finished on-brand social creative out — AI images and video, copy adapted for 9 platforms, compliance checked, assembled into a client-ready delivery doc with human approval steps. Live per-model pricing quoted before any paid run. 17 skills, 25 commands, C2PA signed for EU AI Act Article 50.",
+      "version": "1.15.0"
     }
   ]
 }
