@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Three open-source marketing plugins — Digital Marketing Pro, ContentForge, SocialForge. Runs on Claude Code, Codex, Cursor, Antigravity. MIT-licensed.",
-    "version": "3.21.4",
+    "version": "3.21.5",
     "homepage": "https://github.com/indranilbanerjee/neels-plugins",
     "license": "MIT"
   },
@@ -27,7 +27,7 @@
       "name": "socialforge",
       "source": "https://github.com/indranilbanerjee/socialforge",
       "description": "A monthly content calendar in, finished on-brand social creative out — AI images and video, copy adapted for 9 platforms, compliance checked, assembled into a client-ready delivery doc with human approval steps. Live per-model pricing quoted before any paid run. 17 skills, 25 commands, C2PA signed for EU AI Act Article 50.",
-      "version": "1.15.0"
+      "version": "1.15.1"
     }
   ]
 }
