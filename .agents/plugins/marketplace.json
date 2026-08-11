@@ -47,7 +47,7 @@
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "description": "A monthly content calendar in, finished on-brand social creative out — AI images and video, copy adapted for 9 platforms, compliance checked, assembled into a client-ready delivery doc with human approval steps. No model ids or prices baked in: both are looked up live and quoted before any paid run. 18 skills, 25 commands, C2PA signed for EU AI Act Article 50.",
+      "description": "A monthly content calendar in, finished on-brand social creative out — AI images and video, copy adapted for 9 platforms, compliance checked, assembled into a client-ready delivery doc with human approval steps. Model ids and prices are looked up live, never baked in. 18 skills, C2PA signed for EU AI Act Article 50.",
       "version": "1.16.0"
     }
   ]
