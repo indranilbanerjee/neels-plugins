@@ -5,6 +5,20 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.33.0] - 2026-08-13
+
+**SocialForge v1.19.0 — nothing fails silently anymore.** Structured failure
+records across the provider layer (every fallback rung records who was tried,
+at which stage it stopped, and the fix); video generation becomes a real
+three-rung chain with credential-aware routing — its first execution caught a
+live SDK bug that had broken every Veo call. Adversarial sweep fixed six
+defects proven live (fail-open compliance gate, ghost posts + non-atomic
+approval ledger, duplicate asset ids, credential destruction on corrupt
+files, retired-model alias leak, unescaped review gallery). New 20th skill
+/ingest-performance feeds ideate-month's wins rung from platform analytics
+with sample floors and honest no_clear_wins verdicts. SF suite 177 -> 214.
+Marketplace v3.32.0 -> v3.33.0. DMP (v3.24.0) and CF (v3.21.1) unchanged.
+
 ## [3.32.0] - 2026-08-12
 
 **ContentForge v3.21.1 — express keeps the craft.** The express lane's default

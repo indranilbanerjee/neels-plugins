@@ -47,8 +47,8 @@
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "description": "A monthly content calendar in, finished on-brand social creative out — and when no calendar exists, /ideate-month plans the month from brand pillars, live signals, and last month's wins. AI images and video, 9-platform copy with mechanism-aware CTAs, human approval gates, C2PA signed for EU AI Act Article 50. 19 skills, live model+price lookup.",
-      "version": "1.18.0"
+      "description": "A monthly content calendar in, finished on-brand social creative out — and when no calendar exists, /ideate-month plans the month from brand pillars, live signals, and last month's MEASURED wins (/ingest-performance ranks analytics exports with sample floors — flat months say so honestly). AI images and video via provider chains where nothing fails silently, 9-platform copy with mechanism-aware CTAs, human approval gates, C2PA signed for EU AI Act Article 50. 20 skills, live model+price lookup.",
+      "version": "1.19.0"
     }
   ]
 }
