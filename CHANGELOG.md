@@ -5,6 +5,15 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.30.0] - 2026-08-12
+
+**Digital Marketing Pro v3.24.0 — the timing ladder.** Posting/send-time
+scripts rebuilt: first-party history (--history, sample floors, only path to
+high confidence) over dated population baselines (stamped, medium-capped,
+refuse when stale); 2026 platform mechanics + per-recipient STO doctrine in
+every output. DMP suite 269 -> 281. Marketplace v3.29.0 -> v3.30.0. CF and SF
+unchanged.
+
 ## [3.29.0] - 2026-08-12
 
 **Digital Marketing Pro v3.23.0 — capability-first translation.** The last
