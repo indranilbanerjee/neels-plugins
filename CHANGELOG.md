@@ -5,6 +5,16 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.31.0] - 2026-08-12
+
+**ContentForge v3.21.0 — the Express Lane, battle-tested.** A verified-only
+second lane through the pipeline (fact-check + validation + review gates kept,
+polish phases skippable-with-flags), an execution battle-test of the quality
+machinery with planted defects (all three probes passed; two independently
+caught real source drift), all 22 descriptions trigger-dense + guard, a
+rename-readiness kit, and a vendor-neutrality guard. CF suite 224 -> 247.
+Marketplace v3.30.0 -> v3.31.0. DMP (v3.24.0) and SF (v1.18.0) unchanged.
+
 ## [3.30.0] - 2026-08-12
 
 **Digital Marketing Pro v3.24.0 — the timing ladder.** Posting/send-time
