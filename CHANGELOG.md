@@ -5,6 +5,15 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.29.0] - 2026-08-12
+
+**Digital Marketing Pro v3.23.0 — capability-first translation.** The last
+hardcoded-vendor surface reworked: the language router resolves translation
+services at run time (brand preference -> connected MCP servers -> refusal
+ladder) instead of shipping a four-vendor routing table; vendor-neutrality
+guard added. DMP suite 253 -> 269. Marketplace v3.28.0 -> v3.29.0. CF and SF
+unchanged.
+
 ## [3.28.0] - 2026-08-12
 
 **Digital Marketing Pro v3.22.0 — the Routing Layer.** All 163 skill
