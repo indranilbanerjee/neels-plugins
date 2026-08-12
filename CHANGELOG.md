@@ -5,6 +5,17 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.32.0] - 2026-08-12
+
+**ContentForge v3.21.1 — express keeps the craft.** The express lane's default
+phase set now includes the structure/proofread pass (Gate 5) and the
+41-pattern humanizer (Gate 6.5): they are craft, not ceremony, and express's
+speed comes from intake replacing the research hunt. Default skips are now
+only visuals and SEO (re-addable with full gates); craft passes drop only on
+explicit --skip-structure / --skip-humanizer. Craft-default invariant
+test-pinned. CF suite 247 -> 248. Marketplace v3.31.0 -> v3.32.0. DMP
+(v3.24.0) and SF (v1.18.0) unchanged.
+
 ## [3.31.0] - 2026-08-12
 
 **ContentForge v3.21.0 — the Express Lane, battle-tested.** A verified-only
