@@ -155,5 +155,21 @@ class TestListingDescriptions(unittest.TestCase):
                                   f"{name}/{pname} points at {repo}")
 
 
+class TestChangelogCoverage(unittest.TestCase):
+    """The CHANGELOG silently stopped at 3.16.0 while the manifests marched to
+    3.26.0 — ten unchronicled releases in the repo whose entire job is keeping
+    listing metadata honest. This guard makes that impossible: the canonical
+    manifest version must appear as a CHANGELOG heading before it can ship."""
+
+    def test_manifest_version_has_a_changelog_entry(self):
+        manifest = json.loads(MANIFESTS["claude"].read_text(encoding="utf-8"))
+        canonical = manifest.get("metadata", {}).get("version") or manifest.get("version")
+        changelog = (REPO / "CHANGELOG.md").read_text(encoding="utf-8")
+        headings = re.findall(r"^## \[([^\]]+)\]", changelog, re.M)
+        self.assertIn(canonical, headings,
+                      f"marketplace.json is v{canonical} but CHANGELOG.md has no "
+                      f"'## [{canonical}]' entry — chronicle the release before shipping it.")
+
+
 if __name__ == "__main__":
     unittest.main()

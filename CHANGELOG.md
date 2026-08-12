@@ -5,6 +5,44 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.27.0] - 2026-08-12
+
+**Digital Marketing Pro v3.21.0 — the Flagship Contract.**
+
+DMP v3.20.0 → **v3.21.0** across all 4 marketplace.json files; marketplace v3.26.0 → **v3.27.0**. CF (v3.20.0) and SF (v1.18.0) unchanged.
+
+DMP v3.21.0 highlights: market-benchmark provenance (28 docs live-verified and
+as-of-stamped; new `benchmark_book.py` refuses stale quotes), a machine-verified
+depth contract (`skills-index.json`: 108 skills execute scripts / 12 gated / 43
+guided, drift-tested), model resolution that carries registry age and refuses
+unknowns, intent-first `/help` routing, and an end-to-end engagement capstone
+smoke test. Suite 212 → 248.
+
+Also fixed here: this CHANGELOG had silently stopped at 3.16.0 (see the
+catch-up entry below), and a new marketplace test now fails if the manifest
+version ever ships without a CHANGELOG entry again.
+
+## [3.17.0 – 3.26.0] - 2026-07-08 → 2026-08-12 (retroactive catch-up)
+
+Ten marketplace releases shipped without CHANGELOG entries — the drift class
+this repo exists to prevent, living in its own changelog. Chronicled
+retroactively in one entry; per-plugin details live in each plugin's own
+CHANGELOG:
+
+- **DMP** v3.15.0 → v3.20.0 (July market refresh; line-by-line audit v3.17.0;
+  registry reconciliation + source-anonymity guard v3.17.1; creator-craft wave
+  v3.18.0–v3.20.0: goal-filter/story-mine/signal-mine/lead-magnet-ideas,
+  video-packaging, video ad scripting into the quality machinery — 163 skills).
+- **CF** v3.16.0 → v3.20.0 (Reliability & Truth; interconnection audit; client-site
+  intelligence + grounding-first humanizer v3.19.x; E-E-A-T byline layer; video
+  script fact-check gate + spoken-language pass + scorecard v3.20.0).
+- **SF** v1.13.1 → v1.18.0 (suite parity; live price book + model book + EU AI Act
+  Article 50 disclosure v1.15.0/v1.16.0; CTA mechanism fix + /ideate-month
+  v1.17.0; vendor-neutral research intake v1.17.1; hook-first video scaffold
+  v1.18.0).
+- **Marketplace repo**: first test suite (11 tests), FUNDING.yml, sponsor tiers,
+  doc-count guards.
+
 ## [3.16.0] - 2026-07-07
 
 **Digital Marketing Pro v3.15.0 — the Reliability & Truth release.**
