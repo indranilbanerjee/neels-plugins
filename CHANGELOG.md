@@ -5,6 +5,11 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.27.1] - 2026-08-12
+
+DMP v3.21.0 -> **v3.21.1** (EOL-independent depth-contract byte counts; the
+installed-copy drift false-alarm fixed same day). Marketplace v3.27.0 -> v3.27.1.
+
 ## [3.27.0] - 2026-08-12
 
 **Digital Marketing Pro v3.21.0 — the Flagship Contract.**
