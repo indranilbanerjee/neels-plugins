@@ -5,6 +5,19 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.34.0] - 2026-08-13
+
+**ContentForge v3.22.0 — honest provenance + the structural tier.** Response
+to Claude's new text watermarking and the StoryScope structural-detection
+findings, built on transparency: an author-optional, vendor-neutral
+AI-assistance disclosure layer (claude-surfaces default with an
+uncertain=>disclose fail-safe, always, or off — recorded in run.json either
+way), a Tier-2 structural scan (moralizing, template symmetry, specificity,
+stance, rhythm — with spans, advisory-never-a-gate), and a two-tier review
+sheet showing human editors exactly where drafts still read machine-made.
+No watermark detection or removal — permanently. CF suite 248 -> 273.
+Marketplace v3.33.0 -> v3.34.0. DMP (v3.24.0) and SF (v1.19.0) unchanged.
+
 ## [3.33.0] - 2026-08-13
 
 **SocialForge v1.19.0 — nothing fails silently anymore.** Structured failure
