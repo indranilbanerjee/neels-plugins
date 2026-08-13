@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.35.0] - 2026-08-13
+
+**The provenance layer goes suite-wide: DMP v3.25.0 + SocialForge v1.20.0.**
+The CF v3.22.0 disclosure-and-structure layer mirrored with per-product
+right-sizing. DMP: ai_disclosure in every brand profile (uncertain=>disclose
+fail-safe), content-engine applies it inside the publish-ready body,
+structural-tell-scan.py reports StoryScope-derived structural findings as a
+pure advisory section of /check (never affects PASS/WARN/BLOCKED). SF: the
+monthly delivery manifest carries a vendor-neutral AI-assistance note;
+per-post disclosure stays with platform-native AI labels; the long-form
+structural scan deliberately not mirrored (captions have no document
+structure). No watermark detection or removal anywhere in the suite —
+permanently. DMP 281 -> 294, SF 214 -> 221. Marketplace v3.34.0 -> v3.35.0.
+CF (v3.22.0) unchanged.
+
 ## [3.34.0] - 2026-08-13
 
 **ContentForge v3.22.0 — honest provenance + the structural tier.** Response
