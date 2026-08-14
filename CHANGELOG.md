@@ -5,6 +5,26 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.39.0] - 2026-08-15
+
+Listing bump for two plugin releases that came out of a calibration pass and a
+full end-to-end pipeline run.
+
+- **ContentForge 3.23.3 -> 3.24.0** — the Humanization Report was being written into
+  `phase-6.5-humanized.md`, the file `authorship.py` measures sentence-by-sentence. A live
+  probe run produced 104 `ai_added` sentences and `may_claim_authored: false`, denying an
+  author credit for work they had actually done. Report moves to `phase-6.5-report.md`.
+  Gate 3 also gained `body_word_count`, because `word_count` was counting the reference list.
+- **Digital Marketing Pro 3.26.2 -> 3.27.0** — `llm_favored_word` was one of three signals
+  allowed to move the humanize gate, and measured against 272 chunks of prose published
+  before ChatGPT existed it fired **only** on the human class. Removed from the gating set,
+  kept advisory. The gate's documentation now states what it actually proves: measured, it
+  fails 0 of 39 published human documents and catches 0 of 18 unedited model documents.
+
+Suite: 908 tests across the four repos (CF 324 · DMP 340 · SF 228 · marketplace 20).
+
+---
+
 ## [3.38.0] - 2026-08-14
 
 Load-test corrections plus a new class of guard that only this repo can run.
