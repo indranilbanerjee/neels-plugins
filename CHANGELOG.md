@@ -5,6 +5,36 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.36.0] - 2026-08-14
+
+Craft upgrades across all three plugins, mined from a public anti-detector
+skill and rebuilt as quality tooling rather than evasion tooling.
+
+**ContentForge 3.22.0 -> 3.23.0** — Patterns 42 (significance markers, deleted
+never reworded) and 43 (soft-adverb tags) join the catalog, now 43 patterns.
+Auditing for 42 caught CF recommending the exact phrasing its humanizer strips
+in three files; all fixed, with a guard that fails if any file recommends what
+the catalog removes. New `--source-draft` mode carries the author's own
+sentences through verbatim and exempt from every pattern, with
+`scripts/authorship.py` blocking if any were paraphrased or dropped. New
+entity-development structural proxy, fixed by developing specifics rather than
+deleting them. 273 -> 310 tests.
+
+**digital-marketing-pro 3.25.0 -> 3.26.0** — The `humanize_passed` gate had no
+implementation behind it: no catalog, no agent, no script defined what a
+"flagged paragraph" was. New `scripts/ai-tell-scan.py` is that measurement, and
+gates on only the three tells precise enough to gate on — a gate that fails
+hand-written copy is worse than an undefined one. Authorship preservation and
+entity development mirrored. 294 -> 327 tests.
+
+**socialforge 1.20.0 -> 1.21.0** — Significance markers forbidden in captions as
+a writing rule on the copy-adapter. No scanner added, deliberately: caption
+copy has no document structure to measure, and a test pins that reasoning so
+the absence reads as a decision rather than a gap. 221 -> 228 tests.
+
+No watermark detection or removal anywhere in the suite, permanently — guard-
+tested in all three repos. Suite total: 801 -> 877 tests.
+
 ## [3.35.0] - 2026-08-13
 
 **The provenance layer goes suite-wide: DMP v3.25.0 + SocialForge v1.20.0.**
