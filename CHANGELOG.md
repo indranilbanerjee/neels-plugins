@@ -5,6 +5,34 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.38.0] - 2026-08-14
+
+Load-test corrections plus a new class of guard that only this repo can run.
+
+**The bug.** A verification harness — every script smoke-tested, then an
+adversarial input battery against the text-processing surface — found the
+authorship matcher was quadratic: 0.47s at 100 sentences, 11.43s at 500. Its
+difflib prefilter pruned almost nothing in the case that matters, because when a
+draft genuinely contains the author's sentences every pair looks promising. A
+long client whitepaper would have hung the phase. Rewritten as a hash-indexed
+verbatim pass plus fuzzy matching over the remainder only, bounded by a length
+test derived from difflib's own ratio formula: **5000 sentences in 0.07s**, with
+paraphrase detection and the one-to-one duplicate guard unchanged.
+ContentForge 3.23.2 -> 3.23.3, DMP 3.26.1 -> 3.26.2.
+
+**The new guard — `tests/test_cross_plugin_consistency.py`.** The
+self-containment rule means ContentForge and DMP each carry their own copy of
+the structural scan and the authorship matcher. That rule is right, but two
+hand-maintained implementations of one spec drift, and neither plugin's suite
+can compare them without violating the rule it exists to protect. This repo can:
+its whole job is the three plugins together. The guard compares findings,
+numbers, bands, thresholds and verdicts across both copies, and carries a
+guard-on-the-guard asserting its own corpus actually reaches a live band — the
+first version silently passed a planted threshold drift because every test
+document was too short to exercise it. Now plant-verified three ways.
+
+Suite total: 884 -> 900 tests (marketplace 12 -> 20).
+
 ## [3.37.0] - 2026-08-14
 
 Field-test corrections. Five probes run against the INSTALLED plugins rather
