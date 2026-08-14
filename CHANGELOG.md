@@ -5,6 +5,11 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.36.1] - 2026-08-14
+
+ContentForge 3.23.0 -> 3.23.1: completes the self-contradiction sweep (three
+more places the conversational profile advised what the humanizer removes).
+
 ## [3.36.0] - 2026-08-14
 
 Craft upgrades across all three plugins, mined from a public anti-detector

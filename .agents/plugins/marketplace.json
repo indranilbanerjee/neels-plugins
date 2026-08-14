@@ -34,7 +34,7 @@
       },
       "category": "Productivity",
       "description": "Open-source enterprise content production plugin — 22 skills, 13 agents, 10 quality gates, 41-pattern AI humanizer, fact-checker, real .docx output with C2PA signing (EU AI Act Article 50). Now native on Hermes Agent + OpenClaw. Installs on Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes, OpenClaw + 35+ Agent Skills platforms.",
-      "version": "3.23.0"
+      "version": "3.23.1"
     },
     {
       "name": "socialforge",
