@@ -5,6 +5,31 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.37.0] - 2026-08-14
+
+Field-test corrections. Five probes run against the INSTALLED plugins rather
+than the repos: the ContentForge humanizer on a planted draft, SocialForge's
+copy-adapter on a brief that invited the banned phrasing, DMP's content-creator
+against DMP's own new gate, and both scanners against a published human essay.
+
+**What held.** The humanize gate passes DMP's own generated article, a
+published human essay, and hand-written copy at 0% flagged paragraphs, while
+AI-shaped copy still fails at 66.7%. ContentForge's author-exemption passed
+10/10 planted traps: the author's own "heres the thing" survived verbatim while
+an AI-added one was deleted, 12 churned entities were removed, nothing was
+fabricated, and all 5 author sentences came through with 0 rewritten and 0
+dropped. SocialForge's copy-adapter wrote zero significance markers and caught
+itself using two near-variants, cutting both.
+
+**What was fixed.** ContentForge 3.23.1 -> 3.23.2 and DMP 3.26.0 -> 3.26.1: the
+aphorism proxy was flagging ordinary factual sentences and rating good writing
+HIGH — which in ContentForge feeds the reviewer's Readability sub-score. It now
+excludes context-dependent sentences and no longer drives the advisory rating at
+all. ContentForge's humanizer also gained turn budget (15 -> 22); the field-test
+run exhausted its budget before emitting the review sheet.
+
+Suite total: 877 -> 884 tests.
+
 ## [3.36.1] - 2026-08-14
 
 ContentForge 3.23.0 -> 3.23.1: completes the self-contradiction sweep (three
