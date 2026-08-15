@@ -5,6 +5,20 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.44.0] - 2026-08-16
+
+- **ContentForge 3.29.0 -> 3.30.0** — the remedy for a stale correction manufactured a false
+  accusation. When a fix's find string no longer matched, the contract said to correct it by hand
+  and mark it applied — but `verify` checks the item's `replace` text against the body, so a
+  hand-correction in different words verified as `regressed`, which Phase 8 escalates to "a later
+  phase undid this correction". A real remediation would have accused five of eleven corrections of
+  sabotage that never happened. New `fix-ledger.py resolve` re-points `replace` at what was actually
+  written, keeps Phase 4's wording, and refuses if that text is not in the file. Plus an
+  `already_satisfied` status for zero-byte cases, `verify --out` writing UTF-8 bytes after a reviewer
+  silently copied mojibake out of a Windows console and called it verbatim, `source_id` for a Phase 4
+  issue carrying two find/replace pairs, and a `blocked` status for a run that is APPROVED and
+  unpublishable.
+
 ## [3.43.0] - 2026-08-15
 
 - **ContentForge 3.27.0 -> 3.29.0** — two releases from running the plugin against itself. **3.28.0:**
