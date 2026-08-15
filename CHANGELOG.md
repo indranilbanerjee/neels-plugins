@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.41.0] - 2026-08-15
+
+- **ContentForge 3.25.0 -> 3.26.0** — the crash-recovery path could not see the crash it exists
+  for. An interrupted run had a complete, APPROVED Phase 7 review on disk while `resume`
+  reported `next_phase: 7`, because `get_status` never scanned the run directory. It now
+  reports `orphaned_artifacts` with a reconciliation note. Also: checkpointing was not
+  byte-stable on Windows (LF/CRLF churn changed file hashes and broke a recorded provenance
+  sha256), Gate 8 asked for three appendices while its config required four, and there is now a
+  rule for a subagent that finishes its work and returns no report. The run itself passed all
+  38 contract checks.
+
+Suite: 950 tests across the four repos (CF 335 · DMP 358 · SF 237 · marketplace 20).
+
+---
+
 ## [3.40.0] - 2026-08-15
 
 Three plugin releases from running each pipeline end to end and auditing what came out.
