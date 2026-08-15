@@ -5,6 +5,22 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.42.0] - 2026-08-15
+
+- **ContentForge 3.26.0 -> 3.27.0** — Phase 4's corrections had nowhere to go, so the pipeline
+  lost them. A completed run was audited against its own artifacts: Phase 4 passed while holding
+  8 carry-forward corrections with exact find/replace strings, one was applied, and Phase 6.5
+  later reworded a flagged sentence into a wider claim than the one Phase 4 had rejected. Phase 7
+  recovered six by grepping the finished article, missed a seventh whose string had drifted, and
+  recorded them in a `mandatory_before_publish` field that appears nowhere in the plugin — so
+  Phase 8 delivered a finished-looking .docx with every item outstanding. No agent misbehaved:
+  Phase 4's only documented destination for a fix list was "when looping back", Phase 5's input
+  list said the fixes were already applied, and Phase 5's Critical Rule forbade making them.
+  New `scripts/fix-ledger.py` carries corrections as a machine-readable ledger — applied verbatim
+  by script, guarded by the authorship record, re-verified after every later phase, and enforced
+  at Phase 8, where unresolved blockers stop the piece being called ready rather than stopping it
+  being produced. A find-string that no longer matches blocks loudly instead of passing silently.
+
 ## [3.41.0] - 2026-08-15
 
 - **ContentForge 3.25.0 -> 3.26.0** — the crash-recovery path could not see the crash it exists
