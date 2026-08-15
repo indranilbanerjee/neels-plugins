@@ -5,6 +5,24 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.43.0] - 2026-08-15
+
+- **ContentForge 3.27.0 -> 3.29.0** — two releases from running the plugin against itself. **3.28.0:**
+  the reader was being shown the production instructions. A delivered article carried three raw
+  `[VISUAL-PLACEHOLDER: ...]` lines mid-page while three valid charts sat on disk embedded nowhere —
+  Phase 3.5 never replaced them with `<!-- VISUAL: id=... -->` anchors, so Phase 8 had nowhere to
+  insert the assets. Our own earlier fix is what hid it: `body_word_count` had been taught to exclude
+  placeholder lines, which removed the only thing in the pipeline that touched them. Excluding
+  something from a measurement can delete the last signal that it exists. Also: a deletion could not
+  be expressed in the fix ledger, `loop_history` was documented but never written, Accuracy Confidence
+  had an undefined denominator, and Phase 4 was asked to check outline adherence against an artifact
+  its INPUTS never provided. **3.29.0:** the publication gate was undone at the last step —
+  `mark_complete` hardcoded `status: "completed"` and named published copies from the tracking row's
+  title, so a `DRAFT-` blocked deliverable published under an ordinary name with a row reading
+  "completed". Plus a burstiness "target" printed into the client-facing appendix that exists nowhere
+  in the pipeline, a display-name/slug mismatch that created a second brand tree, and a scorecard
+  template that would render APPROVED with no sign the piece was unpublishable.
+
 ## [3.42.0] - 2026-08-15
 
 - **ContentForge 3.26.0 -> 3.27.0** — Phase 4's corrections had nowhere to go, so the pipeline
