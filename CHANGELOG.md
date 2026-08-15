@@ -5,6 +5,30 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.40.0] - 2026-08-15
+
+Three plugin releases from running each pipeline end to end and auditing what came out.
+
+- **ContentForge 3.24.0 -> 3.25.0** — a self-orchestrated 10-phase run produced a draft that
+  measured 1,223 words (PASS) one way and 1,390 (FAIL) another, because "word count" never said
+  whether the H1, metadata block and `[VISUAL-PLACEHOLDER: …]` production lines counted.
+  `body_word_count` now excludes scaffolding that never publishes, and the Pipeline Contract
+  states the method. The run also verified the 3.24.0 report-location fix in the wild:
+  authorship exit 0, 16/16 verbatim, Phase 7 approved at 8.3.
+- **Digital Marketing Pro 3.27.0 -> 3.28.0** — a brand-setup → content-engine run found five
+  contract defects, including a `brand_voice_match` gate that was unfailable as written (it
+  asked for a 1.5-point deviation from a scorer whose distance is bounded at 1.0) and a
+  `seo_complete` criterion no pre-launch brand could ever satisfy.
+- **SocialForge 1.21.0 -> 1.22.0** — a full-pipeline run with no credentials found three real
+  silent failures behind the "nothing fails silently" claim: a preview renderer reporting
+  success for a nonexistent image, an image generator exiting 0 after every provider failed,
+  and a structured failure record that was never written to disk. Plus six prices quoted from
+  memory in the setup skill, against the plugin's own rule.
+
+Suite: 944 tests across the four repos (CF 329 · DMP 358 · SF 237 · marketplace 20).
+
+---
+
 ## [3.39.0] - 2026-08-15
 
 Listing bump for two plugin releases that came out of a calibration pass and a
