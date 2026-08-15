@@ -5,6 +5,19 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.45.0] - 2026-08-16
+
+- **ContentForge 3.30.0 -> 3.31.0** — the gate's evidence was not evidence. Gate 4 cited
+  `fix-ledger.py validate` exiting 0 as proof a correction ledger was sound, but `validate` never
+  opened the draft: a ledger whose every find string matched nothing was well-formed and passed —
+  the hollow-gate defect the ledger was built to cure, reproduced inside the cure. Found by a
+  validation agent running the shipped contract against a planted draft. `validate --target` now
+  proves every correction can land, and Gate 4 requires it. Also: line endings were unmentioned and
+  load-bearing (a find string written with LF matched nothing in a CRLF artifact and reported a
+  silent not_found), plus a `requires_rework` class for a missing section no substitution can write,
+  a `superseded` status so a loop keeps "Phase 3 fixed it" distinguishable from "it was lost", and a
+  written definition of what counts as a correction.
+
 ## [3.44.0] - 2026-08-16
 
 - **ContentForge 3.29.0 -> 3.30.0** — the remedy for a stale correction manufactured a false
