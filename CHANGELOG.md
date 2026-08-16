@@ -5,6 +5,20 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.46.0] - 2026-08-16
+
+- **All three plugins -> Agent Plugins 1.0** (CF 3.32.0, DMP 3.29.0, SF 1.23.0). OpenAI's
+  vendor-neutral plugin standard (2026-08-06; ChatGPT, Codex, Cursor, GitHub Copilot, VS Code,
+  Kiro) is now a first-class target across the suite: root `plugin.json` on the closed schema,
+  version-synced and test-guarded in every repo; `${PLUGIN_DATA}` accepted wherever the
+  `CLAUDE_*` names were read (a compliant non-Claude host previously resolved no data directory
+  at all). ContentForge additionally gains the **portable execution lane** — on platforms
+  without subagent dispatch the 11-phase pipeline runs sequentially in one conversation, each
+  agent contract read as phase instructions, same artifacts and gates — plus the visual-layer
+  contract reconciliation (the "embeds only approved images" wording that once produced a
+  zero-image deliverable is gone everywhere), a reviewer RE-REVIEW MODE, and honest attribution
+  for schematics. Suite total 1,057.
+
 ## [3.45.1] - 2026-08-16
 
 - **ContentForge 3.31.0 -> 3.31.1** — an independent validation sweep re-tested the newest code
