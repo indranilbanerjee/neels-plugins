@@ -5,6 +5,14 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.48.1] - 2026-08-16
+
+- **All three plugins: richer Agent Plugins 1.0 listing metadata + submission bundles**
+  (CF 3.33.1, DMP 3.30.1, SF 1.24.1). Root manifests carry the official schema's full optional
+  set (homepage, repository, license, keywords), and each repo now holds
+  `docs/distribution/submission-bundle.md` — listing copy, starter prompts, and the 5+3 test
+  cases the Anthropic and OpenAI directories require. Suite total 1,101.
+
 ## [3.48.0] - 2026-08-16
 
 - **The run-audit discipline reaches all three plugins** (DMP 3.30.0, SF 1.24.0; CF shipped its
