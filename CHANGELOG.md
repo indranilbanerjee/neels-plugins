@@ -5,6 +5,18 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.48.0] - 2026-08-16
+
+- **The run-audit discipline reaches all three plugins** (DMP 3.30.0, SF 1.24.0; CF shipped its
+  auditor in 3.33.0). DMP: `scripts/run-audit.py` re-derives the content-engine's five gates from
+  the artifacts — humanize re-measured fresh instead of read off the scorecard, no scan JSON in
+  the file authorship.py measures, voice distances actually inside the gate a ready-declaration
+  claims — and the contract requires it before `status: ready`. SF: `scripts/delivery_audit.py`
+  is Step 0 of /finalize-month — ledger vocabulary, history arithmetic, ghost posts,
+  force_finalized surfaced as violations, FINAL files existing non-empty, loadable failure log,
+  honest cost totals. Every claim a pipeline makes about being finished is now re-derived from
+  disk in all three plugins. Suite total 1,101.
+
 ## [3.47.0] - 2026-08-16
 
 - **ContentForge 3.32.0 -> 3.33.0** — the run auditor ships, and the audit is the price of the
