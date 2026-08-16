@@ -5,6 +5,19 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.47.0] - 2026-08-16
+
+- **ContentForge 3.32.0 -> 3.33.0** — the run auditor ships, and the audit is the price of the
+  word "completed". `scripts/run-audit.py` re-derives every gate of a finished run from its
+  artifacts (scaffolding in the body, unanchored assets, ghost paths, stale authorship records,
+  ledger regressions, scores that don't back their decisions, statuses hiding blocked
+  publications), and `finalize --status completed` refuses without a fresh CLEAN verdict —
+  `--skip-audit` stamps the skip into the manifest instead of staying silent. Plus
+  `scripts/feature_card.py`: a deterministic 1200×630 og:image card from the brand's own recorded
+  colors and the real title, closing the last blocker class that had no pipeline-native exit.
+  Also final: **ContentForge keeps its name permanently** (user decision) — submissions to the
+  official directories can proceed under `contentforge`.
+
 ## [3.46.0] - 2026-08-16
 
 - **All three plugins -> Agent Plugins 1.0** (CF 3.32.0, DMP 3.29.0, SF 1.23.0). OpenAI's
