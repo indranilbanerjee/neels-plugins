@@ -5,6 +5,15 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.49.1] - 2026-08-16
+
+- **ContentForge 3.33.2 -> 3.33.3** — a valid anchor the measurement could not see. The
+  first fully-live customer-perspective pipeline run produced a diagram whose VISUAL anchor
+  carried `->` arrows in its description, and the marker parser's `[^>]` character class
+  stopped at the first `>` — a generated asset would have read as unanchored at Gate 8
+  despite Phase 3.5 doing everything right. Same class fixed in the .docx renderer's
+  INTERNAL-LINK parser. Regression tests proven against the shipped parser. Suite total 1,120.
+
 ## [3.49.0] - 2026-08-16
 
 - **The documentation truth pass, suite-wide** (CF 3.33.2, DMP 3.30.2, SF 1.24.2). A
