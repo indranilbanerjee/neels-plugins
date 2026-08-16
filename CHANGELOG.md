@@ -5,6 +5,15 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.49.2] - 2026-08-16
+
+- **ContentForge 3.33.3 -> 3.33.4** — figure furniture is not prose, and the conclusion is
+  not the references. The same live customer-perspective run exposed two more measurement
+  conventions: approved figures' alt texts and captions counted as body prose (a run would
+  fail its own audit for describing its charts properly), and the keyword-in-conclusion
+  check read the file tail — the References section — instead of the Conclusion. Both
+  fixed with regression tests proven against the shipped module. Suite total 1,124.
+
 ## [3.49.1] - 2026-08-16
 
 - **ContentForge 3.33.2 -> 3.33.3** — a valid anchor the measurement could not see. The
