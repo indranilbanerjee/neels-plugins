@@ -155,6 +155,87 @@ class TestListingDescriptions(unittest.TestCase):
                                   f"{name}/{pname} points at {repo}")
 
 
+def _sibling(name):
+    """Locate a sibling plugin repo checkout regardless of directory-name case.
+    Returns None when the sibling is not checked out (e.g. marketplace-only CI)."""
+    parent = REPO.parent
+    for d in parent.iterdir():
+        if d.is_dir() and d.name.lower() == name.lower():
+            return d
+    return None
+
+
+class TestReadmeLiveness(unittest.TestCase):
+    """The README rotted for six weeks while every manifest guard passed: the lede
+    still announced the July 7 release, the suite badges said 196 skills / 502 tests
+    against a 205-skill / 1,100+-test reality, and the plugin table advertised
+    '21 skills · 35-pattern' — the exact regression TestListingDescriptions was
+    built for, alive in the one file that test never read."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.readme = (REPO / "README.md").read_text(encoding="utf-8")
+        cls.canonical = marketplace_version(load("claude"))
+        # Everything before "## What's new" is live listing surface; the entries
+        # below it narrate past releases and keep their ship-time numbers.
+        cls.live = cls.readme.split("## What's new")[0]
+
+    def test_lede_names_the_current_release(self):
+        m = re.search(r"^> 🆕.*$", self.readme, re.M)
+        self.assertIsNotNone(m, "README lost its '> 🆕' lede line")
+        self.assertIn(self.canonical, m.group(0),
+                      "the lede announces an old release — it must name marketplace "
+                      f"v{self.canonical} (the CHANGELOG top entry)")
+
+    def test_no_retired_branding_in_live_sections(self):
+        retired = ("35-pattern", "35 patterns", "29-pattern", "21 skills", "16 skills",
+                   "158 skills", "196%20across", "502%20across")
+        for needle in retired:
+            with self.subTest(needle=needle):
+                self.assertNotIn(needle, self.live,
+                                 f"README live section still says '{needle}'")
+
+    def test_suite_skills_badge_matches_sibling_truth(self):
+        sibs = [_sibling(n) for n in ("contentforge", "digital-marketing-pro", "socialforge")]
+        if not all(sibs):
+            self.skipTest("sibling repos not checked out beside the marketplace")
+        truth = sum(len([d for d in (s / "skills").iterdir() if d.is_dir()]) for s in sibs)
+        m = re.search(r"badge/skills-(\d+)%20across%20suite", self.readme)
+        self.assertIsNotNone(m, "suite skills badge not found in README")
+        self.assertEqual(int(m.group(1)), truth,
+                         f"skills badge says {m.group(1)}, the three repos ship {truth}")
+
+    def test_suite_tests_badge_matches_changelog(self):
+        """The CHANGELOG top entries record 'Suite total N' at each release; the badge
+        must agree with the most recent such record."""
+        changelog = (REPO / "CHANGELOG.md").read_text(encoding="utf-8")
+        rec = re.search(r"Suite total ([\d,]+)", changelog)
+        self.assertIsNotNone(rec, "CHANGELOG no longer records 'Suite total N'")
+        recorded = int(rec.group(1).replace(",", ""))
+        m = re.search(r"badge/tests-([\d,%C]+?)%20across%20suite", self.readme)
+        self.assertIsNotNone(m, "suite tests badge not found in README")
+        badge = int(re.sub(r"[^\d]", "", m.group(1)))
+        self.assertEqual(badge, recorded,
+                         f"tests badge says {badge}, CHANGELOG's latest record is {recorded}")
+
+    def test_plugin_table_rows_match_sibling_truth(self):
+        for repo_name, display in (("contentforge", "contentforge"),
+                                   ("digital-marketing-pro", "digital-marketing-pro"),
+                                   ("socialforge", "socialforge")):
+            sib = _sibling(repo_name)
+            if sib is None:
+                self.skipTest("sibling repos not checked out beside the marketplace")
+            truth = len([d for d in (sib / "skills").iterdir() if d.is_dir()])
+            row = next((ln for ln in self.live.splitlines()
+                        if display in ln and "skills" in ln and ln.strip().startswith("|")), None)
+            self.assertIsNotNone(row, f"README table lost the {display} row")
+            m = re.search(r"(\d+) skills", row)
+            self.assertIsNotNone(m, f"{display} row states no skill count")
+            with self.subTest(plugin=display):
+                self.assertEqual(int(m.group(1)), truth,
+                                 f"{display} row says {m.group(0)}, the repo ships {truth}")
+
+
 class TestChangelogCoverage(unittest.TestCase):
     """The CHANGELOG silently stopped at 3.16.0 while the manifests marched to
     3.26.0 — ten unchronicled releases in the repo whose entire job is keeping

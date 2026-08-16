@@ -4,16 +4,16 @@
 
 Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, and **OpenClaw** + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.48.1-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.49.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
-[![Total skills](https://img.shields.io/badge/skills-196%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-502%20across%20suite-brightgreen.svg)](#whats-new)
+[![Total skills](https://img.shields.io/badge/skills-205%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
+[![Total tests](https://img.shields.io/badge/tests-1116%20across%20suite-brightgreen.svg)](#whats-new)
 [![Surfaces](https://img.shields.io/badge/all%203%20plugins-8%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
 [![Sponsor](https://img.shields.io/badge/sponsor-%E2%9D%A4-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/indranilbanerjee)
 
-> 🆕 **July 7, 2026 — marketplace v3.16.0: Digital Marketing Pro v3.15.0, the Reliability & Truth release.** A full-repo audit (orchestration / agents / skills / commands / scripts / docs-manifests) surfaced ~200 findings — all fixed in one coordinated pass, mirroring ContentForge's v3.16.0. One shared `_common.py` ends the storage split-brain; a new doc-vs-argparse contract linter (`check_skill_contracts.py`) locks every skill invocation to real script flags; all 18 execution skills carry a uniform typed-approval gate + `disable-model-invocation: false` (**closes issue #6**); the Tessl review workflow moved to the `tessl review` CLI (**closes issue #8**); agents consolidated 25 → 24; `embed-c2pa.py` gained the EU AI Act Article 50 `--ai-disclosure` assertion; connectors are honestly opt-in (fictional npm packages purged). DMP tests 123 → **207**. **404 tests passing** (DMP 207 + CF 143 + SF 54). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
+> 🆕 **August 16, 2026 — marketplace v3.49.0: the documentation truth pass** (ContentForge **3.33.2** · Digital Marketing Pro **3.30.2** · SocialForge **1.24.2**). A from-zero audit of every live document across all four repos found every doc-count guard pattern-blind — and this README was the worst offender: the lede froze at July 7 while 32 versions shipped, the badges undercounted the suite by 9 skills and 600 tests, and the plugin table advertised counts two releases dead. Everything is re-derived from the filesystem now, and new liveness guards make this README incapable of freezing again (the lede must name the current release; badges and table rows are checked against the sibling repos themselves). The August arc these badges describe: **run auditors in all three plugins** (every "completed" / "ready" / "FINAL" claim re-derived from artifacts on disk before it may be declared), **Agent Plugins 1.0 packaging** across the suite (root manifests on OpenAI's vendor-neutral standard + `${PLUGIN_DATA}` everywhere + ContentForge's portable execution lane for hosts without subagent dispatch), and **directory submission bundles** ready in every repo for the Anthropic and OpenAI plugin directories. **1,116 tests passing** (CF 456 + DMP 379 + SF 256 + marketplace 25). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -24,8 +24,8 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 | Your job-to-be-done | Install | What's in the box |
 |---|---|---|
 | **Run end-to-end brand-strategy engagements across a portfolio** (agencies, in-house, consultants) | [`digital-marketing-pro`](https://github.com/indranilbanerjee/digital-marketing-pro) | 163 skills · 24 agents · 12-Part Strategy Flow · 6-platform AEO/GEO · EU AI Act Article 50 · Cowork-team-persistent · multi-brand · multi-jurisdiction compliance |
-| **Produce publish-ready long-form content** (blog posts, white papers, case studies, executive briefs) | [`contentforge`](https://github.com/indranilbanerjee/contentforge) | 21 skills · 13 agents · 10 quality gates · 35-pattern AI humanizer · fact-checker · real `.docx` output · C2PA signing |
-| **Produce social media assets at agency scale** (carousels, single-image posts, AI image / video creatives) | [`socialforge`](https://github.com/indranilbanerjee/socialforge) | 16 skills · 25 commands · asset-first compositing · AI image (Vertex AI Nano Banana Pro) · AI video (Kling v3.0 Pro) · C2PA signing |
+| **Produce publish-ready long-form content** (blog posts, white papers, case studies, executive briefs) | [`contentforge`](https://github.com/indranilbanerjee/contentforge) | 22 skills · 13 agents · 10 quality gates · 43-pattern AI humanizer · fact-checker · run auditor · real `.docx` output · C2PA signing |
+| **Produce social media assets at agency scale** (carousels, single-image posts, AI image / video creatives) | [`socialforge`](https://github.com/indranilbanerjee/socialforge) | 20 skills · 5 agents · 25 commands · asset-first compositing · AI image + video via your connected providers · delivery audit · C2PA signing |
 
 **The three plugins are complementary, not overlapping.** A typical agency workflow uses all three: DMP for strategy + campaign planning, ContentForge for the long-form articles a campaign produces, SocialForge for the social assets a campaign produces. All three share the same brand-state directory (`~/.claude-marketing/<brand>/`) so a brand profile created in DMP is immediately picked up by CF and SF.
 
@@ -45,6 +45,22 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 ---
 
 ## What's new
+
+### v3.49.0 (August 16, 2026) — the documentation truth pass
+
+CF **3.33.2** · DMP **3.30.2** · SF **1.24.2** · suite **1,116 tests**. Every count in
+every live document across the four repos re-derived from the filesystem; every repo's
+doc-count guard extended with the exact phrasings that had been escaping it (script
+counts, "N SKILL.md files", plugin-name-qualified counts, comparison-table rows,
+AGENTS.md currency); and this README gained liveness guards — the lede must name the
+current release, and the suite badges and plugin-table rows are verified against the
+sibling repos themselves.
+
+> The releases between v3.16.0 and v3.49.0 — the express lane, the flagship contracts,
+> the 43-pattern humanizer and authorship layer, live pricing, the AI-disclosure and
+> provenance layer, the verification harness, the fix ledger, the run auditors, Agent
+> Plugins 1.0 packaging, and the directory submission bundles — are chronicled
+> release-by-release in [CHANGELOG.md](CHANGELOG.md).
 
 ### v3.16.0 (July 7, 2026) — Digital Marketing Pro v3.15.0: the Reliability & Truth release
 

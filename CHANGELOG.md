@@ -5,6 +5,23 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.49.0] - 2026-08-16
+
+- **The documentation truth pass, suite-wide** (CF 3.33.2, DMP 3.30.2, SF 1.24.2). A
+  from-zero audit of every live document in all four repos found every doc-count guard
+  pattern-blind — numbers phrased just outside the regex rotted for weeks while tests
+  passed. This repo was the worst offender: the README lede still announced the July 7
+  release (v3.16.0) six weeks and 32 versions later, the suite badges said 196 skills /
+  502 tests against a 205-skill / 1,091-test reality, and the plugin table advertised
+  "21 skills · 35-pattern" for ContentForge (22 skills, 43-pattern) and "16 skills" for
+  SocialForge (20) — the exact regression the manifest-description guard was built for,
+  alive in the one file that guard never read. Fixed everywhere, and every repo's guard
+  grew the patterns that escaped it: script counts, "N SKILL.md files", plugin-name-
+  qualified counts, comparison-table rows, AGENTS.md currency (version + all 8 surfaces),
+  CF phase-count consistency, and — here — README liveness guards (lede must name the
+  current release; suite badges and table rows re-derived from the sibling repos when
+  checked out; retired branding needles banned from live sections). Suite total 1,116.
+
 ## [3.48.1] - 2026-08-16
 
 - **All three plugins: richer Agent Plugins 1.0 listing metadata + submission bundles**
