@@ -5,6 +5,21 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.50.0] - 2026-08-17
+
+- **ContentForge 3.33.4 -> 4.0.0 — the lifecycle release.** Production, measurement, and
+  planning become one auditable system: cf-audit findings recorded durably
+  (audit-ledger.py, schema-validated) and read by cf-calendar/content-refresh across
+  sessions; cf-aeo-check history feeds the freshness model; each run's verified link
+  inventory merges into brand_pages (conversion pages only staged — a CTA is a human
+  decision); the pipeline contract declared as data (config/pipeline-graph.json,
+  drift-guarded both directions — encoding it surfaced six under-declared inputs); and
+  cross-run telemetry with recurrence floors informs drafter briefs while never touching
+  a gate. README rewritten end to end with SVG diagrams and a from-a-real-run example.
+  Design specs for the living link graph and per-brand claim library committed —
+  specified before built, per the two standing cautions. No breaking changes.
+  Suite total 1,158.
+
 ## [3.49.2] - 2026-08-16
 
 - **ContentForge 3.33.3 -> 3.33.4** — figure furniture is not prose, and the conclusion is
