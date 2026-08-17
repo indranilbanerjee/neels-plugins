@@ -5,6 +5,31 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.51.0] - 2026-08-17
+
+- **Grok (xAI Build CLI) native support across the suite** — ContentForge 4.0.0 -> 4.1.0,
+  Digital Marketing Pro 3.30.2 -> 3.31.0, SocialForge 1.24.2 -> 1.25.0. Every plugin repo
+  now ships a first-class `.grok-plugin/` manifest pair (`plugin.json` with the
+  `"skills"` pointer + a single-plugin `marketplace.json`), version-locked into its
+  release-consistency suite; `grok plugin install indranilbanerjee/<plugin>` works
+  directly, and Grok also reads the Claude Code manifests for compatibility.
+- **Fifth marketplace manifest**: `.grok-plugin/marketplace.json` lists all three plugins
+  (Grok format: per-plugin versions, no metadata block, `source: {source: "url"}`), and
+  joins every cross-manifest drift guard — plugin sets, versions, and descriptions must
+  now agree across five files. `grok plugin marketplace add indranilbanerjee/neels-plugins`
+  is the marketplace lane.
+- **ContentForge hero skills on claude.ai**: five skills (`cf-brief`, `cf-social-adapt`,
+  `cf-translate`, `cf-video-script`, `cf-aeo-check`) ship as `.skill` release assets on
+  the CF repo, built by `scripts/build-skill-assets.py` — deterministic zips with each
+  skill's config/template dependencies bundled, refusing any skill whose prose references
+  a file that wouldn't exist after upload.
+- **Listing hygiene**: the CF marketplace description said "41-pattern AI humanizer" —
+  stale against the 43-pattern catalog since CF v3.20.0, in all four manifests at once —
+  rewritten to the 4.x lifecycle description; "41-pattern" joins the retired-branding
+  guard needles (manifest + README-liveness variants). DMP marketplace description now
+  lists Grok.
+- Suite total 1,179 (CF 514 + DMP 381 + SF 258 + marketplace 26).
+
 ## [3.50.0] - 2026-08-17
 
 - **ContentForge 3.33.4 -> 4.0.0 — the lifecycle release.** Production, measurement, and

@@ -2,18 +2,20 @@
 
 > **You run marketing for a single brand, an agency portfolio, or a content team — and you want the same depth across every brand, every article, every campaign, with no per-platform lock-in. You don't want to learn six different "AI marketing" SaaS UIs that all charge per-seat per-month.**
 
-Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, and **OpenClaw** + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
+Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.50.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.51.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-205%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-1158%20across%20suite-brightgreen.svg)](#whats-new)
-[![Surfaces](https://img.shields.io/badge/all%203%20plugins-8%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
+[![Total tests](https://img.shields.io/badge/tests-1179%20across%20suite-brightgreen.svg)](#whats-new)
+[![Surfaces](https://img.shields.io/badge/all%203%20plugins-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
 [![Sponsor](https://img.shields.io/badge/sponsor-%E2%9D%A4-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/indranilbanerjee)
 
-> 🆕 **August 16, 2026 — marketplace v3.50.0: ContentForge 4.0.0, the lifecycle release** (ContentForge **4.0.0** · Digital Marketing Pro **3.30.2** · SocialForge **1.24.2**). A from-zero audit of every live document across all four repos found every doc-count guard pattern-blind — and this README was the worst offender: the lede froze at July 7 while 32 versions shipped, the badges undercounted the suite by 9 skills and 600 tests, and the plugin table advertised counts two releases dead. Everything is re-derived from the filesystem now, and new liveness guards make this README incapable of freezing again (the lede must name the current release; badges and table rows are checked against the sibling repos themselves). The August arc these badges describe: **run auditors in all three plugins** (every "completed" / "ready" / "FINAL" claim re-derived from artifacts on disk before it may be declared), **Agent Plugins 1.0 packaging** across the suite (root manifests on OpenAI's vendor-neutral standard + `${PLUGIN_DATA}` everywhere + ContentForge's portable execution lane for hosts without subagent dispatch), and **directory submission bundles** ready in every repo for the Anthropic and OpenAI plugin directories. **1,158 tests passing** (CF 498 + DMP 379 + SF 256 + marketplace 25). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
+> 🆕 **August 17, 2026 — marketplace v3.51.0: Grok (xAI Build CLI) native support across all three plugins, and ContentForge hero skills on claude.ai** (ContentForge **4.1.0** · Digital Marketing Pro **3.31.0** · SocialForge **1.25.0**). Every plugin now ships a first-class `.grok-plugin/` manifest pair — `grok plugin install indranilbanerjee/<plugin>` works directly, or add this marketplace: `grok plugin marketplace add indranilbanerjee/neels-plugins` (a fifth marketplace manifest, `.grok-plugin/marketplace.json`, joins the drift guards). ContentForge additionally packages five hero skills (`cf-brief`, `cf-social-adapt`, `cf-translate`, `cf-video-script`, `cf-aeo-check`) as claude.ai-uploadable `.skill` release assets, built by a deterministic packager that refuses to ship a skill with dangling references. The same pass fixed stale listing copy the guards now police (the ContentForge listing's humanizer pattern-count had outlived the catalog's growth to 43 by four weeks) and fresh doc-rot in DMP (backticked SKILL.md counts, qualifier-word counts, an unguarded "N tests" noun 170 stale). **1,179 tests passing** (CF 514 + DMP 381 + SF 258 + marketplace 26). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
+>
+> Previously — **August 16, 2026 — marketplace v3.50.0: ContentForge 4.0.0, the lifecycle release** (ContentForge **4.0.0** · Digital Marketing Pro **3.30.2** · SocialForge **1.24.2**). A from-zero audit of every live document across all four repos found every doc-count guard pattern-blind — and this README was the worst offender: the lede froze at July 7 while 32 versions shipped, the badges undercounted the suite by 9 skills and 600 tests, and the plugin table advertised counts two releases dead. Everything is re-derived from the filesystem now, and new liveness guards make this README incapable of freezing again (the lede must name the current release; badges and table rows are checked against the sibling repos themselves). The August arc these badges describe: **run auditors in all three plugins** (every "completed" / "ready" / "FINAL" claim re-derived from artifacts on disk before it may be declared), **Agent Plugins 1.0 packaging** across the suite (root manifests on OpenAI's vendor-neutral standard + `${PLUGIN_DATA}` everywhere + ContentForge's portable execution lane for hosts without subagent dispatch), and **directory submission bundles** ready in every repo for the Anthropic and OpenAI plugin directories. **1,158 tests passing** (CF 498 + DMP 379 + SF 256 + marketplace 25). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -45,6 +47,18 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 ---
 
 ## What's new
+
+### v3.51.0 (August 17, 2026) — Grok native support suite-wide + claude.ai hero skills
+
+CF **4.1.0** · DMP **3.31.0** · SF **1.25.0** · suite **1,179 tests**. All three plugins
+gain a first-class `.grok-plugin/` manifest pair (xAI Build CLI), version-locked into
+each repo's release-consistency suite; this marketplace gains a fifth manifest,
+`.grok-plugin/marketplace.json`, inside the same drift guards (per-plugin versions and
+descriptions must agree across all five files). ContentForge ships five hero skills as
+claude.ai-uploadable `.skill` release assets built by a deterministic, refusal-first
+packager. Listing hygiene: the CF description's "41-pattern" (stale against the
+43-pattern catalog since v3.20.0) is corrected and joins the retired-branding guard;
+DMP's doc-count guard learns three phrasings that had been escaping it, plant-checked.
 
 ### v3.49.0 (August 16, 2026) — the documentation truth pass
 

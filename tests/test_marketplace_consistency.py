@@ -22,14 +22,16 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 
-# Each platform reads a different file; all four describe the same three plugins.
+# Each platform reads a different file; all five describe the same three plugins.
 MANIFESTS = {
     "claude": REPO / ".claude-plugin" / "marketplace.json",
     "cursor": REPO / ".cursor-plugin" / "marketplace.json",
     "codex": REPO / ".agents" / "plugins" / "marketplace.json",
     "copilot": REPO / ".github" / "plugin" / "marketplace.json",
+    "grok": REPO / ".grok-plugin" / "marketplace.json",
 }
-# The Codex variant intentionally carries no top-level marketplace version.
+# The Codex and Grok variants intentionally carry no top-level marketplace
+# version (Grok's format, per the in-the-wild xAI examples, has no metadata block).
 VERSIONED = ("claude", "cursor", "copilot")
 
 
@@ -46,7 +48,7 @@ def plugins(doc):
 
 
 class TestManifestsParse(unittest.TestCase):
-    def test_all_four_parse(self):
+    def test_all_five_parse(self):
         for name, path in MANIFESTS.items():
             with self.subTest(manifest=name):
                 self.assertTrue(path.exists(), f"{path} is missing")
@@ -72,7 +74,7 @@ class TestCrossManifestAgreement(unittest.TestCase):
         for name, s in sets.items():
             self.assertEqual(s, first, f"{name} lists {s}, claude lists {first}")
 
-    def test_plugin_versions_agree_across_all_four(self):
+    def test_plugin_versions_agree_across_all_five(self):
         by_plugin = {}
         for name in MANIFESTS:
             for pname, p in plugins(load(name)).items():
@@ -92,6 +94,12 @@ class TestCrossManifestAgreement(unittest.TestCase):
         """Deliberate: the .agents/ variant carries only per-plugin versions."""
         self.assertIsNone(marketplace_version(load("codex")),
                           "the Codex manifest should not declare a marketplace version")
+
+    def test_grok_variant_has_no_marketplace_version(self):
+        """Deliberate: Grok's marketplace format (mirroring the in-the-wild xAI
+        examples) carries only per-plugin versions."""
+        self.assertIsNone(marketplace_version(load("grok")),
+                          "the Grok manifest should not declare a marketplace version")
 
 
 class TestReadmeMatchesManifests(unittest.TestCase):
@@ -129,8 +137,11 @@ class TestListingDescriptions(unittest.TestCase):
                     f"platforms show different install-time text")
 
     def test_no_retired_contentforge_branding(self):
-        """The exact regression that shipped: '21 skills' / '35-pattern' outliving the plugin."""
-        retired = ("35-pattern", "35 patterns", "21 skills", "29-pattern")
+        """The exact regression that shipped: '21 skills' / '35-pattern' outliving the plugin.
+        2026-08-17: '41-pattern' joined the list — it outlived the v3.20.0 catalog
+        growth to 43 by four weeks, in all four manifests at once."""
+        retired = ("35-pattern", "35 patterns", "21 skills", "29-pattern",
+                   "41-pattern", "41 patterns")
         for name in MANIFESTS:
             cf = plugins(load(name)).get("contentforge", {})
             desc = cf.get("description", "")
@@ -148,7 +159,9 @@ class TestListingDescriptions(unittest.TestCase):
         for name in MANIFESTS:
             for pname, p in plugins(load(name)).items():
                 src = p.get("source")
-                repo = src.get("repo") if isinstance(src, dict) else src
+                # Claude-family manifests use {"source": "github", "repo": ...};
+                # the Grok format uses {"source": "url", "url": "...git"}.
+                repo = (src.get("repo") or src.get("url")) if isinstance(src, dict) else src
                 with self.subTest(manifest=name, plugin=pname):
                     self.assertIsNotNone(repo, f"{name}/{pname}: no source repo")
                     self.assertIn(expected[pname], str(repo),
@@ -188,8 +201,8 @@ class TestReadmeLiveness(unittest.TestCase):
                       f"v{self.canonical} (the CHANGELOG top entry)")
 
     def test_no_retired_branding_in_live_sections(self):
-        retired = ("35-pattern", "35 patterns", "29-pattern", "21 skills", "16 skills",
-                   "158 skills", "196%20across", "502%20across")
+        retired = ("35-pattern", "35 patterns", "29-pattern", "41-pattern", "21 skills",
+                   "16 skills", "158 skills", "196%20across", "502%20across")
         for needle in retired:
             with self.subTest(needle=needle):
                 self.assertNotIn(needle, self.live,
