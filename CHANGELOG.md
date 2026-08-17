@@ -5,6 +5,19 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.51.1] - 2026-08-17
+
+- **ContentForge 4.1.0 -> 4.1.1 — the README goes global.** 11 full README
+  translations (Hindi, Chinese, Japanese, Korean, Spanish, Portuguese, Arabic,
+  Urdu, Tamil, Bengali, Russian), each version-stamped and guarded by a new
+  translations test suite (a translation that silently falls behind the
+  shipping version fails CF's suite); the real validated-run artifacts embedded
+  in the README (rendered chart, humanizer before/after edits, 9.0/A scorecard
+  SVG, CLEAN audit verdict); a full OpenAI-surfaces section (Codex walkthrough +
+  honest ChatGPT/Agent Plugins 1.0 status); per-surface update commands for all
+  nine platforms; author banner + sponsor call-to-action.
+- Suite total 1,185 (CF 520 + DMP 381 + SF 258 + marketplace 26).
+
 ## [3.51.0] - 2026-08-17
 
 - **Grok (xAI Build CLI) native support across the suite** — ContentForge 4.0.0 -> 4.1.0,
