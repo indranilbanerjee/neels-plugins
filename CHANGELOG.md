@@ -5,6 +5,23 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.51.2] - 2026-08-17
+
+- **All five open community issues on digital-marketing-pro verified and fixed**
+  (DMP 3.31.0 -> 3.31.1, CF 4.1.1 -> 4.1.2, SF 1.25.0 -> 1.25.1). #10:
+  claim-verifier's percent regex only matched when a word character followed
+  "%" — fixed with a lookahead, CLI-level tests added. #11: keyword_cluster's
+  ASCII tokenizer split non-ASCII letters and exact-token Jaccard scored German
+  compounds at 0.00 — Unicode tokenizer + compound-aware similarity, with an
+  English-parity test bound. #13: engagement-workflow's allowed-tools omitted
+  Task while its body mandates Task dispatch — fixed plus a repo-wide contract
+  guard. #12: plugin.yaml said "158 skills" against 163 — fixed and the Hermes
+  description joined the derived-count guard. #9: the `_readme` field in
+  hooks/hooks.json fails Cowork plugin validation — rationale moved to
+  hooks/README.md and the manifest schema-guarded in ALL THREE plugins.
+  Reported by @jurazerr and @theepicsaxguy.
+- Suite total 1,210 (CF 522 + DMP 402 + SF 260 + marketplace 26).
+
 ## [3.51.1] - 2026-08-17
 
 - **ContentForge 4.1.0 -> 4.1.1 — the README goes global.** 11 full README
