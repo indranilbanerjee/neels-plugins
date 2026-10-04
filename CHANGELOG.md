@@ -5,6 +5,17 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.53.2] - 2026-10-04
+
+- ContentForge 4.3.1, Digital Marketing Pro 3.33.3, SocialForge 1.27.2: Hermes
+  Agent's install-time security scan rated all three "dangerous", so Hermes
+  refused to install them. Fixed in each plugin with a pattern guard.
+- New `tests/test_hermes_admission.py` runs Hermes's own validator
+  (`hermes_cli.plugin_validate`) over each plugin as git tracks it, when
+  HERMES_SRC and HERMES_PYTHON point at a Hermes checkout and environment;
+  it skips otherwise. It failed on the previous commits and passes now.
+- Suite total 1,662 (CF 689 + DMP 496 + SF 440 + marketplace 37).
+
 ## [3.53.1] - 2026-10-04
 
 - Digital Marketing Pro 3.33.2 and SocialForge 1.27.1: each had one new test
