@@ -95,6 +95,46 @@ class TestCrossManifestAgreement(unittest.TestCase):
         self.assertIsNone(marketplace_version(load("codex")),
                           "the Codex manifest should not declare a marketplace version")
 
+    def test_codex_sources_are_types_codex_can_read(self):
+        """Codex silently dropped every entry using the `{"source": "github"}`
+        shorthand — the marketplace added cleanly and listed ZERO plugins, so
+        `codex plugin add` failed with 'not found' (found 2026-10-04 on
+        codex-cli 0.145). The official Claude marketplace, which Codex reads,
+        uses only url / git-subdir / local-path forms."""
+        allowed = {"url", "git-subdir", "local"}
+        for name, p in plugins(load("codex")).items():
+            src = p.get("source")
+            kind = src.get("source") if isinstance(src, dict) else "local"
+            with self.subTest(plugin=name):
+                self.assertIn(kind, allowed, f"{name}: Codex cannot read source kind {kind!r}")
+
+    def test_codex_marketplace_name_matches_documented_suffix(self):
+        """Codex names a marketplace from this file's `name`, so docs saying
+        `codex plugin add X@neels-plugins` only work if the name matches. It
+        was `neels-marketing-plugins` while every README said `@neels-plugins`."""
+        self.assertEqual(load("codex").get("name"), "neels-plugins")
+        readme = (REPO / "README.md").read_text(encoding="utf-8")
+        self.assertNotIn("codex plugin install", readme)
+
+    def test_codex_policy_values_are_valid_enums(self):
+        """codex-rs enums: authentication ON_INSTALL|ON_USE (ON_DEMAND was
+        rejected — issue neels-plugins#1); installation NOT_AVAILABLE|AVAILABLE|
+        INSTALLED_BY_DEFAULT."""
+        auth = {"ON_INSTALL", "ON_USE"}
+        inst = {"NOT_AVAILABLE", "AVAILABLE", "INSTALLED_BY_DEFAULT"}
+        for name, p in plugins(load("codex")).items():
+            policy = p.get("policy", {})
+            with self.subTest(plugin=name):
+                self.assertIn(policy.get("authentication"), auth)
+                self.assertIn(policy.get("installation"), inst)
+
+    def test_claude_marketplace_metadata_has_only_known_keys(self):
+        """`claude plugin validate --strict` fails on unknown metadata keys;
+        homepage/license/keywords were stripped at load and failed strict CI."""
+        known = {"description", "version", "pluginRoot"}
+        extra = set(load("claude").get("metadata", {})) - known
+        self.assertEqual(extra, set(), f"unknown marketplace metadata keys: {sorted(extra)}")
+
     def test_grok_variant_has_no_marketplace_version(self):
         """Deliberate: Grok's marketplace format (mirroring the in-the-wild xAI
         examples) carries only per-plugin versions."""
@@ -189,9 +229,14 @@ class TestReadmeLiveness(unittest.TestCase):
     def setUpClass(cls):
         cls.readme = (REPO / "README.md").read_text(encoding="utf-8")
         cls.canonical = marketplace_version(load("claude"))
-        # Everything before "## What's new" is live listing surface; the entries
-        # below it narrate past releases and keep their ship-time numbers.
-        cls.live = cls.readme.split("## What's new")[0]
+        # Live listing surface = every top-level section EXCEPT the "What's new"
+        # history sections, which narrate past releases with ship-time numbers.
+        # (This used to be "everything before ## What's new" — so Quick Start,
+        # Available Plugins and Platform Compatibility, all placed below it,
+        # rotted unchecked: the plugin table advertised CF 3.16.0 with "21
+        # skills, 35-pattern" six weeks into CF 4.x. Found 2026-10-04.)
+        sections = re.split(r"(?m)^(?=## )", cls.readme)
+        cls.live = "".join(s for s in sections if not s.startswith("## What's new"))
 
     def test_lede_names_the_current_release(self):
         m = re.search(r"^> 🆕.*$", self.readme, re.M)
@@ -230,6 +275,16 @@ class TestReadmeLiveness(unittest.TestCase):
         badge = int(re.sub(r"[^\d]", "", m.group(1)))
         self.assertEqual(badge, recorded,
                          f"tests badge says {badge}, CHANGELOG's latest record is {recorded}")
+
+    def test_available_plugins_table_versions_match_manifest(self):
+        listed = plugins(load("claude"))
+        for name, entry in listed.items():
+            row = next((ln for ln in self.live.splitlines()
+                        if ln.startswith("| **[" + name + "]")), None)
+            with self.subTest(plugin=name):
+                self.assertIsNotNone(row, f"Available Plugins table lost the {name} row")
+                self.assertIn(f"| {entry['version']} |", row,
+                              f"{name} row does not show manifest version {entry['version']}")
 
     def test_plugin_table_rows_match_sibling_truth(self):
         for repo_name, display in (("contentforge", "contentforge"),

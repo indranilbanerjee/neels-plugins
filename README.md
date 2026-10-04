@@ -4,16 +4,18 @@
 
 Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.51.2-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.52.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-205%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-1210%20across%20suite-brightgreen.svg)](#whats-new)
+[![Total tests](https://img.shields.io/badge/tests-1224%20across%20suite-brightgreen.svg)](#whats-new)
 [![Surfaces](https://img.shields.io/badge/all%203%20plugins-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
 [![Sponsor](https://img.shields.io/badge/sponsor-%E2%9D%A4-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/indranilbanerjee)
 
-> 🆕 **August 17, 2026 — marketplace v3.51.2: all five open community issues fixed** (ContentForge **4.1.2** · Digital Marketing Pro **3.31.1** · SocialForge **1.25.1**). Every open GitHub issue on the DMP repo was reproduced against the current release — all five were real — and each fix ships with the guard that makes its regression class impossible: the inverted percent-claim regex in `claim-verifier.py`, the ASCII-only tokenizer that blinded `keyword_cluster.py`'s cannibalisation gate for German keyword sets (now Unicode + compound-aware, English scoring provably unchanged), the `engagement-workflow` Task-dispatch/allowed-tools contradiction, the Hermes manifest's five-release-stale skill count, and the `_readme` field in `hooks/hooks.json` that failed Cowork validation — that last one shipped in **all three** suite plugins and is fixed and guarded in all three. Credit to @jurazerr and @theepicsaxguy. **1,210 tests passing** (CF 522 + DMP 402 + SF 260 + marketplace 26). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
+> 🆕 **October 4, 2026 — marketplace v3.52.0: the seven-week freshness pass** (ContentForge **4.2.0** · Digital Marketing Pro **3.32.0** · SocialForge **1.26.0**). **Codex installs were silently broken for the whole suite:** Codex drops the `{"source": "github"}` shorthand without an error, so this marketplace added cleanly and listed **zero** plugins — every entry now uses url sources (reproduced and verified against a live Codex install), the Codex marketplace name now matches the `@neels-plugins` suffix every README uses, and the documented command is the real one, `codex plugin add <plugin>@neels-plugins`. **SocialForge was missing from Cowork** ([socialforge#3](https://github.com/indranilbanerjee/socialforge/issues/3)) — its malformed plugin-root `settings.json` is gone. **Models re-verified** across all three plugins against every vendor's official pages (the registries were three weeks past their review date and still marked a Google image model *supported* two days after its shutdown). **World changes, primary-sourced:** EU AI label icons and the first-exposure rule (Article 50 enforced since Aug 2), AI Max auto-upgrade, Privacy Sandbox removal, Search Console's multimodal break, the Aug/Sep spam updates. This README's lower half — plugin table, install block — had rotted too, because its own freshness guard stopped reading at "What's new"; the guard now reads every live section. **1,224 tests passing** (CF 524 + DMP 407 + SF 262 + marketplace 31). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
+>
+> Previously — **August 17, 2026 — marketplace v3.51.2: all five open community issues fixed** (ContentForge **4.1.2** · Digital Marketing Pro **3.31.1** · SocialForge **1.25.1**). Every open GitHub issue on the DMP repo was reproduced against the current release — all five were real — and each fix ships with the guard that makes its regression class impossible: the inverted percent-claim regex in `claim-verifier.py`, the ASCII-only tokenizer that blinded `keyword_cluster.py`'s cannibalisation gate for German keyword sets (now Unicode + compound-aware, English scoring provably unchanged), the `engagement-workflow` Task-dispatch/allowed-tools contradiction, the Hermes manifest's five-release-stale skill count, and the `_readme` field in `hooks/hooks.json` that failed Cowork validation — that last one shipped in **all three** suite plugins and is fixed and guarded in all three. Credit to @jurazerr and @theepicsaxguy. **1,210 tests passing** (CF 522 + DMP 402 + SF 260 + marketplace 26). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 >
 > Previously — **marketplace v3.51.1: the ContentForge README goes global** (ContentForge **4.1.1** · Digital Marketing Pro **3.31.0** · SocialForge **1.25.0**). ContentForge's README now ships in **12 languages** (हिन्दी, 中文, 日本語, 한국어, Español, Português, العربية, اردو, தமிழ், বাংলা, Русский — every translation version-stamped and suite-guarded against silently falling behind a release), embeds **the real artifacts of a real validated run** (the rendered chart, verbatim humanizer before/after edits, the 9.0/A scorecard, the CLEAN audit verdict), and documents **running the pipeline on OpenAI surfaces** (Codex CLI/IDE/App mechanically walked through; ChatGPT via Agent Plugins 1.0 with the listing status stated honestly) plus per-surface update commands for all nine platforms. **1,185 tests passing** (CF 520 + DMP 381 + SF 258 + marketplace 26). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
 >
@@ -51,6 +53,10 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 ---
 
 ## What's new
+
+### v3.52.0 (October 4, 2026) — the seven-week freshness pass
+
+CF **4.2.0** · DMP **3.32.0** · SF **1.26.0** · suite **1,224 tests**. Codex marketplace repaired (url sources, name aligned to `@neels-plugins`, `codex plugin add` documented), SocialForge's Cowork-blocking `settings.json` removed, model registries re-verified and the sync's dangling-alias bug fixed, strict-validator warnings cleared (`requiredMinimumVersion`, marketplace metadata keys), Article 50 label guidance, and the README liveness guard extended to every live section.
 
 ### v3.51.0 (August 17, 2026) — Grok native support suite-wide + claude.ai hero skills
 
@@ -229,11 +235,11 @@ To update manually instead, see the [Updating](#updating) section below.
 
 | Plugin | Version | What it does |
 |--------|---------|--------------|
-| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.15.0 | The most comprehensive open-source AI marketing plugin — 163 skills, 24 specialist agents, 12-Part Strategy Flow producing the Four Core Documents, Two-Views Model, Decision Matrix, Living Project Instruction File. Built for marketing agencies, in-house teams running 50–200 brands, and consultancies. EU AI Act Article 50 ready (C2PA content provenance signing + `embed-c2pa.py --ai-disclosure`). 6-platform AEO/GEO audit including Google AI Mode. 16 privacy-law jurisdictions. 8 verified HTTP MCP connectors (opt-in; more return manifest-ready specs), 86 Python scripts (optional), 169 reference knowledge files, 18 top-level slash commands. **v3.15.0** (Reliability & Truth) ships one shared `_common.py` (ends the storage split-brain), a doc-vs-argparse contract linter, uniform typed-approval execution gates (closes issue #6), and the Tessl CLI review workflow (closes issue #8). **207 tests** passing. |
-| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 3.16.0 | Open-source enterprise content production pipeline — **21 skills**, 13 specialist agents, 10 quality gates, 35-pattern AI-detection humanizer, fact-checker subagent, three-category internal linking (topical / commercial / authority), real .docx output with embedded SEO + Quality + Production + Internal-Link appendices. EU AI Act Article 50 ready via `--c2pa-sign` on `scripts/generate-docx.py`. 16 opt-in HTTP MCP connectors catalogued in `.mcp.json.connectors-reference`. **v3.15.x** ships real native manifests for Codex / Antigravity / Cursor / Copilot CLI / Hermes Agent / OpenClaw — installs on all 8 native platforms + 35+ Agent Skills clients. **143 tests** passing (checkpoint roundtrip, docx parser, text metrics + release-consistency drift locks added in v3.16.0). |
-| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.13.1 | Open-source agency-grade social media production engine — calendar parsing, asset-first compositing, AI image generation (Vertex AI Nano Banana Pro), AI video generation (WaveSpeed Kling v3.0 Pro), multi-platform copy adaptation (Instagram, TikTok, LinkedIn, Threads, X, Facebook, YouTube Shorts), human-in-the-loop review galleries, C2PA signing for EU AI Act Article 50 compliance. **16 skills**, 25 commands, 5 agents, 22 scripts, 10 HTTP MCP connectors (all Cowork-compatible), 0 global hooks. Four creative modes (ANCHOR_COMPOSE / ENHANCE_EXTEND / STYLE_REFERENCED / PURE_CREATIVE). **v1.12.x** ships real native manifests for Codex / Antigravity / Cursor / Copilot CLI / Hermes Agent / OpenClaw — installs on all 8 native platforms + 35+ Agent Skills clients. **54 tests** passing (release-consistency suite added in v1.12.1). |
+| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.32.0 | End-to-end engagement methodology for agencies and in-house teams — 163 skills, 24 specialist agents, the 12-Part Strategy Flow producing the Four Core Documents, a content-engine run auditor that re-derives every "ready" claim, provenance-stamped benchmarks, 6-platform AEO/GEO audit, 16 privacy-law jurisdictions, EU AI Act Article 50 disclosure + C2PA signing. 93 stdlib Python scripts; connectors opt-in. |
+| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 4.2.0 | Content lifecycle system — 22 skills, 13 specialist agents, a 10-phase pipeline with 10 quality gates, 43-pattern AI-detection humanizer, fact-checker subagent, run auditor, three-category internal linking, real `.docx` output with C2PA signing, and a measure-audit-plan loop that compounds per brand. README in 12 languages; five hero skills as claude.ai `.skill` uploads. |
+| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.26.0 | Social creative engine — 20 skills, 25 commands, 5 agents: calendar in, on-brand creative out. Asset-first compositing (brand photos stay pixel-faithful), AI image + video through provider chains where nothing fails silently, 9-platform copy adaptation, human approval gates, delivery audit, C2PA signing. Prices and models looked up live, never stored. |
 
-> **v3.7.0 (2026-05-27): real native manifests for 5 surfaces.** Ships verified-real manifests for OpenAI Codex (`.codex-plugin/plugin.json` per the published OpenAI schema), Google Antigravity 2.0 (`gemini-extension.json` at repo root per Google's `gemini-cli-extensions/data-agent-kit-starter-pack` reference pattern), Cursor 2.5+ (`.cursor-plugin/plugin.json` per the verified Cursor JSON Schema), and GitHub Copilot CLI (`.github/plugin/plugin.json` per the verified GitHub schema). All three plugins ship matching native manifests in their own repos at the same version bump (DMP 3.8.0 / CF 3.13.0 / SF 1.9.0). Replaces the v3.5-v3.6 era invented manifests that were correctly removed in marketplace v3.6.0 on 2026-05-26. Pre-flight verified: all 190 skills across the 3 plugins pass the Codex `[a-z0-9-]` regex.
+All three install natively on **9 platforms** — Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes Agent, OpenClaw, Grok — plus 35+ Agent Skills clients. Live counts and test totals: see each repo's README.
 
 ### Per-platform install commands
 
@@ -247,7 +253,7 @@ To update manually instead, see the [Updating](#updating) section below.
 
 # OpenAI Codex (CLI + IDE + App)
 codex plugin marketplace add indranilbanerjee/neels-plugins
-codex plugin install <plugin-name>@neels-plugins
+codex plugin add <plugin-name>@neels-plugins
 
 # Cursor 2.5+ (in any Agent chat — no marketplace add needed)
 /add-plugin digital-marketing-pro@https://github.com/indranilbanerjee/digital-marketing-pro
@@ -258,7 +264,11 @@ codex plugin install <plugin-name>@neels-plugins
 copilot plugin marketplace add indranilbanerjee/neels-plugins
 copilot plugin install <plugin-name>@neels-plugins
 
-# Google Antigravity 2.0 CLI (no marketplace concept — install per-plugin URL)
+# Grok (xAI Build CLI)
+grok plugin marketplace add indranilbanerjee/neels-plugins
+grok plugin install <plugin-name>
+
+# Google Antigravity 2.0
 agy plugin install https://github.com/indranilbanerjee/digital-marketing-pro
 agy plugin install https://github.com/indranilbanerjee/contentforge
 agy plugin install https://github.com/indranilbanerjee/socialforge

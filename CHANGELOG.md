@@ -5,6 +5,29 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.52.0] - 2026-10-04
+
+- **Codex marketplace repaired.** `.agents/plugins/marketplace.json` used the
+  `{"source": "github", "repo": …}` shorthand; Codex silently drops it, so the
+  marketplace added cleanly and listed ZERO plugins (`codex plugin add` →
+  "not found"). Now `{"source": "url", "url": "https://github.com/….git"}` —
+  reproduced and verified on codex-cli 0.145 (all three listed and installed
+  from a scratch marketplace, then cleaned up). The Codex marketplace `name`
+  changes `neels-marketing-plugins` → `neels-plugins` so the documented
+  `@neels-plugins` suffix works everywhere. New guards: Codex source kinds,
+  policy enums (closes the `ON_DEMAND` report, neels-plugins#1, already fixed
+  in-file), and the name/command match.
+- **Strict-validator clean.** `metadata.homepage/license/keywords` removed from
+  `.claude-plugin/marketplace.json` (unknown keys; `claude plugin validate
+  --strict` failed on Claude Code 2.1.289). Guarded.
+- **README liveness guard fixed.** "Live" was "everything before ## What's
+  new", so Quick Start, Available Plugins and Platform Compatibility — all
+  placed below it — rotted unchecked (table showed CF 3.16.0 / DMP 3.15.0 /
+  SF 1.13.1 and "21 skills, 35-pattern"). Live now = every section except the
+  What's-new history; table versions pinned to the manifests.
+- Plugins: CF 4.1.2 -> 4.2.0, DMP 3.31.1 -> 3.32.0, SF 1.25.1 -> 1.26.0.
+- Suite total 1,224 (CF 524 + DMP 407 + SF 262 + marketplace 31).
+
 ## [3.51.2] - 2026-08-17
 
 - **All five open community issues on digital-marketing-pro verified and fixed**
