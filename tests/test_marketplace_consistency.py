@@ -218,6 +218,25 @@ def _sibling(name):
     return None
 
 
+class TestDescriptionCountsMatchSiblings(unittest.TestCase):
+    """Listing descriptions are what a user reads before installing. They said
+    "163 skills" and "20 skills" after both plugins had grown, because only the
+    README table was compared with the sibling repos."""
+
+    def test_skill_counts_in_every_manifest_description(self):
+        for repo_name in ("digital-marketing-pro", "contentforge", "socialforge"):
+            sib = _sibling(repo_name)
+            if sib is None:
+                self.skipTest("sibling repos not checked out beside the marketplace")
+            truth = len([d for d in (sib / "skills").iterdir() if (d / "SKILL.md").is_file()])
+            for manifest in MANIFESTS:
+                desc = plugins(load(manifest))[repo_name].get("description", "")
+                for m in re.finditer(r"(\d+) skills", desc):
+                    with self.subTest(manifest=manifest, plugin=repo_name):
+                        self.assertEqual(int(m.group(1)), truth,
+                                         f"{manifest}/{repo_name} says {m.group(0)}; the repo ships {truth}")
+
+
 class TestReadmeLiveness(unittest.TestCase):
     """The README rotted for six weeks while every manifest guard passed: the lede
     still announced the July 7 release, the suite badges said 196 skills / 502 tests
@@ -246,7 +265,10 @@ class TestReadmeLiveness(unittest.TestCase):
                       f"v{self.canonical} (the CHANGELOG top entry)")
 
     def test_no_retired_branding_in_live_sections(self):
-        retired = ("35-pattern", "35 patterns", "29-pattern", "41-pattern", "21 skills",
+        # "21 skills" (ContentForge's old count) left this README-wide list on
+        # 2026-10-04: SocialForge now truly ships 21, and every count in the live
+        # README is compared with the sibling repos by the tests below.
+        retired = ("35-pattern", "35 patterns", "29-pattern", "41-pattern",
                    "16 skills", "158 skills", "196%20across", "502%20across")
         for needle in retired:
             with self.subTest(needle=needle):

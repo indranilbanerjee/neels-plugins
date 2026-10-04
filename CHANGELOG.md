@@ -5,6 +5,22 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.53.0] - 2026-10-04
+
+- **The opportunity build.** ContentForge 4.3.0, Digital Marketing Pro
+  3.33.0 → 3.33.1 and SocialForge 1.27.0 across all five manifests (details in
+  each repo's CHANGELOG). Descriptions now say 164 (DMP) and 21 (SF) skills.
+- **Standalone hero skills** published: `contentforge-humanizer`,
+  `digital-marketing-pro-agent-readiness`, `socialforge-copy-adapter`. New
+  `tests/test_hero_parity.py` runs each hero's own suite against the current
+  plugin checkout and fails on any failure or any skipped parity test (planted:
+  an empty plugin dir makes the humanizer skip 7 parity tests, which fails).
+- **Listing descriptions were unguarded.** They said "163 skills" and
+  "20 skills" after both plugins grew; a new guard compares every
+  "N skills" in every manifest description with the sibling repo (planted).
+- README: v3.53.0 lede and release notes, Standalone skills table, badges.
+- Suite total 1,655 (CF 687 + DMP 494 + SF 438 + marketplace 36).
+
 ## [3.52.0] - 2026-10-04
 
 - **Codex marketplace repaired.** `.agents/plugins/marketplace.json` used the
