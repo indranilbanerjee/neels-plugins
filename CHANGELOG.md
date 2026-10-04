@@ -5,6 +5,14 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.53.1] - 2026-10-04
+
+- Digital Marketing Pro 3.33.2 and SocialForge 1.27.1: each had one new test
+  that assumed the gitignored `.mcp.json` exists, so it failed when run from
+  an installed copy (caught by verifying from the installed plugins). Fixed
+  and the ignore rule itself guarded; test-only. Suite total unchanged.
+- Suite total 1,655 (CF 687 + DMP 494 + SF 438 + marketplace 36).
+
 ## [3.53.0] - 2026-10-04
 
 - **The opportunity build.** ContentForge 4.3.0, Digital Marketing Pro
