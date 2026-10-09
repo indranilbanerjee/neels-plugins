@@ -5,6 +5,14 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.54.0] - 2026-10-10
+
+- ContentForge 4.4.1 and SocialForge 1.28.1: every skill and command description rewritten to one short line so
+  both plugins fit Claude Code's skill-listing budget (model-visible listing, ContentForge 15,061 -> 3,824
+  characters, SocialForge 10,525 -> 4,927; the first 4.4.0 / 1.28.0 figures, 14,846 -> 3,646 and 10,305 -> 4,745, left each plugin's workflow out). Seven side-effect skills are model-invocable again, each behind an
+  Execution gate, with a guard in each plugin. Digital Marketing Pro 3.34.0 does the same for its 170 descriptions (about 126,600 -> 25,974 characters), and its trigger evals moved from 80.5% to 90.5% of runs picking the right skill first.
+- Suite total 1,716 (CF 715 + DMP 511 + SF 453 + marketplace 37).
+
 ## [3.53.2] - 2026-10-04
 
 - ContentForge 4.3.1, Digital Marketing Pro 3.33.3, SocialForge 1.27.2: Hermes
