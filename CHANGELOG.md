@@ -5,6 +5,13 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.55.1] - 2026-10-10
+
+- SocialForge 1.29.1: platform previews show the image (every preview had shown a broken-image icon while reporting success); line breaks kept; `adapt_copy.py` counts inline hashtags against the limit and returns `post_text`. The standalone copy-adapter skill carries the same fix.
+- ContentForge 4.5.1: the setup check enforces Python 3.10, the minimum the docs state.
+- Documentation truth pass, all three plugins: stale install, key, brand-folder, `.mcp.json`, provider-chain, price, Python-version and count claims corrected; doc-count guards widened with planted checks; new diagrams, a real SocialForge preview, "Try this first" and "never do" sections, and a 200k-window tip. This README: a which-plugin diagram, a never-do panel, and three false claims removed.
+- Suite total 1,891 (CF 759 + DMP 588 + SF 507 + marketplace 37).
+
 ## [3.55.0] - 2026-10-10
 
 - Digital Marketing Pro 3.35.1, ContentForge 4.5.0, SocialForge 1.29.0: every point of the Hermes Agent catalog
