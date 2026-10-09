@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ContentForge 4.4.1 and SocialForge 1.28.1: every skill and command description rewritten to one short line so
   both plugins fit Claude Code's skill-listing budget (model-visible listing, ContentForge 15,061 -> 3,824
   characters, SocialForge 10,525 -> 4,927; the first 4.4.0 / 1.28.0 figures, 14,846 -> 3,646 and 10,305 -> 4,745, left each plugin's workflow out). Seven side-effect skills are model-invocable again, each behind an
-  Execution gate, with a guard in each plugin. Digital Marketing Pro 3.34.0 does the same for its 170 descriptions (about 126,600 -> 25,974 characters), and its trigger evals moved from 80.5% to 90.5% of runs picking the right skill first.
+  Execution gate, with a guard in each plugin (before, five were reachable only through a wrapper
+  command and two not at all). Together the three need 34,725 characters: that fits a 1M window;
+  on a 200k window only the names fit, so set `skillListingBudgetFraction: 0.05` in `settings.json` to see descriptions. Digital Marketing Pro 3.34.0 does the same for its 170 descriptions (about 126,600 -> 25,974 characters), and its trigger evals moved from 80.5% to 90.5% of runs picking the right skill first.
 - Suite total 1,716 (CF 715 + DMP 511 + SF 453 + marketplace 37).
 
 ## [3.53.2] - 2026-10-04
