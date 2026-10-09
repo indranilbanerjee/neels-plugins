@@ -5,6 +5,17 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.55.0] - 2026-10-10
+
+- Digital Marketing Pro 3.35.1, ContentForge 4.5.0, SocialForge 1.29.0: every point of the Hermes Agent catalog
+  reviews (#132571-132573) fixed, each with a test run against the old code. No script installs packages on its
+  own (pinned install commands are printed instead); every outside name that reaches a file path passes one
+  containment check, enforced on every `--brand`, `--month`, `--run-id` and `--client` argument; DMP live writes
+  need a single-use approval record bound to the exact request, and autopilot proposes by default; SocialForge
+  quotes paid generation and waits for "go", and keys stay out of chat; C2PA signing pinned to c2pa-python 0.38.0
+  and working again; PRIVACY.md completed in all three. Hermes's own validator passes all three.
+- Suite total 1,871 (CF 753 + DMP 585 + SF 496 + marketplace 37).
+
 ## [3.54.0] - 2026-10-10
 
 - ContentForge 4.4.1 and SocialForge 1.28.1: every skill and command description rewritten to one short line so
