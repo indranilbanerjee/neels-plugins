@@ -5,6 +5,13 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.55.2] - 2026-10-10
+
+- SocialForge 1.29.2: every paid path quoted (generate-post and interactive mode had none; the image-compositor agent refuses an unquoted paid call); previews described as one card per platform, badge off the artwork; no manifest names a file that does not ship.
+- Digital Marketing Pro 3.35.2: every optional package pinned in one table; every missing-package message prints the exact command; two silent failures fixed; README automation examples, connector count (28) and output-folder layout corrected, plus six other docs.
+- ContentForge 4.5.2: never-do panel states the audit-skip escape; no manifest names a file that does not ship.
+- Suite total 1,928 (CF 762 + DMP 613 + SF 516 + marketplace 37).
+
 ## [3.55.1] - 2026-10-10
 
 - SocialForge 1.29.1: platform previews show the image (every preview had shown a broken-image icon while reporting success); line breaks kept; `adapt_copy.py` counts inline hashtags against the limit and returns `post_text`. The standalone copy-adapter skill carries the same fix.
