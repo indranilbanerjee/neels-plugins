@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 396" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <title>Which plugin do I need?</title>
+  <desc>Digital Marketing Pro plans the strategy and runs campaigns. ContentForge writes publish-ready long-form content. SocialForge produces a month of social posts. You hand a brief to ContentForge and a content calendar to SocialForge; each plugin runs on its own.</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a94a4"/>
+    </marker>
+  </defs>
+
+  <text x="590" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#8a94a4">Which plugin do I need? Pick by the job — use one, or all three on the same brand</text>
+
+  <g text-anchor="middle">
+    <g>
+      <rect x="20" y="58" width="340" height="230" rx="12" fill="#e3eefb" stroke="#9db8dd"/>
+      <text x="190" y="90" font-size="18" font-weight="700" fill="#1f2733">Digital Marketing Pro</text>
+      <text x="190" y="114" font-size="13.5" font-weight="600" fill="#2f4a6e">Plan the strategy, run the campaigns</text>
+      <g font-size="12" fill="#5a6577">
+        <text x="190" y="148">12-part engagement → Four Core Documents</text>
+        <text x="190" y="172">SEO, AEO/GEO, paid media, email, CRM</text>
+        <text x="190" y="196">analytics, attribution, agency portfolio</text>
+        <text x="190" y="220">16 privacy jurisdictions, EU AI Act Art. 50</text>
+        <text x="190" y="244">live writes need your single-use approval</text>
+      </g>
+      <text x="190" y="274" font-size="11.5" fill="#2f4a6e" font-style="italic">"build the Q3 campaign plan"</text>
+    </g>
+    <g>
+      <rect x="420" y="58" width="340" height="230" rx="12" fill="#e5f1ee" stroke="#9cc5bb"/>
+      <text x="590" y="90" font-size="18" font-weight="700" fill="#1f2733">ContentForge</text>
+      <text x="590" y="114" font-size="13.5" font-weight="600" fill="#24564c">Write publish-ready long-form</text>
+      <g font-size="12" fill="#5a6577">
+        <text x="590" y="148">10-phase pipeline with 10 quality gates</text>
+        <text x="590" y="172">fact-checker, humanizer, run auditor</text>
+        <text x="590" y="196">real .docx out, C2PA provenance</text>
+        <text x="590" y="220">audit, refresh, measure, plan — a loop</text>
+        <text x="590" y="244">README in 12 languages</text>
+      </g>
+      <text x="590" y="274" font-size="11.5" fill="#24564c" font-style="italic">"write a blog post on X"</text>
+    </g>
+    <g>
+      <rect x="820" y="58" width="340" height="230" rx="12" fill="#f9efe2" stroke="#d9b389"/>
+      <text x="990" y="90" font-size="18" font-weight="700" fill="#1f2733">SocialForge</text>
+      <text x="990" y="114" font-size="13.5" font-weight="600" fill="#7a4a12">Produce a month of social</text>
+      <g font-size="12" fill="#5a6577">
+        <text x="990" y="148">calendar in, on-brand creative out</text>
+        <text x="990" y="172">brand photos kept pixel-faithful</text>
+        <text x="990" y="196">copy for 9 platforms, previews, gallery</text>
+        <text x="990" y="220">paid generation quoted before it runs</text>
+        <text x="990" y="244">client review, then a delivery audit</text>
+      </g>
+      <text x="990" y="274" font-size="11.5" fill="#7a4a12" font-style="italic">"produce the whole month"</text>
+    </g>
+  </g>
+
+  <g stroke="#8a94a4" stroke-width="1.6" fill="none">
+    <line x1="362" y1="173" x2="414" y2="173" marker-end="url(#arr)"/>
+  </g>
+  <g font-size="10.5" fill="#8a94a4" text-anchor="middle">
+    <text x="390" y="163">brief</text>
+  </g>
+
+  <path d="M 190 288 C 320 334, 860 334, 984 294" stroke="#8a94a4" stroke-width="1.6" fill="none" marker-end="url(#arr)"/>
+  <text x="590" y="344" text-anchor="middle" font-size="10.5" fill="#8a94a4">content calendar</text>
+
+  <text x="590" y="368" text-anchor="middle" font-size="12" fill="#8a94a4">You carry work from one to the next (a campaign brief, a content calendar). Each plugin runs on its own, sets up the brand once, and is useful alone.</text>
+  <text x="590" y="388" text-anchor="middle" font-size="12" fill="#8a94a4">Install: /plugin marketplace add indranilbanerjee/neels-plugins, then /plugin install &lt;name&gt;@neels-plugins</text>
+</svg>

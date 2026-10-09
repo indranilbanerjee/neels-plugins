@@ -19,15 +19,7 @@ Install three open-source plugins from one marketplace. Same skills, same agents
 >
 > Previously — **October 4, 2026 — marketplace v3.53.2: the opportunity build** (ContentForge **4.3.1** · Digital Marketing Pro **3.33.3** · SocialForge **1.27.2**). **Digital Marketing Pro** gains an agent-readiness audit (can AI agents and AI crawlers use your site?), an honest AI-visibility measurement map (Search Console's AI report has no clicks or queries; GA4's AI Assistant channel excludes AI Overviews and AI Mode), and the official Meta, Google (read-only) and Amazon ad MCP servers behind its typed approval gate. **ContentForge** publishes its Quality Contract and fixes a run auditor that checked every industry against 7.0, plus a one-page scorecard per run. **SocialForge** gains research-month and an opt-in scheduler hand-off, and fixes claims its code did not keep: the last video frame now reaches the model, and dropped references, dropped hashtags and double-counted ingests are reported or prevented. **Three standalone skills** now install on their own with `npx skills add`: the humanizer, the agent-readiness audit and the social copy adapter, each tested for parity with the plugin it came from. Every plugin carries directory listing fields, a PRIVACY.md that lists every network endpoint, an eval suite and a workflow. Hermes Agent's own install-time scanner now passes all three (it had rated them "dangerous", so Hermes refused to install them). **1,662 tests passing.**
 >
-> Previously — **October 4, 2026 — marketplace v3.52.0: the seven-week freshness pass** (ContentForge **4.2.0** · Digital Marketing Pro **3.32.0** · SocialForge **1.26.0**). Codex installs repaired (the `github` source shorthand Codex silently drops), SocialForge back in Cowork ([socialforge#3](https://github.com/indranilbanerjee/socialforge/issues/3)), model registries re-verified.
->
-> Previously — **August 17, 2026 — marketplace v3.51.2: all five open community issues fixed** (ContentForge **4.1.2** · Digital Marketing Pro **3.31.1** · SocialForge **1.25.1**). Every open GitHub issue on the DMP repo was reproduced against the current release — all five were real — and each fix ships with the guard that makes its regression class impossible: the inverted percent-claim regex in `claim-verifier.py`, the ASCII-only tokenizer that blinded `keyword_cluster.py`'s cannibalisation gate for German keyword sets (now Unicode + compound-aware, English scoring provably unchanged), the `engagement-workflow` Task-dispatch/allowed-tools contradiction, the Hermes manifest's five-release-stale skill count, and the `_readme` field in `hooks/hooks.json` that failed Cowork validation — that last one shipped in **all three** suite plugins and is fixed and guarded in all three. Credit to @jurazerr and @theepicsaxguy. **1,210 tests passing** (CF 522 + DMP 402 + SF 260 + marketplace 26). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
->
-> Previously — **marketplace v3.51.1: the ContentForge README goes global** (ContentForge **4.1.1** · Digital Marketing Pro **3.31.0** · SocialForge **1.25.0**). ContentForge's README now ships in **12 languages** (हिन्दी, 中文, 日本語, 한국어, Español, Português, العربية, اردو, தமிழ், বাংলা, Русский — every translation version-stamped and suite-guarded against silently falling behind a release), embeds **the real artifacts of a real validated run** (the rendered chart, verbatim humanizer before/after edits, the 9.0/A scorecard, the CLEAN audit verdict), and documents **running the pipeline on OpenAI surfaces** (Codex CLI/IDE/App mechanically walked through; ChatGPT via Agent Plugins 1.0 with the listing status stated honestly) plus per-surface update commands for all nine platforms. **1,185 tests passing** (CF 520 + DMP 381 + SF 258 + marketplace 26). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
->
-> Previously — **marketplace v3.51.0: Grok (xAI Build CLI) native support across all three plugins, and ContentForge hero skills on claude.ai** (ContentForge **4.1.0** · Digital Marketing Pro **3.31.0** · SocialForge **1.25.0**). Every plugin now ships a first-class `.grok-plugin/` manifest pair — `grok plugin install indranilbanerjee/<plugin>` works directly, or add this marketplace: `grok plugin marketplace add indranilbanerjee/neels-plugins` (a fifth marketplace manifest, `.grok-plugin/marketplace.json`, joins the drift guards). ContentForge additionally packages five hero skills (`cf-brief`, `cf-social-adapt`, `cf-translate`, `cf-video-script`, `cf-aeo-check`) as claude.ai-uploadable `.skill` release assets, built by a deterministic packager that refuses to ship a skill with dangling references. The same pass fixed stale listing copy the guards now police (the ContentForge listing's humanizer pattern-count had outlived the catalog's growth to 43 by four weeks) and fresh doc-rot in DMP (backticked SKILL.md counts, qualifier-word counts, an unguarded "N tests" noun 170 stale). **1,179 tests passing** (CF 514 + DMP 381 + SF 258 + marketplace 26). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
->
-> Previously — **August 16, 2026 — marketplace v3.50.0: ContentForge 4.0.0, the lifecycle release** (ContentForge **4.0.0** · Digital Marketing Pro **3.30.2** · SocialForge **1.24.2**). A from-zero audit of every live document across all four repos found every doc-count guard pattern-blind — and this README was the worst offender: the lede froze at July 7 while 32 versions shipped, the badges undercounted the suite by 9 skills and 600 tests, and the plugin table advertised counts two releases dead. Everything is re-derived from the filesystem now, and new liveness guards make this README incapable of freezing again (the lede must name the current release; badges and table rows are checked against the sibling repos themselves). The August arc these badges describe: **run auditors in all three plugins** (every "completed" / "ready" / "FINAL" claim re-derived from artifacts on disk before it may be declared), **Agent Plugins 1.0 packaging** across the suite (root manifests on OpenAI's vendor-neutral standard + `${PLUGIN_DATA}` everywhere + ContentForge's portable execution lane for hosts without subagent dispatch), and **directory submission bundles** ready in every repo for the Anthropic and OpenAI plugin directories. **1,158 tests passing** (CF 498 + DMP 379 + SF 256 + marketplace 25). [Read what's new →](#whats-new) · [Full changelog →](CHANGELOG.md)
+> Older releases: [CHANGELOG.md](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -35,13 +27,24 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 
 ## Which plugin do I need?
 
+![Which plugin do I need: Digital Marketing Pro plans the strategy and runs campaigns, ContentForge writes publish-ready long-form, SocialForge produces a month of social; you hand a brief to ContentForge and a content calendar to SocialForge, and each plugin runs on its own](docs/assets/which-plugin.svg)
+
 | Your job-to-be-done | Install | What's in the box |
 |---|---|---|
 | **Run end-to-end brand-strategy engagements across a portfolio** (agencies, in-house, consultants) | [`digital-marketing-pro`](https://github.com/indranilbanerjee/digital-marketing-pro) | 164 skills · 24 agents · 12-Part Strategy Flow · 6-platform AEO/GEO · agent-readiness audit · EU AI Act Article 50 · Cowork-team-persistent · multi-brand · multi-jurisdiction compliance |
 | **Produce publish-ready long-form content** (blog posts, white papers, case studies, executive briefs) | [`contentforge`](https://github.com/indranilbanerjee/contentforge) | 22 skills · 13 agents · 10 quality gates · 43-pattern AI humanizer · fact-checker · run auditor · lifecycle loop (audit→refresh→measure→plan) · real `.docx` output · C2PA signing |
 | **Produce social media assets at agency scale** (carousels, single-image posts, AI image / video creatives) | [`socialforge`](https://github.com/indranilbanerjee/socialforge) | 21 skills · 5 agents · 18 commands · research-month · asset-first compositing · AI image + video via your connected providers · delivery audit · C2PA signing |
 
-**The three plugins are complementary, not overlapping.** A typical agency workflow uses all three: DMP for strategy + campaign planning, ContentForge for the long-form articles a campaign produces, SocialForge for the social assets a campaign produces. All three share the same brand-state directory (`~/.claude-marketing/<brand>/`) so a brand profile created in DMP is immediately picked up by CF and SF.
+**The three plugins are complementary, not overlapping.** A typical agency workflow uses all three: DMP for strategy + campaign planning, ContentForge for the long-form articles a campaign produces, SocialForge for the social assets a campaign produces. Each plugin is self-contained and keeps its own brand setup, so set the brand up once in each plugin you use.
+
+### What these plugins will never do
+
+- **Install software on their own.** A missing package prints the exact pinned install command for you to run.
+- **Send, publish or spend without your say-so.** Live writes wait for your typed `yes` (Digital Marketing Pro also requires a single-use approval record for that exact request), and SocialForge shows a live quote before any paid image or video generation and waits for "go".
+- **Ask for an API key in the chat.** Keys come from environment variables.
+- **Connect to anything you did not set up.** No MCP server ships enabled and no hooks run.
+- **Remove or hide AI watermarks.** AI involvement is disclosed, with C2PA provenance where the format supports it.
+- **Depend on each other.** Each plugin is self-contained and useful alone.
 
 ---
 
@@ -49,10 +52,10 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 
 | If you're a... | Why this matters |
 |---|---|
-| 🏢 **Marketing agency** (50–200 brands) | One toolchain across every client, audit-trail compliance, new-hire onboarding from 6 weeks → 6 hours, Cowork team persistence so your senior strategists work in browser-based Cowork while your team Drive has every artifact. |
+| 🏢 **Marketing agency** (50–200 brands) | One toolchain across every client, audit-trail compliance, an SOP library your new hires can follow, Cowork team persistence so your senior strategists work in browser-based Cowork while your team Drive has every artifact. |
 | 👔 **In-house marketing team** | Single canonical strategy document underwriting every campaign + content piece. No more "the deck and the blog post say different things." |
 | 🚀 **Marketing automation builder** (n8n / Zapier / Make / Pipedream) | DMP's connector-resolver + executor pattern. 8 verified HTTP connectors execute end-to-end; 28 more (OAuth-only connectors and the official ad-platform MCP servers) return manifest-ready specs for the MCP path. |
-| 💼 **Solo consultant** / freelance marketer | Per-engagement billing model: 50–60 canonical files for $15–40 of API spend in ~60 minutes. Installs on Codex / Cursor / Copilot CLI / Antigravity for terminal-native or IDE-native workflows. |
+| 💼 **Solo consultant** / freelance marketer | One engagement produces the full document set (Four Core Documents, Growth Plan, channel strategies) as files you own and can bill against. Installs on Codex / Cursor / Copilot CLI / Antigravity for terminal-native or IDE-native workflows. |
 | 📈 **Growth team** / product marketer | Funnel architecture, attribution, MMM, incrementality testing, retention, churn — all anchored to the strategy document. |
 | 🛡 **Compliance-led marketer** (EU · UK · India · Brazil · California) | EU AI Act Article 50, C2PA content provenance, deepfake disclosure, GDPR + CCPA + DPDPA + LGPD + 12 more jurisdictions baked into every output. |
 
@@ -72,146 +75,7 @@ CF **4.4.1** · DMP **3.34.0** · SF **1.28.1** · suite **1,716 tests**. Claude
 
 CF **4.3.1** · DMP **3.33.3** · SF **1.27.2** · suite **1,662 tests**. Hermes Agent's install-time security scan had rated all three plugins "dangerous" (so `hermes plugins install` refused them) on harmless lines written like attacks, plus two real defects in SocialForge; fixed, guarded in each plugin, and checked here by running Hermes's own validator (`tests/test_hermes_admission.py`). DMP: agent-readiness audit, AI-visibility measurement map, official ad MCP servers (Google's read-only server is never chosen for a write), ChatGPT and AI Mode ads, Meridian 2.x, 13 duplicate commands folded, a competitor scraper that now identifies itself and follows RFC 9309. CF: the Quality Contract, a run auditor that resolves the approve line per industry and refuses a stale audit, a scorecard page, CC BY-SA notice for the humanizer catalog. SF: research-month, an opt-in Postiz hand-off, a last frame that really reaches the video model, sourced platform limits, X's weighted count, no silent drops. All three: listing fields, PRIVACY.md with network endpoints, evals, workflows, always-on recipes. Three standalone hero skills published, with a parity guard here that runs each hero's suite against its plugin.
 
-### v3.52.0 (October 4, 2026) — the seven-week freshness pass
-
-CF **4.2.0** · DMP **3.32.0** · SF **1.26.0** · suite **1,224 tests**. Codex marketplace repaired (url sources, name aligned to `@neels-plugins`, `codex plugin add` documented), SocialForge's Cowork-blocking `settings.json` removed, model registries re-verified and the sync's dangling-alias bug fixed, strict-validator warnings cleared (`requiredMinimumVersion`, marketplace metadata keys), Article 50 label guidance, and the README liveness guard extended to every live section.
-
-### v3.51.0 (August 17, 2026) — Grok native support suite-wide + claude.ai hero skills
-
-CF **4.1.0** · DMP **3.31.0** · SF **1.25.0** · suite **1,179 tests**. All three plugins
-gain a first-class `.grok-plugin/` manifest pair (xAI Build CLI), version-locked into
-each repo's release-consistency suite; this marketplace gains a fifth manifest,
-`.grok-plugin/marketplace.json`, inside the same drift guards (per-plugin versions and
-descriptions must agree across all five files). ContentForge ships five hero skills as
-claude.ai-uploadable `.skill` release assets built by a deterministic, refusal-first
-packager. Listing hygiene: the CF description's "41-pattern" (stale against the
-43-pattern catalog since v3.20.0) is corrected and joins the retired-branding guard;
-DMP's doc-count guard learns three phrasings that had been escaping it, plant-checked.
-
-### v3.49.0 (August 16, 2026) — the documentation truth pass
-
-CF **3.33.2** · DMP **3.30.2** · SF **1.24.2** · suite **1,116 tests**. Every count in
-every live document across the four repos re-derived from the filesystem; every repo's
-doc-count guard extended with the exact phrasings that had been escaping it (script
-counts, "N SKILL.md files", plugin-name-qualified counts, comparison-table rows,
-AGENTS.md currency); and this README gained liveness guards — the lede must name the
-current release, and the suite badges and plugin-table rows are verified against the
-sibling repos themselves.
-
-> The releases between v3.16.0 and v3.49.0 — the express lane, the flagship contracts,
-> the 43-pattern humanizer and authorship layer, live pricing, the AI-disclosure and
-> provenance layer, the verification harness, the fix ledger, the run auditors, Agent
-> Plugins 1.0 packaging, and the directory submission bundles — are chronicled
-> release-by-release in [CHANGELOG.md](CHANGELOG.md).
-
-### v3.16.0 (July 7, 2026) — Digital Marketing Pro v3.15.0: the Reliability & Truth release
-
-DMP v3.14.1 → **v3.15.0** + marketplace v3.15.0 → **v3.16.0**. (CF v3.16.0 and SF v1.13.1 unchanged.)
-
-A full-repo audit (orchestration / agents / skills / commands / scripts / configs-docs-manifests) surfaced ~200 findings — all fixed in one coordinated pass, mirroring ContentForge's v3.16.0 the day before. DMP tests 123 → **207** (suite total 404):
-
-- **Storage split-brain fixed** — one shared `_common.py` (`workspace_root` / `slugify_brand` / atomic writes / `finish`) adopted across the script layer; ends the four-different-slugifier bug that misfiled Cowork/Drive brand state.
-- **Doc↔script contract linter** — new `check_skill_contracts.py` parses every fenced script call in skills/commands/agents and validates actions/flags against each script's real argparse (0 mismatches, wired into CI).
-- **Issue #6 closed** — all 18 execution skills carry a uniform `## Execution gate` (typed approval, cancel-on-anything, never-proceed-on-ambiguous input) + `disable-model-invocation: false` so Codex's frontmatter validator stops erroring.
-- **Issue #8 closed** — Tessl review workflow moved from the retired `tesslio/skill-review@main` Action to the `tessl review` CLI + `.github/tessl-rubric.yml`.
-- **EU AI Act Article 50** — `embed-c2pa.py --ai-disclosure` embeds the C2PA 2.4 `c2pa.ai-disclosure` assertion (applicable Aug 2, 2026).
-- **Agents 25 → 24** — `competitor-intelligence` merged into `competitive-intel` (`mode: snapshot|monitoring`); `memory-manager` thinned to storage-only; `intelligence-curator` owns intake/interpretation.
-- **Connector honesty** — the "13 connectors pre-configured" fiction removed (shipped `.mcp.json` is empty), fictional npm packages purged, memory backends demoted to "only if you have a working server connected".
-
-### v3.15.0 (July 7, 2026) — ContentForge v3.16.0: the Reliability & Truth release
-
-CF v3.15.3 → **v3.16.0** + marketplace v3.14.1 → **v3.15.0**. (DMP v3.14.1 and SF v1.13.1 unchanged.)
-
-The deepest ContentForge engineering pass since v3.0 — a five-layer audit (orchestration / agents / skills / scripts / configs) implemented end to end. CF tests 53 → **143** (suite total 320):
-
-- **Checkpoint/resume actually wired** — every phase saves to a canonical run directory; `/contentforge:resume` works for skill-started runs, honors mid-loop rework, reloads run metadata.
-- **File-based phase handoff contract** — agents read prior artifacts by path; full Pipeline Contract table (inputs → outputs → gate → loop target).
-- **Measured gates** — new `text-metrics.py` computes burstiness / FK grade / keyword placements; orchestrator verifies instead of trusting subagent self-reports. Density gate retired for placement checks.
-- **GEO protection** — Phase 6 structure manifest stops the humanizer from dismantling answer blocks; humanizer catalog 29 → 35 patterns with a defined AI-signal formula.
-- **EU AI Act Article 50** (applicable Aug 2, 2026) — AI-disclosure step in the publish path + per-platform AI-label fields; social specs add TikTok, Bluesky, YouTube Shorts.
-- **Script hardening** — shared `_common.py` (single slugifier fixes the Cowork sync-path bug, atomic writes, Windows UTF-8 guard, real exit codes); .docx gets image embedding + TOC + page footer.
-- **Truth pass** — honest "10 phases / 10 quality gates" claim, connector docs match the shipped empty `.mcp.json`, ~50 broken slash references fixed, drift-locking release-consistency tests added.
-
-### v3.14.1 (June 28, 2026) — README-sync patch + test-coverage extension
-
-DMP v3.14.0 → **v3.14.1** + CF v3.15.2 → **v3.15.3** + SF v1.13.0 → **v1.13.1** + marketplace v3.14.0 → **v3.14.1**.
-
-A second-pass cleanup after v3.14.0 caught two real classes of drift the release-consistency suite was not yet covering:
-
-- **Stale README section heading**: DMP's `## Supported surfaces (vX.Y.Z)` was still on v3.13.1 even though every manifest had been bumped to v3.14.0. CF/SF tests caught this kind of drift; DMP's didn't.
-- **Stale "What's new" section in DMP README**: the latest entry was v3.13.0; v3.13.1 and v3.14.0 had shipped without being added.
-
-Fixed:
-- DMP README — Cowork badge anchor + Supported-surfaces heading + 2nd `#supported-surfaces` anchor + 3 new "What's new" entries (v3.14.1 + v3.14.0 + v3.13.1).
-- CF README — added v3.15.3, v3.15.2, v3.15.1 entries to Release notes.
-- SF README — rewrote "Current Release" body with actual v1.13.0 content (heading had been renamed but body still described v1.12.0).
-- Marketplace README — added v3.14.1 + v3.14.0 entries (this one).
-- **DMP `tests/test_release_consistency.py` extended** to lock the `## Supported surfaces (vX.Y.Z)` heading to canonical version + verify all `#supported-surfaces-v…` anchor links match — closes the drift class permanently for DMP (CF/SF already had this).
-
-Suite tests: 222 → **224** (+1 in DMP for new section-heading lock, +1 for anchor-sync lock).
-
-### v3.14.0 (June 28, 2026) — June market-refresh sweep
-
-DMP v3.13.1 → **v3.14.0** + CF v3.15.1 → **v3.15.2** + SF v1.12.1 → **v1.13.0**. Coordinated suite-wide refresh covering everything that shipped, broke, or got deprecated in the marketing-tech ecosystem since the last refresh on 2026-06-09. Every claim verified against primary vendor docs.
-
-- **Meta Graph API bumped v20.0 → v24.0** in DMP `scripts/connector_resolver.py` (4 callsites). Pre-v24 calls scheduled to fail 2026-06-09.
-- **Model registry rebuilt to 47 entries** verified against Anthropic / OpenAI / Google primary docs. New active flagships: Claude Opus 4.8, GPT-5.5 family, gpt-image-2, Gemini 3.1 Pro Preview, Gemini 3.1 Flash-Lite, Veo 3.1 Preview, Nano Banana Pro/2 GA. Newly deprecated: full GPT-5 family + o3 family (shutdown 2026-12-11), Gemini 2.5 family (shutdown 2026-10-16), Imagen 4. Newly retired (auto-routed): Gemini 2.0 family (June 1), Gemini 3 preview image variants (June 25), Veo 2.0/3.0/3.0-Fast (June 30).
-- **Resolver hardened** — now unconditionally rewrites `retired` model IDs to `replacement_id` (was previously only `deprecated`). New test covers this.
-- **`--check-params` scanner** flags unsafe `temperature` / `top_p` / `top_k` near Claude Opus 4.7+ targets (HTTP 400 risk).
-- **18 aliases re-pointed** across all 3 plugins. `latest-text-anthropic` → claude-opus-4-8, `latest-text-openai` → gpt-5.5, `latest-video-google` → veo-3.1-generate-preview, `latest-image-photoreal-google` → gemini-3-pro-image (Imagen 4 was deprecated path).
-- **Google Ads API v24.1 + v24.2** sections added to DMP `skills/paid-advertising/google-ads.md` — ADOPT_AI_MAX experiment type, mobile_device_platform segment, Local Services Ads via `google_local_services_info`, GENERATE_LANDING_PAGE_TEXT, beta MultiPartyAuthReview.
-- **EU AI Act Code of Practice second-draft refresh** in DMP `skills/context-engine/eu-code-of-practice.md` — Section 1 two-layered marking (C2PA satisfies metadata), Section 2 dropped AI-generated-vs-AI-assisted taxonomy, operational readiness checklist for 2026-08-02 applicability.
-- **I/O 2026 additions** to DMP `aeo-audit` (Information Agents callout) + `local-seo` (Agentic Booking expansion to local services / home repair / beauty / pet care).
-- **EvoLink vendor** added to the model curator via community PR (multi-provider API gateway aggregating DeepSeek / Doubao / MiniMax via single API key).
-- **Suite-wide `docs/MODEL-CURATOR.md` refresh** with current aliases table + new § "Parameter compatibility — Claude Opus 4.7 and later".
-
-Suite tests: 221 → **222** in this entry (DMP 115 + CF 53 + SF 54). Then v3.14.1 brought it to 224.
-
-### v3.13.1 (June 9, 2026) — Suite-wide test-infrastructure polish
-
-CF v3.15.0 → **v3.15.1** + SF v1.12.0 → **v1.12.1**. DMP unchanged at v3.13.1. Mirrors DMP's v3.13.1 test-infra polish into the other two plugins.
-
-- **CF release-consistency suite** added (`tests/test_release_consistency.py`, +30 tests; CF total **23 → 53**)
-- **SF release-consistency suite** added (+31 tests; SF total **23 → 54**)
-- **Suite total: 160 → 221 tests** passing (DMP 114 + CF 53 + SF 54)
-- Each suite catches: cross-manifest version drift (7 manifest files per plugin), README badge staleness, hero-callout drift, CHANGELOG out-of-sync, install commands going missing, critical README sections going missing, internal anchor links pointing at non-existent headings, byte-identical description sharing across the 5 Claude-family manifests, and skill-count claims that don't match `skills/` directory contents
-- **SF descriptions sharpened**: all 5 Claude-family manifests now lead with `16 skills` (was a generic feature list) — better marketplace search relevance + the new test enforces the count going forward
-- **SF README** fixed: broken internal anchor `#current-release-v182` re-pointed at the live Current Release section
-
-### v3.13.0 (June 9, 2026) — Suite-wide multi-harness parity
-
-CF v3.14.0 → **v3.15.0** + SF v1.11.0 → **v1.12.0**. DMP unchanged at v3.13.1. Brings ContentForge + SocialForge into native Hermes Agent + native OpenClaw parity with DMP. Now all 3 plugins ship `plugin.yaml` + `__init__.py` (Hermes adapter) + `openclaw.plugin.json` at their repo root, plus a stdlib-unittest suite.
-
-- **All 3 plugins now on 8 native platforms** (Claude Code · Cowork · Codex · Cursor · Copilot CLI · Antigravity · Hermes Agent · OpenClaw) + 35+ Agent Skills clients
-- **Tests across the suite: 160 passing** (DMP 114 + CF 23 + SF 23) — was 0 in CF + SF before this release
-- Skill counts unchanged: DMP 158 + CF 21 + SF 16 = **195 total**
-
-### v3.12.1 (June 9, 2026) — DMP test infrastructure hardening
-
-DMP v3.13.0 → **v3.13.1**. CF + SF unchanged. Test suite expanded 70 → 114 with cross-manifest drift detection. New `tests/test_release_consistency.py` (25 tests) catches version drift, README badge staleness, CHANGELOG out-of-sync, install commands going missing, critical sections going missing, broken anchor links. New `tests/test_hermes_edge_cases.py` (10 tests) for adapter resilience. New README sections: "Get started in 5 minutes (non-developer path)" + "Troubleshooting" covering all 8 native platforms.
-
-### v3.12.0 (June 9, 2026) — DMP Hermes Agent + OpenClaw + 40+ Agent Skills
-
-DMP v3.12.1 → **v3.13.0**. CF + SF unchanged. Native Hermes Agent plugin (plugin.yaml + Python adapter at repo root walking skills/ and registering via `ctx.register_skill()`). Native OpenClaw manifest (openclaw.plugin.json with skills: `["./skills"]`). 35 additional Agent Skills platforms documented (Goose, OpenHands, OpenCode, Junie, Gemini CLI, Roo Code, Kiro, Letta, Amp, and 26 more). Test count 49 → 70.
-
-### v3.11.1 (June 8, 2026) — Discoverability + documentation polish
-
-DMP v3.12.0 → **v3.12.1**. CF + SF unchanged. README "Who this is for" audience table (agencies / in-house / automation builders / consultants / growth / compliance). "How does this compare?" table vs Anthropic Marketing, Composio Marketing, claude-seo. "Real workflows you'd actually run" with 6 copy-paste examples. Recent-release callout at top. 2 new FAQ entries (Cowork persistence + model freshness). GitHub repo descriptions + topics refreshed across all 4 repos for SEO.
-
-### v3.11.0 (June 8, 2026) — DMP Cowork persistence + fallback models + tests
-
-DMP v3.11.0 → **v3.12.0**. CF + SF unchanged. Research-grounded hardening pass after web research confirmed `${CLAUDE_PLUGIN_DATA}` is NOT persistent across Anthropic Cowork sessions ([GitHub issue #51398](https://github.com/anthropics/claude-code/issues/51398)). DMP now ships a new `/digital-marketing-pro:cowork-setup` skill that routes brand state through a Google Drive MCP. Plus `fallbackModel` chain in `settings.json.example`, `requiredMinimumVersion: 2.1.157` in plugin.json, model-registry freshness check in `/doctor`, 49-test stdlib suite.
-
-## What's new in v3.10.0 (June 4, 2026) — DMP v3.11.0 SEO expansion
-
-DMP bumped 3.10.1 → 3.11.0. CF + SF unchanged. Three new SEO skills (keyword-cluster / backlink-gap / seo-drift) + pattern upgrades across 10 existing SEO skills (Confirm-Then-Dispatch dispatcher, numbered intermediate-file output, quality scorecards). See [DMP CHANGELOG.md](https://github.com/indranilbanerjee/digital-marketing-pro/blob/main/CHANGELOG.md) for the full entry.
-
-## What's new in v3.9.0 (June 4, 2026)
-
-Coordinated platform-refresh release: **DMP v3.10.0** + **SF v1.11.0**. Every claim verified against primary sources before code changes.
-
-- **DMP** ships a new `/digital-marketing-pro:gsc-ai-performance` skill for the Google Search Console AI Performance Report rolled out 3 June 2026, plus a new `skills/context-engine/eu-code-of-practice.md` reference doc for EU AI Act Article 50 transparency. Updates to `aeo-geo`, `aeo-audit`, `c2pa-metadata`, `paid-advertising` (Google Ads API v24 breaking changes), `analytics-insights` + `attribution-report` (GA4 AI Assistant channel group added 13 May 2026).
-- **SF** ships C2PA spec refresh — Content Credentials 2.3 expanded formats + Spec 2.4 `c2pa.ai-disclosure` assertion for Article 50 deployer compliance.
+Older releases are in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -238,6 +102,8 @@ In Cowork: Settings → Plugins → Add Marketplace → paste `indranilbanerjee/
 ```
 
 (Replace `contentforge` with `digital-marketing-pro` or `socialforge` as desired.)
+
+> **On a 200k context window?** Claude Code lists every installed skill in a budget of 1% of the context window. With all three plugins installed, a 200k window has room for skill names only, so Claude can't see what each skill does. Add `"skillListingBudgetFraction": 0.05` to your Claude Code `settings.json` to fix that. On a 1M window the full list already fits.
 
 ### 4. Stay current — turn auto-update on (recommended)
 
@@ -369,7 +235,7 @@ neels-plugins/
 All three plugins follow a strict "no global side-effects" pattern as of May 2026:
 
 - `hooks/hooks.json` ships as `{"hooks":{}}`. Plugin hooks fire globally on every Claude Code operation regardless of working directory, so embedding compliance/verification logic in hooks pollutes unrelated work. The work lives instead in agent files (where it runs in proper context) and Quality Gate criteria.
-- `.mcp.json` ships as `{"mcpServers":{}}`. Plugin-bundled MCP servers auto-connect on plugin enable, which means shipping N servers triggers N connection attempts (and likely auth prompts) for users who only want some of them. Each plugin ships its full connector catalog as a `.mcp.json.connectors-reference` file with per-entry auth notes; users opt in via the plugin's connect skill.
+- No `.mcp.json` ships (it is gitignored), so no MCP server connects when you install. Plugin-bundled MCP servers auto-connect on plugin enable, which means shipping N servers triggers N connection attempts (and likely auth prompts) for users who only want some of them. Each plugin ships its full connector catalog as a `.mcp.json.connectors-reference` file with per-entry auth notes; users opt in via the plugin's connect skill.
 
 If you contribute a plugin to this marketplace, please follow the same pattern.
 
