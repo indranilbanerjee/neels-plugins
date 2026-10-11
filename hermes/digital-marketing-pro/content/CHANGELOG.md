@@ -7,6 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [4.5.7] - 2026-10-12
+
+### The audit recovery command keeps its arguments, and the install hint pastes into Git Bash and PowerShell
+
+Found by a fresh-install smoke test (its re-check).
+
+**Fixed**
+
+- `checkpoint-manager.py` built its three audit recovery commands as `script_command("run-audit.py") + " --brand ..."`.
+  When the interpreter path has a space the printed command ends in a trailing PowerShell comment, so those arguments
+  landed inside the comment: pasted into either shell the command ran with none and exited 2 ("need --run-dir, or
+  --brand and --run-id"). Every argument is now passed to `script_command` (a brand name with a space is quoted), and the
+  command ends the message, with the prose before it.
+- `_common.install_command`, the pip hint printed when a package is missing, printed `sys.executable` with backslashes
+  (Git Bash: `C:Python313python.exe: command not found`, exit 127), and with no PowerShell note when the path has a
+  space. What is printed and what is executed are now separate: execution still runs an argv list with no shell, and
+  the printed line comes from one function, `printed_command`, shared with `script_command`: forward slashes, the
+  interpreter quoted only when its path has a space, and a trailing comment saying to put `&` before it. The two
+  recovery messages that carried it put their prose before the command.
+
+- The test suite could reach the user's real folders if one test forgot to isolate. The SocialForge suite was found
+  doing exactly that (four entries appended to the customer's real failure log on every run). The ContentForge suite
+  does not today: every test file was run alone against a temporary home and wrote nothing outside it.
+  `tests/_isolation.py` keeps it so, in two layers: it points HOME and USERPROFILE at a temporary folder and unsets
+  `CLAUDE_MARKETING_HOME`, `CLAUDE_PLUGIN_DATA`, `PLUGIN_DATA` and `CONTENTFORGE_PUBLISH_DIR` before any test is
+  imported, so every default folder resolves inside it (pytest through `tests/__init__.py` and `conftest.py`, the
+  stdlib runner through `run_all.py`, a direct run through an exit hook), and it snapshots the real
+  `~/.claude-marketing`, `~/Documents/ContentForge` and any real folder those variables name, so a single added,
+  changed or removed file there fails the whole session.
+
+**Checked, not changed**
+
+- No ContentForge script reads stdin or prompts: a static sweep finds none (`getpass.getuser()` in
+  `plugin-metadata.py` is the user name, not a read).
+
+**Added - tests**
+
+- `TestRecoveryCommandRunsWithASpacedInterpreter` runs the real message end to end: a run is started for a brand with a
+  space in its name, `finalize` is refused for lack of an audit, and the command it prints (with an interpreter in a
+  folder with a space) is pasted into Git Bash and into PowerShell with `&`. Planted with the 4.5.6 script: the
+  arguments sit inside the comment and PowerShell prints "need --run-dir, or --brand and --run-id".
+- `TestPrintedCommandsAreLastOnTheLine` (an AST check that no printed command is followed by appended arguments, with
+  the 4.5.6 forms as plants), `TestInstallHintsUseThePrintedShape` (both interpreter cases, `bash -n`, and the printed
+  line run through both shells) and `TestNoImplicitStdinReads` (no script reads stdin or prompts).
+- `tests/test_test_isolation.py` (9 tests): the session is redirected and every default resolves inside the temporary
+  home, the snapshot sees added, changed, removed, new-folder and appearing-root changes, and three plants run the
+  real `checkpoint-manager.py init` in a child process against a FAKE home: with no fixture it reaches the home
+  folder, with only the guard the leak is reported as `added: .../.claude-marketing/...`, with only the redirect it
+  stays out, and an unwrapped run exits 1. Tests 786 -> 803.
+
 ## [4.5.6] - 2026-10-12
 
 ### A printed command works pasted into Git Bash and PowerShell, and the script-location guard covers every folder

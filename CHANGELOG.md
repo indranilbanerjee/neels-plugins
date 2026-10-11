@@ -5,6 +5,11 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.56.7] - 2026-10-12
+
+- The fresh-install smoke test's recheck of 3.56.6. SocialForge 1.29.7: credential setup with no key waited forever for input on Windows (Claude Code's Bash tool keeps stdin open, and `< NUL` looks like a console); it now reads a key only from a flag, the environment, an explicit `--api-key-stdin` or an explicit prompt, and otherwise stops at once with exit 2. ContentForge 4.5.7: a recovery command dropped its `--brand`/`--run-id` into the PowerShell comment when Python's path has a space; arguments now go inside the command. ContentForge and SocialForge pip hints take the same paste-anywhere shape. Digital Marketing Pro 3.35.8: PRIVACY.md's command for turning autopilot back to propose-only works from any folder, and its script-location guard covers every instruction file by default. All three: no text after a printed command, and no script reads stdin unless asked. SocialForge's test suite had written test entries to the user's real failure log on every run since that log was introduced; the ContentForge and SocialForge suites now run in temporary folders and fail if anything reaches a real one.
+- Suite total 2,134 (CF 803 + DMP 700 + SF 574 + marketplace 57).
+
 ## [3.56.6] - 2026-10-12
 
 - The fresh-install smoke test's recheck. All three plugins: a command a script prints pastes and runs in Git Bash (Claude Code's Bash tool on Windows) and PowerShell alike, from any folder: forward slashes, the script path always quoted, and a trailing comment telling PowerShell users to add `&` when the interpreter path has a space. A script that reports an error no longer exits 0: Digital Marketing Pro 3.35.7 fixes 15 scripts (utm-generator: 0 all built, 1 none, 3 partial; argument errors exit 2) and SocialForge 1.29.6 four (render_carousel without Playwright, edit_image, adapt_copy, credential setup). ContentForge 4.5.6: the script-location guard covers every instruction file by default (utils/loop-tracker.md had a relative path), and text-metrics no longer echoes a byte-order mark.

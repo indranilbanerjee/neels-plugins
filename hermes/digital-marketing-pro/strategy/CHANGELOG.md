@@ -6,6 +6,30 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 
 ---
 
+## [3.35.8] - 2026-10-12
+
+### The propose-only command works from any folder, and the script guards cover new folders by default
+
+From the fresh-install smoke test's recheck of 3.35.7 (error exits 0 of 31 bad, BOM inputs, the approval gate and hints in both shells, including a spaced interpreter with `&` in PowerShell, all passed). Each fix has a test that fails on the 3.35.7 code.
+
+**Fixed — PRIVACY.md's propose-only command**
+
+- PRIVACY.md told you to return autopilot to propose-only with `python scripts/campaign-health-monitor.py --action set-guardrails …`, a relative path that fails ("can't open file") when run from your own project rather than the plugin's folder. It now runs `python "${CLAUDE_PLUGIN_ROOT}/scripts/campaign-health-monitor.py" …`, with the script-location line under it. No other user-facing document had the problem.
+- `tests/test_script_root_fallback.py` now covers every Markdown file in the plugin by default and excludes only folders the model is not sent to (`docs/`, `tests/`, `research/`, `evals/`, `hermes/`, `heroes/`, `node_modules`, dot-folders) and contributor documents run from a clone (README, CHANGELOG, CONTRIBUTING, TESTING-GUIDE, TESTING, SUBMISSION, UPGRADE-GUIDE). The old PRIVACY.md fails it. A new folder no longer slips past a list of folders, which is how the agents, the banners and PRIVACY.md each did.
+
+**Fixed — text after a printed command**
+
+- With an interpreter path that contains a space, a printed command ends in `  # in PowerShell, put & before it`, so anything appended after the command lands inside that comment. action-doctor appended a cross-shell note after `refresh_models.py`, and ai-visibility-checker put "to check drift" after its command. The prose now comes first. A test fails on any script that appends text or arguments after `script_command()` or `install_command()` in the same string (arguments go to `script_command()` itself).
+
+**Checked — no script waits for input**
+
+- Claude Code's Bash tool gives a script an open stdin pipe that never ends, and on Windows a stdin redirected from NUL reports a console, so `input()`, `getpass()` or a bare stdin read would block forever. No DMP script reads stdin or prompts. A test keeps it that way and runs scripts with an open stdin pipe, under a timeout, to show they exit.
+
+**Tests**
+
+- `tests/test_script_root_fallback.py` (inverted discovery and its scope check), `tests/test_text_encodings.py` (no text after a printed command, with a plant) and `tests/test_exit_status.py` (no stdin reads or prompts, with a plant, plus the open-pipe run).
+- Suite: 700 tests.
+
 ## [3.35.7] - 2026-10-12
 
 ### Errors exit non-zero everywhere, and printed commands paste into Git Bash

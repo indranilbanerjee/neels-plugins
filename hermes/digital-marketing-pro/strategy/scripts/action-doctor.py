@@ -132,18 +132,20 @@ def _model_curator_status():
             f"Model registry is {age} days old (>{REGISTRY_STALE_ERROR_DAYS} = URGENT). "
             "Frontier models shift ~every 6 weeks; deprecated IDs will start returning 404 silently."
         )
+        # Prose before the command: a spaced interpreter ends the command with a comment.
         action = ("Set ANTHROPIC_API_KEY / OPENAI_API_KEY / GEMINI_API_KEY / EVOLINK_API_KEY "
-                  "in your environment, then run: " + _common.script_command("refresh_models.py") + " "
-                  "(cross-shell: the POSIX 'VAR=... command' prefix does not work in PowerShell)")
+                  "in your environment (the POSIX 'VAR=... command' prefix does not work in PowerShell), "
+                  "then run: " + _common.script_command("refresh_models.py"))
     elif age >= REGISTRY_STALE_WARN_DAYS:
         severity = "warn"
         message = (
             f"Model registry is {age} days old (>{REGISTRY_STALE_WARN_DAYS} = stale). "
             "Run refresh_models.py to check provider drift before any high-volume run."
         )
+        # Prose before the command: a spaced interpreter ends the command with a comment.
         action = ("Set ANTHROPIC_API_KEY / OPENAI_API_KEY / GEMINI_API_KEY / EVOLINK_API_KEY "
-                  "in your environment, then run: " + _common.script_command("refresh_models.py") + " "
-                  "(cross-shell: the POSIX 'VAR=... command' prefix does not work in PowerShell)")
+                  "in your environment (the POSIX 'VAR=... command' prefix does not work in PowerShell), "
+                  "then run: " + _common.script_command("refresh_models.py"))
 
     return {
         "available": True,

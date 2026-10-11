@@ -7,6 +7,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.29.7] - 2026-10-12
+
+### A missing key no longer hangs the shell, and the install hints paste into Git Bash and PowerShell
+
+Found by a fresh-install smoke test (its re-check).
+
+**Fixed**
+
+- `credential_manager.py setup-wavespeed` and `setup-higgsfield` with no key waited forever on Windows, hanging the
+  shell of an agent that ran `/socialforge:setup` without one. The Bash tool's stdin is an open pipe that never ends, so
+  `readline()` blocked, and `stdin < NUL` reports `isatty()` True, so `getpass` blocked on the console. A script now
+  never reads stdin on its own. A key comes from `--api-key`, the environment (`WAVESPEED_API_KEY`; `HF_API_KEY` and
+  `HF_API_SECRET`), a line of stdin only with an explicit `--api-key-stdin` (HiggsField: the key on the first line, the
+  secret on the second), or a hidden prompt only with an explicit `--prompt` on a real console (checked with
+  `GetConsoleMode` on Windows). With none of them the script stops at once with exit 2: `no key: pass --api-key, set
+  WAVESPEED_API_KEY, or use --api-key-stdin`. The `/socialforge:setup` skill says so.
+- `install_deps.py` printed the pip and browser install commands with backslashes (Git Bash: exit 127) and, for an
+  interpreter path with a space, no PowerShell note. Printing and executing are separate: the install functions still
+  run an argv list, and the printed line comes from `_common.printed_command`, shared with `script_command`: forward
+  slashes, the interpreter quoted only when its path has a space, and a trailing comment saying to put `&` before it.
+
+- The test suite wrote to the user's REAL failure log. Every run of `test_provider_failures.py` appended four entries
+  (a probe, an image chain and two video chains, all "All providers failed - no-credentials") to
+  `~/socialforge-workspace/socialforge/shared/failure-log.jsonl`: the test isolated the credential store but not the
+  folder `provider_failures.persist()` writes to, and with no data folder set that falls back to the home folder. 516
+  entries over 129 runs since 2026-08-14 sat in the file that holds the plugin's durable failure records (each written
+  with `action_required: true`, and read by `delivery_audit.py`). Nothing a customer runs was affected; the noise came
+  from running the suite on a machine that also uses the plugin. Two layers now: `tests/_isolation.py` points HOME,
+  USERPROFILE and every plugin-data variable at a temporary folder before any test is imported (pytest through
+  `tests/__init__.py` and `conftest.py`, the stdlib runner through `run_all.py`, a direct run through an exit hook),
+  and snapshots the real `~/socialforge-workspace` (and any real plugin-data folder the environment names) so a single
+  added, changed or removed file there fails the whole session. `test_provider_failures.py` also owns a temporary data
+  folder and home of its own.
+
+**Checked, not changed**
+
+- No other SocialForge script reads stdin or prompts: a static sweep finds none outside `credential_manager.py`.
+- Run one test file at a time against a temporary home: `test_provider_failures.py` was the only file that wrote
+  anywhere in it.
+
+**Added - tests**
+
+- `TestSecretsNeverBlock` (4 tests): every no-key case (WaveSpeed and HiggsField, an open pipe and NUL) exits 2 within
+  30 seconds, a key in the environment is stored without reading stdin, `--api-key-stdin` reads exactly one or two lines,
+  and `--prompt` without a console exits 2. Each child is bounded by a timeout and killed in a `finally`; each run uses a
+  temporary home and data folder and a test refuses to continue if a key lands outside it. Planted against the 1.29.6
+  script: it is still waiting after 12 seconds, with an open pipe and with NUL.
+- `TestNoImplicitStdinReads` (an AST check of every script, with each kind of read as a plant),
+  `TestPrintedCommandsAreLastOnTheLine` and `TestInstallHintsUseThePrintedShape` (both interpreter cases, `bash -n`, and
+  the printed line run through both shells).
+- `tests/test_test_isolation.py` (9 tests): the session is redirected (and survives the older tests that pop
+  `CLAUDE_PLUGIN_DATA`), the snapshot sees added, changed, removed, new-folder and appearing-root changes, and three
+  plants run the real failure writer in a child process against a FAKE home: with no fixture it reaches the home
+  folder (the 1.29.6 behaviour), with only the guard the leak is reported as `added: ...failure-log.jsonl`, with only
+  the redirect it stays out, and an unwrapped run exits 1. Tests 555 -> 574.
+
 ## [1.29.6] - 2026-10-12
 
 ### A printed command works pasted into Git Bash and PowerShell, and a failed script no longer exits 0

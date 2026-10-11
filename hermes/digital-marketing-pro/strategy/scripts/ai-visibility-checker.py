@@ -292,8 +292,8 @@ def main():
         try:
             from resolve_model import list_models, get_registry
             reg = get_registry()
-            print(f"Registry last_updated: {reg.get('last_updated')}  "
-                  f"(re-validate quarterly; run `{_common.script_command('refresh_models.py')}` to check drift)")
+            print(f"Registry last_updated: {reg.get('last_updated')}. Re-validate quarterly; "
+                  f"to check drift, run: {_common.script_command('refresh_models.py')}")
             print()
             for m in list_models(status="current"):
                 print(f"  {m['id']:55s}  {m.get('vendor', '?'):10s}  {m.get('tier', '?')}")
