@@ -282,7 +282,13 @@ def parse_optional_env(yaml_text: str) -> list[dict]:
     return items
 
 
-def readme_md(version: str, groups: dict) -> str:
+def listing_chars(names: list[str]) -> int:
+    """Characters the registered skills add to Hermes's system-prompt index: one `    - <plugin>:<name>`
+    row each (names only: the adapter registers no descriptions), counting the line break."""
+    return sum(len(f"    - {BUNDLE_NAME}:{n}") + 1 for n in names)
+
+
+def readme_md(version: str, groups: dict, listing_chars: int) -> str:
     g = groups
     total = sum(v["skills"] for v in g.values())
     rows = "\n".join(
@@ -310,8 +316,10 @@ self-contained; nothing here changes them. Only Hermes gets the combined folder.
 - `plugin.yaml` + `__init__.py` is a skills-only Hermes plugin: it registers every `SKILL.md` of the
   three groups with `ctx.register_skill`. The skills keep their own names and Hermes shows them as
   `digital-marketing-pro:<skill>`. A test keeps the names unique across the groups.
-- Hermes loads a plugin's skills only when you ask for one, so registering {total} adds nothing to the
-  system prompt.
+- **What it adds to the system prompt.** Hermes lists the skills of an enabled plugin in the system
+  prompt's skills index. This listing registers its {total} skills by name only (the adapter passes no
+  descriptions): {total} rows, about {listing_chars:,} characters (roughly {listing_chars // 4:,} tokens).
+  Disable the plugin to remove them; a skill's full text loads with `skill_view` when it is asked for.
 - It registers **no tools, hooks or middleware**, so `hermes tools` has nothing to switch on or off
   per group, and there is no group switch. Use the skills you want; ignore the rest.
 - Each skill that runs a script says where it is when `${{CLAUDE_PLUGIN_ROOT}}` is not set (it is not set
@@ -478,6 +486,7 @@ def generate(sources: dict[str, tuple[Path, str]], version: str) -> dict[str, by
     """The whole bundle as {relative path: bytes}. `sources` maps group -> (sibling repo, sha)."""
     tree: dict[str, bytes] = {}
     groups: dict[str, dict] = {}
+    all_names: list[str] = []
     optional_env: dict[str, dict] = {}
     for group in GROUPS:
         repo, sha = sources[group]
@@ -486,6 +495,7 @@ def generate(sources: dict[str, tuple[Path, str]], version: str) -> dict[str, by
         pj = json.loads(files[".claude-plugin/plugin.json"].decode("utf-8"))
         kept = select(files)
         names = skill_names(kept)
+        all_names += names
         for path, data in kept.items():
             tree[f"{group}/{path}"] = data
         for item in parse_optional_env(files.get("plugin.yaml", b"").decode("utf-8")):
@@ -503,7 +513,7 @@ def generate(sources: dict[str, tuple[Path, str]], version: str) -> dict[str, by
         ".gitattributes": ATTRIBUTES.encode(),
         "__init__.py": INIT_PY.replace("@@VERSION@@", version).replace("@@GROUPS@@", group_list).encode(),
         "plugin.yaml": plugin_yaml(version, groups, sorted(optional_env.values(), key=lambda i: i["name"])).encode(),
-        "README.md": readme_md(version, groups).encode(),
+        "README.md": readme_md(version, groups, listing_chars(all_names)).encode(),
     }
     tree.update(generated)
     manifest = {

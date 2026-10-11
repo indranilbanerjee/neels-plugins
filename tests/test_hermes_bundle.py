@@ -97,6 +97,21 @@ def missing_script_problems(tree: dict[str, bytes]) -> list[str]:
     return out
 
 
+def listing_problems(tree: dict[str, bytes]) -> list[str]:
+    """The README states what the skills add to Hermes's system prompt, and states it correctly.
+    Hermes lists every skill of an enabled plugin there (by name, plus any description the adapter
+    passes; ours passes none), so "adds nothing" would be false and a stale figure would mislead."""
+    readme = " ".join(tree["README.md"].decode("utf-8").split())
+    names = [n for v in skills_by_group(tree).values() for n in v]
+    out = []
+    expected = f"{len(names)} rows, about {gen.listing_chars(names):,} characters"
+    if expected not in readme:
+        out.append(f"README does not state the system-prompt cost it really has ({expected})")
+    if re.search(r"(?i)adds nothing to the system prompt|not listed in the system prompt", readme):
+        out.append("README says the skills cost nothing in the system prompt; Hermes lists them")
+    return out
+
+
 def init_problems(tree: dict[str, bytes]) -> list[str]:
     """__init__.py imports only the standard library."""
     out = []
@@ -184,6 +199,9 @@ class TestBundleIsWhatItSays(unittest.TestCase):
         self.assertIn(f"{total} skills in all", self.tree["plugin.yaml"].decode("utf-8").replace("\n  ", " "))
         self.assertIn(f"**{total} skills in all.**", self.tree["README.md"].decode("utf-8").replace("\n", " "))
 
+    def test_readme_states_the_system_prompt_cost_correctly(self):
+        self.assertEqual(listing_problems(self.tree), [])
+
     def test_every_script_a_skill_names_is_in_its_group(self):
         self.assertEqual(missing_script_problems(self.tree), [])
 
@@ -235,7 +253,8 @@ class TestPlantedFailuresAreFlagged(unittest.TestCase):
 
     def test_a_clean_tree_has_no_problems(self):
         t = self.planted()
-        self.assertEqual(manifest_problems(t) + collision_problems(t) + missing_script_problems(t) + init_problems(t), [])
+        self.assertEqual(manifest_problems(t) + collision_problems(t) + missing_script_problems(t)
+                         + init_problems(t) + listing_problems(t), [])
 
     def test_a_stale_group_file_is_flagged(self):
         t = self.planted()
@@ -269,6 +288,14 @@ class TestPlantedFailuresAreFlagged(unittest.TestCase):
         script = re.search(rb"(?<![\w/.-])scripts/([A-Za-z0-9_.\-]+\.py)", t[skill]).group(1).decode()
         del t[f"content/scripts/{script}"]
         self.assertTrue(any(skill in p and script in p for p in missing_script_problems(t)))
+
+    def test_a_false_or_stale_system_prompt_claim_is_flagged(self):
+        t = self.planted()
+        readme = t["README.md"].decode("utf-8")
+        t["README.md"] = (readme + " Registering all of them adds nothing to the system prompt. ").encode()
+        self.assertTrue(any("cost nothing" in p for p in listing_problems(t)))
+        t["README.md"] = re.sub(r"about [\d,]+ characters", "about 1 characters", readme).encode()
+        self.assertTrue(any("does not state" in p for p in listing_problems(t)))
 
     def test_a_non_stdlib_import_in_init_is_flagged(self):
         t = self.planted()

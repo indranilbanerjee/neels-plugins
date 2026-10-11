@@ -22,8 +22,10 @@ self-contained; nothing here changes them. Only Hermes gets the combined folder.
 - `plugin.yaml` + `__init__.py` is a skills-only Hermes plugin: it registers every `SKILL.md` of the
   three groups with `ctx.register_skill`. The skills keep their own names and Hermes shows them as
   `digital-marketing-pro:<skill>`. A test keeps the names unique across the groups.
-- Hermes loads a plugin's skills only when you ask for one, so registering 207 adds nothing to the
-  system prompt.
+- **What it adds to the system prompt.** Hermes lists the skills of an enabled plugin in the system
+  prompt's skills index. This listing registers its 207 skills by name only (the adapter passes no
+  descriptions): 207 rows, about 8,845 characters (roughly 2,211 tokens).
+  Disable the plugin to remove them; a skill's full text loads with `skill_view` when it is asked for.
 - It registers **no tools, hooks or middleware**, so `hermes tools` has nothing to switch on or off
   per group, and there is no group switch. Use the skills you want; ignore the rest.
 - Each skill that runs a script says where it is when `${CLAUDE_PLUGIN_ROOT}` is not set (it is not set
