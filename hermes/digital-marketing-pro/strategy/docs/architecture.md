@@ -44,7 +44,7 @@ digital-marketing-pro/
 │   ├── journey-orchestrator.md        # NEW in v2.1.0
 │   ├── quality-assurance.md           # NEW in v2.2.0
 │   └── localization-specialist.md     # NEW in v2.2.0
-├── scripts/                           # 94 Python scripts + requirements
+├── scripts/                           # 95 Python scripts + requirements
 │   ├── setup.py                       # Brand management, initialization
 │   ├── campaign-tracker.py            # Campaign persistence + violation tracking
 │   ├── adaptive-scorer.py             # Context-aware scoring weights
@@ -71,6 +71,7 @@ digital-marketing-pro/
 │   ├── posting-time-analyzer.py      # Social posting time optimization (v1.5.0)
 │   ├── calendar-validator.py         # Content calendar validation (v1.5.0)
 │   ├── tech-seo-auditor.py          # Technical SEO URL auditing (v1.6.0)
+│   ├── serp-snapshot.py             # Validates a SERP-feature export for rank-monitor --features (v3.35.3)
 │   ├── local-seo-checker.py         # NAP consistency + GBP completeness (v1.6.0)
 │   ├── roi-calculator.py            # Campaign ROI + attribution models (v1.8.0)
 │   ├── budget-optimizer.py          # Budget reallocation + diminishing returns (v1.8.0)
@@ -422,7 +423,7 @@ When enabled, these three reference lifecycle hooks wrap a Claude Code session w
 
 ## 8. Script Architecture
 
-All 94 scripts in `scripts/` follow consistent conventions.
+All 95 scripts in `scripts/` follow consistent conventions.
 
 ### Conventions
 
@@ -436,7 +437,7 @@ All 94 scripts in `scripts/` follow consistent conventions.
 
 | Tier | Dependencies | Scripts |
 |------|-------------|---------|
-| Zero deps (always work) | Python stdlib only | setup.py, campaign-tracker.py, utm-generator.py (basic mode), schema-generator.py, guidelines-manager.py, email-subject-tester.py, spam-score-checker.py, send-time-optimizer.py, sample-size-calculator.py, significance-tester.py, form-analyzer.py, hashtag-analyzer.py, posting-time-analyzer.py, calendar-validator.py, tech-seo-auditor.py, local-seo-checker.py, roi-calculator.py, budget-optimizer.py, clv-calculator.py, content-repurposer.py, review-response-drafter.py, ad-budget-pacer.py, link-profile-analyzer.py, revenue-forecaster.py, approval-manager.py, execution-tracker.py, performance-monitor.py, memory-manager.py, crm-sync.py, report-generator.py, credential-manager.py, team-manager.py, seo-executor.py, competitor-tracker.py, geo-tracker.py, pdf-generator.py, revenue-simulator.py, churn-predictor.py, macro-signal-tracker.py, creative-fatigue-predictor.py, intelligence-graph.py, journey-engine.py, growth-loop-modeler.py, campaign-health-monitor.py, narrative-mapper.py, audience-simulator.py, hallucination-detector.py, claim-verifier.py, output-validator.py, eval-runner.py, quality-tracker.py, eval-config-manager.py, prompt-ab-tester.py, language-router.py, connector-status.py |
+| Zero deps (always work) | Python stdlib only | setup.py, campaign-tracker.py, utm-generator.py (basic mode), schema-generator.py, guidelines-manager.py, email-subject-tester.py, spam-score-checker.py, send-time-optimizer.py, sample-size-calculator.py, significance-tester.py, form-analyzer.py, hashtag-analyzer.py, posting-time-analyzer.py, calendar-validator.py, tech-seo-auditor.py, serp-snapshot.py, local-seo-checker.py, roi-calculator.py, budget-optimizer.py, clv-calculator.py, content-repurposer.py, review-response-drafter.py, ad-budget-pacer.py, link-profile-analyzer.py, revenue-forecaster.py, approval-manager.py, execution-tracker.py, performance-monitor.py, memory-manager.py, crm-sync.py, report-generator.py, credential-manager.py, team-manager.py, seo-executor.py, competitor-tracker.py, geo-tracker.py, pdf-generator.py, revenue-simulator.py, churn-predictor.py, macro-signal-tracker.py, creative-fatigue-predictor.py, intelligence-graph.py, journey-engine.py, growth-loop-modeler.py, campaign-health-monitor.py, narrative-mapper.py, audience-simulator.py, hallucination-detector.py, claim-verifier.py, output-validator.py, eval-runner.py, quality-tracker.py, eval-config-manager.py, prompt-ab-tester.py, language-router.py, connector-status.py |
 | Lite | nltk, textstat | brand-voice-scorer.py, content-scorer.py, readability-analyzer.py, headline-analyzer.py |
 | Full | + requests, beautifulsoup4, qrcode, Pillow | competitor-scraper.py, utm-generator.py (QR mode), email-preview.py |
 | Optional | + openai, anthropic | ai-visibility-checker.py (API mode) |

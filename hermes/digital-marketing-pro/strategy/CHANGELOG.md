@@ -6,6 +6,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 
 ---
 
+## [3.35.3] - 2026-10-11
+
+### Fatigue forecasts count calendar days, and rank-monitor reads a SERP snapshot from any provider
+
+**Fixed — creative fatigue forecasts (contributed by @andromia3, PR #17)**
+
+- `creative-fatigue-predictor.py --action predict-fatigue` read each row's position in the list as a day and measured runway from one row past the end. A daily CTR series of 0.10, 0.07, 0.04, which had already crossed its own fatigue threshold (30% below the first row), was reported as "No fatigue trend detected. Creative is performing steadily", and a weekly series with 28 days of runway was reported as 3 days and "URGENT". Forecasts now use the elapsed calendar days between rows and count from the latest row; a threshold already crossed returns 0 days and says so; a flat trend says only that the linear model projects no crossing; and the output says its confidence label counts rows rather than giving a statistical interval. Contributed by @andromia3 in PR #17, with its tests; thank you.
+- Follow-up, so real exports work: CPM is optional (a row without CPM, or a first CPM of 0, gives a CTR-only forecast, and `signals_used` says which signals were used, because email and search bought on CPC have no CPM); every error names its row and field ("row 2 is missing 'date'"); rows are sorted by date, so newest-first exports work, while duplicate dates are still refused; an ISO timestamp's date part is used; numeric strings from CSV files are read as numbers.
+- The creative-health skill now gives the predict-fatigue command and its input shape, and no longer promises a "confidence range" the script never returned.
+
+**Added — SERP snapshot input for `rank-monitor --features` (issue #16)**
+
+- Search Console has no per-query SERP-feature layout, so `--features` relied on a connected rank-tracker MCP or a manual pass. New `scripts/serp-snapshot.py` validates a CSV or JSON export from any SERP API or rank tracker (query, gl, hl, position, AI Overview presence and citation, People Also Ask, featured-snippet owner) and prints normalised rows with a summary for the skill to diff. Every error names its row; duplicate and impossible rows are refused. It reads only the named file: no network request, no API key, no provider code. The format is in `skills/rank-monitor/serp-snapshot-format.md`, and the CONNECTORS.md SEO row lists "any SERP API (export file)".
+
+**Tests**
+
+- `tests/test_creative_fatigue_calendar.py` (9, from PR #17; its reversed-order case now expects sorting), new `tests/test_creative_fatigue_inputs.py` (11) and `tests/test_serp_snapshot.py` (9). Each new test was run against the code before its fix and failed there.
+- `tests/test_drive_sync_state.py` also pins `CLAUDE_MARKETING_HOME` and `CLAUDE_PLUGIN_DATA`, which the workspace resolver reads before `HOME`; a value set in the caller's environment had made 3 to 5 of its tests fail.
+- Suite: 642 tests.
+
 ## [3.35.2] - 2026-10-10
 
 ### Every missing-package message prints the exact pinned command, and the README says what the code does

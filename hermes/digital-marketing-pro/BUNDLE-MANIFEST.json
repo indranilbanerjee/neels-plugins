@@ -2,14 +2,14 @@
   "bundle": "digital-marketing-pro",
   "generated_files": {
     ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
-    "README.md": "7e761983269403667c4dae85c22c0dc2e0549d541e31c8e45047c1d88154ab02",
-    "__init__.py": "eadeeb9b4c92446aee813d6eb994a511e7365fe9176ca6d9b9efee408ed412fb",
-    "plugin.yaml": "501b14dce6ca8486d6efda5693e945659f42bd27a52cf65e3b394d14dc791991"
+    "README.md": "d23826c773736703a18592eb67965e16bbd6d97d1411b5389c87ac22bd769867",
+    "__init__.py": "5afef775237a7d3a5d7515bb29a21d15cafefbf97bf97f8aba77cec89bed00ac",
+    "plugin.yaml": "ec4663d4b7d35a3474395d1a0d37dc837f25deb1d90f44136cd348c71c6f37ce"
   },
   "generator": "scripts/build_hermes_bundle.py",
   "groups": {
     "content": {
-      "commit": "9d82163294bf7105452074fc48cea05f21ff4ac9",
+      "commit": "8e84d2e53e1fccda5760906cea205f862d8857ca",
       "files": {
         ".mcp.json.connectors-reference": "7e434e26e3f70874d3c3e88cbb549aac9c04d7202b925c2948468ea815430047",
         ".mcp.json.example": "92b9099b00d91e635e8259f3ab4fac2e1aa67188d2d555cd714db990b4ac604a",
@@ -18,7 +18,7 @@
         "LICENSE": "5c47db69f5dbaa89082a03f1a236eaa484c15d44f9dd6ea17d0dc8532a9b6cba",
         "NOTICE.md": "b989009a4f289bcad58577f1d36968a58d931665c1e3d4cad84997b73a8ae80a",
         "PRIVACY.md": "100b13b7a0fca9856969d0d01a6832c2e00f6c73b8467ca5ddeab88c00ca1971",
-        "README.md": "b979ec638727ceec29226304a3dd923b4c154b2a404f08d1aeb73ae54e63c030",
+        "README.md": "1365be8bf12e559526710094ebe16b2e8b2ba7be9fe52cfa18d279945ce5497e",
         "agents/01-researcher.md": "9126619bbf41f863d95ff489fe4e1b1630b9817ab4f37c32cb5a66f91b087b9c",
         "agents/02-fact-checker.md": "61d305b80341d358867adbfab47ff38574710086275eb7c1ff747ac17ab52198",
         "agents/03-content-drafter.md": "b311620c2dd327ef19195403f14d0526851752f5ed5b65e5a0aa01183dbce626",
@@ -159,7 +159,7 @@
       "version": "4.5.2"
     },
     "social": {
-      "commit": "f8ed7dd44a395cc2207f68c77e2e27143e2ec19d",
+      "commit": "fb5ba430f5effb3196618b3b41672cef64b8d240",
       "files": {
         ".mcp.json.connectors-reference": "267515b481d3493e702d1549b9bf63a3ae7a63cb1c056473868cb53ce14a9e65",
         ".mcp.json.example": "9ec6d96394664286fad94fa747b0148d8ed342220489be17621be86dba74fdf6",
@@ -167,7 +167,7 @@
         "CONNECTORS.md": "620a0f81a7b0960bb6cb45a00fd65fc6652111ae0939a0f5b79a74d03d167797",
         "LICENSE": "dd0710500cf52a6296b15e26c5a7f2cc0477ca26b44b0eb0dd16202e3662a57a",
         "PRIVACY.md": "846cf33576f508abe7c941842fc2ec4171aa2f2f603578dcf103da3570c0035b",
-        "README.md": "07d6c694ea30398e73bac94471592e4544c3d491fbcf1ec5081107de72e6c327",
+        "README.md": "5d0ea21a5dffc0d6ffb29e642035b137d842b8acaac46422cf539d73c4978618",
         "agents/carousel-builder.md": "de5d278af67de29a8916be5101fd9104cb9342012a697593959b2809db93c369",
         "agents/compliance-checker.md": "2e90def7ca9e70a9239a0912c78e57753c05aafa579fa52c270f50d147106879",
         "agents/copy-adapter.md": "eae4b1d6524a7512d04fafe2df4e4ca8b42582b6add8d61804d447888126ff87",
@@ -196,7 +196,7 @@
         "commands/finalize.md": "358c2c3c7c19e19d2e4dc671d43e6f014e4a89a071213e99688c7544890e2865",
         "commands/generate-all.md": "4aa8a97932b60bf18f2a53c65d19bb04054603244263320656c579fae0fd2e75",
         "commands/generate-post.md": "b34f6612fa2f1131bbb58055a0131f0e48cf53be2fcd7aa05722711211ca2a0d",
-        "commands/new-month.md": "ac9de84e4de518e55e69f4dffffbc5458621374f9203239933212c05ac23eee4",
+        "commands/new-month.md": "ff3e2a9f033987a7f9441856aec233b3362f9c4fcd0dbcc1c1e838cd4eedd530",
         "commands/preview-batch.md": "52ded5957a3f29d07828293034e9cf503da1663a3b39f8020574211f5b2bf20e",
         "commands/reactive-post.md": "5b88253bd4c52c74b5df10cb330126394a29e969cbad77f50e7a7d7d45f6e415",
         "commands/review.md": "beb729e7e316004ebfc7a9c272501309d82beea9fd46ea1f8f38e4c0f947b524",
@@ -294,15 +294,15 @@
       "version": "1.29.2"
     },
     "strategy": {
-      "commit": "6d7365d7a71a94a6b9e2ea7514e6574939050187",
+      "commit": "f1ec1047b4b3da461c2229c5ee7bfb1f160c74d2",
       "files": {
         ".mcp.json.connectors-reference": "4b874432f72a4fed3605e50fe689c3231a2d23798ed798c6ec4de7387bcde28c",
         ".mcp.json.example": "e96e658ee4767f5a79756b6b66b424eda7136ed8c6c0e0ec17ca6698b1c0127b",
-        "CHANGELOG.md": "2fdb1cc536731cb5e89e0c438b80222add2de503dc8fd62da8a620394cb8be1d",
-        "CONNECTORS.md": "090e2c3bea5dc5b235cacc0327f441cadde2e8e1732422c7c79567f7f0960924",
+        "CHANGELOG.md": "e54d08133c0f1ba9e9070f6d12f946b21dc577b1a7b998fcd47b19cdd6874ebd",
+        "CONNECTORS.md": "be09eef188f1bffbe2281adba27e3ecb41cf8e389b5ffd66c8726d7e6e90cf0f",
         "LICENSE": "b8777f5d230e1d91144bd9127fbb56092dbbdaaabbbfd18c0ce78620f18ca7f4",
         "PRIVACY.md": "680f4b476d7fc19ccaf37a86248f67ca1ab8905fcca7839edf8ac11be4239823",
-        "README.md": "1a331751b833768a9ca17f392e2bf543b6fc185892405cc87a287ed1982f2837",
+        "README.md": "441af1d9d72e0a11cf90e128a155a691bd975184eee3e773c542292d74cabd98",
         "agents/agency-operations.md": "4c059b66fb62013aeb43112eec822cb279f7a3849e29d7be23db7bb0e79c6140",
         "agents/analytics-analyst.md": "aeaaf3ad8bdc8676e0854d47abc2ded83c806908e03c911a366fdddf65c3b364",
         "agents/brand-guardian.md": "8260964ce257a1b9286be3b0b0a4d1a2bdd2a86fd6bc32d3e50557673bf39171",
@@ -335,12 +335,12 @@
         "commands/output-folder.md": "5ae855ad0bbae9812af96bbad9483cb84452a43e6f15779ebaec9b5bc43941d2",
         "commands/resume.md": "a85be2c6144187d5f71a205733bd6bc0ec78874d73b897b37ea9d8947c0d0833",
         "docs/MODEL-CURATOR.md": "29fdae6b17ea9072c8433ad7f1355ef2334ad7488f9a1f574b60385905965fe3",
-        "docs/architecture.md": "d88cc21ab7a706bcb58b8e797bf1bbf29783bf1574173877695eec6c5ea70bc8",
+        "docs/architecture.md": "7164ca40bc1451bcaec6afbf758c26884ff95751373bbbd70fd211d9448f6c90",
         "docs/brand-guidelines.md": "0c6ae356423dfae086e7032f58bfc62638bc47b50fb7f0d79b1ffe3acba6e4a1",
         "docs/c2pa-production-cert-guide.md": "d12ee0d9fb21d848140b1592adfcc9053e4967b35cfbb4c52dfa2deac711f1c5",
-        "docs/claude-interfaces.md": "a509e4d0efd4972db14838cdfc5635a93cc2c7157e2a0b460ba98d2adc2105b7",
-        "docs/getting-started.md": "3118cbc7bfbef020c4a7a390dce32cfe2770cb52c7449a9ba28f800ebf155cfb",
-        "docs/integrations-guide.md": "87db7596953dc9c6b18041163f8da81aa8f69b61e00be31bc614fddeddd09f9c",
+        "docs/claude-interfaces.md": "970413701a388a15e141202098f85c27d31adf428f1b503c7e7147d9bdabf069",
+        "docs/getting-started.md": "b402a0699b08702756e2d392dc90c109d70c8120041501b4858f9298af407215",
+        "docs/integrations-guide.md": "b749bd3d8f3277a6064d0e2efba72ae5ca332665702dff4ef2f091555918b658",
         "docs/multi-brand-guide.md": "0699acc8d0b31ff36e228d200cfc47b9362489b7832c9659d7cf62b3445b2b7b",
         "docs/strategy-and-kpis.md": "606b9f7159e9be239f14ca6a0df73f95e4a811921e547ae47bc49a17bf1359b1",
         "scripts/_common.py": "2038a2071497fc31746dbb790e3573b5fc36ffd72ba84022607c0bd3ed16cecd",
@@ -375,7 +375,7 @@
         "scripts/connector_resolver.py": "916362cb6ee62f104c08ec56656f9b610c2db7b24d7f91448f52311ce2fb415f",
         "scripts/content-repurposer.py": "c16f330af52805db261e4516483fb15be1e47b501503c76f284ddc65b737f3c5",
         "scripts/content-scorer.py": "e974ec6c2694543c3a06790160cd1f16861c49fa692ec17601186d65b8391eef",
-        "scripts/creative-fatigue-predictor.py": "1e0eb80872b51c80570296b5c17f2341678a6573150a49ebe4de36bccc8c3d03",
+        "scripts/creative-fatigue-predictor.py": "5f34e617283c77e39477893d4b68a237e2848adebb958a9a295721ac6c8533af",
         "scripts/credential-manager.py": "4cccfca056cc020389896597fa38c29531e486edd40286a953b5aaa3b6ab5c84",
         "scripts/crm-sync.py": "6f11df4a507fdacb57744c1ebd8e184654ec21122d7ec1db07daf628aea95f48",
         "scripts/detect_surface.py": "db01db47f4112ac6000461a79d39315ca3e4804f1f30f02ba31dab19c65fd562",
@@ -430,6 +430,7 @@
         "scripts/send-time-optimizer.py": "6537e0c0f7653e3a3286ddf0283f184486a8ccb34c89a01bae80968322336c05",
         "scripts/seo-executor.py": "9e93cbd3f53f122087c0e94812f652ceee9f663484e0e27cf0e8d4a7cb670ee9",
         "scripts/seo_drift.py": "dbebead49b989dab59e0893b090edf0591a30b95af8fa7daf808cf6b729a7d74",
+        "scripts/serp-snapshot.py": "dbb70ba496395c3a227bcb85f4e208981db04ae2c0520a27a7d40ae4d810c2af",
         "scripts/setup.py": "5cfff8c1d196819b018be5a2019cc296ccef8686d16dc97d70345f6d05fb8cfe",
         "scripts/significance-tester.py": "dcc6900ce2eb38822c308d5d91abd2d2a4469278842d94414cfcf89f5c654950",
         "scripts/skill-line-check.py": "6935b49554b6d53f6345548d6086de523e2c23c0c6a580c9e39a67b70f851230",
@@ -441,7 +442,7 @@
         "scripts/tech-seo-auditor.py": "3b8a642b6d52d113931282e25a66b29e14467093dece53e809bade88c86e15b2",
         "scripts/utm-generator.py": "6b09f08077dc387183384330b05929fd4768f5ceab534a4a9b57e3f0aa100440",
         "settings.json.example": "27d5cd740cc21969ad2302fc5b4ae9095d56527d05744b1a134aadf6ca882d11",
-        "skills-index.json": "685c52320efe67e634908b726c86623c6050b3906f2864952742bf6a4c390095",
+        "skills-index.json": "6ee0c80e4f51754f82b75097463f318cacbe4e6cbeb66b49660b8cb93272fddc",
         "skills/ab-test-plan/SKILL.md": "efb3b56c16b42fb91c8c92a1a1516c063698043fdb83a0ef254575ba8a7bfa30",
         "skills/ad-creative/SKILL.md": "3134235008d6fe512e3fbbaa8f364fce39a3ed67ddee69170020d2777f9cc0b9",
         "skills/add-integration/SKILL.md": "3f58b4465c3545a3efeb1d1fa3bae5184cb59be3a5de5fc232ba2efe74686df0",
@@ -590,7 +591,7 @@
         "skills/continuous-improvement-loop/SKILL.md": "b56650eb7546e8c503adbb60655bbaf7d683d844b84e1ea0db9d0f95c31a3b21",
         "skills/counter-narrative/SKILL.md": "45b15088e67fadc3e19ae468ed5ebc46e1211b2f3044cdb03433dd9d9289022f",
         "skills/cowork-setup/SKILL.md": "d083153d11c1cbe5901095301c5bdafbd67a91c7526e197dcb72371f4b9ead63",
-        "skills/creative-health/SKILL.md": "89147a430590a3d3dceeef75b2c557fe111b14399b4c8dc83c21c504374b9152",
+        "skills/creative-health/SKILL.md": "4a9b2ce3ae0490983db9b80120f43382e12a13203b694fbb212436aa5f6e8ffb",
         "skills/creative-testing-framework/SKILL.md": "e9de1aa81f675488ac04641aa9f06cef392b36d09e4280ca0d2e47db8b7b0c18",
         "skills/credential-switch/SKILL.md": "11fbb4e1359e8560e8fbe168a88aa13b9b49457885a4051809c7d6fd410ccdfc",
         "skills/crisis-response/SKILL.md": "4048c734db16d9f148f03d95dc748a23c1de8c10f376375e5b62697f1601af75",
@@ -729,7 +730,8 @@
         "skills/publish-blog/SKILL.md": "d84af0b2a9bd8a09a08bf1114c5c38dc45f11cdcae18f815ae64d809ba856d6f",
         "skills/qbr-plan/SKILL.md": "82969267c1f69e470eb242035992be49a1bd35666f7c1871fb78e19f93fc2c1b",
         "skills/quality-report/SKILL.md": "96976c9229df2ca5fe1e5fa61d4780efc0f8ad2f4c3f25b9e4bd0ac9ddb1aa62",
-        "skills/rank-monitor/SKILL.md": "338967cb005b7b23bfd52924936cb177ab4a5438638eb0758baf4bbfece18198",
+        "skills/rank-monitor/SKILL.md": "0a1d45f4c71b8c869c5378c858c6d517564d85ff04fd9020710a7904a79d1969",
+        "skills/rank-monitor/serp-snapshot-format.md": "2d9e33cd715c1692d0f9f4f7b5f08a604729b4685a0955b9caeaef427fdaf67a",
         "skills/recall/SKILL.md": "2555194dadfdeffeb0c0ebf056f9a15a756f9c2385d8b273267e1f0d00fcb605",
         "skills/redirect-manager/SKILL.md": "15bd6608cf27bc6d2b2f3a3f8d66892319216a4844699679d82917c674972cfe",
         "skills/region-config/SKILL.md": "59ea54b3f80509bc7300cec8ec427ba9b5e91771be50e5ba36bf94b50208a9fa",
@@ -757,7 +759,7 @@
         "skills/seo-drift/SKILL.md": "98292cdbb74f7e90ae22980dd918796ad751c92a8bd42ee4404ed2b931fac926",
         "skills/seo-implement/SKILL.md": "1fc4847eb097d7ffa1e29e4defdc7c1de0d26ea2b360fffa5ba7446641b0c51e",
         "skills/seo-plan/SKILL.md": "c664e2b4c4106e61cd6edfc55c4593c76f53048230a3698b9e67d8eef6f57d7b",
-        "skills/serp-tracker/SKILL.md": "b409d54ebd694cff425c459a379a5f8483264c1a2429a0a23c7b147fe0ca0e59",
+        "skills/serp-tracker/SKILL.md": "3316adaf3f038b3a4f13254e9570a76d51d987ff4fce0c79bb3feb4d9ea751ff",
         "skills/share-of-voice/SKILL.md": "47686a64703d84346d8785ad926e564fddc45438200e3fdc7e5a9d465f666517",
         "skills/share-of-voice/x-twitter-source-evidence.md": "60f0974e8cac081bcbe3d2f94cc4854c0f836e266179b3dee8133c054000eb74",
         "skills/signal-mine/SKILL.md": "3ca10aad9655c07a30c16963ca51f336e10ce2b47edaa405e7d51cc70e8700f0",
@@ -790,8 +792,8 @@
       "plugin": "digital-marketing-pro",
       "repo": "https://github.com/indranilbanerjee/digital-marketing-pro",
       "skills": 164,
-      "version": "3.35.2"
+      "version": "3.35.3"
     }
   },
-  "version": "3.56.0"
+  "version": "3.56.1"
 }

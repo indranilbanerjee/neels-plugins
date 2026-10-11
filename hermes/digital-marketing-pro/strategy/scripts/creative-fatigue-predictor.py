@@ -22,8 +22,9 @@ Usage:
 import argparse
 import json
 import math
+import re
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 import os
 import sys
@@ -129,41 +130,106 @@ def score_health(creative_id, data):
 
 # ── Predict Fatigue ──────────────────────────────────────────────────────────
 
+_HISTORY_DATE = re.compile(r"\s*(\d{4}-\d{2}-\d{2})(?:[T ]\S*)?\s*$")
+
+
+def _history_number(value, row, field):
+    """A finite, nonnegative number; numeric strings (CSV exports) are accepted."""
+    if isinstance(value, bool):
+        raise ValueError(f"row {row} '{field}' must be a number, not true/false")
+    if isinstance(value, str):
+        try:
+            value = float(value.strip())
+        except ValueError:
+            raise ValueError(f"row {row} '{field}' {value!r} is not a number "
+                             f"(give a plain number such as 0.025)") from None
+    if not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
+        raise ValueError(f"row {row} '{field}' must be a finite nonnegative number")
+    return float(value)
+
+
+def _parse_history(history):
+    """Validate performance-history rows and return (rows, use_cpm, note).
+
+    rows are (date, ctr, cpm-or-None) sorted by date, so newest-first exports work.
+    A date may be YYYY-MM-DD or an ISO timestamp (its date part is used). CPM is
+    optional: when any row lacks it, or the earliest CPM is 0, the forecast uses CTR
+    alone. Errors name the row (1-based, in the order given) and the field.
+    """
+    rows = []
+    for i, h in enumerate(history, 1):
+        if not isinstance(h, dict):
+            raise ValueError(f"row {i} is not an object")
+        raw = h.get("date")
+        if raw is None:
+            raise ValueError(f"row {i} is missing 'date'")
+        m = _HISTORY_DATE.match(raw) if isinstance(raw, str) else None
+        try:
+            day = datetime.strptime(m.group(1), "%Y-%m-%d") if m else None
+        except ValueError:
+            day = None
+        if day is None:
+            raise ValueError(f"row {i} 'date' {raw!r} is not a YYYY-MM-DD date or ISO timestamp")
+        if h.get("ctr") is None:
+            raise ValueError(f"row {i} is missing 'ctr'")
+        ctr = _history_number(h["ctr"], i, "ctr")
+        cpm = _history_number(h["cpm"], i, "cpm") if h.get("cpm") is not None else None
+        rows.append((day, ctr, cpm))
+    rows.sort(key=lambda r: r[0])
+    for (a, _, _), (b, _, _) in zip(rows, rows[1:]):
+        if a == b:
+            raise ValueError(f"two rows share the date {a:%Y-%m-%d}; give one row per date")
+    if rows[0][1] <= 0:
+        raise ValueError("the earliest row's 'ctr' is the baseline and must be positive")
+    missing = [i for i, h in enumerate(history, 1) if h.get("cpm") is None]
+    note = None
+    if missing:
+        note = (f"cpm missing on row(s) {', '.join(map(str, missing))}; forecast uses CTR only"
+                if len(missing) < len(rows) else "no cpm given; forecast uses CTR only")
+    elif rows[0][2] == 0:
+        note = "the earliest cpm is 0, so there is no CPM baseline; forecast uses CTR only"
+    return rows, note is None, note
+
+
 def predict_fatigue(creative_id, history):
-    if len(history) < 3:
+    if not isinstance(history, list) or len(history) < 3:
         return {"creative_id": creative_id, "error": "Need at least 3 data points for prediction"}
 
-    x = list(range(len(history)))
-    ctrs = [h.get("ctr", 0) for h in history]
-    cpms = [h.get("cpm", 0) for h in history]
+    try:
+        rows, use_cpm, signals_note = _parse_history(history)
+    except ValueError as exc:
+        return {"creative_id": creative_id, "error": f"Invalid performance history: {exc}"}
+    dates = [r[0] for r in rows]
+    ctrs = [r[1] for r in rows]
+    x = [(date - dates[0]).days for date in dates]
 
     ctr_slope, ctr_intercept = _linear_regression(x, ctrs)
-    cpm_slope, cpm_intercept = _linear_regression(x, cpms)
 
-    baseline_ctr = ctrs[0] if ctrs[0] > 0 else 0.01
-    baseline_cpm = cpms[0] if cpms[0] > 0 else 1.0
+    baseline_ctr = ctrs[0]
     fatigue_ctr = baseline_ctr * 0.70
-    fatigue_cpm = baseline_cpm * 1.30
 
     # Find crossover points
-    ctr_days = None
-    if ctr_slope < 0:
+    ctr_days = 0 if ctrs[-1] <= fatigue_ctr else None
+    if ctr_days is None and ctr_slope < 0:
         # Solve: ctr_slope * x + ctr_intercept = fatigue_ctr
         ctr_x = (fatigue_ctr - ctr_intercept) / ctr_slope
-        if ctr_x > len(history):
-            ctr_days = int(ctr_x - len(history))
+        ctr_days = max(0, math.ceil(round(ctr_x - x[-1], 10)))
 
-    cpm_days = None
-    if cpm_slope > 0:
-        cpm_x = (fatigue_cpm - cpm_intercept) / cpm_slope
-        if cpm_x > len(history):
-            cpm_days = int(cpm_x - len(history))
+    cpm_days = cpm_slope = None
+    if use_cpm:
+        cpms = [r[2] for r in rows]
+        cpm_slope, cpm_intercept = _linear_regression(x, cpms)
+        fatigue_cpm = cpms[0] * 1.30
+        cpm_days = 0 if cpms[-1] >= fatigue_cpm else None
+        if cpm_days is None and cpm_slope > 0:
+            cpm_x = (fatigue_cpm - cpm_intercept) / cpm_slope
+            cpm_days = max(0, math.ceil(round(cpm_x - x[-1], 10)))
 
     # Take the sooner of the two
     candidates = [d for d in [ctr_days, cpm_days] if d is not None]
     days_remaining = min(candidates) if candidates else None
 
-    # Confidence based on data points and trend clarity
+    # Legacy confidence labels describe sample count, not calibrated uncertainty.
     n = len(history)
     if n >= 14:
         confidence = "high"
@@ -172,19 +238,16 @@ def predict_fatigue(creative_id, history):
     else:
         confidence = "low"
 
-    # Predicted fatigue date
+    # Predicted fatigue date, counted from the latest observation
     predicted_date = None
     if days_remaining is not None:
-        try:
-            last_date = datetime.strptime(history[-1]["date"], "%Y-%m-%d")
-            from datetime import timedelta
-            predicted_date = (last_date + timedelta(days=days_remaining)).strftime("%Y-%m-%d")
-        except (KeyError, ValueError):
-            pass
+        predicted_date = (dates[-1] + timedelta(days=days_remaining)).strftime("%Y-%m-%d")
 
     # Recommendation
     if days_remaining is None:
-        rec = "No fatigue trend detected. Creative is performing steadily."
+        rec = "No threshold crossing projected by the linear model; review other fatigue signals."
+    elif days_remaining == 0:
+        rec = "URGENT: Fatigue threshold reached or projected at the latest observation. Review replacement creative now."
     elif days_remaining <= 7:
         rec = "URGENT: Creative fatigue imminent. Prepare replacement creative immediately."
     elif days_remaining <= 14:
@@ -199,8 +262,12 @@ def predict_fatigue(creative_id, history):
         "predicted_fatigue_date": predicted_date,
         "days_remaining": days_remaining,
         "confidence": confidence,
+        "confidence_basis": "Heuristic sample-count label; not a statistical confidence interval",
+        "trend_time_unit": "calendar_day",
+        "signals_used": ["ctr", "cpm"] if use_cpm else ["ctr"],
+        **({"signals_note": signals_note} if signals_note else {}),
         "ctr_trend_slope": round(ctr_slope, 6),
-        "cpm_trend_slope": round(cpm_slope, 4),
+        "cpm_trend_slope": round(cpm_slope, 4) if cpm_slope is not None else None,
         "recommendation": rec,
     }
 
