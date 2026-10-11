@@ -46,6 +46,12 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 - **Remove or hide AI watermarks.** AI involvement is disclosed, with C2PA provenance where the format supports it.
 - **Depend on each other.** Each plugin is self-contained and useful alone.
 
+### What it costs
+
+- **The three plugins are free** (MIT-licensed).
+- **Model usage (tokens).** On a subscription (Claude Pro, Max, Team or Enterprise in Claude Code or Cowork; a ChatGPT plan in Codex; a Cursor or Copilot plan; the same goes for other hosts' plans) the tokens count against your plan's usage limits instead of being billed per token; check your plan for any optional extra-usage billing. Only pay-as-you-go API-key users pay per token. Context (the skill listing, a skill's instructions; in Hermes, the 207 skill names of the combined listing) uses context window and usage allowance for everyone, and money only for API users.
+- **Services you connect with your own keys** (image and video generation, SEO and data APIs, ad, email and CRM platforms, Google Drive, Airtable) are billed by those providers, whatever plan you are on. SocialForge quotes each paid generation before it runs.
+
 ---
 
 ## Who this suite is for
