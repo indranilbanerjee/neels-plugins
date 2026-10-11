@@ -374,7 +374,7 @@ def load_approval_for_execution(brand: str, approval_id, payload_hash: str, *, c
     status = record.get("status")
     if record.get("brand") and record["brand"] != brand:
         return None, None, None, f"approval '{approval_id}' belongs to brand '{record['brand']}'"
-    if status in ("consumed", "in-flight", "executed", "failed"):
+    if status in ("consumed", "in-flight", "executed", "failed", "unknown"):
         return None, None, None, f"approval '{approval_id}' was already used; prepare a new one"
     if status != "approved":
         return None, None, None, f"approval '{approval_id}' is '{status}', not 'approved'"
@@ -431,7 +431,9 @@ def settle_approval(path, record: dict, item_index, *, sent: bool, success: bool
     """After the attempt. Not sent (an error that proves no connection was made):
     release the claim. Sent, whatever the HTTP status, or outcome unknown (a timeout
     or reset after the request may have been delivered): consume it, because the
-    platform may have acted. `outcome="unknown"` is recorded as such, not as failure."""
+    platform may have acted. `outcome="unknown"` is recorded as such, not as failure:
+    a single record gets status "unknown" (consumed), because a reader who saw "failed"
+    could prepare the same write again by hand and send it twice."""
     result = outcome or ("success" if success else "failure")
     now = _iso(_utcnow())
     if item_index is None:  # standing
@@ -441,7 +443,7 @@ def settle_approval(path, record: dict, item_index, *, sent: bool, success: bool
                                                   "summary": summary})
     elif item_index == -1:
         if sent:
-            record["status"] = "executed" if success else "failed"
+            record["status"] = "unknown" if outcome == "unknown" else ("executed" if success else "failed")
             record["consumed_at"] = now
             record["execution_result"] = result
             record["platform_response"] = summary

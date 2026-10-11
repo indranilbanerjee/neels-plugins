@@ -145,7 +145,7 @@ Full engagement:
 | Issue | Solution |
 |-------|----------|
 | "No active brand" message | Run `/digital-marketing-pro:brand-setup` to create your first brand profile |
-| Python features unavailable | Install the tested versions: `python scripts/setup.py --install lite` (lite mode) or `python -m pip install -r scripts/requirements.txt` (everything, exact pins) |
+| Python features unavailable | Install the tested versions: `python "${CLAUDE_PLUGIN_ROOT}/scripts/setup.py" --install lite` (lite mode) or `python -m pip install -r "${CLAUDE_PLUGIN_ROOT}/scripts/requirements.txt"` (everything, exact pins) |
 | MCP connector not working | Run `/digital-marketing-pro:integrations` to check status, `/digital-marketing-pro:connect <name>` for setup |
 | Brand voice seems off | Run `/digital-marketing-pro:brand-setup --full` for detailed 17-question profiling |
 | Commands not recognized | Ensure the plugin is installed: check "Manage Plugin" in Cowork or `claude plugin list` |

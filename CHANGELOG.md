@@ -5,6 +5,11 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.56.4] - 2026-10-12
+
+- Second round from the fresh-install smoke test. Digital Marketing Pro 3.35.5: an outcome nobody can confirm is recorded as `unknown` (never `failed`, so nothing invites a resend), and the user closes it out after checking the platform; the write skills that send through a connected app's MCP retry only a request that provably never arrived, and after a timeout check the platform first; all 24 agents say where the scripts are. ContentForge 4.5.4 and SocialForge 1.29.4: every script runs from any folder (relative and unquoted script paths fixed, each guarded by discovery); SocialForge's generate-all keeps its quote plan in the month folder instead of `/tmp` (PowerShell could not find it), and a missing plan file is a clean refusal instead of a traceback.
+- Suite total 2,035 (CF 770 + DMP 672 + SF 536 + marketplace 57).
+
 ## [3.56.3] - 2026-10-12
 
 - Fixes from a fresh-install smoke test. Digital Marketing Pro 3.35.4: an approval record is released only when it is proven nothing was sent (a stalled reply could otherwise fire one approval twice); not-sent and unknown outcomes exit non-zero. SocialForge 1.29.3: every spending path quotes first and waits for "go" (edit-image had no quote), guarded by discovery. ContentForge 4.5.3 and all three: the script-location line names the Python to run; the hero skills say the same.

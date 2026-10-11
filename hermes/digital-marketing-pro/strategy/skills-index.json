@@ -153,7 +153,7 @@
         "gsc-ai-performance"
       ],
       "doc_files": 11,
-      "bytes": 178223
+      "bytes": 179081
     },
     {
       "name": "anomaly-scan",
@@ -508,7 +508,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 9155
+      "bytes": 9404
     },
     {
       "name": "client-validation-document",
@@ -692,7 +692,7 @@
         "verify-claims"
       ],
       "doc_files": 18,
-      "bytes": 156058
+      "bytes": 156344
     },
     {
       "name": "content-repurpose",
@@ -774,7 +774,7 @@
         "validate-profile"
       ],
       "doc_files": 56,
-      "bytes": 882473
+      "bytes": 884461
     },
     {
       "name": "continuous-improvement-loop",
@@ -909,7 +909,7 @@
         "lead-import"
       ],
       "doc_files": 1,
-      "bytes": 13029
+      "bytes": 13355
     },
     {
       "name": "cro",
@@ -956,7 +956,7 @@
         "segment-audience"
       ],
       "doc_files": 1,
-      "bytes": 15169
+      "bytes": 15583
     },
     {
       "name": "data-import",
@@ -971,7 +971,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 9641
+      "bytes": 10000
     },
     {
       "name": "digital-pr",
@@ -1021,7 +1021,7 @@
         "brand-setup"
       ],
       "doc_files": 10,
-      "bytes": 147047
+      "bytes": 148215
     },
     {
       "name": "engagement-workflow",
@@ -1260,7 +1260,7 @@
         "brand-setup"
       ],
       "doc_files": 8,
-      "bytes": 108985
+      "bytes": 109271
     },
     {
       "name": "growth-plan",
@@ -1326,7 +1326,7 @@
         "status"
       ],
       "doc_files": 1,
-      "bytes": 10835
+      "bytes": 10883
     },
     {
       "name": "hreflang-check",
@@ -1427,7 +1427,7 @@
         "brand-setup"
       ],
       "doc_files": 8,
-      "bytes": 111480
+      "bytes": 112624
     },
     {
       "name": "integrations",
@@ -1630,7 +1630,7 @@
         "crm-sync"
       ],
       "doc_files": 1,
-      "bytes": 13566
+      "bytes": 13919
     },
     {
       "name": "lead-magnet-ideas",
@@ -1771,7 +1771,7 @@
         "brand-setup"
       ],
       "doc_files": 5,
-      "bytes": 97629
+      "bytes": 97915
     },
     {
       "name": "martech-audit",
@@ -1888,7 +1888,7 @@
         "launch-ad-campaign"
       ],
       "doc_files": 14,
-      "bytes": 206425
+      "bytes": 209023
     },
     {
       "name": "pdf-report",
@@ -2146,7 +2146,7 @@
         "brand-setup"
       ],
       "doc_files": 7,
-      "bytes": 91439
+      "bytes": 92011
     },
     {
       "name": "retargeting-strategy",
@@ -2225,7 +2225,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 13753
+      "bytes": 14057
     },
     {
       "name": "search-knowledge",
@@ -2305,7 +2305,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 13721
+      "bytes": 14008
     },
     {
       "name": "send-sms",

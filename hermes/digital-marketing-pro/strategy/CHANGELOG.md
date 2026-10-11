@@ -6,6 +6,34 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 
 ---
 
+## [3.35.5] - 2026-10-12
+
+### Agents say where the scripts are, and an unknown outcome is recorded as unknown
+
+Both found by the fresh-install smoke test's re-run against 3.35.4. Each fix has a test that fails on the 3.35.4 code.
+
+**Fixed — agents and reference files that run scripts**
+
+- All 24 agents run the plugin's scripts (execution-coordinator runs `approval-manager.py`, for example) but carried no script-location line, so on a host that does not set `${CLAUDE_PLUGIN_ROOT}` they had neither the fallback nor the note on which Python to use. Each agent now has the line under its title. So do the 27 reference files whose benchmark-provenance banner runs `benchmark_book.py`.
+- Those banners, one media-planning note and the help skill ran scripts by a bare `scripts/` path (`python scripts/benchmark_book.py …`, `python scripts/setup.py …`), which works only when the shell happens to sit in the plugin's folder. They now use `python "${CLAUDE_PLUGIN_ROOT}/scripts/…"`.
+- `tests/test_script_root_fallback.py` now discovers every skill, command, agent and reference file that runs a script (a `python … scripts/….py` command line, by either path) and requires the line in each, and no file may run a script by a bare relative path. Reverting one agent and one banner file to 3.35.4 fails it.
+
+**Fixed — an unknown outcome was saved as "failed"**
+
+- 3.35.4 consumed the approval record after a timeout that may have followed delivery, but saved its status as `failed` (with `execution_result: "unknown"`). A person reading `status: failed` could reasonably prepare the same write again and send it twice. The status is now `unknown` (still used up), and a record in that state is refused as already used.
+- `approval-manager.py --action get-execution-log` lists unknown outcomes and counts them (`unknown_count`) apart from successes and failures. Once you have checked the platform, `--action mark-executed` with `success` or `failure` records what happened; the record stays used and notes `resolved_from_unknown_at`.
+- The approval framework's escalation table said to retry a platform error once after 60 seconds. It now retries only when the request provably never reached the platform, and a new "Unknown outcome" row says never to retry: check the platform, record the result, and prepare a new write only if it did not happen. `commands/execute-action.md` and PRIVACY.md describe the `unknown` status.
+
+**Fixed — MCP write skills retried after outcomes that can be unknown**
+
+- MCP write skills retry only a request that provably never arrived; after a timeout they check the platform first. Writes through MCP server tools are outside the approval-record check, so the skill text is their only guard, and eight places told the agent to retry blindly: crm-sync ("retry transient failures up to 3 times"), data-import ("retry logic for transient API failures (rate limits, timeouts)", where a timeout is exactly the case that may already have been applied), lead-import, data-export (a BigQuery streaming insert retried after a timeout duplicates rows), send-report ("Retry on failure"), schedule-social ("retry or escalate"), client-report ("retry guidance") and the reporting guide's "Retry delivery 2x". The rule is worded once in `skills/context-engine/approval-framework.md`, after the escalation table: retry only a write that provably never reached the platform (connection refused, DNS failure, or a 429 rate-limit rejection); after a timeout or a lost reply, look the record up on the platform first (by email, external ID or message ID) and resend only what is missing. Every retry line in those files now carries it in short form. Read retries (the reporting guide's data pull) are unchanged.
+
+**Tests**
+
+- `tests/test_script_root_fallback.py` (discovery rule, relative-path rule, a plant test for a bare relative run); `tests/test_executor_delivery.py` checks the `unknown` status and a new close-out test (the execution log counts the unknown, `mark-executed` resolves it, the record never re-arms). The 3.35.4 code fails with `'failed' != 'unknown'` and no `unknown_count`.
+- New `tests/test_write_retry_rule.py` (4): the rule is worded once in the approval framework, every line of the eight write files that mentions a retry carries it (or "never auto-retry"), the read retry is left alone, and crm-sync's old line is flagged. Reverting crm-sync to the first 3.35.5 commit fails it.
+- Suite: 672 tests.
+
 ## [3.35.4] - 2026-10-12
 
 ### One approval can no longer fire twice, `$?` says whether anything was sent, and skills name the Python to use

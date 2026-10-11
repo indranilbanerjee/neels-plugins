@@ -315,6 +315,16 @@ def mark_executed(slug, approval_id, data):
     if not approval:
         return {"error": f"Approval file corrupted: {approval_id}"}
 
+    if approval["status"] == "unknown" and approval.get("consumed_at"):
+        # The executor could not tell whether the platform acted. Once the user has checked
+        # there, record what happened; the record stays consumed either way.
+        approval["status"] = "executed" if execution_result == "success" else "failed"
+        approval["execution_result"] = execution_result
+        approval["resolved_from_unknown_at"] = datetime.now().isoformat()
+        approval["platform_response"] = data.get("platform_response") or approval.get("platform_response")
+        _common.atomic_write_json(filepath, approval)
+        return {"status": approval["status"], "approval_id": approval_id,
+                "note": "recorded what the platform shows for an unknown outcome; the record stays used"}
     if approval["status"] in ("executed", "failed") and approval.get("consumed_at"):
         return {"status": approval["status"], "approval_id": approval_id,
                 "note": "connector_executor.py already recorded this execution"}
@@ -358,14 +368,14 @@ def get_approval(slug, approval_id):
 
 
 def get_execution_log(slug):
-    """List all executed or failed approvals with summary stats."""
+    """List all executed, failed or unknown-outcome approvals with summary stats."""
     brand_dir, err = get_brand_dir(slug)
     if err:
         return {"error": err}
 
     approvals_dir = brand_dir / "approvals"
     all_approvals = _load_all_approvals(approvals_dir)
-    executed = [a for a in all_approvals if a.get("status") in ("executed", "failed")]
+    executed = [a for a in all_approvals if a.get("status") in ("executed", "failed", "unknown")]
 
     # Sort most recent first
     executed.sort(key=lambda a: a.get("executed_at", ""), reverse=True)
@@ -374,6 +384,9 @@ def get_execution_log(slug):
     total = len(executed)
     success_count = sum(1 for a in executed if a.get("status") == "executed")
     failed_count = sum(1 for a in executed if a.get("status") == "failed")
+    # Sent, but the executor could not tell whether the platform acted: check there before
+    # preparing the same write again.
+    unknown_count = sum(1 for a in executed if a.get("status") == "unknown")
     by_platform = {}
     by_type = {}
     for a in executed:
@@ -387,6 +400,7 @@ def get_execution_log(slug):
         "total": total,
         "success_count": success_count,
         "failed_count": failed_count,
+        "unknown_count": unknown_count,
         "success_rate": round(success_count / total * 100, 1) if total else 0,
         "by_platform": by_platform,
         "by_type": by_type,
