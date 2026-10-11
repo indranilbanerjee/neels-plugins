@@ -2,9 +2,9 @@
   "bundle": "digital-marketing-pro",
   "generated_files": {
     ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
-    "README.md": "d23826c773736703a18592eb67965e16bbd6d97d1411b5389c87ac22bd769867",
-    "__init__.py": "5afef775237a7d3a5d7515bb29a21d15cafefbf97bf97f8aba77cec89bed00ac",
-    "plugin.yaml": "ec4663d4b7d35a3474395d1a0d37dc837f25deb1d90f44136cd348c71c6f37ce"
+    "README.md": "ee676a7e2e746d3e127d95de23e46f845ce0e060c0d6f9b5dd341fa19658a23f",
+    "__init__.py": "0628778014968d2d42d6366ea42287c0a204710032fc13a73b4b3afad22765b3",
+    "plugin.yaml": "82dfc824c87efb2a54357ca8510a3da4a9b073242f9f78de9838cb1dcc610e45"
   },
   "generator": "scripts/build_hermes_bundle.py",
   "groups": {
@@ -294,7 +294,7 @@
       "version": "1.29.2"
     },
     "strategy": {
-      "commit": "f1ec1047b4b3da461c2229c5ee7bfb1f160c74d2",
+      "commit": "f84e7ba06ccd7c6a6f96cf51f64097d4bb734e3d",
       "files": {
         ".mcp.json.connectors-reference": "4b874432f72a4fed3605e50fe689c3231a2d23798ed798c6ec4de7387bcde28c",
         ".mcp.json.example": "e96e658ee4767f5a79756b6b66b424eda7136ed8c6c0e0ec17ca6698b1c0127b",
@@ -302,7 +302,7 @@
         "CONNECTORS.md": "be09eef188f1bffbe2281adba27e3ecb41cf8e389b5ffd66c8726d7e6e90cf0f",
         "LICENSE": "b8777f5d230e1d91144bd9127fbb56092dbbdaaabbbfd18c0ce78620f18ca7f4",
         "PRIVACY.md": "680f4b476d7fc19ccaf37a86248f67ca1ab8905fcca7839edf8ac11be4239823",
-        "README.md": "441af1d9d72e0a11cf90e128a155a691bd975184eee3e773c542292d74cabd98",
+        "README.md": "6f7994818343b8ca4d301ac4d01315dd1ab4b9fac024fac3ffce663d47b07823",
         "agents/agency-operations.md": "4c059b66fb62013aeb43112eec822cb279f7a3849e29d7be23db7bb0e79c6140",
         "agents/analytics-analyst.md": "aeaaf3ad8bdc8676e0854d47abc2ded83c806908e03c911a366fdddf65c3b364",
         "agents/brand-guardian.md": "8260964ce257a1b9286be3b0b0a4d1a2bdd2a86fd6bc32d3e50557673bf39171",
@@ -795,5 +795,5 @@
       "version": "3.35.3"
     }
   },
-  "version": "3.56.1"
+  "version": "3.56.2"
 }

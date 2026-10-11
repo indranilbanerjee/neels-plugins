@@ -12,7 +12,6 @@ Open-source AI marketing plugin — **164 skills, 24 specialist agents, EU AI Ac
 [![Tests](https://img.shields.io/badge/tests-642%2F642%20passing-brightgreen.svg)](tests/)
 [![Platforms](https://img.shields.io/badge/platforms-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#works-on-40-agent-harnesses-via-the-agent-skills-open-standard)
 [![EU AI Act](https://img.shields.io/badge/EU%20AI%20Act-Article%2050%20ready-darkred.svg)](skills/context-engine/compliance-rules.md)
-[![HOL Guard](https://img.shields.io/endpoint?url=https%3A%2F%2Fhol.org%2Fapi%2Fregistry%2Fbadges%2Fplugin%3Fslug%3Dindranil-banerjee%252Fdigital-marketing-pro%26metric%3Dtrust)](https://hol.org/go/guard/indranilbanerjee21?dest=%2Fguard%2Fbilling%3Fpromo%3DGUARD20-INDRANILBANERJEE21%23upgrade&link_id=fc4b1025-e6eb-40bd-b3d7-24a8508c2fd9&utm_source=insights_share&utm_medium=affiliate_cta&utm_campaign=share20)
 
 [![Built by Indranil "Neel" Banerjee — Neelverse Marketing Suite — Sponsor this project](docs/assets/author-banner.svg)](https://github.com/sponsors/indranilbanerjee)
 
@@ -315,22 +314,22 @@ Output: HTTP calls for the 8 executable connectors (Slack, HubSpot, Klaviyo, Sen
 
 ## Works on 40+ agent harnesses (via the Agent Skills open standard)
 
-Beyond the 9 surfaces above where we ship a native manifest, DMP's 164 SKILL.md files work out-of-the-box on any agent that adopted the [Agent Skills open standard](https://agentskills.io) (Anthropic-published Dec 2025, 41+ adopters as of June 2026). On each platform below, point it at our `skills/` folder and all 164 marketing skills are immediately discoverable. No platform-specific manifest needed.
+Beyond the 9 surfaces above where we ship a native manifest, DMP's 164 SKILL.md files work out-of-the-box on any agent that adopted the [Agent Skills open standard](https://agentskills.io) (Anthropic-published Dec 2025, 41+ adopters as of June 2026). On each platform below, copy our skill folders (the folders inside `skills/`) into the folder it reads and all 164 marketing skills are discoverable. No platform-specific manifest needed.
 
-**Tier 1 — verified-compatible platforms with explicit Agent Skills install paths:**
+**Platforms that have adopted the Agent Skills standard.** Where a row gives an install hint, it was checked against that tool's own documentation in October 2026; most of these tools read skills from a folder, so the hint names the folder to copy the skill folders into:
 
 | Platform | Vendor | Install hint |
 |---|---|---|
-| [Goose](https://block.github.io/goose) | Block (Square) | `goose skills install github.com/indranilbanerjee/digital-marketing-pro/skills` |
-| [OpenHands](https://openhands.dev) | Open Hands (cloud agents) | Mount this repo's `skills/` via the OpenHands skills config |
-| [OpenCode](https://opencode.ai) | sst | `opencode skills import github:indranilbanerjee/digital-marketing-pro` |
-| [Junie](https://junie.jetbrains.com) | JetBrains | Drop `skills/` into your project; Junie auto-discovers |
-| [Gemini CLI](https://geminicli.com) | Google | `gemini skills add github:indranilbanerjee/digital-marketing-pro` |
-| [Roo Code](https://roocode.com) | Roo Code Inc. | VS Code → Roo settings → Skills → import from URL |
-| [Cline](https://github.com/cline/cline) / [Windsurf](https://windsurf.com) | open-source VS Code agents | Same Agent Skills import flow as Roo |
+| [Goose](https://block.github.io/goose) | Block (Square) | Copy the skill folders into `~/.agents/skills/` (all projects) or `.agents/skills/` (one project) · [docs](https://goose-docs.ai/docs/guides/context-engineering/using-skills/) |
+| [OpenHands](https://openhands.dev) | Open Hands (cloud agents) | Copy the skill folders into the project's `.agents/skills/` · [docs](https://docs.openhands.dev/overview/skills/adding) |
+| [OpenCode](https://opencode.ai) | sst | Copy the skill folders into `.opencode/skills/` (project) or `~/.config/opencode/skills/` (global); `.agents/skills/` and `.claude/skills/` are read too · [docs](https://opencode.ai/docs/skills) |
+| [Junie](https://junie.jetbrains.com) | JetBrains | Copy the skill folders into `.junie/skills/` (project) or `~/.junie/skills/`; Junie CLI also reads `.agents/skills/` in a trusted project, and `/skills` re-scans · [docs](https://junie.jetbrains.com/docs/agent-skills.html) |
+| [Gemini CLI](https://geminicli.com) | Google | Copy the skill folders into `~/.gemini/skills/` (or `~/.agents/skills/`) for all projects, or `.gemini/skills/` for one · [docs](https://geminicli.com/docs/cli/using-agent-skills/) |
+| [Roo Code](https://roocode.com) | Roo Code Inc. | Copy the skill folders into `.roo/skills/` (project) or `~/.roo/skills/` (global); `.agents/skills/` works too · [docs](https://docs.roocode.com/features/skills) |
+| [Cline](https://github.com/cline/cline) / [Windsurf](https://windsurf.com) | open-source VS Code agents | Cline: copy into `.cline/skills/` or `~/.cline/skills/` ([docs](https://docs.cline.bot/customization/skills)). Windsurf: copy into `.devin/skills/` (the legacy `.windsurf/skills/` is still read) ([docs](https://docs.devin.ai/desktop/cascade/skills)) |
 | [Kiro](https://kiro.dev) | Kiro | Spec-driven dev with Agent Skills support |
-| [Amp](https://ampcode.com) | Sourcegraph | `amp skills add github:indranilbanerjee/digital-marketing-pro` |
-| [Letta](https://letta.com) | Letta | Stateful-agents platform — skills load via the Letta SDK |
+| [Amp](https://ampcode.com) | Sourcegraph | Copy the skill folders into `.agents/skills/` (project) or `~/.config/agents/skills/` (this machine) · [docs](https://ampcode.com/manual/agent-skills) |
+| [Letta](https://letta.com) | Letta | Copy the skill folders into `.agents/skills/` (project) or `~/.letta/skills/` (all agents on this machine) · [docs](https://docs.letta.com/letta-agent/skills) |
 | [Mux](https://mux.coder.com) | Coder | Browser-based parallel cloud agents |
 | [Factory](https://factory.ai) | Factory | "Droid" agents read Agent Skills bundles |
 | [Workshop](https://workshop.ai) | Workshop | Multi-LLM cross-platform agent |
@@ -338,7 +337,7 @@ Beyond the 9 surfaces above where we ship a native manifest, DMP's 164 SKILL.md 
 | [Emdash](https://emdash.sh) | General Action | Parallel git-worktree agents |
 | [Superconductor](https://superconductor.com) | Superconductor | Multiplayer cloud agents |
 | [Ona](https://ona.com) | Ona | Background cloud-agent fleet |
-| [Mistral Vibe](https://github.com/mistralai/mistral-vibe) | Mistral AI | `mistral-vibe skills install ...` |
+| [Mistral Vibe](https://github.com/mistralai/mistral-vibe) | Mistral AI | Copy the skill folders into `.vibe/skills/` (project) or `~/.vibe/skills/`; `.agents/skills/` is read too · [docs](https://docs.mistral.ai/vibe/code/cli/skills) |
 | [VT Code](https://github.com/vinhnx/vtcode) | open-source | LLM-native code agent |
 | [Qodo](https://qodo.ai) | Qodo | Code integrity agent |
 | [Piebald](https://piebald.ai) | Piebald | Desktop agentic dev |
@@ -358,14 +357,14 @@ Beyond the 9 surfaces above where we ship a native manifest, DMP's 164 SKILL.md 
 | [Agentman](https://agentman.ai) | Agentman | Healthcare revenue-cycle agents |
 | [Google AI Edge Gallery](https://github.com/google-ai-edge/gallery) | Google | On-device mobile LLM agent |
 
-**Quick test on any Tier-1 platform:**
+**Quick test on any of these platforms:**
 
 ```bash
-# 1. Clone the skills folder (or point your platform at the GitHub raw URL)
+# 1. Clone the repository
 git clone --depth=1 https://github.com/indranilbanerjee/digital-marketing-pro.git
-# 2. Point your agent's skills-config at ./digital-marketing-pro/skills
+# 2. Copy the folders inside ./digital-marketing-pro/skills/ into your tool's skills folder (see the table above)
 # 3. Try: "Run a competitor analysis on stripe.com"
-# Your agent picks /digital-marketing-pro:competitor-analysis automatically.
+# Your agent should pick the competitor-analysis skill.
 ```
 
 **Why we don't ship per-platform manifests for these:** the Agent Skills standard says agents discover by walking a directory tree for `SKILL.md` files — no manifest required. Shipping 35 extra wrapper manifests would create maintenance overhead with zero added value.

@@ -5,6 +5,11 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.56.2] - 2026-10-12
+
+- Hermes bundle rebuilt from the plugins' latest commits (DMP f84e7ba): Digital Marketing Pro's Agent Skills table gives each tool's documented skills folder (ten listed install commands were not in those tools' docs) and the HOL Guard referral badge is removed. No code changed.
+- Suite total 1,980 (CF 762 + DMP 642 + SF 519 + marketplace 57).
+
 ## [3.56.1] - 2026-10-11
 
 - Digital Marketing Pro 3.35.3: calendar-day creative-fatigue forecasts (community PR #17, credited) with CTR-only, newest-first and timestamped histories; `rank-monitor --features` reads a SERP snapshot from any provider's export.

@@ -4,7 +4,7 @@
 
 Install three open-source plugins from one marketplace. The same skills install natively on **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.56.1-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.56.2-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-207%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
@@ -13,7 +13,7 @@ Install three open-source plugins from one marketplace. The same skills install 
 
 [![Built by Indranil "Neel" Banerjee — Neelverse Marketing Suite — Sponsor this project](docs/assets/author-banner.svg)](https://github.com/sponsors/indranilbanerjee)
 
-> 🆕 **October 11, 2026 — marketplace v3.56.1:** Digital Marketing Pro 3.35.3 (calendar-day fatigue forecasts, a SERP snapshot input); every README reworked into one suite layout. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
+> 🆕 **October 12, 2026 — marketplace v3.56.2:** the Hermes bundle carries the final docs; Digital Marketing Pro 3.35.3 (calendar-day fatigue forecasts, a SERP snapshot input); every README in one suite layout. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -99,6 +99,10 @@ To update manually instead, see the [Updating](#updating) section below.
 
 ## What's new
 
+### v3.56.2 (October 12, 2026) — the Hermes bundle carries the final docs
+
+CF **4.5.2** · DMP **3.35.3** · SF **1.29.2** · suite **1,980 tests**. The Hermes bundle is rebuilt from the plugins' latest commits, so it carries their corrected docs: Digital Marketing Pro's Agent Skills table now gives each tool's documented skills folder (ten install commands it listed were not in those tools' docs), and the HOL Guard badge, which linked to a referral page, is gone. No code changed.
+
 ### v3.56.1 (October 11, 2026) — Digital Marketing Pro 3.35.3, and READMEs that read as one suite
 
 CF **4.5.2** · DMP **3.35.3** · SF **1.29.2** · suite **1,980 tests**. **Digital Marketing Pro 3.35.3:** a community fix (PR #17, credited) makes creative-fatigue forecasts count calendar days, with CTR-only, newest-first and timestamped histories accepted; `rank-monitor --features` reads a SERP snapshot exported from any SERP API or rank tracker (no vendor code, no keys). **All READMEs** now follow one order: a short first screen (six badges, the author banner, a one-line release note, the install command, one diagram), then Try this first, What it will never do, What it costs, Quick start and Who it is for. Unverifiable comparisons, unsourced dollar figures and model names that rot were removed; new diagrams for SEO onboarding and SocialForge's four creative modes. The Hermes bundle is rebuilt from these releases.
@@ -106,10 +110,6 @@ CF **4.5.2** · DMP **3.35.3** · SF **1.29.2** · suite **1,980 tests**. **Digi
 ### v3.56.0 (October 11, 2026) — one combined Hermes listing
 
 CF **4.5.2** · DMP **3.35.2** · SF **1.29.2** · suite **1,948 tests**. Hermes Agent's maintainers passed all three re-reviews and asked for one plugin per vendor. `hermes/digital-marketing-pro/` is a Hermes-only bundle with three skill groups: `strategy/` (Digital Marketing Pro), `content/` (ContentForge) and `social/` (SocialForge), each copied from its release commit with `git archive`, 207 skills with no name collisions, a stdlib adapter and a manifest with a sha256 per file. `scripts/build_hermes_bundle.py` regenerates it deterministically and refuses an unclean or unpushed source; `tests/test_hermes_bundle.py` (17 tests) rebuilds it and compares every file, and Hermes's own validator passes it. With the plugin enabled, Hermes lists the 207 skill names in its system prompt (about 8,845 characters, roughly 2,211 tokens; names only, no descriptions), the same as three separate listings would. The three plugins remain separate products on every other platform. Also: routing re-checked from a fresh install (DMP 50/55, CF 26/26, SF 25/25, the same known misses and no regressions), a trigger case for `execute-action`, and Hermes and OpenClaw install commands added below.
-
-### v3.55.2 (October 10, 2026) — every claim checked against the code
-
-CF **4.5.2** · DMP **3.35.2** · SF **1.29.2** · suite **1,928 tests**. A check of every new README claim against the code, file and line, found eight that were wrong or overstated. **SocialForge 1.29.2:** the single-post generate command and the full pipeline's interactive mode could start paid generation with no quote; both now quote and wait for "go", the image-compositor agent refuses a paid call without an approved quote, and a guard covers every path. Previews are described as what they are (one preview card per platform), with the badge moved off the artwork. **Digital Marketing Pro 3.35.2:** every optional package pinned in one table and every missing-package message prints the exact command (proven in fresh Python 3.10 and 3.13 environments); two silent failures fixed; the automation examples, the connector count (28 manifest-ready) and the output-folder layout corrected in the README and six other docs. **ContentForge 4.5.2:** the never-do panel states the audit-skip escape. **All three:** no manifest names a file that does not ship.
 
 Older releases are in [CHANGELOG.md](CHANGELOG.md).
 

@@ -2,7 +2,7 @@
   "name": "neels-plugins",
   "metadata": {
     "description": "Three open-source marketing plugins — Digital Marketing Pro, ContentForge, SocialForge. Runs on Claude Code, Codex, Cursor, Antigravity. MIT-licensed.",
-    "version": "3.56.1"
+    "version": "3.56.2"
   },
   "owner": {
     "name": "Indranil Banerjee",
