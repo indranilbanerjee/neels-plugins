@@ -17,13 +17,15 @@ files git tracks at HEAD.
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import tarfile
 import tempfile
 import unittest
 from pathlib import Path
 
-SUITE_ROOT = Path(__file__).resolve().parent.parent.parent
+MARKETPLACE = Path(__file__).resolve().parent.parent
+SUITE_ROOT = MARKETPLACE.parent
 PLUGINS = {"digital-marketing-pro": ("digital-marketing-pro",),
            "contentforge": ("ContentForge", "contentforge"),
            "socialforge": ("SocialForge", "socialforge")}
@@ -71,6 +73,21 @@ class TestHermesAdmission(unittest.TestCase):
             self.assertEqual(proc.returncode, 0, proc.stderr[-2000:])
             failures = {k: v for k, v in json.loads(proc.stdout.strip().splitlines()[-1]).items() if v}
             self.assertEqual(failures, {}, f"Hermes would refuse these: {failures}")
+
+    def test_the_combined_hermes_listing_passes_hermes_validate(self):
+        """hermes/digital-marketing-pro/ is what the Hermes catalog entry points at (subdir), so
+        Hermes's own validator, including its security scan, must pass on it too."""
+        import json
+        bundle = MARKETPLACE / "hermes" / "digital-marketing-pro"
+        self.assertTrue(bundle.is_dir(), "hermes/digital-marketing-pro/ is missing")
+        with tempfile.TemporaryDirectory() as tmp:
+            shutil.copytree(bundle, Path(tmp) / "bundle", ignore=shutil.ignore_patterns("__pycache__"))
+            env = dict(os.environ, PYTHONPATH=os.environ["HERMES_SRC"], PYTHONDONTWRITEBYTECODE="1")
+            proc = subprocess.run([os.environ["HERMES_PYTHON"], "-c", PROBE, tmp, "bundle"],
+                                  capture_output=True, text=True, env=env, timeout=900)
+            self.assertEqual(proc.returncode, 0, proc.stderr[-2000:])
+            failures = {k: v for k, v in json.loads(proc.stdout.strip().splitlines()[-1]).items() if v}
+            self.assertEqual(failures, {}, f"Hermes would refuse the combined listing: {failures}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,369 @@
+#!/usr/bin/env python3
+"""
+index_assets.py — Index brand visual assets using AI vision analysis.
+Scans image libraries, analyzes each with Gemini Vision, builds asset-index.json.
+
+Model selection: pass --model to override. Defaults pull from the curator
+(scripts/model_registry.json) via the `latest-vision-google` alias so a
+registry refresh propagates without touching this file.
+"""
+
+import argparse
+import base64
+import json
+import os
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+# Add scripts dir to path for credential_manager + curator imports
+sys.path.insert(0, str(Path(__file__).parent))
+
+try:
+    from resolve_model import resolve as _resolve_model, check as _check_model
+    DEFAULT_VISION_MODEL = _resolve_model("latest-vision-google")
+except (ImportError, KeyError, ValueError):  # pragma: no cover
+    _resolve_model = None
+    _check_model = None
+    # Deliberately no hardcoded id — a literal here would always answer, and
+    # one day the answer is a retired model. When the curator is missing the
+    # analysis rung records `unresolved-model` and the index stays honest.
+    DEFAULT_VISION_MODEL = None
+
+# Persistent storage: prefer ${CLAUDE_PLUGIN_DATA} (survives sessions/updates),
+# fall back to ~/socialforge-workspace (legacy/local)
+_plugin_data = os.environ.get("CLAUDE_PLUGIN_DATA") or os.environ.get("PLUGIN_DATA") or ""
+if _plugin_data and Path(_plugin_data).exists():
+    WORKSPACE = Path(_plugin_data) / "socialforge"
+else:
+    WORKSPACE = Path.home() / "socialforge-workspace"
+SUPPORTED_FORMATS = {".jpg", ".jpeg", ".png", ".webp"}
+
+VISION_PROMPT = """Analyze this brand asset image for a social media automation system.
+
+Provide a JSON response with these fields:
+{
+  "description": "2-3 sentence description of what's in the image",
+  "subjects": ["main subjects: person, product, office, event, nature, abstract, etc."],
+  "tags": ["15-20 descriptive tags"],
+  "dominant_colors_hex": ["top 5 hex color codes"],
+  "mood": "1-3 word mood description",
+  "lighting": "natural/studio/ambient/dramatic/mixed",
+  "setting": "indoor/outdoor/studio/mixed + specific setting",
+  "suitable_for": ["3-5 descriptions of what social posts this suits"],
+  "background_type": "transparent/solid_white/solid_color/simple/complex",
+  "background_removable": true/false,
+  "quality_assessment": "high/medium/low",
+  "style_reference_worthy": true/false
+}"""
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # scripts/ holds _common.py
+import _common  # noqa: E402
+
+
+def scan_images(source_path):
+    """Find all image files in the source directory.
+    Supports local paths and Google Drive paths.
+    Google Drive: In Cowork, Drive is available via platform integration.
+    In Claude Code, files must be downloaded or Drive path must be mounted.
+    """
+    source = Path(source_path)
+
+    # Handle Google Drive URLs (strip to local path if available)
+    source_str = str(source_path)
+    if source_str.startswith("https://drive.google.com") or source_str.startswith("gdrive://"):
+        # In Cowork: Claude can read Drive files via platform integration
+        # In Claude Code: user must download or mount Drive
+        # Return empty with helpful message — actual files accessed by Claude reading Drive
+        return {"source_type": "google_drive", "url": source_str, "files": [],
+                "note": "Google Drive source detected. Claude will read files via platform integration. Index will be built from files Claude can access."}
+
+    if not source.exists():
+        return []
+
+    images = []
+    for f in sorted(source.rglob("*")):
+        if f.is_file() and f.suffix.lower() in SUPPORTED_FORMATS:
+            images.append(f)
+    return images
+
+
+def analyze_image_gemini(image_path, model=None):
+    """Analyze a single image with Gemini Vision.
+
+    Returns (result_dict, None) on success or (None, reason) on failure —
+    the reason string names what stopped the analysis so the index summary
+    can report WHY images fell back to metadata-only instead of a bare count.
+    """
+    try:
+        from credential_manager import get_gemini_client
+        client, backend = get_gemini_client()
+        if not client:
+            # backend carries the credential manager's error message here
+            return None, f"no-credentials: {backend}"
+    except ImportError:
+        # Fallback if credential_manager not available
+        try:
+            from google import genai
+        except ImportError:
+            return None, "dependency-missing: google-genai not importable"
+        api_key = os.environ.get("GEMINI_API_KEY")
+        if not api_key:
+            return None, "no-credentials: GEMINI_API_KEY not set"
+        client = genai.Client(api_key=api_key)
+
+    use_model = model or DEFAULT_VISION_MODEL
+    if not use_model:
+        return None, ("unresolved-model: no vision model id could be resolved "
+                      "(model curator unavailable and no --model given)")
+
+    from google.genai import types
+
+    img_data = image_path.read_bytes()
+    mime = "image/jpeg" if image_path.suffix.lower() in [".jpg", ".jpeg"] else "image/png"
+
+    try:
+        response = client.models.generate_content(
+            model=use_model,
+            contents=[
+                types.Part.from_bytes(data=img_data, mime_type=mime),
+                VISION_PROMPT,
+            ],
+        )
+        # Parse JSON from response
+        resp_text = response.text.strip()
+        if resp_text.startswith("```"):
+            resp_text = resp_text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+        return json.loads(resp_text), None
+    except Exception as e:
+        return None, f"request-error: {type(e).__name__}: {str(e)[:150]}"
+
+
+def build_basic_entry(image_path, source_root, asset_id):
+    """Build a basic index entry from file metadata only."""
+    try:
+        from PIL import Image
+        img = Image.open(image_path)
+        w, h = img.size
+    except Exception:
+        w, h = 0, 0
+
+    try:
+        rel_path = str(image_path.relative_to(source_root))
+        folder = str(image_path.parent.relative_to(source_root))
+    except ValueError:  # reached via a symlink outside the source tree
+        rel_path = image_path.name
+        folder = ""
+    entry = {
+        "id": asset_id,
+        "filename": image_path.name,
+        "path": str(image_path),
+        "relative_path": rel_path,
+        "folder": folder,
+        "dimensions": {"width": w, "height": h},
+        "file_size_mb": round(image_path.stat().st_size / (1024 * 1024), 2),
+        "format": image_path.suffix.lstrip(".").lower(),
+        "ai_description": "",
+        "tags": [],
+        "detected_colors": [],
+        "dominant_mood": "",
+        "lighting": "",
+        "setting": "",
+        "subjects": [],
+        "suitable_for": [],
+        "has_background": True,
+        "background_removable": False,
+        "is_style_reference": False,
+        "usage_history": [],
+        "platforms_compatible": {}
+    }
+    if (w, h) == (0, 0):
+        # 0x0 feeds match_assets crop-feasibility scoring — flag it so a
+        # PIL failure is visible instead of masquerading as a real dimension.
+        entry["dimensions_unreadable"] = True
+    return entry
+
+
+def stored_source(brand):
+    """Recover the source path recorded by a previous index (`--refresh` without --source)."""
+    brand_dir = WORKSPACE / "brands" / brand
+    index_path = brand_dir / "asset-index.json"
+    if index_path.exists():
+        try:
+            prior = json.loads(index_path.read_text(encoding="utf-8"))
+            if prior.get("source_path"):
+                return prior["source_path"]
+        except (json.JSONDecodeError, OSError):
+            pass
+    source_file = brand_dir / "asset-source.json"
+    if source_file.exists():
+        try:
+            config = json.loads(source_file.read_text(encoding="utf-8"))
+            return config.get("path") or config.get("url") or None
+        except (json.JSONDecodeError, OSError):
+            pass
+    return None
+
+
+def index_all(brand, source_path, refresh=False, model=None):
+    """Index all images for a brand."""
+    brand_dir = WORKSPACE / "brands" / brand
+    index_path = brand_dir / "asset-index.json"
+
+    # Load existing index for refresh mode
+    existing = {}
+    if refresh and index_path.exists():
+        old_index = json.loads(index_path.read_text(encoding="utf-8"))
+        for asset in old_index.get("assets", []):
+            existing[asset.get("path", "")] = asset
+
+    images = scan_images(source_path)
+
+    # Handle Google Drive source
+    if isinstance(images, dict) and images.get("source_type") == "google_drive":
+        print(json.dumps({
+            "status": "google_drive_source",
+            "url": images["url"],
+            "instruction": "Google Drive asset source detected. To index Drive assets: 1) In Cowork: Claude reads Drive files via platform integration — provide the folder contents. 2) In Claude Code: download the folder locally first, then run with --source /local/path. The asset-source.json has been updated with the Drive URL for reference.",
+            "asset_source_updated": True
+        }))
+        # Save the Drive URL in asset-source.json for reference
+        source_config = {"type": "google_drive", "url": images["url"], "indexed_at": None}
+        source_path_file = brand_dir / "asset-source.json"
+        source_path_file.write_text(json.dumps(source_config, indent=2), encoding="utf-8")
+        return
+
+    if not images:
+        print(json.dumps({"error": f"No images found in {source_path}"}))
+        sys.exit(1)
+
+    assets = []
+    analyzed = 0
+    skipped = 0
+    ai_failures = []
+
+    # New ids are minted ABOVE the highest id a preserved entry already holds.
+    # Positional ids (`asset_{i+1}`) collided on --refresh: one new file that
+    # sorts first re-minted asset_001 while the preserved entry kept it too,
+    # and every downstream lookup by id then resolved to the wrong image.
+    import re as _re
+    next_num = 1
+    if existing:
+        nums = []
+        for a in existing.values():
+            m = _re.match(r"asset_(\d+)$", str(a.get("id", "")))
+            if m:
+                nums.append(int(m.group(1)))
+        next_num = max(nums, default=0) + 1
+
+    for i, img_path in enumerate(images):
+        # Skip already-indexed in refresh mode (they keep their original id)
+        if refresh and str(img_path) in existing:
+            assets.append(existing[str(img_path)])
+            skipped += 1
+            continue
+
+        asset_id = f"asset_{next_num:03d}"
+        next_num += 1
+
+        entry = build_basic_entry(img_path, Path(source_path), asset_id)
+
+        # Try AI analysis
+        ai_result, ai_fail_reason = analyze_image_gemini(img_path, model=model)
+        if ai_fail_reason:
+            ai_failures.append({"id": asset_id, "file": img_path.name, "reason": ai_fail_reason})
+        if ai_result:
+            entry["ai_description"] = ai_result.get("description", "")
+            entry["tags"] = ai_result.get("tags", [])
+            entry["detected_colors"] = ai_result.get("dominant_colors_hex", [])
+            entry["dominant_mood"] = ai_result.get("mood", "")
+            entry["lighting"] = ai_result.get("lighting", "")
+            entry["setting"] = ai_result.get("setting", "")
+            entry["subjects"] = ai_result.get("subjects", [])
+            entry["suitable_for"] = ai_result.get("suitable_for", [])
+            entry["background_removable"] = ai_result.get("background_removable", False)
+            entry["is_style_reference"] = ai_result.get("style_reference_worthy", False)
+            analyzed += 1
+
+        assets.append(entry)
+
+        # Progress every 10 images
+        if (i + 1) % 10 == 0:
+            print(json.dumps({"progress": f"{i+1}/{len(images)}", "analyzed": analyzed}), file=sys.stderr)
+
+    index = {
+        "brand": brand,
+        "indexed_at": datetime.now(timezone.utc).isoformat(),
+        "source": "local",
+        "source_path": str(source_path),
+        "total_assets": len(assets),
+        "assets": assets
+    }
+
+    brand_dir.mkdir(parents=True, exist_ok=True)
+    index_path.write_text(json.dumps(index, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    style_refs = [a["id"] for a in assets if a.get("is_style_reference")]
+
+    # Aggregate failure reasons so the summary says WHY analysis fell back,
+    # not just how many times.
+    failure_counts = {}
+    for f in ai_failures:
+        key = f["reason"].split(":", 1)[0]
+        failure_counts[key] = failure_counts.get(key, 0) + 1
+
+    summary = {
+        "brand": brand,
+        "total_images": len(images),
+        "ai_analyzed": analyzed,
+        "skipped_existing": skipped,
+        "metadata_only": len(images) - analyzed - skipped,
+        "style_reference_candidates": len(style_refs),
+        "output": str(index_path)
+    }
+    if ai_failures:
+        summary["ai_failure_reasons"] = failure_counts
+        summary["first_failure_detail"] = ai_failures[0]["reason"]
+    attempted = len(images) - skipped
+    total_ai_failure = attempted > 0 and analyzed == 0
+    if total_ai_failure:
+        summary["ai_analysis"] = ("FAILED — 0 of "
+                                  f"{attempted} images were AI-analyzed; the index is metadata-only "
+                                  "(empty tags degrade every downstream asset match)")
+        summary["action_required"] = True
+    print(json.dumps(summary, indent=2))
+    if total_ai_failure:
+        sys.exit(3)  # index written, but the AI-analysis contract was not met
+
+
+def main():
+    parser = argparse.ArgumentParser(description="SocialForge Asset Indexer")
+    parser.add_argument("--brand", type=_common.path_component, required=True)
+    parser.add_argument("--source", default=None,
+                        help="Path to image folder (omit to reuse the source recorded by the previous index)")
+    parser.add_argument("--refresh", action="store_true", help="Only index new/changed images")
+    parser.add_argument("--model", default=None,
+                        help=f"Vision model id (default: registry alias `latest-vision-google` -> {DEFAULT_VISION_MODEL}). "
+                             f"Deprecated ids auto-fall-forward to their replacement.")
+    args = parser.parse_args()
+
+    source = args.source or stored_source(args.brand)
+    if not source:
+        parser.error("--source is required (no previous index recorded a source path for this brand)")
+
+    # Validate / resolve --model via curator
+    chosen_model = args.model
+    if _check_model is not None and chosen_model:
+        status, replacement = _check_model(chosen_model)
+        if status in ("deprecated", "retired") and replacement:
+            print(f"WARNING: model {chosen_model!r} is {status}; using {replacement!r}", file=sys.stderr)
+            chosen_model = replacement
+        elif status == "unknown":
+            print(f"WARNING: model {chosen_model!r} not in curated registry", file=sys.stderr)
+
+    index_all(args.brand, source, args.refresh, model=chosen_model)
+
+
+if __name__ == "__main__":
+    main()

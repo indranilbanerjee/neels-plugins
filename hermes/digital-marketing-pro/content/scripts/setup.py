@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""
+setup.py
+========
+ContentForge environment validation script.
+
+Validates the plugin environment:
+- Checks Python version (3.10+ required)
+- Reports plugin root and scripts directory paths
+- Validates .mcp.json exists and is valid JSON
+- Reports connector count
+- Checks Google integration status (credentials, pip packages)
+
+Invocation: run manually (`python scripts/setup.py`) or from setup docs /
+skills. NOTE: hooks/hooks.json ships empty as of v3.9.0, so this script is
+NOT wired to a SessionStart hook — earlier docstrings claiming that were
+stale.
+"""
+
+import json
+import os
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _common  # noqa: E402
+
+_common.ensure_utf8_stdout()
+
+# The documented minimum (the highest requires_python among the pinned packages: c2pa-python
+# 0.38.0 needs 3.10). tests/test_doc_counts.py keeps this equal to what the docs say.
+MIN_PYTHON = (3, 10)
+
+PLUGIN_ROOT = Path(__file__).resolve().parent.parent
+MCP_JSON = PLUGIN_ROOT / ".mcp.json"
+SCRIPTS_DIR = PLUGIN_ROOT / "scripts"
+
+# Persistent data dir: $CLAUDE_MARKETING_HOME > $CLAUDE_PLUGIN_DATA (if the
+# directory exists) > ~/.claude-marketing. The old inline logic treated an
+# unset CLAUDE_PLUGIN_DATA as Path(".") — which always exists — so the
+# fallback never fired and Google credentials were misreported. _common
+# implements the resolution correctly.
+PLUGIN_DATA = _common.marketing_home()
+GOOGLE_CREDS_DEFAULT = PLUGIN_DATA / "google-credentials.json"
+
+
+def check_google_integration():
+    """Check Google Sheets/Drive integration status."""
+    status = {"credentials": False, "packages": False}
+
+    # Check credentials file
+    if GOOGLE_CREDS_DEFAULT.exists():
+        try:
+            data = json.loads(GOOGLE_CREDS_DEFAULT.read_text(encoding="utf-8"))
+            if "client_email" in data:
+                status["credentials"] = True
+                status["service_account_email"] = data["client_email"]
+        except (json.JSONDecodeError, KeyError, OSError):
+            pass
+
+    # Check pip packages
+    try:
+        import gspread  # noqa: F401
+        from google.oauth2.service_account import Credentials  # noqa: F401
+        from googleapiclient.discovery import build  # noqa: F401
+        status["packages"] = True
+    except ImportError:
+        pass
+
+    return status
+
+
+def main():
+    errors = []
+
+    # Check Python version
+    if sys.version_info < MIN_PYTHON:
+        errors.append(f"Python {MIN_PYTHON[0]}.{MIN_PYTHON[1]}+ required (found {sys.version})")
+
+    # Report paths
+    print(f"PLUGIN_ROOT={PLUGIN_ROOT}")
+    print(f"SCRIPTS_DIR={SCRIPTS_DIR}")
+
+    # Validate .mcp.json
+    if MCP_JSON.exists():
+        try:
+            data = json.loads(MCP_JSON.read_text(encoding="utf-8"))
+            servers = data.get("mcpServers", {})
+            print(f"CONNECTORS={len(servers)} HTTP connectors loaded")
+        except json.JSONDecodeError as e:
+            errors.append(f".mcp.json is invalid JSON: {e}")
+    else:
+        print("CONNECTORS=0 (no .mcp.json found)")
+
+    # Check Google integration
+    google = check_google_integration()
+    if google["credentials"]:
+        print(f"GOOGLE_CREDENTIALS=configured ({google.get('service_account_email', 'found')})")
+    else:
+        print("GOOGLE_CREDENTIALS=not_configured (sheets/drive scripts will prompt for setup)")
+
+    if google["packages"]:
+        print("GOOGLE_PACKAGES=installed")
+    else:
+        print("GOOGLE_PACKAGES=not_installed (the Google scripts print the exact pinned install command; nothing installs itself)")
+
+    # Report persistent data directory
+    print(f"PLUGIN_DATA={PLUGIN_DATA}")
+
+    # Check Airtable integration
+    airtable_token = os.environ.get("AIRTABLE_TOKEN")
+    if airtable_token:
+        print("AIRTABLE_TOKEN=configured")
+    else:
+        print("AIRTABLE_TOKEN=not_configured")
+
+    # Report available tracking backends
+    backends = ["local"]
+    if airtable_token:
+        backends.append("airtable")
+    if google["credentials"]:
+        backends.append("google_sheets")
+    print(f"TRACKING_BACKENDS={', '.join(backends)}")
+
+    if errors:
+        for err in errors:
+            print(f"ERROR: {err}", file=sys.stderr)
+        sys.exit(1)
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

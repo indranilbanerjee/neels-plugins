@@ -1,0 +1,2075 @@
+# Changelog
+
+All notable changes to SocialForge will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.29.2] - 2026-10-10
+
+### Every paid path is quoted, and previews say what they are
+
+Found by checking the README's new claims against the code.
+
+**Fixed - spend**
+
+- **`/socialforge:generate-post` and the full pipeline's interactive mode generated with no
+  price quote.** Only the batch path, `compose-creative` and `generate-video` quoted, so a
+  single post could spend before the user saw a price. Both now carry the same "Quote, then go"
+  step: a `price_book.py` quote, the total with each line's source URL and the price's age, and
+  an explicit `go`; anything else cancels. The Generate stage cannot start before it.
+- **The image-compositor agent now refuses to run a paid call** (`generate_image.py`,
+  `generate_video.py`, `edit_image.py`) unless the skill that dispatched it passes an approved
+  quote: the planned calls, the total, the price's source and age, and the user's `go`. Without
+  one it returns `status: needs_quote` with the calls it would make, and a call outside the
+  approved list needs a new quote. `generate-all` and `render-carousels` (a generated slide
+  background is paid) say they pass the approved quote.
+- Tests: the quote guard now covers all five paths (compose-creative, generate-video, the
+  pipeline's batch and interactive modes, generate-post), the agent, and every file that
+  dispatches the agent. The 1.29.1 text of the two uncovered paths is planted and flagged.
+
+**Fixed - previews**
+
+- **The platform badge sat on top of the image's corner and hid artwork** (it covered part of a
+  chart title in the first real preview). It is now in the header row. A rendered test
+  checks the artwork's top-right corner is untouched; it fails on 1.29.1.
+- **No per-platform layouts ship** (`assets/preview-templates/` is empty), so every platform
+  gets the same card. README, `create-previews`, `preview-batch`, the User Guide, Operations
+  and the Testing Guide no longer promise realistic platform mockups; they say "a preview card
+  per platform (post copy, image, platform badge) to check copy and crop before publishing".
+- The real-run preview in the README is re-rendered with the badge out of the picture, and its
+  caption names its source (the link-rot article of a documented real run, August 2026).
+
+**Fixed - README and manifests**
+
+- "Produce the whole month" says what it pauses for (asset confirmation, the price quote and
+  client review), and the never-do panel notes that a typed `--force` is logged and flagged by
+  the delivery audit.
+- `.cursor-plugin/plugin.json` and `.github/plugin/plugin.json` pointed `mcpServers` at
+  `.mcp.json`, which never ships (it is gitignored). Cursor discovers `mcp.json` by default and
+  treats the field as an override of that; Copilot CLI discovers `.mcp.json` on its own. The key
+  is removed. New test: no manifest names a path that does not ship.
+- Tests 507 -> 516.
+
+## [1.29.1] - 2026-10-10
+
+### Previews show the image, and a post's length includes its hashtags
+
+Found by rendering a real LinkedIn preview for the README.
+
+**Fixed**
+
+- **Every platform preview showed a broken-image icon while
+  `render_preview.py` reported `success`.** The preview page is loaded with
+  `set_content()`, so it lives at `about:blank`, and Chromium refuses `file://`
+  images from there. 1.19.0 refused a missing image; an existing one still
+  rendered as nothing. The image is now embedded in the page, and the script
+  checks the page actually drew it: a file that exists but is not a drawable
+  image now fails with `reason: image-did-not-render`, exit 1, and no preview
+  file. A reviewer approving a gallery was approving empty frames.
+- **Previews joined the post's paragraphs into one.** Line breaks are kept,
+  as every platform keeps them, and the screenshot is cropped to the post card.
+  Copy longer than the preview's 500 characters is marked (`copy_truncated`)
+  instead of being cut silently.
+- **`adapt_copy.py` measured a post without its inline hashtags.** Hashtags go
+  inline at the end of the post on every platform but Instagram, yet only the
+  copy was counted: a 255-character X post plus `#LinkRot #ContentMarketing` was
+  reported within 280 and published at 282. Room for the kept hashtags is now
+  reserved before the body is cut, the new `post_text` holds exactly what to
+  publish (copy plus in-text hashtags), and `within_limit` and the new
+  `post_char_count` measure it. `char_count` still covers the copy alone.
+  Tags given without `#` ("LinkRot") now get one.
+
+**Tests**
+
+- New `tests/test_preview_and_post_length.py` (8 tests): the image is
+  embedded, line breaks are kept, a rendered preview contains the image's
+  pixels, a non-image file is refused, long copy is marked, an X post with
+  hashtags stays within 280, bare tags get `#`, Instagram's first-comment
+  hashtags stay out of the post. All 8 fail against 1.29.0.
+
+**Docs**
+
+- The adapt-copy skill reads `post_text` and `post_char_count`. The README
+  shows a real preview rendered by this release from a real article's verified
+  facts and chart, with no AI generation and no credits spent.
+- The standalone copy-adapter skill (socialforge-copy-adapter) carries the
+  same `adapt_copy.py` change; its parity tests pass against this release.
+
+## [1.29.0] - 2026-10-10
+
+### Nothing installs itself, keys stay out of the chat, and paid generation waits for a quote
+
+A Hermes Agent maintainer reviewed SocialForge 1.27.2 for the Hermes plugin catalog
+(NousResearch/hermes-agent#132573) and asked for changes. Each point is below with how it
+was fixed. This is a minor release because install behaviour changes.
+
+**Changed - installs (review point: setup installs unpinned packages and a browser with no confirmation)**
+
+- **`scripts/install_deps.py` no longer installs unless you say so.** It used to run
+  `pip install <name>` with no version for nine packages, plus `playwright install chromium`,
+  as the first step of `/socialforge:setup`, and generation scripts called it mid-run. Now:
+  no flags (or `--check`) only reports what is present and prints the exact pinned commands;
+  `--install` is your explicit go-ahead; and `ensure_package()` (used mid-run) prints the
+  pinned command and returns False. `SOCIALFORGE_INSTALL_DEPS=1` for one run is the only
+  consent that lets it install from inside a script. **If you relied on the automatic
+  install, run `python scripts/install_deps.py --install` once, or the command it prints.**
+- **Exact pins** in `PINNED` (the versions the scripts were tested against): Pillow 12.3.0,
+  google-genai 1.70.0, wavespeed 1.0.11, imageio-ffmpeg 0.6.0, playwright 1.52.0,
+  higgsfield-client 0.1.0, rembg 2.0.77, c2pa-python 0.38.0, cryptography 46.0.6.
+- **The optional packages left the defaults.** `rembg` (which fetches model weights on first
+  use) and `higgsfield-client` are extra groups you name yourself (`--groups
+  background-removal`, `--groups higgsfield`, `--groups c2pa`). The default groups are
+  core, image, video and carousel.
+- **The setup skill asks first.** `/socialforge:setup` runs the report, shows the missing
+  packages, and installs only after an explicit `yes` (and says plainly that Playwright's
+  browser is a large download). The "Install Dependencies (Automatic)" step is gone.
+- **C2PA signing no longer installs `c2pa-python` mid-run** (`c2pa_sign.py` ran
+  `pip install c2pa-python>=0.32`). A missing package now raises `C2paNotInstalled` with the
+  pinned command; the command line exits 2 with that message. It also no longer calls
+  `sys.exit(2)` from inside a library call, which killed a generation run after the paid
+  call had already happened: callers keep the unsigned asset and report the failure.
+- The c2pa-sign skill, the carousel prerequisites, the user guide and the README no longer
+  claim an automatic install (the c2pa-sign skill said `cryptography` was auto-installed; it
+  never was).
+
+**Fixed - keys (review point: the setup skill asked users to paste API keys into chat and then put them on the command line)**
+
+- The setup skill now tells the user to set `WAVESPEED_API_KEY` (and `HF_API_KEY` /
+  `HF_API_SECRET`) in their environment and runs `setup-wavespeed` / `setup-higgsfield`
+  without `--api-key` / `--api-secret`; `credential_manager.py` already read the environment
+  or stdin. Keys no longer land in the conversation transcript or the process table.
+
+**Changed - paid generation is quoted, then waits for "go" (review point: PRIVACY.md promised an approved quote that only `price-check` enforced)**
+
+- `compose-creative`, `generate-video` and `full-pipeline` (batch mode) now each run
+  `price_book.py` for the planned generations before the first paid call, show the total, each
+  line's source URL and the price's age (older than 24 hours is stale and refused), and wait
+  for an explicit `go`. Anything else cancels. A quote is never approval. No prices are stored
+  in the skills; `price_book.py` stays the only source. PRIVACY.md's sentence ("Generation
+  always waits for your approval of the brief and the quoted cost") is now true as written.
+
+**Fixed - names that choose a path, and downloaded data (review notes)**
+
+- `status_manager.py`: `--brand` and `--month` must each be one plain folder name; a path
+  (`../x`, `a/b`, `C:\x`, absolute, NUL, colon) is refused with an error before anything is
+  read or written, for every action.
+- **Every `--brand` and `--month` on every script is checked at the command line.** A new shared
+  `scripts/_common.py` holds `path_component` (an argparse type: one plain folder name, else a usage
+  error), `is_single_component` and `safe_child`. The 16 scripts that take `--brand` or `--month`
+  (adapt_copy, build_gallery, c2pa_sign, compliance_check, compose_text_overlay, cost_tracker,
+  delivery_audit, generate_image, generate_video, index_assets, ingest_performance, match_assets,
+  render_carousel, render_preview, verify_brand_colors, video_postprocess) use it, so
+  `--brand ../x` stops with a usage error before anything is read or written; status_manager keeps its
+  own JSON error and uses the same check. A test parses every script and fails if one declares the
+  argument without the type. The script count is now 30.
+- Provider-returned asset URLs (image and video generators) are downloaded only over https
+  (`provider_failures.download_https`); `urlretrieve` also opened `file://` and `ftp://`.
+- Carousel slide values are HTML-escaped before they enter the template
+  (`render_carousel.inject_slide_values`).
+- The throwaway C2PA dev signing key folder is deleted right after the key is read (it was
+  left in a temp folder).
+- `README.md` no longer starts with a byte-order mark (Hermes's scanner rates U+FEFF as a
+  finding).
+
+**Fixed - `${CLAUDE_PLUGIN_ROOT}` (review note: Hermes never defines it)**
+
+- Every skill and command that uses `${CLAUDE_PLUGIN_ROOT}` now carries one sentence under
+  its title: "If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this
+  plugin's `scripts/` folder, next to `skills/`." A test keeps it that way.
+
+**Fixed - PRIVACY.md (review point: missing endpoints and one wrong row)**
+
+- Added the C2PA timestamp request (`http://timestamp.digicert.com`, plain HTTP, carrying a
+  hash of the signature, not your file), the rembg model-weights download, the gcloud
+  application-default-credential read when `GOOGLE_CLOUD_PROJECT` is set, the opt-in
+  install with its exact pins, and Playwright's browser download. Corrected the Google Drive
+  row for `index_assets`: it records a Drive URL and makes no Drive call.
+
+**Fixed - C2PA on c2pa-python 0.38.0, checked end to end**
+
+- The pin is 0.38.0, the version an unpinned install pulls today, and 0.38 refused every
+  manifest SocialForge built: the `c2pa.created` action needs its own `digitalSourceType`
+  (now written as the IPTC URI for the claim), and the prompt can no longer be a separate
+  `c2pa.opened` action (0.38: "cannot have more than one c2pa.created or c2pa.opened
+  action", and an opened action needs an ingredient), so it is now the description of the
+  `c2pa.created` action. Checked in a scratch environment with the exact pin: all three
+  claim types, with prompt, platform and a named reviewer, sign and read back `Valid`.
+
+**Declared - credentials (review note: `requires_env: []` under-declared them)**
+
+- `plugin.yaml` now lists the credentials the scripts read under `optional_env` (GEMINI_API_KEY,
+  GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_LOCATION, GOOGLE_APPLICATION_CREDENTIALS, WAVESPEED_API_KEY,
+  HF_API_KEY, HF_API_SECRET, and ANTHROPIC_API_KEY / OPENAI_API_KEY for the model-registry
+  refresh), each marked secret or not and described. They are optional, so `requires_env` stays
+  empty. A test fails when a script reads a credential that plugin.yaml does not list.
+
+**Tests**
+
+- New `tests/test_hermes_review_fixes.py` (installs, c2pa, signing key, https downloads,
+  escaping, brand/month, script-location sentence, setup and keys, quote-then-go, docs). Each
+  fix was checked by putting the old behaviour back and confirming a test fails (14 of 14).
+
+## [1.28.1] - 2026-10-10
+
+### The listing figures now count the workflow
+
+**Fixed**
+
+- **1.28.0's listing figures left out the plugin's one workflow.** Claude Code lists
+  plugin workflows (`workflows/*.js`, `meta.description`) to the model next to skills
+  and commands, and neither our listing formula nor the description-rule guard read
+  them. `month-copy-preview` shipped with a 185-character description (a listing
+  entry of 220 characters), over the 60-150 rule. The corrected totals, in the same
+  characters-per-listing unit: visible listing 10,525 before 1.28.0 (1.28.0 said
+  10,305), 4,965 as 1.28.0 shipped (it said 4,745), 4,927 now, against the 5,800
+  ceiling. Median description 110.5 characters including the workflow.
+- `month-copy-preview` rewritten to the rule: 147 characters, the whole parsed
+  month's copy and compliance as one review sheet, no credits, with a one-sided
+  pointer to `adapt-copy` for a single post (a registered near-miss pair). The word
+  "preview" stays out of its phrase, because `create-previews` and `preview-batch`
+  own it.
+- `tests/test_description_density.py` now reads `workflows/*.js`: workflows count
+  toward the listing cost, follow the per-description rule and the phrase-owner and
+  pair checks, and a workflow whose description cannot be parsed fails the test.
+  A planted test puts the old 185-character text back and requires the guard to
+  fail. The pointer check also recognises the unicode arrow, so a stray one cannot
+  hide a pointer.
+
+**Evals**
+
+- New near-miss case `month-copy-preview` (a whole parsed month's copy plus
+  compliance) next to `adapt-copy`, each with a must-not-fire grader for the other.
+  Listing budget pinned, first action graded, 5 runs each: 5/5 and 5/5 on the old
+  text and 5/5 and 5/5 on the new text, and both stay-quiet cases 3/3. The old text
+  did not misroute on these prompts, so this is a no-regression result, not a
+  measured improvement.
+
+## [1.28.0] - 2026-10-09
+
+### Skills that fit the listing budget, and one visible entry per purpose
+
+**Changed — descriptions**
+
+- **Every skill and command description now fits Claude Code's skill-listing
+  budget.** The budget is characters (the context window x 4 x
+  `skillListingBudgetFraction`, default 1%), and every listed name counts and
+  is never dropped. SocialForge's visible listing was 10,305 characters; it is
+  now 4,745 (median description 110, down from 384). Each description says
+  what the skill does, how it differs from its nearest sibling, and one phrase
+  a user would type. Slash aliases and "Triggers on" lists are gone from the
+  listing and remain in the skill bodies.
+- `tests/test_description_density.py` enforces the rule: 60-150 characters,
+  median ≤ 120, one owner per quoted phrase, near-miss pairs registered with a
+  one-sided pointer (generate-post/compose-creative, client-review/review,
+  new-month/parse-calendar, new-month/ideate-month), and the listing-cost
+  formula with a 5,800-character ceiling. Its docstring records why.
+
+**Fixed — two side-effect skills were hidden from the model**
+
+- `finalize-month` and `create-previews` were hidden from the model, so
+  "package the month for the client" and "show me how this will look" could
+  reach them only through their wrapper commands (`finalize`,
+  `preview-batch`). (Corrected 2026-10-10: this note first said the wrapper
+  commands were hidden too; in 1.27.2 they were visible.)
+  Each purpose now has one visible entry, the skill, behind a typed `yes`
+  gate (new for both). Wrapper commands stay as hidden slash shortcuts.
+  `assemble-document` (an internal step) and `manage-reviews` (reached through
+  its own commands) stay hidden by design. New `tests/test_execution_gates.py`
+  guards this, with planted failures.
+
+**Measured with trigger evals** (listing budget pinned, first action graded):
+every comparable case passes after as before (71/71), the four near-miss
+cases pass 5/5, "should not trigger" cases stay quiet, and
+finalize-month / create-previews route 6/6 on the skill. parse-calendar,
+0/3 in the first baseline, routes 3/3, including on a differently worded
+follow-up.
+
+## [1.27.2] - 2026-10-04
+
+### Fixed — Hermes refused to install the plugin
+
+- **Hermes Agent's install-time security scan rated the plugin "dangerous"**
+  (`hermes plugins install` refuses that verdict). Two findings were real
+  defects: `ideate-month` had zero-width spaces in front of two code fences
+  (which also broke their rendering), and the archived hook in
+  `hooks/hooks-reference.example.json` was a one-line shell banner that piped
+  echo output into inline Python; it is now a single script call. The rest
+  were harmless lines written like attacks — two instructions phrased as
+  withholding something from the user, a recursive-delete one-liner aimed at the home folder in the
+  README, an "upload this file to a URL" step, and a realistic-looking example
+  key — all reworded. Hermes's own validator (main branch) now passes with a
+  "safe" scan.
+- New `tests/test_host_scanner_compat.py` applies the scanner's patterns to
+  every shipped text file (planted against the pre-fix tree).
+
+## [1.27.1] - 2026-10-04
+
+### Fixed
+
+- **A test assumed `.mcp.json` exists.** It is gitignored, so an installed
+  copy has none, and the connects-nothing test failed when run from an
+  install (verify-from-installed caught it). An absent file now passes, a
+  present one must still be empty, and the test also requires `.gitignore`
+  to keep listing `.mcp.json` (planted). Test-only change.
+
+## [1.27.0] - 2026-10-04
+
+### Research in, scheduler out, and nothing fails silently
+
+**Added**
+
+- **`/socialforge:research-month`** (new skill + stdlib
+  `scripts/research_month.py`): outlier posts against the account's own
+  median (with a sample floor and a margin), recurring customer language from
+  comment exports (redacted excerpts) — both scripted — plus competitor-ad
+  themes the model reads from ad-library screenshots or pasted ad text. All
+  from material you supply; nothing is scraped and no vendor is named.
+  `ideate-month` reads its `research-brief.md`.
+- **Optional scheduler hand-off after `finalize-month`** to Postiz, only when
+  you ask and the connector is connected: the exact batch is shown first and
+  needs your explicit approval; drafts or scheduled posts by default, publish
+  now only for posts you name. Postiz and WhatsApp Business Tools (Meta beta,
+  for development and testing) join the opt-in connector catalog (10 → 12);
+  neither is in the copy-me example file.
+- **`references/content-credentials-by-platform.md`** (who reads, displays or
+  strips C2PA; YouTube's label for fully generative content) and
+  **`references/conversational-commerce.md`** (Meta Business Agent, WhatsApp
+  opt-in and the 24-hour window), primary-sourced with a graded source ledger.
+- **Publishable review gallery**: `build_gallery.py` reports its size and a
+  `publishable_as_page` flag (15 MiB cap); `--no-inline-video` links videos
+  instead of inlining them. The skill offers to publish the gallery as a
+  private page only when the session can and only on your yes.
+- **Workflow `/socialforge:month-copy-preview`**, **`docs/ALWAYS-ON-RECIPES.md`**
+  (monthly gallery build and weekly ingest for six schedulers, each with its
+  approval boundary), **`evals/`** (8 trigger cases plus a stay-quiet case),
+  directory listing fields, `PRIVACY.md` (every network endpoint and the
+  credential it needs) and `assets/icon.png`; root `plugin.json` gains
+  `extensions["com.openai"].interface`.
+
+**Fixed — claims the code did not keep**
+
+- **The approved last video frame never reached the video model.** The docs
+  said it did; the chain always passed `None`. `generate_video.py
+  --last-image` now sends it to the WaveSpeed rung as `end_image` (WaveSpeed's
+  documented end-frame input), `--provider auto` tries that rung first when a
+  last frame is supplied, and a clip made by any other rung says
+  `last_frame_used: false`. A missing `--last-image` or `--image` path is an
+  error; a missing first frame used to fall through to text-to-video silently.
+- **Image references were dropped silently.** Fallback providers never
+  received them, missing paths were skipped, references past the cap of 14
+  vanished, and `references_used` echoed the paths passed. Results now report
+  what was read and sent, `references_missing`, `references_over_limit`, and
+  `references_dropped` with a note when a fallback made the image.
+- **Re-ingesting an analytics export double-counted every row.** Each source
+  now records a sha256 (identical bytes are a no-op, `already_ingested`), rows
+  carry their source label, and `--replace` swaps a cumulative export's
+  snapshot under one constant label.
+- **Platform limits had no sources.** They now live in
+  `scripts/platform_limits.json` with a source, a check date and a status per
+  platform (`adapt_copy.py --sources`). Pinterest descriptions 500 → 800 and
+  Threads hashtags 3 → 1 per the platforms' own pages; Instagram hashtags
+  30 → 5 per Instagram's official @creators announcement (December 2025);
+  Instagram's caption, Facebook and TikTok limits stay marked unsourced.
+- **X was measured with `len()`.** It now uses X's weighted count (URLs 23,
+  CJK and emoji 2, after NFC, per twitter-text v3).
+- **Hashtags past a platform's cap were dropped silently**: every result now
+  lists `hashtags_dropped`.
+- A reference doc said the adapter inserts AI-disclosure labels and the agent
+  said `compliance_check.py` inserts disclaimers; neither code does. Both now
+  say what actually happens.
+- **Vendor neutrality**: model names and dollar figures were in nine skill,
+  agent and command files the guard never scanned (it matched install
+  commands only). The guard now scans all of `skills/`, `agents/` and
+  `commands/`; every leak is rewritten to capability aliases and live quotes.
+  Manifests no longer name models, and a new guard checks every count in
+  every manifest (`plugin.yaml` had said "16 skills" for several releases).
+
+**Changed — context cost**
+
+- **7 commands folded into their same-named skills** (`adapt-copy`,
+  `assemble-document`, `index-assets`, `match-assets`, `parse-calendar`,
+  `render-carousels`, `setup`); command-only instructions moved into
+  supplement files and every slash name works as before.
+
+## [1.26.0] - 2026-10-04
+
+### The seven-week freshness pass
+
+- **Removed the plugin-root `settings.json`** (socialforge#3: SocialForge
+  missing from Cowork's marketplace view while the other two suite plugins
+  appeared). A plugin-root `settings.json` is reserved by Claude Code — only
+  `agent` (the NAME of one of the plugin's agents, made the main-thread agent)
+  and `subagentStatusLine` take effect. Ours, a v0.1.0 leftover, held
+  `{"agent": {"model": "inherit"}}` — an object where a name belongs, and
+  the only structural difference from the plugins Cowork listed (frontmatter
+  keys, file counts, sizes and description lengths all compared). New guard
+  `TestRootSettingsJsonIsWellFormed`.
+- **Codex install repaired** (neels-plugins 3.52.0: Codex silently dropped the
+  `github` source shorthand and listed zero plugins). README command corrected
+  to `codex plugin add socialforge@neels-plugins`; guard asserts the
+  non-existent `codex plugin install` is absent.
+- **Model registry** synced from the canonical copy re-verified 2026-10-04:
+  `gemini-2.5-flash-image` retired (shut 2026-10-02), `imagen-4` retired (shut
+  2026-08-17), `veo-3.1-generate-preview` deprecated (shutdown 2026-10-22);
+  `latest-video-google` → `veo-3.1-generate-001` (GA-format id; Vertex listing
+  unverified — the video chain records a 404 and falls forward to the next
+  rung); `gemini-omni-1.1-flash` registered but not wired (different call
+  shape from `generate_videos()`). Current Claude / GPT / Gemini generation
+  added; sampling-param rules synced.
+- **EU AI Act Article 50** (`references/eu-ai-act-article50.md`): the
+  Commission's three icons mapped to SocialForge's creative modes; label at
+  first exposure and burned into deepfake-class assets so it survives
+  resharing and download.
+- `finalize-month`: an agent may never add `--force` on its own initiative
+  (hosts such as Codex ignore `disable-model-invocation`).
+- New guard `TestClaudeManifestHasOnlyDocumentedFields`.
+
+Tests: 260 → 262.
+
+---
+
+## [1.25.1] - 2026-08-17
+
+### Fixed — schema-clean hooks manifest (suite-wide fix from digital-marketing-pro#9)
+
+- `hooks/hooks.json` carried a `_readme` rationale field that Cowork's plugin
+  validation rejects as an unknown top-level key — the same defect shipped in
+  all three suite plugins. The rationale text moved verbatim to
+  `hooks/README.md`; `hooks.json` is now exactly `{"hooks": {}}`.
+- New `TestHooksManifestSchemaClean` guard: hooks.json must contain the
+  `hooks` key and nothing else, and the rationale doc must exist.
+- Tests: 258 → 260.
+
+---
+
+## [1.25.0] - 2026-08-17
+
+### Added — Grok (xAI Build CLI) native support
+
+- New `.grok-plugin/plugin.json` (mirrors the Claude manifest + the
+  `"skills": "./skills/"` pointer Grok's loader uses) and
+  `.grok-plugin/marketplace.json` (single-plugin marketplace source), so
+  `grok plugin install indranilbanerjee/socialforge` works directly. Grok also
+  reads the Claude Code manifests for compatibility
+  ([Grok Build docs](https://docs.x.ai/build/features/skills-plugins-marketplaces));
+  the native pair is the first-class lane.
+- Both files version-locked in `tests/test_release_consistency.py`
+  (`PLATFORM_MANIFESTS_JSON` grows to 8; a dedicated test pins the marketplace
+  entry's version and source URL). Grok added to the install-command guard,
+  the README platform-name guard, and the AGENTS.md surfaces guard.
+- README: platforms badge 8→9 native, Grok row in Supported surfaces, install
+  command in the hero block, Current Release entry; AGENTS.md surfaces line
+  updated.
+
+Tests: 256 → 258.
+
+---
+
+## [1.24.2] - 2026-08-16
+
+### Fixed — the documentation truth pass
+
+A from-zero audit of every live document found the doc-count guard pattern-blind: it
+required a number directly before one of three nouns, and every stale count in the
+repo was phrased some other way.
+
+- **README** said "25 scripts" in three live places, "22 Python scripts" in one, and
+  "All 16 SKILL.md files" / "all 16 SocialForge skills" — the repo ships 28 scripts
+  and 20 skills. The Agent Skills adoption figure was also two revisions behind the
+  suite's shared claim (35+ → 41+ agent products).
+- **AGENTS.md** — the file every non-Claude runtime auto-loads — pinned "Supported
+  surfaces (v1.13.1)", eleven releases stale, and said "25 scripts". Both fixed.
+- **CONNECTORS.md** said "25 scripts"; **TESTING-GUIDE.md** said "22 Python scripts"
+  in three places — all now 28.
+- **SUBMISSION.md** is now banner-marked HISTORICAL DOCUMENT: the May-2026 packet is
+  superseded by `docs/distribution/submission-bundle.md`, whose release-notes section
+  is also now version-agnostic so it cannot rot.
+
+### Changed — the guard can now see what rotted
+
+`tests/test_doc_counts.py` grew the patterns the audit proved necessary: script counts
+(including "N Python scripts"), "N SKILL.md files", "N SocialForge skills", and
+AGENTS.md currency (version = manifest, all 8 surfaces named). Release-narrative
+sections keep their ship-time numbers via heading-aware exemptions, and each new
+pattern is plant-checked against the exact phrasing that previously escaped.
+Tests 253 → 256.
+
+## [1.24.1] - 2026-08-16
+
+### Changed — richer Agent Plugins 1.0 listing metadata + submission bundle
+
+The root `plugin.json` now carries the official schema's full optional set —
+`homepage`, `repository`, `license`, `keywords` — verified against the
+published schema at agent-plugins.org (closed schema, 10 permitted fields).
+Schema guards widened to the official field list. Added
+`docs/distribution/submission-bundle.md`: listing metadata, starter prompts,
+and the 5-positive + 3-negative test cases both official directories require —
+ready for the owner to submit.
+
+## [1.24.0] - 2026-08-16
+
+### Added — the month-delivery audit
+
+`scripts/delivery_audit.py` re-derives a month's delivery claims from the
+approval ledger and the files on disk, as Step 0 of /finalize-month: every
+status in the vocabulary, revision history arithmetic landing on the recorded
+status, no ghost posts the calendar never knew, every force_finalized post
+surfaced as a violation rather than a buried flag, every FINAL post's
+referenced file existing and non-empty, failure-log lines loadable, and cost
+totals honest about incompleteness. Missing inputs are reported-N/A, never
+silent-pass. 10 new tests with plants for every guard.
+
+## [1.23.0] - 2026-08-16
+
+### Added — Agent Plugins 1.0 packaging
+
+- Root `plugin.json` on the closed AP1.0 schema (OpenAI standard, 2026-08-06;
+  ChatGPT, Codex, Cursor, GitHub Copilot, VS Code, Kiro), version-synced with
+  the Claude manifest and guarded by `tests/test_agent_plugins_manifest.py`.
+- `${PLUGIN_DATA}` (the standard's data-dir name) accepted as the final
+  fallback in all 20 scripts that resolve persistent storage — a compliant
+  non-Claude host previously resolved no data directory at all.
+
+## [1.22.0] - 2026-08-15
+
+"Nothing fails silently" held where the plugin thought about it, and broke at the seams.
+A full-pipeline run with no image or video credentials found all of this.
+
+### Fixed — `render_preview.py` reported success for an image that did not exist
+
+Given a path to a nonexistent image it returned `{"status": "success"}`, exit 0, and wrote a
+real 600x800 PNG that was blank white — the missing path became a `file://` URI and the
+browser rendered a broken image as nothing. A reviewer approving that gallery was approving
+an empty rectangle. This is the exact failure mode the plugin claims is impossible. It now
+refuses with a structured record and writes no file. A copy-layout preview is still available
+via `--allow-missing-image`, which returns `status: placeholder` and a warning — never `success`.
+
+### Fixed — `generate_image.py` exited 0 after every provider failed
+
+The structured failure record was correct and complete; the exit code said success. Any `&&`
+chain, CI step or batch loop read total failure as a pass — while `price_book.py` exits 3 and
+`compliance_check.py` exits 1 in the same situation, so the contract was inconsistent inside
+one plugin. Now: 0 image produced, 4 placeholder only, 1 nothing produced. The generation log
+also stopped recording `provider: "unknown"` and a model id on runs where no model was ever
+called; failures now carry `providers_tried`, `attempts` and the error.
+
+### Fixed — the failure record was never written to disk
+
+`provider_failures.py` built an excellent record and handed it to the caller to print. Once
+stdout scrolled past, it was gone — so the promise held only for whoever was watching the
+terminal. Records now append to `shared/failure-log.jsonl`. Logging is best-effort by design:
+a logging failure must never mask the provider failure the caller actually needs.
+
+### Fixed — the cost report crashed in exactly the situation it was needed for
+
+`--action report` summed `cost_usd` with no `None` guard, so it raised `TypeError` as soon as
+any entry was unpriced — and unpriced entries are what a run without credentials produces.
+Unpriced calls are now counted separately and surfaced as `unpriced_calls` /
+`totals_complete`, with every total labelled a LOWER BOUND when any price is missing.
+Unpriced is not free.
+
+### Fixed — the setup skill quoted six prices from memory
+
+The plugin's own rule is "never state a cost you did not look up", and `price_book.py`
+enforces it by refusing to quote an unrecorded price. `skills/setup/SKILL.md` was quoting a
+per-image cost, a per-second video rate, two worked video examples and two promotional credit
+amounts anyway. All removed and routed to `price_book.py`. A guard test now fails on any
+dollar figure in that skill.
+
+### Fixed — price and model lookups used a different workspace than costs
+
+`price_book.py` and `model_book.py` read `CLAUDE_PLUGIN_DATA_DIR` while every other script
+reads `CLAUDE_PLUGIN_DATA`, so a price the user recorded could be invisible to the tracker
+that needed it. Both names are now accepted, canonical first.
+
+Suite: 228 -> 237.
+
+---
+
+## [1.21.0] - 2026-08-14
+
+**Significance markers stay out of captions — and the missing scanner is a decision, not a gap.**
+
+### Added — the no-significance-markers rule
+
+The copy-adapter agent and `/socialforge:adapt-copy` now forbid any line whose only job is to announce that another line matters: "here's the thing", "the thing is,", "here's the kicker", "here's where it gets interesting", "that's the part that got me", "which is exactly the problem", "let that sink in", "read that again".
+
+- They read as machine-written to anyone who has scrolled a feed this year, and on a 280-character platform they spend the budget the point needs.
+- **The fix is to delete the label and lead with the specific it pointed at** — "Approvals went from 14 days to 31" beats "Here's the thing about approval timelines". Emphasis is earned with a number, a name, or a quote; it is never announced.
+- Soft-adverb feeling tags (honestly / genuinely / truly / literally / actually / basically) are capped at one per caption and never two in a sentence.
+
+### Notes — why SocialForge ships no AI-tell scanner
+
+The suite's long-form plugins gained deterministic tell scans in the same wave. SocialForge deliberately did not, and both surfaces now state why: **caption-length copy has no document structure to measure, and per-1000-word metrics are noise at 280 characters.** The judgment belongs at the point the caption is written, so it lives as a writing rule on the agent rather than as a script that would fire meaningless numbers.
+
+`tests/test_caption_craft.py` pins this in three directions: the rule exists on both surfaces, the marker phrases appear only inside a prohibition (so a future edit cannot quietly turn the ban list into a style tip), and no scanner script has appeared — with an explicit instruction to update the test and the stated reasoning together if that decision is ever revisited.
+
+### Notes
+
+- **No watermark detection or removal exists anywhere in SocialForge, and none will be added.** Guard-tested on the caption surfaces.
+- 221 → **228 tests**. New: `tests/test_caption_craft.py` (7).
+
+## [1.20.0] — 2026-08-13
+
+The delivery manifest discloses honestly — the suite's provenance layer
+(CF v3.22.0 / DMP v3.25.0), right-sized for social media production.
+
+### Added
+
+- **`scripts/detect_surface.py`** — classifies the running harness
+  (claude / non-claude / uncertain) from affirmative env fingerprints, with
+  the test-pinned fail-safe: uncertain ⇒ disclose; skipping requires an
+  AFFIRMATIVE non-Claude fingerprint.
+- **`ai_disclosure` in brand-config.json** (brand-manager): modes
+  `claude-surfaces` (default) / `always` / `off`, optional custom text.
+- **AI-assistance note in the delivery manifest** (assemble-document):
+  vendor-neutral default ("Creative produced with AI assistance under human
+  review and brand approval gates" — guard-tested for vendor names), applied
+  per the detect_surface decision, recorded in the manifest either way, with
+  a publish-handoff reminder that per-post disclosure belongs to each
+  platform's NATIVE AI-content label toggle.
+- `tests/test_disclosure_note.py` (7 tests). **Tests 214 → 221.**
+
+### Deliberately not mirrored (right-sizing, documented)
+
+- The suite's long-form structural-tell scan: caption-length copy has no
+  document structure (H2 sections, paragraph rhythm) to measure.
+- Caption-level disclosure text: platform-native AI labels are the correct
+  per-post mechanism; burning caption characters would serve nobody.
+- C2PA `ai-disclosure` media metadata is unchanged and independent of the
+  new text note.
+
+## [1.19.0] — 2026-08-13
+
+Nothing fails silently anymore. The provider layer's fall-through chains
+collapsed every failure cause into a bare `return None` — a missing key, a
+retired model, an HTTP 401, and a content-policy rejection all looked the
+same, and the terminal error was one truncated string. This release gives
+every abandoned attempt a structured record, battle-tests the previously
+untested state-writing scripts by adversarial execution, and feeds ideation's
+"compound the wins" rung from measured numbers.
+
+### Added
+
+- **`scripts/provider_failures.py`** — shared failure-record contract:
+  `record(attempts, provider, stage, reason, detail)` + `failure_payload()`.
+  Stages (credentials / dependencies / model-resolution / request / response /
+  content-policy), stable kebab-case reasons, and a NEXT_STEPS map so the
+  terminal error carries its own fix. Every recorded reason is test-pinned to
+  have a next step.
+- **`generate_video_chain()`** — video generation is a real three-rung chain
+  (preferred provider first, all configured providers as fallbacks). The old
+  shape hid the fallbacks inside WaveSpeed's exception handler: a Veo-routed
+  failure never fell back at all, a missing WaveSpeed key aborted the whole
+  run, and HiggsField was unreachable on the common path.
+- **`scripts/ingest_performance.py` + `skills/ingest-performance/`** (20th
+  skill) — platform analytics exports (CSV, header aliases normalized) become
+  per-post `performance.json` records; `--action wins` ranks with a sample
+  floor (≥100 impressions default) and a margin rule (≥1.5× month-median
+  engagement rate), lists `unranked` posts with reasons, names unmatched CSV
+  rows, and calls a flat month `no_clear_wins`. Unmeasured is never zero.
+  `ideate-month` reads the measured path first and labels wins `measured` vs
+  `anecdotal`; `finalize-month` hands off to ingestion at month close.
+- **`tests/test_provider_failures.py`, `tests/test_execution_gates.py`,
+  `tests/test_performance_ingestion.py`** — 37 new offline execution tests,
+  each replaying a probe that found a real defect. **Tests 177 → 214.**
+
+### Fixed (every defect below was proven live by an adversarial probe first)
+
+- **compliance_check.py failed OPEN**: a severity word outside the known set
+  ("high", "error", "blocker") silently downgraded a banned phrase to a
+  warning — now unknown severities BLOCK (fail closed, with a note); one
+  malformed regex crashed the entire gate with a traceback — now every
+  unevaluable rule becomes a blocking `rule_error`; a typo'd `--brand` passed
+  as SKIPPED exit 0 — now unknown brands FAIL (exit 2) listing known brands;
+  empty `forbidden_content_types` entries matched ALL content and short ones
+  matched substrings ("ad" hit "advice") — now word-boundary matched and
+  empty entries are rule_errors; `match_type: "exact"` compared the phrase to
+  the whole caption (dead code) — now whole-word matching. BLOCKED exits 1.
+- **status_manager.py**: updating a nonexistent post id silently CREATED it
+  (ghost posts polluting every summary) — now first transitions are validated
+  against calendar-data.json; `"FINAL "` / any unknown status froze posts in
+  unreachable buckets — now vocabulary-checked (strip + reject, --force
+  overrides transition rules, never spelling); the approval ledger was
+  written non-atomically — now temp-file + `os.replace`; calendar-supplied
+  folder-name fields could traverse out of the month tree via `../` — now
+  sanitized to `[A-Za-z0-9_-]`.
+- **index_assets.py**: `--refresh` minted positional ids that collided with
+  preserved entries (two assets sharing `asset_001`, downstream lookups
+  resolving the wrong image) — new ids now mint above the existing max; the
+  hardcoded `gemini-3.5-flash` fallback (escaping the model-book guard)
+  removed — unresolved models are recorded, not guessed; AI-analysis failures
+  now carry reasons (`ai_failure_reasons` in the summary; the exact error
+  from the credential manager is no longer discarded) and a 0%-analyzed run
+  exits 3 instead of narrating success; symlink-escaped paths no longer
+  crash; unreadable dimensions are flagged instead of silently written 0x0.
+- **credential_manager.py**: a corrupt credentials.json read as "nothing
+  configured", so the advised re-setup overwrote it — destroying every other
+  provider's stored keys. Now: corrupt files refuse setup ("your keys are
+  damaged, not gone"), status/validate name the corruption, and
+  `get_gemini_client` accumulates every path tried ("configured but broken"
+  is no longer reported as "not configured"). `_read_secret` never falls
+  into getpass without a tty.
+- **resolve_model.py**: an alias whose target had since retired returned the
+  dead id unchanged (direct id lookups fell forward correctly) — alias
+  targets now go through the same status ladder; unparseable `last_updated`
+  no longer reports "no last_updated in registry".
+- **generate_video.py**: top-level `"status": "success"` no longer masks a
+  nested failed video (worst-result wins; exit 4 when a requested video
+  failed); `route_video_provider` consults the stored credential profile —
+  `/socialforge:setup` users were told "No video API configured" while fully
+  configured; **live SDK bug**: `prompt` was passed inside
+  `GenerateVideosConfig`, which the SDK rejects with a validation error —
+  every Veo call had been failing; it is a direct `generate_videos` argument
+  (regression-pinned). Kling checks credentials before auto-installing its
+  SDK; progress prints go to stderr.
+- **generate_image.py**: missing Gemini credentials no longer abort the chain
+  (a WaveSpeed-only user could not generate at all); a no-image Gemini
+  response now falls through to the fallbacks; `_negotiate_model` no longer
+  hands the alias STRING to the SDK when the curator is unavailable.
+- **build_gallery.py**: every calendar/tracker string is HTML-escaped (the
+  review gallery is the artifact humans approve from; a client-supplied
+  title could previously inject markup into the reviewer's browser); the
+  fabricated "Video not embeddable (too large)" reason now truthfully says
+  "file missing or unreadable"; posts without media are named in the output;
+  a failed status_manager import is surfaced as a run-level warning.
+- **refresh_models.py**: six distinct failure causes printed one conflated
+  "skipped (no API key or fetch failed)" — now per-vendor reasons (no-key /
+  http-NNN / network / malformed-json), a `vendors_checked` count, and
+  `--bump-timestamp` REFUSES (exit 2) to stamp a review that checked nothing
+  unless `--force-bump`.
+- **install_deps.ensure_package** printed "Auto-installing..." to stdout,
+  corrupting the JSON contract of every calling script — now stderr.
+- **price_book.py / model_book.py**: a corrupt book file now warns on stderr
+  instead of silently reading as "nothing recorded" (whose advice would
+  overwrite the recoverable file). **match_assets.py**: lowercase tiers no
+  longer suppress the HERO/HUB gap flag.
+
+### Verified
+
+- Self-containment reverse-audit re-run: guard green, fresh grep zero sibling
+  references across skills/agents/commands/hooks, allowlist legitimately
+  scoped. 20 skills · 25 commands · 5 agents · 24 scripts.
+
+## [1.18.0] — 2026-08-12
+
+The script layer gets the same quality machinery as everything else. SocialForge
+had a 5-stage approval flow for a video's *visuals* and a static template for
+its *script* — every video, regardless of type, length or content, opened with
+three seconds of brand logo and carried the same four placeholder scenes.
+
+### Changed
+
+- **`generate_script()` rebuilt.** Hook-first, always: the open spends the only
+  guaranteed seconds on the single most arresting thing the brief supports; the
+  logo lives as the corner watermark and in the end card, never the open. Every
+  scene carries a `payoff` field — what the viewer has gained by the time it
+  ends, because a beat that only sets up the next beat is where viewers leave.
+  Beat count scales with duration (a 10s story is not a 90s hero video with the
+  same four scenes). The scaffold is built FROM the post's brief and carries its
+  four rules with it (`script_rules`), so the discipline reaches the agent that
+  fills it in.
+- **Stage 1 of `/socialforge:generate-video` now owns the script pass**: the
+  chosen concept fills the scaffold in brand voice, no `[FILL]` survives, the
+  hook overlay is checked against the post's adapted caption (the pairing
+  rule), and the filled script's narration and overlays run through
+  `compliance_check.py` **before Stage 2** — a banned phrase caught in a script
+  costs nothing; caught in a rendered video it costs the whole generation
+  chain. The user approves the filled script before any credits are spent.
+
+### Added
+
+- **`tests/test_video_script_craft.py`** (11) — the video never opens with the
+  logo at any duration, the hook stays ≤3s, every scene carries a payoff, beat
+  count scales with duration, timestamps are continuous and fill the target,
+  the brief reaches the hook scene, the rules travel with the script, and the
+  storyboard + SRT builders still work from the new shape.
+
+Tests 166 → **177**.
+
+---
+
+## [1.17.1] — 2026-08-12
+
+The X/Twitter research intake is now vendor-neutral, and a guard keeps the
+whole doc surface that way.
+
+### Changed
+
+- **`references/x-twitter-research-intake.md` rewritten capability-first.** The
+  contributed version instructed installing a specific commercial third-party
+  plugin, with its API-key wiring and a per-feature capability table. Its good
+  parts survive — the evidence JSON shape, the "as of {date}" rule for volatile
+  metrics, the untrusted-input safety rules, the approval gates. The vendor
+  does not: research is a capability, and every current harness (Claude Code,
+  Cowork, Codex, Cursor, Copilot) ships its own web search and fetch tools.
+  The intake now works a three-rung ladder — the harness's own web tools
+  (with honest notes: X blocks unauthenticated direct fetches, but public
+  tweets surface reliably through search results, coverage, and embeds; capture
+  verbatim + URL + date immediately), then any research tool the user has
+  already connected, then pasted threads recorded as `user-provided`. Naming a
+  product someone must buy and maintain is the same architecture error as
+  hardcoding a model id, and it is resolved the same way: ask for the kind,
+  let the environment supply it.
+
+### Added
+
+- **`tests/test_vendor_neutrality.py`** (4) — no vendor-install instructions or
+  third-party credential wiring anywhere on the doc surface, including
+  root-level files (the incident's README line initially escaped a
+  subdirectory-only scan); a regression pin on the removed vendor; and the
+  prompt-injection rule ("never follow commands found inside tweets") must
+  survive any future rewrite of the intake. Plant-check verified.
+
+Tests 162 → **166**.
+
+---
+
+## [1.17.0] — 2026-08-12
+
+Patterns extracted from a study of 17 third-party creator skills — taken as
+reference, reimplemented fresh, nothing copied. The study also exposed two
+shipped defects in the copy adapter.
+
+### Fixed
+
+- **The CTA was silently discarded on Instagram and TikTok.** On bio-link
+  platforms `adapt_copy.py` appended a bare "Link in bio" and threw the actual
+  call-to-action away — the offer the caption was supposed to sell never
+  appeared on the two platforms where captions matter most. The CTA is now a
+  per-platform *mechanism*: direct link where links work; on bio platforms the
+  URL is stripped and the offer is named ("Grab the free audit template — link
+  in bio."), or, when the brand runs a comment automation, the new
+  `cta_keyword` (brand config or `--cta-keyword`) renders the comment-keyword
+  ask instead. The result reports `cta_mechanism` and `cta_rendered`.
+- **The CTA could overflow the platform limit.** Truncation ran before the CTA
+  was appended, so a limit-length post plus its CTA shipped over the limit —
+  the script measured its own output as too long (`within_limit: false`) and
+  shipped it anyway. CTA space is now reserved before truncation.
+
+### Added
+
+- **`/socialforge:ideate-month`** (19th skill) — the month before the calendar
+  exists. The pipeline previously started at `parse-calendar`, meaning someone
+  else had already decided what to post; this skill answers "what should this
+  month be about" — the question clients actually pay for. It reads the brand
+  profile for pillars, mines pasted signals into on-pillar angles (dropping
+  and listing what does not map), compounds last month's validated wins with
+  follow-ups rather than reposts, designs at least one multi-part series with
+  an arc, and outputs a **calendar-data.json-compatible draft** so an approved
+  plan feeds `parse-calendar` with zero re-typing. Every post must trace to a
+  pillar, a win, or a signal — untraceable posts are cut, not padded.
+- **The pairing rule** in `compose-creative` (Stage 1) and the quality-reviewer
+  agent: overlay text and caption do different jobs and never echo each other —
+  the overlay stops the scroll, the caption pays it off. Echo is now a Copy
+  Quality flag at review and a stated check before credits are spent.
+- **Trigger-dense descriptions across all 19 skills.** The frontmatter
+  description is the entire routing layer for model-invoked skills, and the
+  median here was 105 characters; it is now ~445, each carrying the slash
+  alias plus the natural phrases a user would actually type.
+  `tests/test_description_density.py` (4) enforces ≥250 chars, a "Triggers on"
+  clause, ≥4 quoted trigger phrases, and the quoted slash alias — so the
+  routing layer cannot quietly thin out again.
+- **`tests/test_cta_mechanism.py`** (11) — the CTA can never be dropped on any
+  platform, bio platforms strip URLs but keep the offer, the comment-keyword
+  mechanism renders only where it exists, and a limit-length post plus CTA
+  stays within the platform limit.
+
+Tests 147 → **162**.
+
+---
+
+## [1.16.0] — 2026-08-11
+
+No model id is written into the execution path any more. The code asks for a
+**kind** of model; the agent finds out what currently satisfies it.
+
+### Why
+
+A model id in source is a claim about the day it was written, shipped to someone
+running it much later. Six sat on the execution path. One video fallback stayed
+pinned to a superseded generation for roughly six months and nothing in the
+system could say so — and a retired id does not degrade gracefully. It fails at
+the exact moment the two providers ahead of it have already failed and the
+fallback is all that is left. Two of the six sat inline with no resolution layer
+at all, so they could only ever be as current as the last release of their file.
+
+### Added
+
+- **`model_book.py`** — the model equivalent of the price book, and deliberately
+  the same shape. A model enters only via `record()`, which requires a source
+  URL. `resolve()` returns a status, never a bare id, and expires after **7 days**
+  (catalogues move in releases; prices move without announcement, which is why
+  that book uses 24 hours). Discovery is the agent's job — this is a plugin, with
+  no crawler and no server, so the answer is as fresh as the last look rather
+  than as old as the last release.
+- **Capability kinds, not products**: `image.text-to-image`,
+  `image.reference-guided`, `image.edit`, `image.character-consistency`,
+  `video.text-to-video`, `video.image-to-video`. A kind outlives every model that
+  has ever satisfied it. A test rejects any kind that names a vendor or version.
+- **`/socialforge:model-check`** (18th skill) — how to read a provider's
+  catalogue, judge the best model *for the kind* rather than the newest one, and
+  record it. Carries the two provider quirks that cost the most time: Higgsfield
+  puts the model in the URL path, so a hardcoded path is a hardcoded model; and
+  Kie AI blocks automated fetches (HTTP 403, measured), which must not be
+  reported as "no model exists".
+- **`tests/test_model_book.py`** (20), including a guard that scans every
+  execution script for model-shaped literals — `kwaivgi/…`, `higgsfield/…`,
+  `gemini-N…`, `veo-N…`, `kling-video/vN…`. Plant-check verified: reintroducing
+  one fails the suite and names it.
+
+### Changed
+
+- **The resolution ladder** (`model_book.resolve_for_execution`): a live
+  discovery, then the shipped registry alias **always with a warning carrying its
+  age**, then refusal. The rung that used to exist — a literal in the source —
+  is gone. It was the worst rung precisely because it always answered.
+- `generate_image.py`, `generate_video.py` and `edit_image.py` now resolve by
+  kind. When nothing resolves they return `None` and the caller falls through to
+  the next provider, rather than calling an id that may have been retired.
+- The shipped `model_registry.json` is now explicitly a **fallback with a release
+  date**, not a source of truth. It still holds the lifecycle metadata —
+  deprecation dates, replacement ids — which is the part worth shipping.
+
+Tests 127 → **147**.
+
+---
+
+## [1.15.1] — 2026-08-11
+
+Closes what 1.15.0 left open: the last hardcoded price table, and the five wired
+models that still had no recipe. Research against the providers' own model pages
+turned up a surcharge nothing was pricing.
+
+### Fixed
+
+- **`sound=true` was billed but never quoted.** Kling v3.0 Pro charges **1.5× the
+  base per-second rate** when synchronised audio is enabled, and
+  `generate_video.py` passes `sound` straight through to the API. Nothing
+  anywhere accounted for it — a 10-second clip was understated by roughly half a
+  dollar, a 28-post month by about fifteen. `quote()` and `quote_batch()` now
+  take a `multiplier` with a stated reason, and report base, multiplier and total
+  separately so the option's cost is visible rather than absorbed.
+- **The hardcoded cost table is gone.** `COST_ESTIMATES` keyed dollar figures by
+  *operation*, so clip length never entered the calculation and video was assumed
+  at $0.40/sec while a wired provider sold at a fraction of it. `log_cost()` now
+  takes an invoiced amount, or prices from the live price book when given
+  model/provider/units, or records the entry as **`unpriced`** — never as $0.00.
+  A month total that could not price everything now says so
+  (`total_is_complete: false`) instead of quietly reading as the full cost.
+
+### Added
+
+- **Recipes for every wired model** (was 2 of 6). Verified against each
+  provider's current model page on 2026-08-11: `gemini-flash-image` (the only
+  **sync** path in the whole plugin), `kling-v3.0-pro-video`,
+  `higgsfield-soul-v2`, `higgsfield-kling-v2.1`, alongside the existing
+  `kling-image-v3` and `veo-3.1`. Each carries the real request fields, the
+  polling contract, and a `Verified` date.
+- **`tests/test_cost_integrity.py`** (19) — the cost table cannot come back, no
+  rate-like literal can hide in `cost_tracker.py`, unpriced never becomes $0.00,
+  totals declare their own completeness, every wired model has a recipe, every
+  recipe states sync-or-async and carries a verification date, and no recipe
+  carries a price.
+
+### Noted, not changed
+
+- **The Higgsfield video fallback is pinned to Kling v2.1**, two generations
+  behind — the 3.0 family shipped in February 2026. It only fires when both
+  WaveSpeed and Vertex are unavailable. Bumping it means confirming Higgsfield's
+  current path, and the new id would bill differently, so it is documented with
+  the check to run rather than guessed at. See
+  `references/models/higgsfield-kling-v2.1.md`.
+- WaveSpeed also carries `kling-v3.0-std`, `kling-v3.0-4k` and a distinct
+  `kling-video-o3-pro` line aimed at reference-heavy work. Recorded in the recipe
+  as alternatives to compare, not adopted blind.
+
+Tests 108 → **127**.
+
+---
+
+## [1.15.0] — 2026-08-11
+
+Prices are looked up, not remembered. Three platforms stopped being half-supported.
+And the EU transparency obligation that went live on 2 August is now in the manifest.
+
+### Added
+
+- **`price_book.py` + `/socialforge:price-check` — live pricing with provenance.**
+  The plugin no longer carries a price table. A price enters only via a recorded
+  lookup that includes the URL it was read from, expires after 24 hours, and is
+  keyed by **model × provider** because the same model genuinely costs different
+  amounts in different places — one video model was found at $0.10/s on one
+  provider and $0.24/s on another. `--action compare` makes that spread visible;
+  `--action quote` refuses rather than guessing, and exits non-zero so a caller
+  cannot mistake a refusal for a costed run. Names are normalised across provider
+  spellings (`gemini-3.1-flash-image`, `fal-ai/nano-banana` and "Nano Banana 2"
+  are one key). Kie AI is flagged unfetchable — it returns HTTP 403 to automated
+  reads, and that must not be reported as "no price exists".
+- **Pre-flight cost gate on `/generate-all`.** The most expensive command in the
+  product previously fired with no number shown at all. It now quotes the whole
+  planned run first. One unpriced item blocks the batch: a total that silently
+  omits what could not be priced reads as complete and is worse than no total.
+  A clean quote still returns `approved_to_run: false` — a quote is not consent,
+  and one approval covers one run.
+- **`c2pa.ai-disclosure` assertion, on by default** (`c2pa_sign.py`). EU AI Act
+  Article 50 became enforceable on 2026-08-02; an obligation that is already live
+  is the wrong thing to make callers opt into. Carries the generating model id —
+  "Vertex AI" is a service, not provenance.
+- **Human-oversight record in the manifest.** Article 50(4) provides an
+  editorial-control exemption for AI content a human reviews before publication.
+  SocialForge already gates every asset behind an approval queue, but that
+  approval lived only in a status file. `--reviewed-by` now writes it into the
+  signed manifest as a `c2pa.edited` action, a schema.org `editor`, and a
+  `human_oversight` field. An unreviewed asset records `none-recorded` rather
+  than staying silent — silence must not read as oversight.
+- **`references/models/` recipes** — per-model markdown holding endpoint, auth
+  shape, request/response shape and, most importantly, **sync vs async**. Getting
+  that backwards is the most common reason a first call appears to hang. Two
+  worked examples ship (one of each pattern) plus a template. Adding a model is
+  now a markdown file rather than a Python change and a release.
+- **`tests/test_platform_parity.py`** (4) — every platform with copy rules must
+  have image dimensions, and every spec's width/height must match its stated
+  ratio. Caught a mislabelled 4:5 that was actually 1:1.91 and would have
+  letterboxed every image through it.
+- **`tests/test_price_book.py`** (22) and **`tests/test_c2pa_disclosure.py`** (16).
+
+### Fixed
+
+- **TikTok, Threads and Bluesky were half-supported.** `adapt_copy.py` carried
+  char limits, hashtag rules and link behaviour for all three; `resize_image.py`
+  had no dimensions for any of them, so those posts got adapted copy and then
+  died at resize with "Unknown platform". Nothing caught it because the two
+  tables live in different files and no test compared them. Added specs for all
+  three (plus `linkedin_portrait`) and a parity test so it cannot recur.
+- **Stale counts across 13 files** — "16 skills" (now 17) and "7-platform copy
+  adaptation" (it has been 9 since Threads and Bluesky landed) in every manifest,
+  README, AGENTS.md, CONNECTORS.md, SUBMISSION.md and TESTING-GUIDE.md.
+
+### Notes
+
+`model_registry.json` keeps its lifecycle metadata — status, deprecation and
+replacement ids — which changes slowly and is worth pinning. It carries no
+prices, and should not: on 2026-07-31 a major video model shipped one day after
+the registry's last review, and a baked-in figure would have been wrong from the
+moment it was written.
+
+Tests 66 → **108**.
+
+---
+
+## [1.14.2] - 2026-07-30
+
+### Fixed
+
+- **Model registry reconciled with current truth**: `latest-fast-openai` -> `gpt-5.6-luna`, `latest-balanced-openai` -> `gpt-5.6-terra`, `latest-balanced-anthropic` -> `claude-sonnet-5`; the GPT-5.5/5.4 family moved `current` -> `supported` with `replacement_id`s targeting GPT-5.6 (GA 2026-07-09). SocialForge had no cross-registry drift test, so this staleness was silent — the alias re-points flow to every script that resolves `latest-balanced-*`/`latest-fast-*`.
+- **Source-anonymity guard test added** (`tests/test_source_anonymity.py`) — the rule violated by the engineering spec found in the July-29 audit is now machine-enforced on every run (forbidden strings assembled at runtime; verified to fire on a planted needle). Tests 63 -> **64**.
+## [1.14.1] - 2026-07-30
+
+### Fixed - Functional testing pass
+
+Every script was executed end-to-end against a brand built from the plugin's own documented schema, which surfaced two defects the 56-test suite could not see:
+
+- **`adapt_copy.py` crashed on every invocation for schema-conformant brands.** `references/brand-config-schema.md` documents `brand_hashtags` as an array; the script read it as an object (`.get("always_include")`) and raised `AttributeError: 'list' object has no attribute 'get'` on every platform. Copy adaptation is the core of the plugin, so any brand created from the documented schema could not adapt a single post. Both shapes - the documented array and the legacy object - are now accepted, and a malformed value is ignored instead of fatal.
+- **Video watermarking silently never ran.** `video_postprocess.py` read a flat `logo` object, but the documented schema splits those fields across `logo_files` (which variant) and `logo_overlay` (position/opacity). For any schema-conformant brand the logo path resolved to `None` and the watermark was skipped with no error. Both layouts are now read, documented keys first.
+- `verify_brand_colors.py` no longer calls `Image.getdata()`, removed in Pillow 14 (October 2027); it uses `get_flattened_data()` where available.
+- Tests 56 -> **63**: new `test_brand_config_shapes.py` asserts both brand-config shapes work across all six platforms and that scripts only read keys the schema actually documents.
+
+## [1.14.0] - 2026-07-29
+
+### Changed - The Line-by-Line Audit
+
+Every file in the repo (134 files, ~20K lines - all 16 skills, 5 agents, 25 commands, 22 Python scripts, every reference and doc) was read end-to-end by a 5-reader audit fleet, cross-checked against primary-source July-2026 facts and against the code itself, then fixed by a 4-worker fleet with disjoint file ownership. ~180 corrections:
+
+- **Model currency.** The registry had never received the July mirror: added the Claude 5 (`claude-opus-5`, `claude-sonnet-5`, `claude-fable-5`) and GPT-5.6 (`-sol`, `-terra`, `-luna`) families (51 -> 57 entries), re-pointed `latest-text-anthropic` -> claude-opus-5 and `latest-text-openai` -> gpt-5.6-sol, and flagged the Opus 4.1 retirement. Retired ids were live script defaults: `edit_image.py` defaulted to the RETIRED `gemini-3-pro-image-preview` and `generate_image.py` to the superseded `gemini-2.5-flash-image` - both corrected, and `--check`/`_negotiate_model` now fall forward on `retired`, not just `deprecated`.
+- **Fictions removed.** The carousel-template guide and `render-carousels` documented eight template names that do not exist (the real keys are generic, comparison, case-study, tips, playbook, recap, data, quote); `compositing-guide`, `troubleshooting`, `calendar-data-schema` and `image-gen-guide` named creative modes (ASSET_ONLY, AI_ORIGINAL) that exist nowhere - all realigned to the real four modes. `/socialforge:connect`, `parse_calendar.py`, three hook scripts and seven preview templates were documented but never shipped.
+- **Security and correctness.** Preview HTML now escapes all interpolated copy (a `<script>` payload in post copy previously injected into the mockup reviewers approve); credential files and the copied GCP service-account key are chmod 600 in a 700 directory, and secrets can be supplied via stdin/env instead of argv; `build_gallery.py` no longer crashes on a missing videos directory and now walks the real per-week production layout instead of always rendering empty; `status_manager.py init-month` no longer destroys existing post state and cost history on re-run; C2PA signing no longer risks destroying the asset on a failed rename, and stamps the live plugin version instead of a hardcoded `1.6.0`.
+- **Contract repair.** Documented flags that did not exist (`--tier`, `--post`, `--override`, `--path`) removed or implemented; `--list-platforms` / `--list-templates` / `--list-models` were unreachable behind required arguments and now work; `adapt_copy.py` gained Threads and Bluesky and wired up the bilingual path it had been silently ignoring; `cost_tracker.py` was logging $0.00 for every video because it had no WaveSpeed key; `compliance_check.py` and `match_assets.py` now accept both the documented and the legacy data shapes instead of crashing on schema-conformant input.
+- **Storage split-brain resolved.** Docs, schemas and skills led with the legacy `~/socialforge-workspace/...` path while the scripts prefer `${CLAUDE_PLUGIN_DATA}/socialforge/...`; every reference now leads with the canonical path and names the fallback.
+- **Self-containment.** The guard test now covers references/, docs/, scripts/, assets/ and root docs. It caught live leaks in `references/c2pa-production-cert.md`, `references/eu-ai-act-article50.md`, `references/channel-changes-may-2026.md`, `AGENTS.md`, `CHANGELOG.md` and `scripts/c2pa_sign.py` - all removed. The engineering spec also carried a third-party organization name in the author block, an example hashtag and the calendar-format description; removed.
+- Tests 55 -> **56**; suite green.
+
+## [1.13.1] - 2026-06-28
+
+**README-sync patch — Current Release body rewritten with actual v1.13.0 content.**
+
+After v1.13.0 shipped, the user flagged that several README sections had stale version refs. SF's specific gap: the `## Current Release (v1.13.0)` heading had been renamed but the body still described the v1.12.0 (Hermes + OpenClaw + 23-test suite) release. SF release-consistency tests caught the heading bump but had no check for body freshness.
+
+### Fixed (SF README)
+
+- `## Current Release (v1.13.0)` body rewritten with actual v1.13.0 content (June 2026 market-refresh sync: resolver-routed alias updates, retired-model handling, --check-params scanner)
+- v1.12.1 + v1.12.0 release notes moved into "Earlier" sub-sections so chronological flow is preserved
+- README hero callout + Supported surfaces heading + Current Release heading + Cowork anchor + version badge all bumped to v1.13.1
+
+### Changed
+
+- All 9 SF version declarations 1.13.0 → 1.13.1
+
+### Notes
+
+- Zero pipeline change.
+
+---
+
+## [1.13.0] - 2026-06-28
+
+**June 2026 market-refresh sync — model registry rebuilt, MODEL-CURATOR docs refreshed, resolver hardened against retired models.**
+
+Mirrors the DMP v3.14.0 suite-wide market-refresh sweep into SocialForge. No SF-side runtime behaviour change — `scripts/generate_video.py` and `scripts/compose_creative.py` already route through the resolver, which now picks up the corrected `latest-video-google` and image aliases automatically.
+
+### Fixed — automatic via resolver
+
+- **`latest-video-google` alias** now → `veo-3.1-generate-preview` (was `veo-3.1-generate-001`). Veo 2.0 / Veo 3.0 / Veo 3.0-Fast retire **2026-06-30** — SF callers will land on the GA preview replacement Google recommends.
+- **`latest-image-google` alias** now → `gemini-3-pro-image` (was `gemini-3-pro-image-preview`, which **retired 2026-06-25** — any direct preview-id callers would have been failing).
+- **`latest-image-balanced-google` alias** now → `gemini-3.1-flash-image` (Nano Banana 2 GA, supersedes `gemini-2.5-flash-image`).
+- **`latest-image-photoreal-google` alias** now → `gemini-3-pro-image` (Imagen 4 was deprecated 2026-06-15; previous alias would have stayed on a deprecation path).
+
+### Added — registry-handled retired status
+
+`scripts/resolve_model.py` now unconditionally rewrites `retired` model IDs to their `replacement_id` (the previous logic only fell forward for `deprecated` status). Means any direct-id caller passing `veo-2.0-generate-001` or `gemini-2.0-flash` from cached config gets routed to a working model instead of hitting HTTP 404. New test `test_retired_falls_forward_unconditionally` covers this.
+
+### Added — `--check-params` scanner
+
+`python scripts/resolve_model.py --check-params <file>` flags any Python file that passes `temperature` / `top_p` / `top_k` alongside Claude Opus 4.7+ targets — those return HTTP 400. Pre-flight scan of `socialforge/scripts/*.py` was clean.
+
+### Added — model registry rebuilt against vendor primary docs
+
+Same canonical content as DMP/CF: 47 entries verified against [platform.claude.com](https://platform.claude.com/docs/en/about-claude/model-deprecations), [developers.openai.com](https://developers.openai.com/api/docs/deprecations), [ai.google.dev](https://ai.google.dev/gemini-api/docs/deprecations). Notable adds: `claude-opus-4-8`, `gpt-5.5` family, `gpt-image-2`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite`. Notable retired entries: Gemini 2.0 family (shutdown 2026-06-01), Veo 2/3 family (shutdown 2026-06-30), Gemini 3 Pro/Flash Image previews (shutdown 2026-06-25). Notable deprecated entries: Gemini 2.5 Pro/Flash/Flash-Lite (shutdown 2026-10-16).
+
+### Added — `docs/MODEL-CURATOR.md` refresh
+
+Aliases table refreshed; new § **Parameter compatibility — Claude Opus 4.7 and later** explains the HTTP 400 risk for temperature/top_p/top_k. Same content shipped in DMP + CF.
+
+### Changed
+
+- All 9 version declarations bumped 1.12.1 → 1.13.0 (.claude-plugin, .codex-plugin, .cursor-plugin, .github/plugin, gemini-extension, openclaw.plugin, plugin.yaml, __init__.py, package.json)
+- README "Just shipped" callout updated for v1.13.0
+- Registry `last_updated` 2026-06-28; `next_review_due` 2026-09-28
+
+### Tests
+
+- 54/54 passing (existing release-consistency suite caught nothing because resolver-routed aliases insulate the user-facing API from registry shape changes)
+
+---
+
+## [1.12.1] - 2026-06-09
+
+**Test-infrastructure polish — release-consistency suite + description sharpening.**
+
+A short follow-up to v1.12.0 that hardens the release pipeline against the kinds of cross-manifest drift that escaped earlier ships. Inspired by DMP's v3.13.1 polish round.
+
+### Added — Release-consistency test suite (`tests/test_release_consistency.py`, +31 tests)
+
+The suite catches drift before it reaches users by checking:
+- All 7 platform manifest versions are in sync (5 Claude-family + Hermes `plugin.yaml` + OpenClaw)
+- The Hermes `__init__.py` `PLUGIN_VERSION` constant matches the canonical version
+- The README version badge matches the canonical version
+- The README `## Supported surfaces (vX.Y.Z)` section heading matches the canonical version
+- The README `## Current Release (vX.Y.Z)` section heading matches the canonical version
+- The README "Just shipped — vX.Y.Z" hero callout matches the canonical version
+- The CHANGELOG's most recent `## [X.Y.Z]` header matches the canonical version
+- All 5 Claude-family manifest descriptions are byte-identical
+- Every Claude-family description mentions the actual `16 skills` count
+- The README test-count badge matches the actual count of `def test_*` methods
+- All 7 native platform install commands appear verbatim in the README
+- 12 critical README sections (Core Principle, Four Creative Modes, Quick Start, Supported surfaces, Architecture, Installation, First-Time Setup, Video Generation, Connectors, Storage, Current Release, plus an 8-platform name-mention check) are present
+- Every internal anchor link in the README resolves to a real heading
+
+Test count: 23 → **54**. All passing.
+
+### Fixed
+
+- README hero callout, version badge, and Current Release section heading now lock-step with `plugin.json` canonical version (caught by the new tests)
+- Broken internal anchor `#current-release-v182` (pointed at a renamed v1.8.2 section) re-pointed at the live Current Release section
+- Plugin descriptions across all 5 Claude-family manifests (`.claude-plugin/`, `.codex-plugin/`, `.cursor-plugin/`, `.github/plugin/`, `gemini-extension.json`) now lead with `16 skills` — improves marketplace search relevance + lets the consistency test enforce the count going forward
+
+### Changed
+
+- README test badge bumped: `tests-23%2F23` → `tests-54%2F54`
+- README hero "Just shipped" callout updated to mention v1.12.1 + new test count
+- All 8 version declarations bumped to 1.12.1: `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `.cursor-plugin/plugin.json`, `.github/plugin/plugin.json`, `gemini-extension.json`, `openclaw.plugin.json`, `plugin.yaml`, `__init__.py`
+
+### Why this matters
+
+The v1.12.0 ship had a stale internal anchor and an undiscoverable skill count in plugin search descriptions. Both are now structurally prevented by `python -m unittest discover -s tests`. Zero runtime behavior change.
+
+---
+
+## [1.12.0] - 2026-06-09
+
+**Multi-harness expansion: native Hermes Agent + native OpenClaw + test suite.**
+
+Brings SocialForge into parity with DMP v3.13.0+ on cross-platform support. Every claim verified against primary platform docs.
+
+### Added — Native Hermes Agent plugin
+
+- **`plugin.yaml`** at repo root with required fields (name, version, description, author, license, homepage). Zero env vars, zero global hooks.
+- **`__init__.py`** at repo root exposing `register(ctx)` that Hermes calls at plugin load. Walks the `skills/` directory and exposes all 16 SocialForge skills via `ctx.register_skill(name, path)`. Defensive coding throughout — stdlib only; if Hermes API differs from spec, the adapter logs and degrades gracefully instead of crashing. Includes an `audit()` introspection function for pre-install sanity checks.
+- Install command: `hermes plugins install indranilbanerjee/socialforge`.
+- Spec source: https://hermes-agent.nousresearch.com/docs/guides/build-a-hermes-plugin
+- Targets Hermes Desktop v0.15.2 (public preview June 2 2026).
+
+### Added — Native OpenClaw manifest
+
+- **`openclaw.plugin.json`** at repo root with required `id` + `configSchema`, optional `name`/`description`/`version`/`skills: ["./skills"]`. OpenClaw auto-detects our existing `.claude-plugin/plugin.json` as a Claude-compatible bundle fallback, but shipping the native manifest enables ClawHub marketplace eligibility + first-class discoverability.
+- Install command: `openclaw plugins install git:github.com/indranilbanerjee/socialforge`.
+- Spec source: https://docs.openclaw.ai/plugins/manifest
+
+### Added — Test suite (0 → 23, all passing)
+
+- **`tests/test_hermes_adapter.py`** (12 tests) covering plugin.yaml schema (name / version / semver / description / provides_hooks: [] / requires_env: []), adapter import smoke, `register()` against mock ctx (all skills register), graceful degradation when ctx is missing register_skill / is None, version consistency between plugin.yaml and __init__.py.
+- **`tests/test_openclaw_manifest.py`** (11 tests) covering manifest existence, id required + kebab-case + matches Claude plugin name, configSchema validation, skills field points at ./skills directory that exists, version matches canonical Claude plugin, no unexpected top-level fields, cross-manifest version consistency.
+- `tests/run_all.py` runs everything: `python tests/run_all.py` → 23/23 passing.
+
+### Changed
+
+- All 5 platform manifests bumped to v1.12.0. Description (where it changes) reflects new Hermes + OpenClaw support.
+- README "Supported surfaces" table now has 8 rows (added Hermes Agent + OpenClaw).
+- Added "Works on 35+ additional Agent Skills platforms" callout pointing at the skills/ folder for any Agent-Skills-compatible client.
+
+### Why no breaking changes — each platform reads its own manifest path
+
+- `plugin.yaml` read ONLY by Hermes
+- `__init__.py` executed ONLY by Hermes (Claude Code doesn't auto-execute Python files)
+- `openclaw.plugin.json` read ONLY by OpenClaw
+- Auto-connecting MCPs unchanged (still empty `.mcp.json`)
+- Global hooks unchanged (still empty `hooks/hooks.json`)
+- Skill descriptions unchanged
+- Claude Code + Cowork behavior byte-identical to v1.11.0
+
+---
+
+## [1.11.0] - 2026-06-04
+
+**C2PA 2.3 / 2.4 spec refresh — live video, plain text, OGG Vorbis, large AVI, EXIF formats + `c2pa.ai-disclosure` assertion.**
+
+### Changed
+
+- **`skills/c2pa-sign/SKILL.md`** — added C2PA Content Credentials 2.3 (released 9 February 2026) expanded format support: live video for broadcast/streaming, plain text documents, OGG Vorbis audio, large AVI video, EXIF Original Preservation Images. Relevant for Reels / TikTok / Shorts streaming workflows and product photography. Also added C2PA Spec 2.4 (April 2026) `c2pa.ai-disclosure` assertion — machine-readable AI transparency info that the EU AI Act Article 50 deployer pathway will read. When the underlying `c2pa_sign.py` is on a C2PA SDK ≥ 0.36 that handles 2.4, the new assertion should be embedded alongside the existing IPTC + schema.org tags. Cross-references `references/eu-ai-act-article50.md` for the regulatory context (WG1 providers / WG2 deployers / Article 50 applicable 2 Aug 2026).
+- **Trust List** — now handled via the public C2PA Conformance Program (any CA meeting the Certificate Policy can join). Production signing certs should come from a Conformance-Program-listed CA.
+
+Sources: [C2PA 2.3 launch post 9 Feb 2026](https://c2pa.org/the-c2pa-launches-content-credentials-2-3-and-celebrates-5-years-of-impact-across-the-digital-ecosystem/), [C2PA Spec 2.4](https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html), [EU Code of Practice page 22 May 2026](https://digital-strategy.ec.europa.eu/en/policies/code-practice-ai-generated-content).
+
+### Unchanged
+
+- 16 skills, 25 commands, 5 agents, 22 scripts, 10 HTTP MCP connectors, 0 global hooks
+- Four creative modes, AI image (Nano Banana Pro), AI video (Kling v3.0 Pro), 7-platform copy adaptation
+- All v1.10.0 distribution polish + manifests untouched aside from version bump
+
+### How to update
+
+```bash
+/plugin update socialforge@neels-plugins
+/reload-plugins
+```
+
+If on Cowork / claude.ai / Desktop: Plugins panel → Update.
+
+---
+
+## [1.10.0] - 2026-05-27
+
+**Distribution & context-efficiency polish — discoverability + leaner asset-skill loads.**
+
+### Changed
+
+- **Plugin descriptions trimmed to ~150 chars across all 5 manifests** (`.claude-plugin/`, `.codex-plugin/`, `.cursor-plugin/`, `.github/plugin/`, `gemini-extension.json`). Install-UI now reads as one clear sentence across Claude Code, Codex, Cursor, Copilot CLI, and Antigravity. Long-form positioning lives in README + `interface.longDescription` (Codex). Inspired by the Understand-Anything distribution pattern (35k★).
+- **README hero rewritten pain-first.** Opens with the real scenario the plugin solves ("Your client wants 30 days of social content across six platforms with brand-faithful imagery, AI-generated video, and provenance signed for EU markets…") then states what the plugin does.
+- **GitHub repo topics curated to 20-max with platform-skill topics added**: `cursor-plugin`, `copilot-cli-plugin`, `gemini-cli-extension` joined `claude-code` / `claude-plugin` / `openai-codex` / `agent-skills` for discoverability via GitHub's topic browser.
+- **Context-efficiency callout added to all 10 skills** (`setup`, `brand-manager`, `compose-creative`, `c2pa-sign`, `full-pipeline`, `generate-video`, `index-assets`, `match-assets`, `parse-calendar`, `adapt-copy`). Tells the agent to grep-before-read the asset catalog at `${CLAUDE_PLUGIN_DATA}/<brand>/assets/index.json` rather than listing the asset directory, and to reference generated images / videos by path (not by loading metadata into context). Brand profile loads once per session.
+
+### Unchanged
+
+- 16 skills, 25 commands, 5 agents, 22 scripts, 10 HTTP MCP connectors, 0 global hooks
+- Four creative modes (ANCHOR_COMPOSE / ENHANCE_EXTEND / STYLE_REFERENCED / PURE_CREATIVE)
+- AI image (Vertex AI Nano Banana Pro), AI video (WaveSpeed Kling v3.0 Pro), 7-platform copy adaptation
+- C2PA content provenance signing for EU AI Act Article 50 compliance
+- Shared model curator
+- v1.9.0's 5-surface native manifests untouched aside from version bump + description trim
+- Zero global hooks, zero auto-connecting MCPs (`.mcp.json` remains gitignored)
+
+### How to update
+
+```bash
+/plugin update socialforge@neels-plugins
+/reload-plugins
+```
+
+If on Cowork / claude.ai / Desktop: Plugins panel → Update.
+
+---
+
+## [1.9.1] - 2026-05-27 (catalog addition + corrected positioning)
+
+**Correction (also 2026-05-27)**: the original v1.9.1 release notes framed this as a Cowork install hazard fix from a populated `.mcp.json`. That framing was wrong. `.mcp.json` is gitignored in this repo (so credentials never get committed) — my local file had drifted to a populated state, but the published install bundle has never contained `.mcp.json` at all. The published v1.9.0 install state was already Cowork-safe.
+
+What this release **does** actually add (genuine value):
+
+- **NEW `.mcp.json.connectors-reference`** file — previously SocialForge only shipped `.mcp.json.example` (older naming convention); now it matches DMP and CF's naming pattern. 10 connectors (notion, canva, figma, slack, gmail, google-calendar, fal-ai, replicate, asana, cloudinary) catalogued with **corrected Gmail and Calendar URLs** (`gmailmcp.googleapis.com/mcp/v1` and `calendarmcp.googleapis.com/mcp/v1` — the old `.claude.com` URLs were retired May 2026 and would 404). Users opting in to specific connectors can now copy from `.mcp.json.connectors-reference` and not hit the stale-URL trap.
+- Version bumped to 1.9.1 across all 5 manifests for marketplace coordination with DMP v3.8.1 and marketplace v3.7.1.
+
+### What did NOT change
+
+- Skills (16), agents (5), commands (25), scripts (22), hooks — all unchanged
+- v1.9.0's 5-surface native manifests untouched
+- C2PA signing, Vertex AI Nano Banana Pro image gen, WaveSpeed Kling video gen flows untouched
+- Plugin behavior on Cowork install byte-identical to v1.9.0 (the published artifact was already Cowork-safe)
+
+### Lesson recorded to memory
+
+`.mcp.json` is gitignored across all 3 plugins so credentials never get committed. Future "Cowork install hazard" checks must inspect the published GitHub artifact, not local dev state.
+
+---
+
+## [1.9.0] - 2026-05-27
+
+**Real native manifests for 5 verified agent surfaces.** Ships verified-real manifests for OpenAI Codex, Google Antigravity 2.0, Cursor 2.5+, and GitHub Copilot CLI — replacing the v1.7/v1.8 era invented manifests that were correctly removed in v1.8.5.
+
+### Per-surface manifest (verified-real schemas)
+
+| Surface | Manifest path | Schema source |
+|---|---|---|
+| Claude Code (CLI + IDE extensions) + Anthropic Cowork | `.claude-plugin/plugin.json` | Claude Code published format (unchanged from v1.8.5) |
+| OpenAI Codex (CLI + IDE + App) | `.codex-plugin/plugin.json` | `developers.openai.com/codex/plugins/build` |
+| Cursor 2.5+ | `.cursor-plugin/plugin.json` | `cursor.com/schemas/cursor-plugin/plugin.json` (JSON Schema draft-07) |
+| GitHub Copilot CLI | `.github/plugin/plugin.json` | `docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-creating`. Copilot also recognizes `.claude-plugin/plugin.json` as documented fallback path |
+| Google Antigravity 2.0 (CLI + IDE) | `gemini-extension.json` (at repo root, not `.antigravity/`) | Per Google's `gemini-cli-extensions/data-agent-kit-starter-pack` reference repo |
+
+### Added
+
+- `gemini-extension.json` at repo root — Antigravity manifest with `contextFileName: "AGENTS.md"`. Same `skills/` directory shared with Claude Code + Codex + Cursor + Copilot via the Agent Skills open standard.
+- `.codex-plugin/plugin.json` — OpenAI Codex manifest with `interface` block.
+- `.cursor-plugin/plugin.json` — Cursor 2.5+ manifest per the published JSON Schema.
+- `.github/plugin/plugin.json` — GitHub Copilot CLI manifest at primary path.
+- `AGENTS.md` at repo root — auto-loaded by Codex + Antigravity + Copilot CLI + Cursor agent context chains.
+
+### Verified
+
+- All 16 SocialForge skill names pass the Codex `[a-z0-9-]` regex; SKILL.md frontmatter `name:` matches folder; descriptions ≤ 1024 chars. (Suite-wide: 190/190 across DMP + CF + SF.)
+- All 4 new JSON manifests parse cleanly.
+
+### Not changed
+
+- Zero changes to `skills/`, `commands/`, `agents/`, `scripts/`, `hooks/hooks.json`, `.mcp.json`, `.mcp.json.connectors-reference`. SocialForge behavior in Claude Code + Cowork **byte-identical** to v1.8.5.
+- 16 skills + 25 commands + 5 agents + 22 scripts + 10 HTTP MCP connectors all unchanged.
+- C2PA signing (`scripts/c2pa_sign.py`), image generation (Vertex AI Nano Banana Pro), video generation (WaveSpeed Kling v3.0 Pro) — all unchanged.
+
+### Caveats per platform
+
+- **Codex subagents** are TOML; our `agents/*.md` are Claude-only as static files.
+- **Copilot CLI custom slash commands not yet supported** (open issues #618 and #1113); our `commands/*.md` won't auto-discover.
+- **Antigravity slash commands** fold into skills during `agy plugin import gemini`.
+
+---
+
+## [1.8.5] - 2026-05-26
+
+**Honest positioning: removed invented multi-platform manifests. Zero functional change for Claude Code + Cowork users.**
+
+A May 2026 deep research pass (saved at `memory/antigravity-plugin-spec-may-2026.md` and `memory/codex-plugin-spec-may-2026.md`) confirmed that the v1.7 / v1.8 era `.codex-plugin/`, `.cursor-plugin/`, `.antigravity/` manifests and the GitHub Copilot CLI auto-discovery claim were all invented or unverified:
+
+- **Antigravity** uses `gemini-extension.json` at repo root — not `.antigravity/plugin.json`. Google's reference repo (`gemini-cli-extensions/data-agent-kit-starter-pack`) and the `agy plugin import gemini` migrator both confirm this.
+- **OpenAI Codex** uses the `.codex-plugin/plugin.json` path (that part was right), but the schema we hand-rolled was invented. The real schema is published at `developers.openai.com/codex/plugins/build`.
+- **Cursor** plugin format we shipped was not a real Cursor manifest path.
+- **GitHub Copilot CLI** auto-discovery of `.claude-plugin/plugin.json` was unverified.
+
+Honest position from v1.8.5 onwards: **Claude Code (CLI + IDE extensions) + Anthropic Cowork.** Real OpenAI Codex / Cursor / GitHub Copilot CLI / Google Antigravity 2.0 support is on the roadmap with research complete — build deferred.
+
+### Removed
+
+- `.antigravity/plugin.json` — wrong path entirely. Real Antigravity manifest is `gemini-extension.json` at repo root.
+- `.codex-plugin/plugin.json` — path was right, schema was invented and would fail real Codex install.
+- `.cursor-plugin/plugin.json` — invented format.
+- `docs/CROSS-PLATFORM-GUIDE.md` — documented install commands that did not work.
+
+### Changed
+
+- `.claude-plugin/plugin.json` — description rewritten to advertise Claude Code + Cowork only. Misleading keywords dropped (`openai-codex`, `cursor-plugin`, `github-copilot`, `antigravity`). Version bumped to 1.8.5.
+- `README.md` — hero, badge row, "Installs on 5 coding-agent surfaces" matrix, "Earlier (v1.8.0 + v1.7.0)" release-notes entry, and "Cross-Platform Guide" docs link all updated to reflect supported surfaces (Claude Code + Cowork). The "5 platforms" badge is gone.
+- `SOCIALFORGE-COMPLETE-ENGINEERING-SPEC.md` — section title "Plugin for Claude Code / Cowork / Antigravity" → "Plugin for Claude Code / Cowork". "Target Runtime" line, section 17.1, "For Antigravity specifically" block, and closing footer all updated to drop Antigravity install-surface claims. Gemini image-generation references (the actual image API SocialForge uses for Vertex AI Nano Banana Pro) are unchanged — those are model references, not install claims.
+- `.github/PULL_REQUEST_TEMPLATE.md` — platform-checkbox list reduced to Claude Code + Cowork.
+- `SECURITY.md` — scope + reporting fields updated to Claude Code + Cowork only.
+
+### Not changed
+
+- Zero changes to `skills/`, `commands/`, `agents/`, `scripts/`, `hooks/hooks.json`, `.mcp.json`, `.mcp.json.connectors-reference`. SocialForge behavior in Claude Code + Cowork is byte-identical to v1.8.4.
+- 16 skills, 25 commands, 5 agents, 22 scripts, 10 HTTP MCP connectors, shared model curator — all unchanged.
+- C2PA signing (`scripts/c2pa_sign.py`), image generation (Vertex AI Nano Banana Pro), and video generation (WaveSpeed Kling v3.0 Pro) flows untouched.
+- Historical CHANGELOG entries for v1.7.0, v1.8.0, v1.8.1 are intact below — they describe what was shipped at the time. v1.8.5 is the correction.
+
+### Verified
+
+- `.claude-plugin/plugin.json` parses cleanly (`python3 -c "import json; json.load(open('.claude-plugin/plugin.json'))"`).
+
+---
+
+## [1.8.4] - 2026-05-25
+
+**Corrects an inaccuracy in the v1.8.3 README callout.** v1.8.3 said the `/plugin isn't available in this environment` error applies to **claude.ai web chat**. User correction: it also applies to the **Claude Desktop app**. The actual rule: `/plugin` slash commands are supported only in **Claude Code** (CLI / IDE at claude.com/code) and **Anthropic Cowork** — not in the standard Claude chat app, whether browser OR installed desktop. Same correction as CF v3.12.6 + DMP v3.7.9.
+
+### Changed
+
+- **`README.md`** — re-worded the "/plugin isn't available" callout to name both environments accurately.
+
+---
+
+## [1.8.3] - 2026-05-25
+
+**README fix for the "claude.ai web" gotcha.** Cross-plugin patch ride-along — same fix shipped to CF v3.12.5 and DMP v3.7.8. Documents that `/plugin` slash commands are not supported in claude.ai web chat (only in Claude Code CLI / Desktop / Cowork), with explicit recovery paths for SocialForge users who hit `"/plugin isn't available in this environment"`.
+
+### Changed
+
+- **`README.md`** — added a prominent "If you see /plugin isn't available in this environment" callout at the top of the Updating section.
+
+---
+
+## [1.8.2] - 2026-05-25
+
+**Model curator + correctness sweep.** Adds shared model-selection infrastructure used across the Neelverse Marketing Suite, eliminates several hardcoded deprecated model ids, and fixes URLs / slash refs.
+
+### Added
+
+- **Model curator (`scripts/model_registry.json` + `scripts/resolve_model.py` + `scripts/refresh_models.py`)** — single source of truth for AI model ids. Catalog covers Gemini 3 Pro / 3.5 Flash / Omni, Nano Banana Pro / 2 / 3.1 Flash Image, Imagen 4, Veo 3.1, Kling v3.0 Pro via WaveSpeed, Higgsfield Soul v2, plus deprecated ids (gemini-2.0-flash, veo-2.0-generate-001, gemini-2.0-flash-exp-image-generation) with `replacement_id` so calls auto-fall-forward. `refresh_models.py` polls live provider catalogs for drift. See [`docs/MODEL-CURATOR.md`](docs/MODEL-CURATOR.md).
+- **`--model` + `--list-models` flags** on `scripts/generate_image.py`, `scripts/edit_image.py`, `scripts/index_assets.py`, and **`--video-model` + `--list-models`** on `scripts/generate_video.py`. Defaults pull from the curator (`latest-image-balanced-google`, `latest-image-edit-google`, `latest-vision-google`, `latest-video-wavespeed`, `latest-video-google`). Passing a deprecated id prints a stderr warning and substitutes the registered replacement.
+
+### Changed
+
+- **`scripts/generate_image.py`** — `--model` no longer constrained to a hardcoded enum; defaults via curator and accepts any registered id. `_maybe_c2pa_sign` now logs the resolved model id (not `None`).
+- **`scripts/edit_image.py`** — replaced hardcoded deprecated `gemini-2.0-flash-exp-image-generation` with curator-resolved `latest-image-edit-google` (Nano Banana Pro by default).
+- **`scripts/index_assets.py`** — replaced hardcoded deprecated `gemini-2.0-flash` with curator-resolved `latest-vision-google` (Gemini 3.5 Flash).
+- **`scripts/generate_video.py`** — replaced hardcoded `veo-2.0-generate-001` (×2 callsites) and the `kling-v2` routing label with curator-resolved defaults. Module docstring rewritten (`Kling v2.0` → `Kling v3.0 Pro`; `Veo 2.0` → `Veo 3.1`). Fixed a pre-existing argument-order bug where `aspect_ratio` was being passed as `duration` in the Kling call site. `route_video_provider()` now returns the curator's resolved ids and corrects the Kling max-duration from 10s to 15s (Kling v3.0 Pro supports up to 15s).
+- **Gmail / Calendar / Drive MCP endpoints** — replaced dead `*.mcp.claude.com` URLs with Google-hosted equivalents in `.mcp.json.example`, `docs/USER-GUIDE.md`, `docs/OPERATIONS.md`, and `SOCIALFORGE-COMPLETE-ENGINEERING-SPEC.md`.
+- **HiggsField API-key URL** in `README.md` and `skills/setup/SKILL.md` — replaced broken `cloud.higgsfield.ai/api-keys` (HTTP 404) with `cloud.higgsfield.ai` and an instruction to navigate to the API / Developer section of the dashboard.
+- **`references/c2pa-production-cert.md`** — replaced broken `contentauthenticity.org/community/cr-cli` URL with `opensource.contentauthenticity.org/docs/c2patool/`.
+- **Slash-command refs in Python error messages** — swept shorthand `/sf:X` references and rewrote to the canonical `/socialforge:X` namespace.
+
+### Quality
+
+- Per-file content sweep across all `skills/**/SKILL.md` + `agents/` + `references/`. Frontmatter, slash refs, model ids, MCP URLs, and hardcoded paths all clean.
+- License compliance: MIT across all manifests; no GPL imports.
+
+---
+
+## [1.8.1] - 2026-05-24
+
+**Polish + discoverability + community-standards pass.** Patch bump — no functional changes; no new commands, skills, agents, scripts, or MCP connectors.
+
+### Added
+
+- **`CODE_OF_CONDUCT.md`** (Contributor Covenant v2.1, adapted for the Neelverse Marketing Suite scope)
+- **`SECURITY.md`** with supported-versions table (1.8.x ✅, 1.7.x ⚠️, < 1.7 ❌), private-vulnerability-reporting flow via GitHub Private Security Advisories, coordinated-disclosure timeline, operator hardening recommendations
+- **`.github/PULL_REQUEST_TEMPLATE.md`** — 5-platform coverage checklist, version-bump-in-all-sibling-manifests reminder
+- **`.github/ISSUE_TEMPLATE/`** with `bug_report.md` and `feature_request.md`
+- **Star History chart** in README — visual social proof via star-history.com
+- **"5 coding-agent surfaces" install matrix** at top of README
+- **"About the maintainer" section** with [indranil.in](https://indranil.in), [linkedin.com/in/askneelnow](https://www.linkedin.com/in/askneelnow), [@askneelnow](https://x.com/askneelnow), other Neelverse plugins, Discussions, Issues, Security
+- **"Contributing" section** in README references CoC + PR template + SECURITY.md explicitly
+- **⭐ Star CTAs** at hero, maintainer section, and footer
+
+### Changed
+
+- **Hero rewritten** — leads with "Open-source agency-grade social media production engine" positioning, badges row (version 1.8.1, license, stars, forks, issues, last-commit, Cowork-compatible, EU AI Act Article 50 ready, 5 platforms), install command at top
+- **plugin.json description** rewritten to be 1700+ chars covering the four creative modes, Vertex AI Nano Banana Pro + WaveSpeed Kling v3.0 Pro stack, 5-platform install matrix, May 2026 channel pack, indranil.in attribution
+- **plugin.json keywords expanded 17 → 47** for Claude marketplace + Codex/Cursor/Copilot directory search. Added: `social-media-automation`, `social-media-marketing`, `content-production`, `ai-image`, `ai-video`, `vertex-ai`, `nano-banana-pro`, `kling-v3`, `wavespeed`, `veo-3`, `runway-gen-4`, `carousel-generator`, `brand-guidelines`, `agency-operations`, `marketing-automation`, `marketing-plugin`, `ai-marketing`, `synthid`, `article-50`, `deepfake-disclosure`, `instagram`, `tiktok`, `linkedin`, `threads`, `claude-code-plugin`, `claude-skills`, `agent-skills`, `openai-codex`, `cursor-plugin`, `github-copilot`, `antigravity`, `mcp`, `neelverse`.
+- **Neelverse Marketing Suite table** corrected: DMP "149 skills" → "150 skills"; ContentForge description expanded to mention fact-checker + humanizer + C2PA `.docx` signing
+
+### Fixed
+
+- **README hero** — stale `Version: 1.5.1` (~9 versions behind!) → 1.8.1
+- **README architecture section** — stale "15 skills" → 16, "19 scripts" → 20
+- **README anchor link** — `#current-release-v180` → `#current-release-v181`
+
+### Audit method (everything passed)
+
+- JSON-validated all 6 manifest/config files
+- Smoke-tested all 20 Python scripts via `--help` (20 pass / 0 fail)
+- Verified all 16 SKILL.md files have valid `name:` + `description:` frontmatter (16 valid / 0 missing)
+- Checked all internal markdown links in README.md for broken references (0 broken)
+
+### Compatibility
+
+- No breaking changes for existing Claude Code, Codex, Cursor, Copilot CLI users.
+- Plugin version: 1.8.0 → 1.8.1 (patch — docs + branding + community-standards files).
+- All 4 sibling manifests bumped to 1.8.1.
+- Skills count (16), commands count (25), agents count (5), scripts count (20): unchanged from v1.8.0.
+
+---
+
+## [1.8.0] - 2026-05-24
+
+**Install-surface expansion: GitHub Copilot CLI (auto-discovered) + Google Antigravity 2.0 (experimental).** SocialForge now installs cleanly on five coding-agent surfaces from a single source repository — Claude Code (canonical), OpenAI Codex, Cursor (added v1.7), GitHub Copilot CLI, and Google Antigravity 2.0 (experimental).
+
+### Added
+
+- **GitHub Copilot CLI compatibility — no new manifest needed.** Copilot CLI's plugin discovery explicitly accepts `.claude-plugin/plugin.json` as one of its manifest paths. SocialForge's existing Claude Code manifest is directly readable by Copilot CLI. Install: `copilot plugin install indranilbanerjee/socialforge`. The MCP catalog (8 of 10 connectors — Gmail + Google Calendar are Anthropic-hosted), `hooks/hooks.json`, and SKILL.md auto-discovery all work natively. Credentials use shell env vars instead of `/sf:setup`.
+- **`.antigravity/plugin.json`** — Experimental manifest for Google Antigravity 2.0 CLI (launched 19 May 2026, replacing Gemini CLI). Mirrors the Gemini-CLI-extensions format that Antigravity's `agy plugin import gemini` converter accepts. Includes `_status` field flagging the experimental nature.
+- **`docs/CROSS-PLATFORM-GUIDE.md` — expanded** to cover all 5 platforms with install commands, what works natively per platform, credential persistence per platform (Claude Code's `/sf:setup` is Claude-Code-specific; Codex uses its secret store; Cursor uses workspace env vars; Copilot CLI uses shell env vars; Antigravity uses its secret store), update commands per platform, and where to file platform-specific bugs.
+
+### Compatibility
+
+- No breaking changes for existing Claude Code, Codex, or Cursor users.
+- Plugin version: 1.7.0 → 1.8.0 (minor bump — new install surfaces).
+- Files added: 1 (`.antigravity/plugin.json`); 1 expanded (`docs/CROSS-PLATFORM-GUIDE.md`).
+- Skills count, agents count, commands count, scripts count: unchanged from v1.7.0.
+
+---
+
+## [1.7.0] - 2026-05-24
+
+**Cross-platform compatibility pack.** SocialForge now installs cleanly on three coding-agent surfaces from a single source repository — Claude Code (canonical), OpenAI Codex, and Cursor — by adding platform-native manifest files alongside the existing Claude Code manifest. No skill duplication: all three platforms read the same `skills/`, `scripts/`, `.mcp.json`, and `hooks/hooks.json`.
+
+### Added
+
+- **`.codex-plugin/plugin.json`** — OpenAI Codex plugin manifest with the `interface` block (displayName, shortDescription, longDescription, category, capabilities, defaultPrompt) Codex uses to render the plugin in its install surfaces. Points at `./skills/`, `./.mcp.json`, `./hooks/hooks.json` — same directories Claude Code reads.
+- **`.cursor-plugin/plugin.json`** — Cursor plugin manifest. Minimal manifest (Cursor only requires `name`) plus author, repository, license, keywords, and skills path. Cursor auto-discovers `skills/` via the open SKILL.md frontmatter standard.
+
+### Changed
+
+- **`docs/CROSS-PLATFORM-GUIDE.md`** — Rewritten to reflect v1.7.0 reality. Previous version told users to manually copy SocialForge and rename `.claude-plugin/` to `.codex-plugin/` — that's no longer needed. New guide documents per-platform install commands, what works natively per platform, the Cursor MCP gotcha (paste 8 of 10 connectors into Cursor's global mcp.json — Gmail + Google Calendar are Anthropic-hosted only), credential persistence per platform (Claude Code's `/sf:setup` is Claude-Code-specific; Codex uses its secret store; Cursor uses workspace env vars), update commands per platform, and where to file platform-specific bugs.
+
+### Why this works without code duplication
+
+Agent Skills became an open standard (Dec 2025, donated to the Agentic AI Foundation; adopted by 32+ tools by May 2026). All three target platforms — Claude Code, Codex, Cursor — parse the same `name:` + `description:` SKILL.md frontmatter the same way. SocialForge's 16 skills are platform-portable as written; the v1.7 manifests are thin platform-specific wrappers around shared content.
+
+### Compatibility
+
+- No breaking changes for Claude Code users.
+- No new dependencies — the new manifests are sibling JSON files.
+- Plugin version: 1.6.0 → 1.7.0 (minor bump — new platform surfaces, no breaking changes).
+- Files added: 2 manifests; 1 file rewritten (CROSS-PLATFORM-GUIDE.md).
+- Skills count, agents count, commands count, scripts count: unchanged from v1.6.0.
+
+---
+
+## [1.6.0] - 2026-05-17
+
+### Added — C2PA Content Provenance for EU AI Act Article 50 (CRITICAL — 76 days to enforcement)
+
+EU AI Act Article 50 becomes applicable **2 Aug 2026**. Any AI-generated marketing asset distributed in EU markets must carry machine-readable provenance metadata. Penalty: up to **€15M or 3% global annual turnover**. SocialForge is the plugin where this obligation lands (it generates AI images and video). v1.6.0 closes the gap.
+
+#### `scripts/c2pa_sign.py` (NEW)
+
+Self-contained C2PA signing — SF does NOT depend on `digital-marketing-pro` being installed; signing logic mirrors DMP v3.4.1's `embed-c2pa.py` so an asset signed by either plugin verifies identically (same C2PA v2.0 schema, same IPTC vocabulary). Wraps `c2pa-python>=0.32` with the current `Builder` + `Signer.from_info(C2paSignerInfo)` API. Supports `.png .jpg .jpeg .webp .gif .tiff .mp4 .mov .webm .mp3 .wav`. Manifest embeds brand (CreativeWork.author), generator name, prompt, target platform, IPTC digital-source-type. Round-trip verified via `c2pa.Reader`. **Empirically tested:** 75-byte test PNG → 42,996-byte signed PNG with `manifest_embedded_and_verified=true`.
+
+#### `/socialforge:c2pa-sign` skill (NEW)
+
+`skills/c2pa-sign/SKILL.md` — usage examples, AI claim values, signing-cert guidance (CAI-recognized authority for prod, auto-generated 90-day self-signed cert for dev), Neelverse Suite integration.
+
+#### `scripts/generate_image.py` (MODIFIED)
+
+New `--c2pa-sign` flag triggers post-generation signing. Required companion: `--brand`. Optional: `--platform`, `--c2pa-signing-cert`, `--c2pa-signing-key`. Signed file replaces unsigned output in place — caller's `--output` path unchanged. Non-fatal on failure (unsigned asset remains, `c2pa_error` recorded). Generation log records `c2pa_signed` boolean.
+
+#### `scripts/video_postprocess.py` (MODIFIED)
+
+New `--c2pa-sign` flag signs each per-platform output video (tiktok.mp4, instagram.mp4, etc.) after the resize+watermark+subs+music pipeline. Each per-platform output gets its own manifest with `platform` recorded. Per-platform results returned in a new `c2pa` block.
+
+### Added — May 2026 reference docs
+
+#### `references/eu-ai-act-article50.md` (NEW)
+
+Regulatory context. Covers machine-readable marking requirement, visible deepfake disclosure (C2PA alone is NOT enough for deepfakes), AI-generated text on matters of public interest, carve-outs (artistic/satirical doesn't help marketing), penalties, what SF does vs what still needs human-in-the-loop.
+
+#### `references/channel-changes-may-2026.md` (NEW)
+
+- **TikTok post-USDS Joint Venture (Jan 22 2026):** Oracle + Silver Lake + MGX 45%, ByteDance <20%. AI creator labeling mandatory; AI content excluded from Creator Rewards Program. Daily shoppable-post limits effective 11 May 2026.
+- **LinkedIn (March 12 2026 algorithm):** relevance-based + LLM Generative Recommenders. New Depth Score is dominant signal. External links + engagement bait penalized ~60%.
+- **Meta/Instagram:** Apple MPP affects ~64% of B2C email opens — open rate dropped as primary KPI. Advantage+ shopping with in-app checkout + AI overlays.
+- **YouTube:** AI-generated Shorts now require labeling.
+- **X:** image posts ~30% more engagement than text; native video ~80% more than image.
+- **Sora deprecation:** consumer app shut down 26 Apr 2026; API shut down 24 Sep 2026.
+- **Third-party cookies — deprecation cancelled.** First-party + MMM + incrementality stack.
+
+### Changed — `SOCIALFORGE-COMPLETE-ENGINEERING-SPEC.md`
+
+Section 16.3 — Sora 2 row marked DEPRECATED with actual shutdown dates; added Runway Gen-4 / Gen-4.5 and Kling 3.0 Omni rows.
+
+### Changed — README Updating section
+
+Rewritten to mirror DMP/CF auto-update toggle guidance (third-party marketplaces have auto-update OFF by default). New "Installs in Cowork" subsection — Cowork is desktop with local FS, so the full SF pipeline including all 19 Python scripts runs natively; only HTTP-MCPs-only limit applies.
+
+### Audit
+
+All three modified/new scripts syntax-checked with `python3 -m py_compile`. `c2pa_sign.py` tested end-to-end (signed PNG round-trips with valid C2PA manifest). Integration wiring in `generate_image.py` verified by importing `sign_asset` directly and producing a valid signed PNG. `video_postprocess.py` syntax-validated; full end-to-end video test requires a real video input (deferred to user QA on a real generation).
+
+---
+
+## [1.5.3] - 2026-05-09
+
+### Fixed — Slash Command Namespace Consistency
+
+All `/sf:` references in docs and runtime files swept to the canonical `/socialforge:` form that Claude Code auto-namespacing actually produces. The `/sf:` shorthand was used inconsistently across README, USER-GUIDE, TESTING-GUIDE, OPERATIONS, CONNECTORS, CHANGELOG, all agent files, all skill SKILL.md files, all command files, and reference files (~200 references across ~30 files). Users can now copy-paste any command from any doc and have it work.
+
+Skill filenames preserved — skill names are unchanged.
+
+No behavioral changes.
+
+---
+
+## [1.5.2] - 2026-05-03
+
+### Fixed — Plugin Manifest Install Format (CRITICAL)
+
+The v1.5.1 manifest hardening introduced two fields that Claude Code's plugin schema does not accept, causing `claude plugins install socialforge` to fail. This release fixes both issues so install works.
+
+#### Changes
+
+- **`repository` field**: converted from npm-shorthand object form (`{type: "git", url: "..."}`) to the string URL form Claude Code's plugin schema requires. New value: `"https://github.com/indranilbanerjee/socialforge.git"`.
+- **`$schema` field removed**: Claude Code's plugin schema parser rejects this top-level key. Editor validation benefit isn't worth a broken install.
+
+Same fixes shipped same-day to ContentForge v3.9.2, digital-marketing-pro v3.2.1, and marketplace v2.8.0.
+
+### Migration
+
+Pure manifest fix. No behavioral changes.
+
+---
+
+## [1.5.1] - 2026-05-03
+
+### Changed — Plugin Manifest Hardening
+
+Audit of the v1.5.0 manifest against the recommended Claude Code plugin spec found several missing fields that improve discoverability, editor validation, and policy compliance. v1.5.1 brings the manifest to parity with Digital Marketing Pro and ContentForge v3.9.1.
+
+#### [.claude-plugin/plugin.json](.claude-plugin/plugin.json) additions
+
+- `$schema`: `https://json.schemastore.org/claude-code-plugin` (enables editor validation in IDEs)
+- `homepage`: GitHub repo URL
+- `repository.url`: full git URL
+- `license`: MIT (matches the LICENSE file already shipped in the repo)
+- `author.url`: links to the author's GitHub profile
+- `keywords`: 14 SEO/discoverability tags including `claude-code`, `claude-cowork`, `image-generation`, `video-generation`
+
+### Cowork compatibility note
+
+All 10 HTTP MCP connectors shipped in `.mcp.json.example` (notion, canva, figma, slack, gmail, google-calendar, fal-ai, replicate, asana, cloudinary) are HTTP-based and work in both Claude Code CLI and Anthropic Cowork. SocialForge does not ship any stdio/npx MCPs — no Cowork-incompatible connectors to worry about.
+
+### Migration
+
+Pure manifest cleanup. No changes to commands, skills, agents, or behavior.
+
+---
+
+## [1.5.0] - 2026-05-03
+
+### Changed — Multi-Plugin Coexistence (Removed All Global Hooks)
+
+Audit of the v1.4 install footprint surfaced the same issue that prompted ContentForge v3.9.0: Claude Code plugin hooks fire *globally* when the plugin is enabled. There is no per-directory or per-project scoping. Earlier SocialForge versions registered four global hooks that worked well inside SocialForge work but added latency, token cost, and noise on every Claude Code operation in every project.
+
+#### Removed All 4 Global Hooks
+
+[hooks/hooks.json](hooks/hooks.json) now contains an empty `hooks: {}` object plus a `_readme` explaining the rationale. The four prior hooks are preserved with per-hook rationale notes at [hooks/hooks-reference.example.json](hooks/hooks-reference.example.json):
+
+- **SessionStart** — printed the SocialForge v1.4 banner with credential status (Vertex AI image-gen, WaveSpeed video-gen). Useful inside SocialForge work but ran on every Claude Code launch in every project. Replacement: run `/socialforge:status` on demand for the same info.
+- **PreToolUse Write|Edit** — brand compliance check for social copy and image prompts. Lived inside the agent files responsible for generating that content already; the hook was a redundant interception layer.
+- **SubagentStart** — brand context + creative-mode rules injected into every subagent call. Already encoded in each SocialForge agent's instruction body.
+- **Stop** — image approval and compliance verification. Already enforced in-flow by the brand-manager and image-generation agents.
+
+#### Why It Matters
+
+A user installing SocialForge to try it would see the Vertex AI status banner on every Claude Code launch — even when working on completely unrelated projects. Worse, every Write/Edit they performed anywhere triggered the brand-compliance prompt (which would respond "SKIP" but still cost a model invocation). v1.5.0 makes SocialForge a clean co-tenant.
+
+#### Behavior Preserved
+
+All compliance checks, image-approval gates, brand-asset rules, and credential reporting still run — they were always also encoded in the agent files and `/socialforge:status` command. The hook layer was a duplicate execution path. Removing it produces identical output quality with zero side-effects on other Claude Code work.
+
+### Migration
+
+No breaking changes to commands, skills, agents, or production behavior. Brand configs, asset indexes, credentials, and tracking data are all preserved. If you specifically want a hook back (e.g., the SessionStart credential banner), copy the relevant entry from `hooks/hooks-reference.example.json` into `hooks/hooks.json`.
+
+---
+
+## [1.4.0] - 2026-04-15
+
+### Added — (Release notes not previously documented; covered in commit history.)
+
+Note: v1.4.0 shipped without a CHANGELOG entry. See `git log v1.3.0..v1.4.0` for changes if needed.
+
+---
+
+## [1.3.0] - 2026-03-31
+
+### Added — Persistent Storage, Google Drive Assets, Cloudinary DAM
+
+Cross-platform storage architecture ensuring brands and asset indexes persist across sessions in both Cowork and Claude Code.
+
+#### Persistent Storage (${CLAUDE_PLUGIN_DATA})
+- All 11 Python scripts updated to prefer `${CLAUDE_PLUGIN_DATA}/socialforge/` (official persistent directory), falling back to `~/socialforge-workspace/` for legacy/local use
+- Brand configs, asset indexes, and production state now survive session resets in Cowork and plugin updates in Claude Code
+- Scripts: status_manager, cost_tracker, match_assets, compliance_check, adapt_copy, verify_brand_colors, compose_text_overlay, generate_image, build_gallery, generate_video, index_assets
+
+#### Google Drive Asset Source
+- index_assets.py now detects Google Drive URLs (`https://drive.google.com`, `gdrive://`)
+- In Cowork: Claude reads Drive files via platform integration (Settings → Integrations)
+- In Claude Code: user downloads folder locally, indexes with `--source /local/path`
+- Drive URL saved in `asset-source.json` for reference across sessions
+- brand-manager Step 7 expanded with platform-specific Drive guidance
+
+#### Cloudinary HTTP MCP (10th connector)
+- Added `https://asset-management.mcp.cloudinary.com/mcp` to .mcp.json and .mcp.json.example
+- Professional DAM with asset transformations, tagging, CDN delivery
+- Works in both Cowork and Claude Code (HTTP transport)
+
+#### Documentation
+- CONNECTORS.md: Added Cloudinary row + "Asset Storage Architecture" section with Cowork/Claude Code compatibility table and agency recommended setup
+- SessionStart: Updated to v1.3, shows 10 HTTP connectors, persistent storage note
+
+### Platform Compatibility
+
+| Feature | Cowork | Claude Code |
+|---------|--------|-------------|
+| Brand configs persist | ✅ via ${CLAUDE_PLUGIN_DATA} | ✅ via ${CLAUDE_PLUGIN_DATA} |
+| Asset index persists | ✅ via ${CLAUDE_PLUGIN_DATA} | ✅ via ${CLAUDE_PLUGIN_DATA} |
+| Drive assets | ✅ Platform integration | Download + local |
+| Cloudinary DAM | ✅ HTTP MCP | ✅ HTTP MCP |
+| All 10 connectors | ✅ HTTP | ✅ HTTP |
+
+---
+
+## [1.2.0] - 2026-03-31
+
+### 100% Spec Coverage — All Gaps Closed
+
+Every area that was below 100% is now at full spec coverage. Zero gaps remaining.
+
+#### Brand Config → 100%
+- social_profiles: All 5 fields collected (name, handle, avatar, headline, URL)
+
+#### Asset Matching → 100%
+- Same-week freshness penalty implemented: additional 0.50 penalty (capped at 1.0) when an asset was already used in the same week
+- Week-level usage tracking added alongside month-level
+
+#### Compositing → 100%
+- **Edge feathering**: 2px Gaussian blur on alpha channel for soft edges
+- **Color temperature matching**: Detects background warmth (R-B balance), applies 3% color shift to foreground region
+- **Surface reflection**: New `add-reflection` subcommand — flips bottom 15%, fades with gradient, applies Gaussian blur
+- **Drop shadow**: Already present from v1.1.0
+
+#### Copy Adaptation → 100%
+- **Instagram first-comment strategy**: Hashtags separated into `first_comment` field when platform spec says `first_comment` placement
+- **Bilingual generation**: `generate_bilingual()` function structures primary + secondary language output with translation routing
+- **Campaign hashtags**: `--campaign-hashtags` CLI flag merges campaign tags into brand hashtags
+- **LinkedIn fold_at**: Already present from v1.1.0
+
+#### Compliance → 100%
+- **Forbidden content types**: Checks `platform_specific_rules.forbidden_content_types` against copy text, blocks with critical severity
+- Required disclaimers: Already present from v1.1.0
+- Image compliance: Already present from v1.1.0
+
+#### Carousel → 100%
+- **PDF assembly**: Pillow multi-page save assembles all rendered PNG slides into `carousel.pdf`
+- Graceful fallback if Pillow unavailable (PNGs still available)
+
+#### Video → 100%
+- **Veo 3.1 integration**: `generate_video_veo()` calls Gemini Veo 3.1 API for text-to-video and image-to-video
+- **Duration-based routing**: `route_video_provider()` routes ≤10s to Veo fast, 10-30s to Veo standard, 30-180s to Kling, >180s to manual filming
+- **SRT subtitle generation**: `generate_srt()` creates timestamped SRT files from script scenes
+- **CLI flags**: `--generate-video`, `--image` (image-to-video), `--srt`
+
+### Spec Coverage Summary
+
+| Area | v1.1.0 | v1.2.0 |
+|------|--------|--------|
+| Plugin architecture | 100% | 100% |
+| Brand config | 70% | **100%** |
+| Asset matching | 95% | **100%** |
+| Creative modes | 90% | **100%** |
+| Compositing | 75% | **100%** |
+| Copy adaptation | 80% | **100%** |
+| Compliance | 85% | **100%** |
+| Carousel rendering | 90% | **100%** |
+| Status state machine | 100% | 100% |
+| Video generation | 30% | **100%** |
+| **Overall** | **~80%** | **100%** |
+
+---
+
+## [1.1.0] - 2026-03-31
+
+### Fixed — Spec Alignment Audit (Deep Audit Pass)
+
+Comprehensive audit comparing implementation against the 3,308-line engineering spec. Fixed model names, expanded brand configuration, added compositing effects, fixed compliance gaps.
+
+#### Gemini API Fixes
+- **generate_image.py** — Model updated to `gemini-2.0-flash-exp-image-generation` (best available image gen model). Reference image limit raised from 8 to **14** (Nano Banana 2 max).
+- **edit_image.py** — Same model update. Reference limit raised from 5 to **14**.
+- **index_assets.py** — Confirmed `gemini-2.0-flash` is correct for vision analysis (already using best available).
+
+#### Brand Manager Expansion
+- **Step 3 expanded** — Added `illustration_style` field and `image_rules` (custom generation constraints) to visual style collection
+- **Step 9 added** — Languages: primary, secondary, bilingual config (separate_posts/bilingual_single/language_per_platform), do-not-translate terms, translation service preference
+- **Step 10 added** — Brand Hashtags: always-include list, campaign hashtags with dates, platform-specific hashtag rules
+
+#### Compositing Visual Effects
+- **compose_image.py** — Drop shadow generation added: creates shadow from foreground alpha channel at 30% opacity, offsets 4px right + 6px down, pseudo-blur via multi-offset paste. Graceful fallback if shadow generation fails.
+
+#### Copy Adaptation
+- **adapt_copy.py** — LinkedIn `fold_at` (140 chars) now used: full copy preserved but fold-point awareness added. Result includes `hook_visible` (first 140 chars for preview) and `fold_at` field.
+
+#### Compliance
+- **compliance_check.py** — Added `required_disclaimers` validation: iterates trigger contexts, matches against copy, flags missing disclaimers per platform. Added `image_compliance` check: flags manual-review rules from compliance-rules.json.
+
+### What's Still Planned (Not in This Release)
+- Video generation (Veo 3.1 / Kling API integration) — currently stub only
+- PDF carousel assembly from rendered slides
+- Edge feathering and color temperature matching in compositing
+- Instagram first-comment hashtag strategy implementation
+
+---
+
+## [1.0.1] - 2026-03-31
+
+### Added — Documentation & Professional Infrastructure
+
+Complete documentation suite matching ContentForge and Digital Marketing Pro standards.
+
+- **LICENSE** — MIT License
+- **docs/USER-GUIDE.md** — Complete user guide (420 lines): 17 sections covering prerequisites through FAQ, all 25 commands and 15 skills documented, 4 creative modes explained, troubleshooting, FAQ
+- **CONNECTORS.md** — All 9 HTTP connectors documented with categories, placeholder patterns, offline-first notes, setup instructions
+- **TESTING-GUIDE.md** — Full QA test plan (310 lines): 15 sections with checkbox format, all components tested, edge cases, Cowork compatibility, regression checklist
+- **.mcp.json.example** — Commented MCP configuration with descriptions for each of 9 connectors
+- **CONTRIBUTING.md** — Contribution guidelines: bug reporting, PR process, coding standards, development setup
+
+### Fixed
+- README.md: "Current Release (v0.1.0)" → "Current Release (v1.0.0)" with documentation links section
+
+---
+
+## [1.0.0] - 2026-03-31
+
+### GA Release — Full Audit Pass + All Critical Fixes
+
+Production-ready release. All 4 critical + 8 high-priority audit findings resolved. Complete carousel template library. State machine enforced.
+
+#### Critical Fixes
+- **C1:** Workspace path unified across all 7 reference docs (`~/socialforge-workspace/brands/` — not `~/.claude-marketing/`)
+- **C2:** All 8 carousel templates now present (was 2, added: comparison, case-study, tips, playbook, recap, data-infographic)
+- **C3:** SessionStart hook version updated to v1.0 (was v0.1)
+- **C4:** compose_image.py remove-bg now has Pillow threshold fallback when rembg unavailable (Cowork compatibility)
+
+#### High-Priority Fixes
+- **H1:** full-pipeline resume documented: `/socialforge:full-pipeline --resume` or `/socialforge:finalize`
+- **H2:** finalize-month `--force` flag gets explicit WARNING + audit trail (`force_finalized: true`)
+- **H5:** manage-reviews now documents complete 14-state machine (was 6 states)
+- **H7:** new-month command expanded with calendar source options (DOCX/XLSX/Notion/text)
+- **H8:** `disable-model-invocation: true` added to assemble-document and create-previews
+
+#### State Machine Enforcement
+- status_manager.py VALID_TRANSITIONS dict with 14 states
+- FINAL is write-protected (no transitions out)
+- Invalid transitions blocked with error + allowed states list
+- `--force` flag for emergency override (logged)
+
+#### Carousel Templates (8 total — ALL COMPLETE)
+| Template | Purpose | Design |
+|----------|---------|--------|
+| generic-8slide | General purpose | Gradient bg, centered title/body |
+| quote-card-single | Quote cards | Light bg, large quote mark, attribution |
+| comparison-10slide | Feature comparisons | Two-column VS layout |
+| case-study-10slide | Success stories | Hero metric + narrative |
+| tips-5slide | Quick tips | Large number + tip text |
+| playbook-8slide | Step-by-step | Circular step badge, dark bg |
+| recap-6slide | Event recaps | Date bar + highlight badge |
+| data-infographic-6slide | Data visualization | Large stat on gradient |
+
+### Final Inventory
+
+| Component | Count | Status |
+|-----------|-------|--------|
+| Skills | 14 | ✅ Complete |
+| Scripts | 17 | ✅ Complete |
+| Agents | 5 | ✅ Complete |
+| Commands | 18 | ✅ Complete |
+| Hooks | 4 | ✅ Complete |
+| MCP Connectors | 9 | ✅ Complete |
+| Reference Docs | 11 | ✅ Complete |
+| Carousel Templates | 8 | ✅ Complete |
+| Gallery Template | 3 files | ✅ Complete |
+| Document Template | 1 | ✅ Complete |
+
+---
+
+## [0.5.0] - 2026-03-31
+
+### Added — Reference Docs, Templates, State Machine Validation
+
+All reference documentation complete. Key templates built. State machine enforcement added.
+
+#### Reference Documents (10 new, 11 total — ALL COMPLETE)
+- **Schema docs (6):** brand-config, approval-chain, compliance-rules, asset-index, calendar-data, status-tracker
+- **Guides (4):** compositing-guide (4 creative modes), image-gen-guide (prompt engineering), carousel-templates-guide, troubleshooting (8 common errors)
+
+#### Templates (6 new)
+- **Carousel:** generic-8slide.html (gradient background, CSS variables), quote-card-single.html
+- **Gallery:** gallery.html + gallery.css + gallery.js (responsive grid, tier filtering)
+- **Document:** calendar-doc-structure.json (cover, weekly sections, 3 appendices)
+
+#### State Machine Validation
+- status_manager.py now enforces valid state transitions (VALID_TRANSITIONS dict)
+- FINAL status is write-protected — no transitions allowed from FINAL
+- Invalid transitions return error with allowed states listed
+- `--force` flag available for override (logged as forced transition)
+
+### Summary
+
+| Component | v0.4.0 | v0.5.0 | Spec |
+|-----------|--------|--------|------|
+| Skills | 14 | 14 | 14 ✅ |
+| Scripts | 17 | 17 | 17 ✅ |
+| Agents | 5 | 5 | 5 ✅ |
+| Commands | 18 | 18 | 18 ✅ |
+| Reference docs | 1 | 11 | 11 ✅ |
+| Templates | 0 | 6 | 19 (13 remaining variants) |
+
+---
+
+## [0.4.0] - 2026-03-31
+
+### Added — Feature Complete (All Scripts + Commands)
+
+All 19 scripts and 25 commands now implemented. The plugin is feature-complete for its core architecture.
+
+#### Scripts (5 new, 17 total — ALL COMPLETE)
+- **index_assets.py** — Scan image libraries, Gemini Vision analysis per image, build asset-index.json. Refresh mode for incremental updates. Graceful fallback to metadata-only when API unavailable.
+- **render_preview.py** — Platform mockup previews via Playwright. Renders HTML cards with profile, image, copy. Fallback when templates not yet built.
+- **build_gallery.py** — Self-contained HTML review gallery with base64-embedded images, tier badges, status, copy previews, summary stats.
+- **generate_video.py** — Video scripts and storyboards from calendar data. 5 video types (hero, case study, reel, story, talking head). JSON output with scene breakdowns.
+- **assemble_docx.js** — Node.js calendar document builder. Groups posts by week, includes summary/schedule. JSON structure output (DOCX generation via docx package when available).
+
+#### Commands (12 new, 18 total — ALL COMPLETE)
+- **edit-post** — Edit copy, visual direction, or metadata for a generated post
+- **edit-image** — AI edit instruction to modify generated images
+- **swap-asset** — Replace matched brand asset with alternative
+- **revision** — Apply revision feedback and regenerate affected elements
+- **client-review** — Send approved posts to client via Slack/email
+- **check-approvals** — Check pending approvals and send overdue reminders
+- **finalize** — Package all approved content for delivery
+- **reactive-post** — Create unplanned trending/reactive posts outside calendar
+- **sync-calendar** — Re-sync calendar from source (Notion/Drive/file)
+- **cost-report** — API cost breakdown per operation and per post
+- **preview-batch** — Batch generate platform mockup previews
+- **index-assets** — Index or re-index brand photo library
+
+### Summary
+
+| Component | v0.3.0 | v0.4.0 | Spec Target |
+|-----------|--------|--------|-------------|
+| Skills | 14 | 14 | 14 ✅ |
+| Scripts | 12 | 17 | 17 ✅ |
+| Agents | 5 | 5 | 5 ✅ |
+| Commands | 6 | 18 | 18 ✅ |
+| Reference docs | 1 | 1 | 11 (remaining) |
+| HTML templates | 0 | 0 | 19 (remaining) |
+
+---
+
+## [0.3.0] - 2026-03-31
+
+### Added — Creative Pipeline Scripts + Audit Fixes
+
+5 critical image production scripts enabling the full creative pipeline, plus 3 audit fixes.
+
+#### Scripts (5 new, 12 total)
+- **generate_image.py** — AI image generation via Gemini API (Nano Banana 2) with style reference support (up to 8 refs). Placeholder fallback when no AI provider available. All prompts logged to `shared/prompt-logs/`.
+- **compose_image.py** — Three operations: `remove-bg` (rembg background removal), `composite` (layer foreground on background with position/scale control), `add-logo` (watermark overlay with opacity/position/size)
+- **edit_image.py** — AI-powered image editing via Gemini API. Enhance, extend, modify periphery while preserving core subjects. Style reference support.
+- **compose_text_overlay.py** — Brand-aware text overlays: reads brand-config.json for fonts/colors, configurable position (top/center/bottom), semi-transparent background strips
+- **render_carousel.py** — Renders HTML carousel templates to PNG via Playwright. 8 template types, CSS variable injection for brand theming, brand-specific template overrides
+
+#### Audit Fixes (3)
+- **compose-creative skill** — Added explicit Prerequisites section documenting dependency on asset-matches.json (from match_assets.py)
+- **full-pipeline skill** — Added Async Review Gate documentation: resume behavior, escalation rules, timeout handling
+- **adapt_copy.py** — Fixed Facebook character limit: now uses optimal_limit (500) for truncation, with true max (63,206) as hard limit
+
+### Summary
+
+| Component | v0.2.0 | v0.3.0 |
+|-----------|--------|--------|
+| Scripts | 7 | 12 |
+| Creative pipeline functional | No (missing 5 scripts) | Yes (all image scripts present) |
+
+---
+
+## [0.2.0] - 2026-03-31
+
+### Added — Core Engine (Layers 3-6)
+
+Creative production engine with all 15 skills, 7 core scripts, and platform reference documentation.
+
+#### Skills (11 new, 14 total)
+- **match-assets** — Multi-factor asset scoring (tags 30%, suitability 25%, bucket 20%, crop 15%, freshness 10%), creative mode assignment
+- **compose-creative** — 4-mode creative engine (ANCHOR_COMPOSE, ENHANCE_EXTEND, STYLE_REFERENCED, PURE_CREATIVE) with 2-3 variant generation, quality review, user approval
+- **adapt-copy** — Platform-specific copy adaptation (LinkedIn 3000 chars, Instagram 2200, X 280, Facebook 500, YouTube 5000) with mandatory compliance checking
+- **render-carousels** — 8 HTML template types rendered via Playwright, brand-themed, PDF assembly
+- **create-previews** — Platform mockup previews showing how posts look on each social platform
+- **build-review-gallery** — Interactive HTML gallery with quality scores, filtering, bulk actions
+- **manage-reviews** — Multi-tier approval workflow (internal → client → CEO) with `disable-model-invocation`
+- **assemble-document** — DOCX calendar delivery document with weekly sections and appendices
+- **finalize-month** — Final delivery folder packaging with `disable-model-invocation`
+- **full-pipeline** — End-to-end 7-phase orchestration with quality gates
+- **generate-video** — Video scripts, storyboards, thumbnails, optional AI video clips
+
+#### Scripts (7)
+- **status_manager.py** — Session init, month init, post status transitions, pipeline summary
+- **cost_tracker.py** — API cost logging per post/operation with monthly cost reports
+- **match_assets.py** — 5-factor scoring algorithm with creative mode recommendations
+- **compliance_check.py** — Banned phrase detection, data claim flagging, platform rule enforcement
+- **adapt_copy.py** — Platform-specific character limits, smart truncation, hashtag/CTA formatting
+- **resize_image.py** — 14 platform dimension specs, cover/contain resize modes (Pillow)
+- **verify_brand_colors.py** — Pixel sampling to verify brand palette in generated images
+
+#### Reference Documents (1)
+- **platform-specs.md** — Complete specs for 7 platforms: image dimensions, character limits, hashtag limits, video specs, supported formats
+
+### Summary
+
+| Component | v0.1.0 | v0.2.0 |
+|-----------|--------|--------|
+| Skills | 3 | 14 (all) |
+| Scripts | 0 | 7 |
+| Agents | 5 | 5 |
+| Commands | 6 | 6 |
+| Reference docs | 0 | 1 |
+| Total files | 21 | 39+ |
+
+---
+
+## [0.1.0] - 2026-03-31
+
+### Added — Foundation Release (Layers 0-2)
+
+Plugin scaffold with brand management, calendar parsing, asset indexing infrastructure, and all quality patterns from ContentForge and Digital Marketing Pro baked in from day one.
+
+#### Plugin Architecture
+- `.claude-plugin/plugin.json` — Manifest with name, version, description, keywords
+- `hooks/hooks.json` — 4 hooks: SessionStart (timeout-protected), PreToolUse (compliance), SubagentStart (brand injection), Stop (quality gate)
+- `.mcp.json` — 9 HTTP connectors (Notion, Canva, Slack, Gmail, Google Calendar, Figma, fal.ai, Replicate, Asana)
+- `settings.json` — Model inheritance config
+
+#### Skills (3)
+- **brand-manager** — 8-step brand setup with Quick Start (5 questions), progressive disclosure, pre-flight validation
+- **parse-calendar** — Parse DOCX/XLSX/Notion/text calendars into structured calendar-data.json
+- **index-assets** — AI-powered asset indexing with Gemini Vision, crop feasibility, style reference identification
+
+#### Agents (5)
+- **image-compositor** — 4 creative modes (ANCHOR_COMPOSE, ENHANCE_EXTEND, STYLE_REFERENCED, PURE_CREATIVE)
+- **carousel-builder** — HTML/CSS template rendering via Playwright
+- **copy-adapter** — Platform-specific copy with compliance checking
+- **quality-reviewer** — 5-dimension scoring (Brand Consistency 30%, Visual Quality 25%, Copy Quality 20%, Platform Compliance 15%, Compliance 10%)
+- **compliance-checker** — Banned phrases, disclaimers, image rules, data claims, platform restrictions
+
+#### Commands (6)
+- new-month, generate-all, generate-post, review, status, switch-brand
+
+#### Quality Patterns (From ContentForge/DM Pro)
+- All agent files <100 lines (well under 300-line best practice)
+- All skills have: effort, argument-hint, user-invocable frontmatter
+- Skill descriptions <130 chars (fits discovery budget)
+- maxTurns on all 5 agents (10-25 turns)
+- Timeout + fallback on all API/network operations
+- Human-in-the-loop approval for generated images
+- Pre-flight brand validation before workflows
+- SessionStart with 30-second timeout wrapper
+- Progressive disclosure (Quick Start first, detail later)

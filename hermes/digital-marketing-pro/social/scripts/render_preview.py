@@ -1,0 +1,210 @@
+#!/usr/bin/env python3
+"""
+render_preview.py — Render a preview card per platform via Playwright.
+Each card shows the post copy, the image and the platform badge, so copy, line breaks and
+crop can be checked before publishing. It is one layout with the platform named, not a
+replica of the platform's feed (no per-platform layouts ship).
+"""
+
+import argparse
+import base64
+import html as html_lib
+import json
+import mimetypes
+import os
+import sys
+from pathlib import Path
+
+PLUGIN_ROOT = Path(__file__).resolve().parent.parent
+_plugin_data = os.environ.get("CLAUDE_PLUGIN_DATA") or os.environ.get("PLUGIN_DATA") or ""
+if _plugin_data and Path(_plugin_data).exists():
+    WORKSPACE = Path(_plugin_data) / "socialforge"
+else:
+    WORKSPACE = Path.home() / "socialforge-workspace"
+# Optional per-platform layout overrides: assets/preview-templates/<platform>.html
+# with {{name}} / {{handle}} / {{platform}} / {{image_uri}} / {{copy}} placeholders (none ship).
+TEMPLATE_DIR = PLUGIN_ROOT / "assets" / "preview-templates"
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # scripts/ holds _common.py
+import _common  # noqa: E402
+
+# Preview copy is capped so one runaway caption cannot stretch the mockup; when
+# the cap bites, the preview says so instead of cutting the text silently.
+PREVIEW_COPY_CHARS = 500
+
+
+def _image_data_uri(path):
+    """The image as a data: URI.
+
+    The preview page is loaded with set_content(), so it lives at about:blank,
+    and Chromium refuses file:// images from about:blank. Every preview used to
+    show a broken-image icon while this script reported success. Embedding the
+    bytes needs no file access from the page at all."""
+    mime = mimetypes.guess_type(str(path))[0] or "application/octet-stream"
+    return f"data:{mime};base64," + base64.b64encode(Path(path).read_bytes()).decode("ascii")
+
+
+def render_preview(image_path, copy_text, platform, brand, output_path,
+                   allow_missing_image=False):
+    """Render the preview card for one post on one platform."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return {"error": "Playwright is not installed. Run: python scripts/install_deps.py --groups carousel (it prints the pinned pip command and the browser command)"}
+
+    # Load brand config for profile info
+    config_path = WORKSPACE / "brands" / brand / "brand-config.json"
+    profile = {"name": brand, "handle": f"@{brand}", "avatar": "", "headline": ""}
+    if config_path.exists():
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+        profiles = config.get("social_profiles", {})
+        if platform in profiles:
+            profile = profiles[platform]
+
+    # Every interpolated value is escaped — post copy and brand values are untrusted
+    # text and must not be able to inject markup into the preview reviewers approve.
+    name = html_lib.escape(str(profile.get("name", brand)))
+    handle = html_lib.escape(str(profile.get("handle", "@" + brand)))
+    platform_label = html_lib.escape(platform.upper())
+    copy_truncated = len(copy_text) > PREVIEW_COPY_CHARS
+    shown = copy_text[:PREVIEW_COPY_CHARS].rstrip() + ("…" if copy_truncated else "")
+    copy_html = html_lib.escape(shown)
+
+    # A missing image used to sail straight through: the path became a file://
+    # URI, the browser rendered a broken image as blank white, and this function
+    # returned {"status": "success"} for a preview containing nothing. A reviewer
+    # approving that gallery would be approving an empty rectangle. Refuse
+    # instead — this is the exact failure mode the plugin claims is impossible.
+    resolved = Path(image_path).resolve()
+    missing = not resolved.is_file()
+    if missing and not allow_missing_image:
+        return {
+            "status": "FAILED",
+            "error": f"image not found: {resolved}",
+            "stage": "input",
+            "reason": "missing-image",
+            "detail": ("render_preview was given a path that does not exist. Rendering it "
+                       "would produce a blank preview that looks like a successful render."),
+            "next_steps": [
+                "Generate or match the image first (/socialforge:compose-creative or /socialforge:match-assets).",
+                "To preview copy layout without artwork, pass --allow-missing-image "
+                "— the preview is then explicitly marked as having no artwork.",
+            ],
+            "platform": platform, "brand": brand, "action_required": True,
+        }
+    image_uri = "" if missing else _image_data_uri(resolved)
+
+    # Per-platform template if one exists, otherwise the inline mockup below
+    template_path = TEMPLATE_DIR / f"{platform}.html"
+    if template_path.exists():
+        template = template_path.read_text(encoding="utf-8")
+        for placeholder, value in (("{{name}}", name), ("{{handle}}", handle),
+                                   ("{{platform}}", platform_label),
+                                   ("{{image_uri}}", image_uri), ("{{copy}}", copy_html)):
+            template = template.replace(placeholder, value)
+        html = template
+    else:
+        html = build_default_html(name, handle, platform_label, image_uri, copy_html)
+
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 600, "height": 800})
+        page.set_content(html)
+        try:
+            page.wait_for_function(
+                "() => Array.from(document.images).every(i => i.complete)", timeout=10000)
+        except Exception:
+            pass  # judged below: an image that never finished has no natural width
+        # An existing file is not proof the reviewer sees it: an unreadable or
+        # non-image file renders as a broken icon. Check what the page drew.
+        drawn = page.evaluate(
+            "() => Array.from(document.images).filter(i => i.getAttribute('src'))"
+            ".every(i => i.naturalWidth > 0)")
+        if not missing and not drawn:
+            browser.close()
+            return {
+                "status": "FAILED",
+                "error": f"image did not render: {resolved}",
+                "stage": "render",
+                "reason": "image-did-not-render",
+                "detail": ("The file exists but the browser could not draw it (not an image, "
+                           "or an unsupported format). A preview with a broken image is not a "
+                           "preview of the post."),
+                "next_steps": ["Check the file opens as an image (PNG, JPEG, WebP or GIF).",
+                               "Re-export it, or match a different asset with /socialforge:match-assets."],
+                "platform": platform, "brand": brand, "action_required": True,
+            }
+        card = page.query_selector(".card")
+        if card is not None:
+            card.screenshot(path=str(output_path))
+        else:
+            page.screenshot(path=str(output_path), full_page=True)
+        browser.close()
+
+    if missing:
+        # Explicitly opted into rendering without artwork. This is never
+        # "success" — a reviewer must be able to tell a finished preview from a
+        # copy-layout mockup by reading one field.
+        return {"status": "placeholder", "output": str(output_path),
+                "platform": platform, "brand": brand,
+                "warning": ("Copy-layout preview only — no artwork was rendered. "
+                            "Do not treat this as an approved creative."),
+                "action_required": True}
+    result = {"status": "success", "output": str(output_path), "platform": platform, "brand": brand}
+    if copy_truncated:
+        result["copy_truncated"] = True
+        result["note"] = f"Preview shows the first {PREVIEW_COPY_CHARS} characters of the copy."
+    return result
+
+
+def build_default_html(name, handle, platform_label, image_uri, copy_html):
+    """The built-in preview card, used when no per-platform template is present."""
+    return f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+  body {{ margin: 0; background: #f5f5f5; font-family: -apple-system, sans-serif; }}
+  .card {{ background: white; max-width: 500px; margin: 20px auto; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }}
+  .header {{ display: flex; align-items: center; padding: 12px 16px; gap: 10px; }}
+  .avatar {{ width: 40px; height: 40px; border-radius: 50%; background: #ddd; }}
+  .name {{ font-weight: 600; font-size: 14px; }}
+  .handle {{ color: #666; font-size: 12px; }}
+  .image {{ width: 100%; }}
+  .copy {{ padding: 12px 16px; font-size: 14px; line-height: 1.5; color: #333; white-space: pre-wrap; }}
+  .platform-badge {{ margin-left: auto; background: #333; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; }}
+</style></head><body>
+<div class="card">
+  <div class="header">
+    <div class="avatar"></div>
+    <div><div class="name">{name}</div><div class="handle">{handle}</div></div>
+    <div class="platform-badge">{platform_label}</div>
+  </div>
+  <img class="image" src="{image_uri}" />
+  <div class="copy">{copy_html}</div>
+</div></body></html>"""
+
+
+def main():
+    parser = argparse.ArgumentParser(description="SocialForge Preview Renderer")
+    parser.add_argument("--image", required=True, help="Post image path")
+    parser.add_argument("--copy", required=True, help="Post copy text")
+    parser.add_argument("--platform", required=True)
+    parser.add_argument("--brand", type=_common.path_component, required=True)
+    parser.add_argument("--output", required=True)
+    parser.add_argument("--allow-missing-image", action="store_true",
+                        help="Render a copy-layout preview with no artwork. The result is "
+                             "marked status=placeholder, never success.")
+    args = parser.parse_args()
+
+    result = render_preview(args.image, args.copy, args.platform, args.brand, args.output,
+                            allow_missing_image=args.allow_missing_image)
+    print(json.dumps(result, indent=2))
+    # Exit codes are a contract: a caller in an && chain must not read a failed
+    # render as a successful one. 0 clean, 1 refused.
+    sys.exit(0 if result.get("status") in ("success", "placeholder") else 1)
+
+
+if __name__ == "__main__":
+    main()

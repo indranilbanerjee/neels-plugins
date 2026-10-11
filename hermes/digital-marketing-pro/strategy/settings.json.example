@@ -1,0 +1,28 @@
+{
+  "_comment": "Optional user-level settings recommended when running Digital Marketing Pro. Copy to ~/.claude/settings.json (or .claude/settings.json in your project) and edit to taste. None of these are required for DMP to function — they are quality-of-life recommendations grounded in Claude Code v2.1.152+ features.",
+
+  "_fallback_model_comment": "fallbackModel was added in Claude Code v2.1.152 (May 27, 2026) and expanded in v2.1.166 (Jun 6, 2026). Up to 3 models tried in order when the primary model is overloaded or returns a non-retryable API error. Choosing models from different vendors removes single-vendor outage risk. DMP itself does not pin a model — it follows the session model — so this setting is purely for resilience.",
+  "fallbackModel": [
+    "claude-sonnet-5-5",
+    "claude-sonnet-5",
+    "claude-haiku-4-5"
+  ],
+  "_fallback_model_ids_verified": "2026-10-04 against platform.claude.com/docs/en/docs/about-claude/models/overview. Model ids age: re-check that page (or run scripts/refresh_models.py) before relying on this list — claude-haiku-4-5 retires 'not sooner than 2026-10-15'.",
+
+  "_required_min_version_comment": "Optional managed setting (v2.1.163). Claude Code refuses to START if its version is outside the range you set here. A plugin cannot declare this for itself (plugin.json has no such field), so this is the only way to enforce a floor — use it if your team standardises on a minimum.",
+
+  "_skill_overrides_comment": "skillOverrides (v2.1.129) controls how skill descriptions are presented. 'name-only' is the lowest-overhead mode: only skill names load at startup, not their descriptions, so the per-session description budget shrinks dramatically. Recommended for users running 3+ plugins simultaneously. Options: 'off' (default), 'user-invocable-only', 'name-only'.",
+  "skillOverrides": "off",
+
+  "_plugin_suggestion_marketplaces_comment": "Managed-setting allowlist (v2.1.152) for org-approved plugin marketplaces. Useful for agencies that want to restrict which marketplaces team members can install from.",
+  "pluginSuggestionMarketplaces": [
+    "indranilbanerjee/neels-plugins"
+  ],
+
+  "_evolink_comment": "EvoLink (evolink.ai) is a multi-provider API gateway — one key unlocks GPT-5, DeepSeek V4, Doubao Seed 2.0, MiniMax M3, and more. The model curator scripts (resolve_model.py, refresh_models.py) read EVOLINK_API_KEY from the environment (NOT from this settings file — set it in your shell profile or .env). Use --vendor evolink to list Evolink-curated models. Aliases: latest-text-evolink / latest-balanced-evolink / latest-fast-evolink. See docs/MODEL-CURATOR.md.",
+
+  "_otel_comment": "OpenTelemetry (v2.1.161) labels every metric datapoint with these key/value pairs. Use to slice metrics by client, brand, or team. Optional. OTel variables belong under the \"env\" key so Claude Code exports them to the telemetry pipeline.",
+  "env": {
+    "OTEL_RESOURCE_ATTRIBUTES": "team=marketing,plugin=digital-marketing-pro"
+  }
+}

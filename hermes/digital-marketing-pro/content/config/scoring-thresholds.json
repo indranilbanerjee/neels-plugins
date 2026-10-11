@@ -1,0 +1,258 @@
+{
+  "_description": "ContentForge Quality Scoring Thresholds — Configurable per brand/industry. THIS FILE IS THE SINGLE SOURCE OF TRUTH for all quality numbers. Templates and brand profiles must not contradict it; brand values may override these defaults upward (stricter), never below.",
+  "_gates_note": "10 quality gates across phases 1, 2, 3, 3.5, 4, 5, 6, 6.5, 7, 8 (pipeline: 10 phases + Step 0.5). Decision bands: score >=7.0 approved | 5.0-6.9 loop | <5.0 human review.",
+  "default": {
+    "minimum_pass_score": 7.0,
+    "human_review_threshold": 5.0,
+    "excellent_threshold": 8.5,
+    "word_counts": {
+      "_description": "Target word-count ranges per content type [min, max]. Phase 3 gate checks actual count against the brief target within word_count_tolerance_percent.",
+      "blog": [800, 1500],
+      "article": [1500, 2000],
+      "whitepaper": [2500, 5000],
+      "research_paper": [4000, 8000],
+      "faq": [600, 1200],
+      "video_script": [60, 1500],
+      "_video_script_note": "Spoken-dialogue word count only (excludes on-screen text, B-roll, and music/SFX direction). The band spans the 30s profile (60-75 words) through the 10min profile (1,200-1,500 words) in templates/content-types/video-script-structure.md; the Phase 3 gate checks against the brief's target duration profile, not the full band."
+    },
+    "dimension_weights": {
+      "content_quality": 0.30,
+      "citation_integrity": 0.25,
+      "brand_compliance": 0.20,
+      "seo_performance": 0.15,
+      "readability": 0.10
+    },
+    "quality_gates": {
+      "phase_1_research": {
+        "sources_collected": [12, 15],
+        "min_verified_sources": 10,
+        "min_high_reliability": 5,
+        "_source_note": "Collect 12-15 candidate sources during research. Gate passes when >=10 verify live and >=5 carry a reliability score >=8 (see data-sources-template.json source_types).",
+        "min_competitor_analysis": 5,
+        "require_content_angle": true,
+        "require_outline": true
+      },
+      "phase_2_fact_check": {
+        "max_unresolved_flags": 0,
+        "max_unverified_tolerated": 3,
+        "min_verified_percentage": 80,
+        "require_live_urls": true,
+        "max_source_age_years": 2,
+        "_definitions": "unverified = claim could not be independently confirmed (tolerated up to max_unverified_tolerated, must be hedged or attributed in the draft); flagged = claim is contradicted by sources or appears fabricated (must be removed or re-sourced before the gate can pass — zero unresolved flags allowed)."
+      },
+      "phase_3_draft": {
+        "word_count_tolerance_percent": 10,
+        "min_citations_per_300_words": 1,
+        "require_all_outline_sections": true
+      },
+      "phase_3_5_visual_assets": {
+        "require_data_chart_verification": true,
+        "require_complete_annotation_fields": true,
+        "min_visual_density_per_1000_words": {
+          "blog": 1,
+          "article": 1,
+          "whitepaper": 2,
+          "research_paper": 1,
+          "faq": 0,
+          "video_script": 0
+        },
+        "_video_script_note": "video_script carries its own visual direction inline (B-roll, on-screen text) rather than embedded assets, so the visual-density requirement is 0; the Phase 3.5 gate still checks alt text and captions on any chart actually produced.",
+        "require_alt_text": true,
+        "require_captions": true
+      },
+      "phase_4_validation": {
+        "max_hallucinations": 0,
+        "max_unsourced_claims": 0,
+        "min_accuracy_confidence": 0.85,
+        "max_validation_loops": 2
+      },
+      "phase_5_structure": {
+        "max_grammar_errors": 0,
+        "require_brand_compliance_pass": true,
+        "min_flesch_reading_ease": 60,
+        "max_flesch_reading_ease": 80,
+        "readability_grade_tolerance": 0.5,
+        "_readability_note": "Two different scales, do not mix them. min_flesch_reading_ease/max_flesch_reading_ease are Flesch READING EASE points (0-100, higher = easier); 60-80 is the default band. readability_grade_tolerance is in Flesch-Kincaid GRADE levels: the grade may deviate from the brief's target grade by at most +/-0.5 before the gate fails. Dense long-form types relax the Reading Ease band — see content_type_overrides."
+      },
+      "phase_6_seo": {
+        "keyword_placement_required": {
+          "in_title": true,
+          "in_first_100_words": true,
+          "min_h2_with_keyword": 2,
+          "in_conclusion": true,
+          "in_meta_description": true
+        },
+        "density_advisory_pct": [1.0, 2.0],
+        "_density_note": "Keyword density is ADVISORY only (placement-first SEO). Density outside the advisory band triggers a stuffing/absence review, not an automatic gate failure. Placement checks above are the hard gate.",
+        "meta_title_max_chars": 60,
+        "meta_description_max_chars": 155,
+        "max_seo_loops": 1
+      },
+      "phase_6_5_humanizer": {
+        "max_ai_signal_score": 0.3,
+        "_formula": "ai_signal_score = weighted patterns detected / total weighted checks, normalized 0-1. High-signal patterns (01, 07, 09, 14, 30, 36, 42) weight x2; all other catalog patterns weight x1. See config/humanization-patterns.json ai_signal_scoring for the full computation.",
+        "burstiness_advisory": true,
+        "ai_tell_scan": {
+          "aphorism_per_1000_high": 3.0,
+          "banned_lexemes_per_1000_high": 4.0,
+          "connective_openers_pct_high": 15,
+          "significance_markers_per_1000_high": 1.5,
+          "soft_adverb_tags_per_1000_high": 4.0,
+          "moderate_fraction": 0.5
+        },
+        "require_brand_personality": true,
+        "preserve_seo_keywords": true,
+        "readability_must_not_degrade": true
+      },
+      "phase_7_review": {
+        "min_content_quality": 6.0,
+        "min_citation_integrity": 7.0,
+        "min_brand_compliance": 7.0,
+        "min_seo_performance": 6.0,
+        "min_readability": 6.0
+      },
+      "phase_8_output": {
+        "docx_generated": true,
+        "appendices_present": 4,
+        "delivery_verified": true,
+        "_note": "Appendices required in the delivered .docx, matching scripts/generate-docx.py add_appendices(): A - SEO Scorecard, B - Quality Scorecard, C - Production Details, D - Internal Link Map. delivery_verified = file exists at the output path (local by default, Drive if configured) and tracking record updated."
+      }
+    },
+    "feedback_loop_limits": {
+      "_precedence": "Loop caps live in three places: config/pipeline-graph.json loop_budgets (per_edge, total_per_run), the named caps below, and quality_gates max_validation_loops / max_seo_loops. Where they disagree the SMALLER cap governs. A named edge cap bounds that edge; phase_7_to_any bounds the SUM of every phase_7_to_* edge; max_validation_loops and max_seo_loops bound the SUM of edges leaving phase 4 and phase 6; max_total_loops and total_per_run bound the whole run. scripts/run-audit.py enforces this rule.",
+      "phase_4_to_3_5": 1,
+      "phase_4_to_3": 2,
+      "phase_6_to_5": 1,
+      "phase_7_to_any": 2,
+      "max_total_loops": 5
+    }
+  },
+  "content_type_overrides": {
+    "_description": "Per-content-type overrides applied on top of `default` (and under any industry override). Same gate-keyed merge as industry_overrides: only the keys listed here change.",
+    "whitepaper": {
+      "quality_gates": {
+        "phase_5_structure": {
+          "min_flesch_reading_ease": 30,
+          "max_flesch_reading_ease": 50,
+          "_note": "Whitepapers are dense technical long-form; the default 60-80 Reading Ease band is unreachable. See templates/content-types/whitepaper-structure.md."
+        }
+      }
+    },
+    "research_paper": {
+      "quality_gates": {
+        "phase_5_structure": {
+          "min_flesch_reading_ease": 30,
+          "max_flesch_reading_ease": 50,
+          "_note": "Academic register; same relaxed Reading Ease band as whitepaper."
+        }
+      }
+    }
+  },
+  "industry_overrides": {
+    "pharma": {
+      "minimum_pass_score": 8.0,
+      "dimension_weights": {
+        "content_quality": 0.25,
+        "citation_integrity": 0.35,
+        "brand_compliance": 0.25,
+        "seo_performance": 0.10,
+        "readability": 0.05
+      },
+      "quality_gates": {
+        "phase_1_research": {
+          "min_verified_sources": 12
+        },
+        "phase_2_fact_check": {
+          "min_verified_percentage": 95,
+          "max_source_age_years": 1,
+          "require_peer_reviewed": true
+        },
+        "phase_4_validation": {
+          "max_hallucinations": 0,
+          "max_unsourced_claims": 0,
+          "min_accuracy_confidence": 0.95
+        },
+        "phase_7_review": {
+          "min_citation_integrity": 8.5,
+          "min_brand_compliance": 8.0
+        }
+      }
+    },
+    "bfsi": {
+      "minimum_pass_score": 7.5,
+      "dimension_weights": {
+        "content_quality": 0.25,
+        "citation_integrity": 0.25,
+        "brand_compliance": 0.30,
+        "seo_performance": 0.15,
+        "readability": 0.05
+      },
+      "quality_gates": {
+        "phase_4_validation": {
+          "require_regulatory_compliance": true
+        },
+        "phase_5_structure": {
+          "require_disclaimers": true
+        },
+        "phase_7_review": {
+          "min_brand_compliance": 8.0,
+          "min_citation_integrity": 7.5
+        }
+      }
+    },
+    "real_estate": {
+      "minimum_pass_score": 7.0,
+      "dimension_weights": {
+        "content_quality": 0.30,
+        "citation_integrity": 0.15,
+        "brand_compliance": 0.20,
+        "seo_performance": 0.25,
+        "readability": 0.10
+      },
+      "quality_gates": {
+        "phase_6_seo": {
+          "require_local_keywords": true,
+          "density_advisory_pct": [1.0, 3.0]
+        }
+      }
+    },
+    "healthcare": {
+      "minimum_pass_score": 8.0,
+      "dimension_weights": {
+        "content_quality": 0.25,
+        "citation_integrity": 0.35,
+        "brand_compliance": 0.25,
+        "seo_performance": 0.10,
+        "readability": 0.05
+      },
+      "quality_gates": {
+        "phase_2_fact_check": {
+          "require_medical_sources": true,
+          "max_source_age_years": 2
+        },
+        "phase_5_structure": {
+          "require_medical_disclaimers": true
+        }
+      }
+    },
+    "legal": {
+      "minimum_pass_score": 8.0,
+      "dimension_weights": {
+        "content_quality": 0.30,
+        "citation_integrity": 0.30,
+        "brand_compliance": 0.30,
+        "seo_performance": 0.05,
+        "readability": 0.05
+      },
+      "quality_gates": {
+        "phase_2_fact_check": {
+          "require_legal_sources": true,
+          "verify_case_law": true
+        },
+        "phase_5_structure": {
+          "require_legal_disclaimers": true
+        }
+      }
+    }
+  }
+}

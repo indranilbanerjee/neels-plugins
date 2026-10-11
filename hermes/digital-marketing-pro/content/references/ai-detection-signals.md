@@ -1,0 +1,128 @@
+# How AI-Text Detectors Work — and How ContentForge Writes So There Is Nothing to Detect
+
+This is the knowledge base behind Phase 6.5 (humanizer), the `--ai-tell-scan` metric in
+`scripts/text-metrics.py`, and the reviewer's Readability dimension. The strategy is
+**internalized**: we understand what detectors measure and write genuinely human-grounded
+expert prose from the start. External detector tools are never required and never trusted
+as a gate.
+
+## The four signal families
+
+### 1. Perplexity — predictability. The master lever.
+Perplexity measures how "surprised" a language model is by each next word. AI text is too
+predictable: models pick high-probability words, producing smooth, generic phrasing. Human
+expert writing is less predictable — specific numbers, named entities, domain jargon used
+naturally, unexpected-but-correct word choices.
+**Implication → raise real specificity.** A sentence carrying an event + date + named source
+("the agency finalized its guidance in June 2024") is high-perplexity because no model would
+predict those exact tokens — and it is also simply better writing. Grounding IS the
+humanizing move. Fabricating a specific to fake perplexity is forbidden (and Phase 4 catches it).
+
+### 2. Burstiness — variation in sentence length and complexity.
+Uniform sentences read as AI; varied ones read as human. **The trap:** inserting batches of
+short punchy one-liners raises the burstiness *number* while creating a new uniformity (a
+run of polished maxims) that detectors and readers both flag. Genuine irregularity comes
+from content: a caveat, an embedded example, a source clause, a mid-sentence qualification.
+Never insert content-free sentences to move a metric.
+
+### 3. Stylometric / fine-tuned classifiers.
+Trained on human-vs-AI corpora; they recognize the LLM fingerprint: favored vocabulary,
+phrase templates ("From X to Y", "It's not just X, it's Y"), participial openers,
+rule-of-three rhythm, over-even structure, low epistemic texture (uniform confidence, no
+calibrated caveats), impersonal assertion ("...is well documented" — by whom?). These are
+patterns 01–41 in `config/humanization-patterns.json`; the deterministic proxies are in
+`text-metrics.py --ai-tell-scan`.
+
+### 4. Watermarking (e.g. SynthID-Text).
+A statistical signal embedded at generation time by some model providers. Out of scope: we
+do not attempt to strip watermarks, and no ContentForge feature may claim to.
+
+## What the evidence says about evasion (be honest)
+Detection-guided *iterative* rewriting reduces detection dramatically (~64–99% across
+detectors — Adversarial Paraphrasing, arXiv:2506.07001, NeurIPS 2025), while one-shot
+static tricks do little and naive paraphrasing can INCREASE detection. Durable results come
+from genuine quality that raises perplexity — which is what this pipeline optimizes.
+Detectors also have real false positives (uniform *human* text gets flagged). Therefore:
+**a detector score is advisory, never a publish gate.**
+
+## The structural tier — style is not enough (StoryScope, arXiv 2604.03136)
+
+The strongest 2026 evidence moved detection UP a level: AI text is separable from human
+text on **narrative/document structure alone** at 93.2% macro-F1 — and after surface-style
+stripping (the LAMP framework, i.e. the layer the 43-pattern catalog works on), structural
+detection held at 93.9%. Structure is "largely orthogonal to surface prose artifacts": a
+perfect surface pass leaves a piece structurally machine-shaped. The structural tells that
+transfer from that fiction corpus to marketing prose:
+
+1. **Over-explained takeaways** — AI states the theme (77% vs 52% human): "in conclusion,
+   the key takeaway…" closers on every section. Humans trust the reader to infer.
+2. **Template symmetry** — near-identical section lengths, parallel heading syntax,
+   single-track tidy resolution. Human structure is asymmetric; sections take the length
+   their content earns.
+3. **Generic center** — low density of specific, checkable, outside-world references.
+   Humans cite specific sources at ~2× the AI rate; human pieces occupy a rarer, more
+   dispersed structural region. Specificity IS the human signal.
+4. **Stance absence** — hedged, positionless evenness (also the measured Claude
+   fingerprint: "restraint, uniform voice, quiet endings"). A human expert takes a
+   defensible stance somewhere.
+
+`scripts/text-metrics.py --structure-scan` measures deterministic proxies for all four
+(plus paragraph-rhythm evenness and entity development) with spans, and
+`scripts/build_review_sheet.py` renders them for the human editor. Same rule as every
+detector signal here: **advisory, never a publish gate** — and the right response is a
+genuine structural edit grounded in the Phase 2 ledger, never invented specifics. These
+scans measure visible text only; they cannot see and have no relationship to any
+statistical watermark.
+
+### Entity development — the specificity metric's other half
+
+A fifth structural tell rides alongside specificity and is easy to confuse with it. Text
+that introduces a fresh name or number in nearly every sentence, each mentioned once and
+abandoned, reads as a machine *establishing a setting*; an expert making a case returns to
+the few specifics the argument rests on. Human writing dwells, models parade.
+
+The two proxies pull in opposite directions on purpose, and the resolution matters:
+`specificity` asks whether there are checkable facts at all, `entity_development` asks
+whether they were developed. **Raise development by developing, never by deleting.** Give
+an existing specific a second substantive mention from the verified ledger — what it
+implies, who disputes it, what it cost. Cutting specifics to move the number would lower
+the more important metric and inverts what this pipeline is for; inventing a mention is
+forbidden outright. The proxy stays silent below 600 words or 12 distinct entities,
+because a short piece names things once for lack of room, which is brevity, not a tell.
+
+## Authorship — the one signal that is not a signal
+
+There is a mode where none of the above is the interesting question: the author brought
+their own draft. `scripts/authorship.py` measures which sentences of the finished piece are
+theirs, verbatim, and reports any that the pipeline rewrote or dropped.
+
+This is deliberately held to a different standard from everything else in this file. A
+detector proxy is a probabilistic opinion about text and therefore stays advisory forever.
+"The author wrote this sentence and it is no longer here" is a checkable fact about a
+promise the pipeline made, so it blocks. The remedy is equally unusual: restore the
+sentence *verbatim*, including its typos and run-ons. Their clumsiness is the authorship.
+
+`author_word_share` exists so Phase 8's disclosure can be accurate, and for no other
+reason. There is no ratio at which text becomes "human enough", nothing here is aimed at a
+detector, and the authored disclosure wording is read off the record rather than requested
+— it requires both a 25% floor and zero outstanding violations. Overclaiming human
+authorship is the one version of that statement a reader cannot verify, which is exactly
+why the pipeline may only ever understate it.
+
+## The positive model — what human-expert prose does (emulate)
+1. **Journalistic grounding:** event + date + named source, inline.
+2. **Technical–broad balance:** a technical detail paired with a plain-language explanation
+   in the same sentence.
+3. **Factual clarity:** plain, specific statements of requirements — no literary devices.
+4. **Calibrated expert voice:** specific, defensible caveats — not vague hedging, not
+   uniform confidence. (For regulated industries these caveats are also compliance-positive.)
+5. **Content-derived variation:** sentence lengths vary because the content varies.
+
+## Two hard guardrails
+1. **Never hard-optimize to any specific detector.** Arms race + false positives.
+2. **Regulated-content integrity first.** Never trade a verified fact, number, citation, or
+   disclaimer for "sounding human." If no grounding exists in the verified research, add a
+   calibrated caveat or leave the sentence — never invent a specific.
+
+Sources: GPTZero methodology (gptzero.me/news/how-ai-detectors-work) · Adversarial
+Paraphrasing (arXiv:2506.07001, NeurIPS 2025) · Google DeepMind SynthID public documentation.

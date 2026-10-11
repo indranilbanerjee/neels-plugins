@@ -1,0 +1,707 @@
+{
+  "_description": "ContentForge Humanization Patterns — AI writing signatures to detect and remove",
+  "ai_telltale_phrases": {
+    "overused_verbs": [
+      "delve",
+      "leverage",
+      "utilize",
+      "harness",
+      "unlock",
+      "empower",
+      "revolutionize",
+      "transform",
+      "optimize",
+      "streamline",
+      "facilitate"
+    ],
+    "filler_phrases": [
+      "it's important to note that",
+      "it's worth noting that",
+      "it should be noted that",
+      "it goes without saying",
+      "needless to say",
+      "at the end of the day",
+      "in today's world",
+      "in today's digital age",
+      "in the modern era",
+      "when it comes to"
+    ],
+    "overused_transitions": [
+      "moreover",
+      "furthermore",
+      "additionally",
+      "consequently",
+      "therefore",
+      "thus",
+      "hence",
+      "in conclusion",
+      "to sum up",
+      "in summary"
+    ],
+    "ai_hedging_phrases": [
+      "may potentially",
+      "could possibly",
+      "might potentially",
+      "seems to suggest",
+      "appears to indicate",
+      "tends to show"
+    ],
+    "robotic_sentence_starters": [
+      "It is important to",
+      "It is essential to",
+      "It is crucial to",
+      "It is vital to",
+      "One must",
+      "One should",
+      "Businesses must",
+      "Companies should",
+      "Organizations need to"
+    ],
+    "generic_descriptors": [
+      "cutting-edge",
+      "state-of-the-art",
+      "world-class",
+      "best-in-class",
+      "industry-leading",
+      "next-generation",
+      "innovative solution",
+      "comprehensive solution",
+      "robust framework",
+      "seamless integration"
+    ]
+  },
+  "signs_of_ai_writing_catalog": {
+    "_description": "Comprehensive AI writing detection catalog — the core 29-pattern set organized into 5 buckets (Content, Language & Grammar, Style, Communication, Filler & Hedging) plus 6 additional 2026-era patterns (30-35) in the Structure & Framing bucket, plus 8 detector-signal patterns (36-43) derived from how AI-text detectors score prose (see references/ai-detection-signals.md). 43 patterns total. Used by Phase 6.5 humanizer Step 1. Expands the legacy ai_telltale_phrases lists above with patterns LLMs exhibit beyond mere word choice. Aggregate scoring: see ai_signal_scoring below.",
+    "_attribution": "Pattern catalog adapted from Wikipedia: Signs of AI writing (https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) maintained by WikiProject AI Cleanup (CC BY-SA), with structure influenced by blader/humanizer (MIT). Integrated into ContentForge v3.9.0.",
+    "content_patterns": {
+      "01_significance_inflation": {
+        "phrases_to_watch": ["stands as", "serves as", "is a testament to", "is a reminder of", "a vital role", "a significant moment", "a crucial role", "a pivotal moment", "a key turning point", "underscores its importance", "highlights its significance", "reflects broader", "symbolizing its enduring", "contributing to the", "setting the stage for", "marking a shift", "represents a shift", "evolving landscape", "focal point", "indelible mark", "deeply rooted"],
+        "problem": "LLMs puff up importance by adding statements about how arbitrary aspects represent or contribute to a broader topic.",
+        "fix_strategy": "Strip the inflation. State what the thing IS and what it does. No claims about its place in history unless cited.",
+        "example_transform": {
+          "before": "The Statistical Institute of Catalonia was officially established in 1989, marking a pivotal moment in the evolution of regional statistics in Spain.",
+          "after": "The Statistical Institute of Catalonia was established in 1989 to publish regional statistics independently from Spain's national office."
+        }
+      },
+      "02_notability_puffery": {
+        "phrases_to_watch": ["independent coverage", "covered by major outlets", "featured in The New York Times, BBC, and", "written by a leading expert", "active social media presence", "with over X followers"],
+        "problem": "LLMs hit readers over the head with claims of notability, listing media outlets without context or quoting what was actually said.",
+        "fix_strategy": "Replace bare media-outlet lists with one specific quote, claim, or finding from one of those outlets."
+      },
+      "03_superficial_ing_analyses": {
+        "phrases_to_watch": ["highlighting...", "underscoring...", "emphasizing...", "ensuring...", "reflecting...", "symbolizing...", "contributing to...", "cultivating...", "fostering...", "encompassing...", "showcasing..."],
+        "problem": "AI tacks present participle (-ing) phrases onto sentences to add fake depth. The -ing clause usually restates the main clause in vaguer terms.",
+        "fix_strategy": "Delete the -ing phrase. If the information matters, make it its own sentence with a real subject and verb.",
+        "example_transform": {
+          "before": "The temple uses blue, green, and gold, symbolizing Texas bluebonnets, the Gulf of Mexico, and the diverse Texan landscapes, reflecting the community's deep connection to the land.",
+          "after": "The temple uses blue, green, and gold. The architect chose these colors to reference local bluebonnets and the Gulf coast."
+        }
+      },
+      "04_promotional_language": {
+        "phrases_to_watch": ["boasts a", "vibrant", "rich (figurative)", "profound", "enhancing its", "showcasing", "exemplifies", "commitment to", "natural beauty", "nestled", "in the heart of", "groundbreaking", "renowned", "breathtaking", "must-visit", "stunning"],
+        "problem": "LLMs default to travel-brochure / press-release tone, especially for places, organizations, and 'cultural heritage' topics.",
+        "fix_strategy": "Replace evaluative adjectives with concrete facts. 'Nestled in the breathtaking region' becomes the region's name and one verifiable feature."
+      },
+      "05_vague_attributions": {
+        "phrases_to_watch": ["industry reports", "observers have cited", "experts argue", "some critics argue", "several sources", "many publications", "studies show (no source)", "research suggests (no source)"],
+        "problem": "AI attributes opinions to vague authorities without naming a specific source.",
+        "fix_strategy": "Either cite the specific source (study name, year, author) or remove the attribution and state the claim with appropriate hedging."
+      },
+      "06_challenges_and_future_prospects": {
+        "phrases_to_watch": ["Despite its X, faces several challenges", "Despite these challenges", "Challenges and Legacy", "Future Outlook", "Looking ahead", "As we move forward"],
+        "problem": "LLMs include a formulaic 'Challenges' section near the end of articles, often as outline-like padding with no specifics.",
+        "fix_strategy": "Replace generic challenges with specific, dated, sourced events. If you cannot cite specifics, delete the section."
+      }
+    },
+    "language_and_grammar_patterns": {
+      "07_ai_vocabulary": {
+        "high_frequency_words": ["actually", "additionally", "align with", "crucial", "delve", "emphasizing", "enduring", "enhance", "fostering", "garner", "highlight (verb)", "interplay", "intricate", "intricacies", "key (adjective)", "landscape (abstract)", "pivotal", "showcase", "tapestry (abstract)", "testament", "underscore (verb)", "valuable", "vibrant"],
+        "problem": "These words appear far more frequently in post-2023 text. They co-occur — finding 3+ in one paragraph is a strong AI signal.",
+        "fix_strategy": "Replace with simpler, more specific alternatives. Cross-reference legacy ai_telltale_phrases.overused_verbs and generic_descriptors above."
+      },
+      "08_copula_avoidance": {
+        "phrases_to_watch": ["serves as", "stands as", "marks", "represents", "constitutes", "embodies", "boasts", "features", "offers"],
+        "problem": "LLMs substitute elaborate constructions for simple 'is'/'are'/'has'. One of the loudest AI tells.",
+        "fix_strategy": "When the sentence's meaning is 'X is Y' or 'X has Y', use 'is' / 'has'. Reserve 'serves as' / 'represents' for cases where the metaphor is doing real work.",
+        "example_transform": {
+          "before": "Gallery 825 serves as LAAA's exhibition space and boasts over 3,000 square feet across four rooms.",
+          "after": "Gallery 825 is LAAA's exhibition space. It has four rooms totaling 3,000 square feet."
+        }
+      },
+      "09_negative_parallelisms": {
+        "patterns_to_watch": ["Not only X but Y", "It's not just about X, it's Y", "It's not merely X, it's Y", "tailing fragments like 'no guessing', 'no wasted motion', 'no compromises'"],
+        "problem": "Overused rhetorical structures. Tailing-negation fragments are tacked on instead of written as real clauses.",
+        "fix_strategy": "Rewrite as a direct positive statement. 'It's not just a song, it's a statement' becomes 'The song is a statement' or just describes what the song does."
+      },
+      "10_rule_of_three": {
+        "problem": "LLMs force ideas into groups of three to appear comprehensive. 'Innovation, inspiration, and insights.' Triplets become a fingerprint.",
+        "fix_strategy": "Use 1, 2, or 4+ items when natural. Avoid forcing a third item just because two felt incomplete.",
+        "detection_threshold": "If 30%+ of list-like phrases are exactly three items, you have a triplet problem."
+      },
+      "11_elegant_variation": {
+        "problem": "AI's repetition-penalty causes excessive synonym substitution. The same person becomes 'the protagonist', 'the main character', 'the central figure', 'the hero' across four sentences.",
+        "fix_strategy": "Use the same noun for the same referent. Pronouns ('he', 'she', 'they', 'it') are fine. Synonym chains read as machine output."
+      },
+      "12_false_ranges": {
+        "phrases_to_watch": ["from X to Y, from A to B (where the points aren't on a meaningful scale)"],
+        "problem": "LLMs use 'from X to Y' to imply scope where no real range exists.",
+        "fix_strategy": "Replace with a plain list. 'From the Big Bang to dark matter' becomes 'including the Big Bang, star formation, and dark matter'."
+      },
+      "13_passive_voice_and_subjectless_fragments": {
+        "phrases_to_watch": ["No configuration file needed", "Results are preserved automatically", "It is recommended that", "It can be observed that"],
+        "problem": "LLMs hide the actor or drop the subject entirely.",
+        "fix_strategy": "Name the actor. 'No configuration file needed' becomes 'You do not need a configuration file' or 'The CLI requires no configuration file'."
+      }
+    },
+    "style_patterns": {
+      "14_em_dash_overuse": {
+        "problem": "LLMs use em dashes (—) more than humans, mimicking 'punchy' sales writing. One or two per 500 words can be human; 4+ per 500 words is an AI fingerprint.",
+        "fix_strategy": "Replace most em dashes with commas, periods, or parentheses. Keep at most 1-2 per 500 words. NOTE: this corrects earlier ContentForge guidance that recommended 2-3 per 500 words.",
+        "detection_threshold": "More than 3 em dashes per 500 words = flag for revision."
+      },
+      "15_boldface_overuse": {
+        "problem": "AI emphasizes mechanically — bolding every acronym expansion or key term in a sentence.",
+        "fix_strategy": "Use bold sparingly for genuine emphasis (1-3 instances per 500 words max). Acronyms after first definition do not need bolding."
+      },
+      "16_inline_header_vertical_lists": {
+        "pattern": "- **User Experience:** description here\\n- **Performance:** description here\\n- **Security:** description here",
+        "problem": "AI loves bulleted lists where each item starts with a bolded header followed by a colon. Reads like a mechanical brief.",
+        "fix_strategy": "Convert to prose paragraphs OR use a real heading hierarchy OR use a table. Avoid the bolded-colon pattern."
+      },
+      "17_title_case_headings": {
+        "problem": "AI capitalizes Every Main Word In Headings.",
+        "fix_strategy": "Use sentence case for headings unless the brand style guide specifies title case. 'Strategic negotiations and global partnerships' not 'Strategic Negotiations And Global Partnerships'."
+      },
+      "18_emoji_decoration": {
+        "problem": "AI decorates headings and bullets with leading emojis (🚀 Launch Phase, 💡 Key Insight, ✅ Next Steps).",
+        "fix_strategy": "Remove all decorative emojis from body content unless brand voice explicitly calls for them (consumer social posts may keep them; B2B content should not)."
+      },
+      "19_curly_quotation_marks": {
+        "problem": "ChatGPT and other models use curly quotes (“...”) instead of straight quotes (\"...\").",
+        "fix_strategy": "Replace all curly quotes with straight quotes in code, technical content, and most web content. Curly quotes are acceptable in literary or print-style content if intentional."
+      }
+    },
+    "communication_patterns": {
+      "20_chatbot_artifacts": {
+        "phrases_to_watch": ["I hope this helps", "Of course!", "Certainly!", "You're absolutely right!", "Would you like me to", "let me know if", "Here is a", "Sure, here's"],
+        "problem": "Text meant as chatbot conversation gets pasted as content.",
+        "fix_strategy": "Delete entirely. The article should not address its own composition."
+      },
+      "21_knowledge_cutoff_disclaimers": {
+        "phrases_to_watch": ["as of my last training", "up to my last update", "while specific details are limited", "based on available information", "details about X are scarce"],
+        "problem": "AI disclaimers about incomplete information get left in published text.",
+        "fix_strategy": "Either find the specific information and state it, or remove the sentence entirely. Never publish a knowledge-cutoff disclaimer."
+      },
+      "22_sycophantic_tone": {
+        "phrases_to_watch": ["Great question!", "That's an excellent point", "You're absolutely right", "What a fantastic insight"],
+        "problem": "Overly positive, people-pleasing language that has no place in published content.",
+        "fix_strategy": "Delete the praise. State the point directly."
+      }
+    },
+    "filler_and_hedging_patterns": {
+      "23_filler_phrases": {
+        "_note": "Cross-reference legacy ai_telltale_phrases.filler_phrases above for the existing detection list.",
+        "transforms": {
+          "In order to achieve this goal": "To achieve this",
+          "Due to the fact that": "Because",
+          "At this point in time": "Now",
+          "In the event that": "If",
+          "The system has the ability to": "The system can",
+          "It is important to note that the data shows": "The data shows"
+        }
+      },
+      "24_excessive_hedging": {
+        "_note": "Cross-reference legacy ai_telltale_phrases.ai_hedging_phrases above.",
+        "problem": "Stacking qualifiers: 'It could potentially possibly be argued that the policy might have some effect'.",
+        "fix_strategy": "One qualifier per claim, max. 'The policy may affect outcomes' — not 'may potentially possibly affect'."
+      },
+      "25_generic_positive_conclusions": {
+        "phrases_to_watch": ["The future looks bright", "Exciting times lie ahead", "Continues their journey toward excellence", "Represents a major step in the right direction", "The possibilities are endless"],
+        "problem": "Vague upbeat endings that say nothing.",
+        "fix_strategy": "End with a specific fact, plan, or open question. 'The company plans to open two more locations next year' beats 'The future looks bright'."
+      },
+      "26_hyphenated_word_pair_overuse": {
+        "phrases_to_watch": ["third-party", "cross-functional", "client-facing", "data-driven", "decision-making", "well-known", "high-quality", "real-time", "long-term", "end-to-end"],
+        "problem": "AI reaches for stock hyphenated modifier pairs ('data-driven', 'end-to-end', 'best-in-class') with mechanical density — several per paragraph is a strong signal.",
+        "fix_strategy": "Reduce the DENSITY of stock compound modifiers by rephrasing ('a data-driven approach' becomes 'an approach grounded in the data'), and vary compound-modifier usage per the brand style guide. Never drop grammatically correct hyphens from compound modifiers before nouns — introducing errors is not humanization."
+      },
+      "27_persuasive_authority_tropes": {
+        "phrases_to_watch": ["The real question is", "at its core", "in reality", "what really matters", "fundamentally", "the deeper issue", "the heart of the matter"],
+        "problem": "LLMs pretend to cut through noise to deeper truth, then state an ordinary point with extra ceremony.",
+        "fix_strategy": "Strip the framing. State the point directly. 'At its core, what really matters is X' becomes 'X matters because Y'."
+      },
+      "28_signposting_and_announcements": {
+        "phrases_to_watch": ["Let's dive in", "Let's explore", "Let's break this down", "Here's what you need to know", "Now let's look at", "Without further ado", "In this article we'll cover"],
+        "problem": "LLMs announce what they are about to do instead of doing it. Tutorial-script feel that wastes the reader's time.",
+        "fix_strategy": "Delete the announcement. Start with the actual content."
+      },
+      "29_fragmented_headers": {
+        "pattern": "## Performance\\n\\nSpeed matters.\\n\\n[real content]",
+        "problem": "AI adds a generic one-liner after a heading that just restates the heading. Adds nothing.",
+        "fix_strategy": "Delete the warm-up sentence. Start the section with substance."
+      }
+    },
+    "structure_and_framing_patterns": {
+      "_description": "Patterns 30-35 — added July 2026. Structural and framing tells that survived earlier lexical humanization passes.",
+      "30_colon_subtitle_headlines": {
+        "detection_cue": "Title or H1 follows the 'X: Why Y Matters' / 'X: A Comprehensive Guide' / 'X: What You Need to Know in 2026' colon-subtitle formula. High-signal when H2s repeat the same colon pattern.",
+        "problem": "LLMs default to the colon-subtitle headline template. Human editors vary headline construction; a colon-subtitle title plus colon-subtitle H2s is a loud fingerprint.",
+        "fix_strategy": "Rewrite as a single direct claim, question, or benefit statement. Keep a colon title only when the subtitle carries real, distinct information.",
+        "example_transform": {
+          "before": "Email Deliverability: Why It Matters and How to Improve It",
+          "after": "Most marketing email never reaches the inbox. Here is how to fix yours."
+        }
+      },
+      "31_false_dichotomy_openers": {
+        "detection_cue": "Openers of the form 'Whether you're a X or a seasoned Y...' / 'From beginners to experts...' that address two invented reader archetypes.",
+        "problem": "LLMs open by flattering an imaginary audience spectrum instead of saying anything. The construction is now one of the most recognizable AI intro moves.",
+        "fix_strategy": "Delete the audience framing and open with the substance. If audience targeting matters, state the single audience the piece is actually for.",
+        "example_transform": {
+          "before": "Whether you're a solo founder or a seasoned marketing executive, understanding attribution is essential.",
+          "after": "Attribution tells you which channels actually produce revenue. Most teams measure it wrong."
+        }
+      },
+      "32_scene_setting_openers": {
+        "detection_cue": "'Picture this:' / 'Imagine this:' / 'It's 9 a.m. and your dashboard is red...' hypothetical scene-setting in the first paragraph.",
+        "problem": "LLMs manufacture a generic second-person vignette to simulate storytelling. Without a real, specific story it reads as filler and signals machine authorship.",
+        "fix_strategy": "Either tell a real, specific, attributable story or delete the vignette and lead with the strongest fact or claim.",
+        "example_transform": {
+          "before": "Picture this: it's Monday morning and your content calendar is empty.",
+          "after": "The average content team publishes 40% less than its own calendar plans. The gap has a cause."
+        }
+      },
+      "33_parallel_h2_grammar": {
+        "detection_cue": "Every H2 in the piece shares identical grammatical structure (all gerunds: 'Understanding X', 'Implementing Y', 'Measuring Z' — or all 'The [Noun] of [Noun]').",
+        "problem": "LLMs impose perfect grammatical parallelism across all section headings. Human-edited pieces mix heading forms (questions, claims, fragments, imperatives).",
+        "fix_strategy": "Vary heading grammar: turn one into a question, one into a direct claim, one into a short fragment. Keep parallelism only where sections are genuinely coordinate (e.g., numbered steps).",
+        "example_transform": {
+          "before": "H2s: Understanding Attribution / Implementing Tracking / Measuring Results / Optimizing Campaigns",
+          "after": "H2s: How attribution actually works / Set up tracking in one afternoon / Did it work? / Where the budget should move next"
+        }
+      },
+      "34_faq_shaped_conclusions": {
+        "detection_cue": "Article ends with a bolted-on 'Frequently Asked Questions' block of 3-5 generic Q&As that restate points already made in the body.",
+        "problem": "LLMs append an FAQ section as a completeness reflex (and cargo-cult SEO). When the Q&As only paraphrase the body, the section is padding and a structural tell.",
+        "fix_strategy": "Delete FAQ blocks that restate the body. Keep an FAQ only if it answers genuinely new questions with new information — or make the piece an actual FAQ content type.",
+        "example_transform": {
+          "before": "...Conclusion. ## FAQ ### What is attribution? Attribution is the process described above...",
+          "after": "...Conclusion ends with a specific next step. (FAQ block removed — its answers duplicated the body.)"
+        }
+      },
+      "35_bottom_line_headers": {
+        "detection_cue": "'The Bottom Line' / 'Key Takeaways' / 'Final Thoughts' / 'Wrapping Up' as the closing section header, followed by a bulleted restatement of the article.",
+        "problem": "LLMs close with a formulaic summary header plus recap bullets. Human writers end with a specific implication, recommendation, or open question, not a mechanical recap.",
+        "fix_strategy": "Replace the recap section with a short closing that adds something: a concrete next step, a dated prediction, a named trade-off, or a pointed question. Cut recap bullets entirely for pieces under 2,000 words.",
+        "example_transform": {
+          "before": "## The Bottom Line\\n- Attribution matters\\n- Tracking is essential\\n- Optimization is ongoing",
+          "after": "Start with last-touch this quarter; it is wrong, but it is measurably wrong — and that gives you a baseline to beat."
+        }
+      }
+    },
+    "detector_signal_patterns": {
+      "_description": "Patterns 36-43: signals derived from how detectors actually score text (see references/ai-detection-signals.md). These survive lexical cleanup because they live in rhetoric and information density, not word choice. Patterns 42-43 are the significance-marking family — sentences and adverbs whose only job is to grade the piece's own meaning.",
+      "36_aphoristic_maxims": {
+        "signal": "Short, polished, content-free 'insight' one-liners — broad over-neutral statements with no number, name, date, or source. The single strongest post-cleanup AI tell.",
+        "example": "Speed wins the shelf. | Strong brands design the data to travel.",
+        "fix_strategy": "Ground it or cut it: attach the specific (number, date, agency, named example) from the verified research that motivated the line — or delete the line. Never leave a maxim standing alone.",
+        "weight": "high"
+      },
+      "37_impersonal_assertion": {
+        "signal": "Claims asserted with no agent and no source: 'is real and well documented', 'is widely recognized', 'has been shown'.",
+        "example": "The capacity shortfall is real and well documented.",
+        "fix_strategy": "Name who documents it and where, from the citation library — or reframe as the brand's stated view."
+      },
+      "38_epistemic_flatness": {
+        "signal": "Uniform confidence across every claim; no calibrated caveats, no acknowledged limits. Experts calibrate; models over-assert.",
+        "example": "This approach eliminates delays and ensures approval.",
+        "fix_strategy": "Add ONE specific, defensible caveat where a domain expert would ('timelines vary with agency workload; the 2024 cohort averaged...'). Vague hedging ('may potentially') is pattern 24 — do not swap one tell for another."
+      },
+      "39_perfect_parallelism": {
+        "signal": "Enumerations whose items share identical grammatical rhythm and length, reading as machine-generated symmetry.",
+        "example": "Method development, method validation, method transfer, and method lifecycle management complete the package.",
+        "fix_strategy": "Break the symmetry: uneven item lengths, an embedded aside on one item, a mid-list qualification. Does NOT apply inside protected structured elements (numbered steps, comparison tables)."
+      },
+      "40_participial_openers": {
+        "signal": "Sentences opening with a present participle: 'Building on this,', 'Leveraging the platform,'. Appears at 2-5x human rate.",
+        "example": "Building on this foundation, the team expanded capacity.",
+        "fix_strategy": "Subject-first with specifics: 'The team expanded capacity in 2025, building on...' or simply start with the actor."
+      },
+      "41_connective_opener_density": {
+        "signal": "High share of sentences opening with formulaic connectives: So, Because, Moreover, Furthermore, Additionally, Indeed, Ultimately, 'The reason is that'.",
+        "example": "Moreover, the data shows... Furthermore, the agency requires...",
+        "fix_strategy": "Open with subjects, specifics, or data. Target: <10% of sentences open with a formulaic connective."
+      },
+      "42_significance_markers": {
+        "signal": "A sentence whose ONLY job is to tell the reader what a neighbouring sentence means or which part matters — the narrator stepping outside the piece to label its own significance. Distinct from pattern 27 (persuasive authority tropes), which dresses up an ordinary point; this one adds no point at all. Distinct from pattern 28 (signposting), which announces what comes next rather than grading what came before.",
+        "phrases_to_watch": [
+          "here's the thing",
+          "here is the thing",
+          "the thing is",
+          "here's the kicker",
+          "here's where it gets interesting",
+          "here's what's interesting",
+          "that's the part",
+          "that's the part that got me",
+          "what got me was",
+          "what struck me was",
+          "and that's the point",
+          "that's the whole point",
+          "which is exactly the problem",
+          "let that sink in",
+          "that's what kills me",
+          "the best part?",
+          "and here's why that matters",
+          "read that again"
+        ],
+        "example": "Approvals slipped from 14 days to 31. Here's the thing — that's the part that really matters.",
+        "fix_strategy": "DELETE the labelling sentence; do not reword it. The specific it points at is already doing the work, and deleting is what the evidence shows actually changes the read. If the moment genuinely matters, earn it by returning to the specific (a second, developed mention) rather than announcing it. Never replace one marker with a softer marker.",
+        "weight": "high",
+        "why_it_matters": "It is a reader-facing tell (a knowing reader hears the ceremony) AND it correlates with machine planning, because labelling significance requires standing outside a plan you already have. Field evidence: deleting exactly two such sentences from an otherwise unchanged piece flipped a detector verdict end to end — the cleanest single-variable result in the public evidence base. ContentForge removes it because it is filler, not to move any detector score."
+      },
+      "43_soft_adverb_feeling_tags": {
+        "signal": "Framing adverbs used to attach feeling to a sentence rather than meaning to a verb — especially in final position. The polite ghost of pattern 42: same job (grading the sentence), smaller costume.",
+        "phrases_to_watch": [
+          "honestly",
+          "genuinely",
+          "truly",
+          "literally",
+          "actually",
+          "basically",
+          "quietly",
+          "frankly",
+          "remarkably",
+          "interestingly"
+        ],
+        "example": "The backlog doubled in eleven months, honestly. It was genuinely a quietly remarkable shift.",
+        "fix_strategy": "Delete the adverb. Keep at most ONE in the whole piece, and only where it does literal work ('literally' meaning literally; 'actually' marking a genuine correction) — never as a sentence-final feeling tag, and never two in one sentence. If the sentence needs force, it needs a specific, not an adverb.",
+        "scope_note": "Two or more in one sentence, or more than one per 1000 words, counts as the cluster this pattern targets. A single load-bearing use is not a hit."
+      }
+    }
+  },
+  "human_grounding_techniques": {
+    "_description": "The POSITIVE model — what human-expert prose does. The humanizer's primary toolset; removal patterns 01-43 are secondary. See references/ai-detection-signals.md.",
+    "journalistic_grounding": {
+      "rule": "Ground claims in specifics inline: event + date + named source/agency/molecule. Specificity is the single most effective humanizing move (it raises perplexity because no model predicts those exact tokens).",
+      "example": "In June 2024 the agency finalized its clinical-pharmacology guidance for this class (Agency, 2024).",
+      "hard_limit": "Specifics come ONLY from the verified research ledger. No grounding available -> calibrated caveat or leave the sentence. Never invent."
+    },
+    "technical_broad_balance": {
+      "rule": "Pair a technical detail with a plain-language explanation in the same sentence.",
+      "example": "Chain-length distribution analysis — essentially a census of how many building blocks each strand actually carries — is now a release requirement."
+    },
+    "factual_clarity": {
+      "rule": "State requirements plainly and specifically. No literary devices, no metaphor, no drama.",
+      "example": "Sponsors must submit stability data covering at least six months at the proposed storage condition."
+    },
+    "calibrated_expert_voice": {
+      "rule": "Add specific, defensible caveats where a domain expert would. One qualifier, concrete scope.",
+      "example": "Timelines vary with agency workload; the 2024 cohort averaged nine months from submission to decision."
+    },
+    "content_derived_variation": {
+      "rule": "Vary sentence length by varying CONTENT — a caveat, an embedded example, a source clause, a mid-sentence qualification — never by inserting content-free short sentences. A run of uniformly short polished lines is as machine-flagged as a run of uniformly long ones.",
+      "replaces": "The pre-v3.19 'add short punchy sentences to raise burstiness' technique, removed because it manufactures pattern 36."
+    }
+  },
+  "detector_lexicon": {
+    "_description": "Flat machine-readable list consumed by scripts/text-metrics.py --ai-tell-scan. Superset of pattern 07 examples.",
+    "llm_favored_words": ["delve", "delves", "delving", "underscore", "underscores", "underscored", "harness", "harnessing", "illuminate", "illuminates", "facilitate", "facilitates", "bolster", "bolsters", "intricate", "seamless", "seamlessly", "showcase", "showcasing", "leverage", "leverages", "leveraging", "tapestry", "realm", "beacon", "cacophony", "testament", "pivotal", "landscape", "navigate", "navigating"],
+    "connective_openers": ["so", "because", "moreover", "furthermore", "additionally", "however", "indeed", "ultimately", "in fact", "the reason is"],
+    "significance_markers": ["here's the thing", "here is the thing", "the thing is,", "here's the kicker", "here is the kicker", "here's where it gets interesting", "here is where it gets interesting", "here's what's interesting", "that's the part that", "that is the part that", "that's the part where", "what got me was", "what struck me was", "and that's the point", "and that is the point", "that's the whole point", "that is the whole point", "which is exactly the problem", "let that sink in", "that's what kills me", "that is what kills me", "the best part?", "and here's why that matters", "and here is why that matters", "read that again"],
+    "soft_adverb_tags": ["honestly", "genuinely", "truly", "literally", "actually", "basically", "quietly", "frankly", "remarkably", "interestingly"],
+    "_note": "'landscape'/'navigate' count only as advisory signals (literal uses exist); the scan is advisory end to end. significance_markers (pattern 42) are matched as substrings on the lowercased sentence; soft_adverb_tags (pattern 43) are counted per sentence and only flagged in clusters, because a single load-bearing use is legitimate."
+  },
+  "ai_signal_scoring": {
+    "_description": "Aggregate AI-signal score computed by the Phase 6.5 humanizer after the pattern sweep. This is the number the phase_6_5_humanizer gate in config/scoring-thresholds.json (max_ai_signal_score: 0.3) consumes.",
+    "formula": "ai_signal_score = sum(weight_i for each pattern i DETECTED in the draft) / sum(weight_i for ALL patterns checked), normalized to 0-1.",
+    "weights": {
+      "high_signal_x2": ["01_significance_inflation", "07_ai_vocabulary", "09_negative_parallelisms", "14_em_dash_overuse", "30_colon_subtitle_headlines", "36_aphoristic_maxims", "42_significance_markers"],
+      "standard_x1": "All other catalog patterns (02-06, 08, 10-13, 15-29, 31-35, 37-41, 43)"
+    },
+    "computation_notes": [
+      "Total weighted checks = 7 patterns x 2 + 36 patterns x 1 = 50.",
+      "A pattern counts as DETECTED when it appears at or above its detection threshold (where one is defined) or at least once (where no threshold is defined).",
+      "Example: a draft triggering patterns 07 (x2), 14 (x2), 10, 28, and 35 scores (2+2+1+1+1)/50 = 0.14 — passes the 0.3 gate.",
+      "Score > 0.3 fails the phase 6.5 gate: run another humanization pass targeting the detected patterns, highest weight first."
+    ],
+    "threshold_reference": "config/scoring-thresholds.json → default.quality_gates.phase_6_5_humanizer.max_ai_signal_score (0.3)"
+  },
+  "sentence_structure_patterns": {
+    "too_uniform": {
+      "description": "AI often creates sentences of similar length. Human writing varies.",
+      "detection_threshold": 0.7,
+      "fix": "Vary length from real content — split at a natural qualification, fold in a source clause or dated example; never insert content-free short sentences (pattern 36)."
+    },
+    "too_balanced": {
+      "description": "AI loves perfectly balanced clauses. Humans don't.",
+      "example": "X is important, Y is crucial, and Z is essential.",
+      "fix": "Break symmetry. One short. Another long and winding with clauses."
+    },
+    "overuse_of_lists": {
+      "description": "AI defaults to bulleted lists. Humans mix formats.",
+      "detection_threshold": "More than 40% of content as lists",
+      "fix": "Convert some lists to narrative paragraphs with connective tissue."
+    },
+    "predictable_structure": {
+      "description": "AI follows intro-body-conclusion rigidly.",
+      "fix": "Start with your main point. Open with a story. Put best idea first."
+    }
+  },
+  "humanization_techniques": {
+    "sentence_variety": {
+      "short_sentence_ratio": 0.2,
+      "medium_sentence_ratio": 0.5,
+      "long_sentence_ratio": 0.3,
+      "description": "Vary sentence length: 20% short (5-10 words), 50% medium (11-20), 30% long (21+)"
+    },
+    "conversational_elements": {
+      "questions": {
+        "recommended_frequency": "1-2 per 500 words",
+        "placement": "After making a point, to engage reader"
+      },
+      "direct_address": {
+        "use_you": true,
+        "avoid_one": true,
+        "description": "Use 'you' instead of 'one' or passive voice"
+      },
+      "contractions": {
+        "appropriate_contexts": ["blog", "article"],
+        "avoid_in": ["whitepaper", "research_paper"],
+        "examples": ["it's", "you're", "we'll", "don't"]
+      }
+    },
+    "natural_imperfections": {
+      "sentence_fragments": {
+        "appropriate": true,
+        "frequency": "Sparingly (1-2 per 1000 words)",
+        "example": "Allowed only when the brand's own writing_sample uses fragments; otherwise skip — inserted fragments are pattern 36.",
+        "placement": "After a complete thought. For punch."
+      },
+      "dashes_and_parentheticals": {
+        "appropriate": true,
+        "example": "Use a dash — like this — to add extra thought, sparingly",
+        "frequency": "1-2 per 500 words MAX",
+        "_warning": "Em dash overuse is a known AI tell. See signs_of_ai_writing_catalog.style_patterns.14_em_dash_overuse. More than 3 em dashes per 500 words flags the content for revision. Most em dashes can be replaced with commas, periods, or parentheses."
+      },
+      "starting_with_and_or_but": {
+        "appropriate_in": ["blog", "article"],
+        "avoid_in": ["research_paper", "whitepaper"],
+        "example": "But the agency never published the revised timetable. And reviewers kept quoting the old one.",
+        "_warning": "Start with And/But to carry a real clause forward, never to stage a reveal. 'But here's the thing' / 'And that's not all' are pattern 42 significance markers, not sentence variety."
+      }
+    },
+    "brand_personality_injection": {
+      "witty": {
+        "techniques": ["Subtle wordplay", "Unexpected comparisons", "Self-aware asides"],
+        "example": "SEO isn't rocket science. (Though rocket scientists probably do SEO.)"
+      },
+      "authoritative": {
+        "techniques": ["Data-first sentences", "Definitive statements", "Expert citations"],
+        "example": "The data is clear: 73% of marketers see ROI within 90 days."
+      },
+      "warm": {
+        "techniques": ["Personal anecdotes", "Inclusive language", "Empathetic framing"],
+        "example": "We've all been there — staring at a blank page, deadline looming."
+      },
+      "professional": {
+        "techniques": ["Industry terminology", "Measured tone", "Formal structure"],
+        "avoid": ["Contractions", "Slang", "Excessive personality"]
+      },
+      "educational": {
+        "techniques": ["Step-by-step breakdowns", "Clear definitions", "Analogies"],
+        "example": "Think of it like this: SEO is a marathon, not a sprint."
+      }
+    },
+    "rhythm_and_flow": {
+      "read_aloud_test": {
+        "description": "Read draft aloud. If you stumble, rewrite that phrase.",
+        "check_for": ["Tongue twisters", "Awkward phrasing", "Unnatural pauses"]
+      },
+      "transition_smoothness": {
+        "avoid_overuse": "Moreover, furthermore, additionally",
+        "prefer": "Natural bridges",
+        "examples": [
+          "Here's why that matters.",
+          "But there's more to it.",
+          "Let's dig deeper.",
+          "So what does this mean for you?"
+        ]
+      },
+      "paragraph_flow": {
+        "vary_length": true,
+        "short_paragraph_ratio": 0.3,
+        "description": "Mix 1-2 sentence paragraphs with 4-5 sentence ones"
+      }
+    }
+  },
+  "naturalness_metrics": {
+    "_description": "Quality targets for natural-sounding prose. These are writing-quality metrics, not detector-evasion tactics — the goal is prose a human editor would sign off on. (Renamed in July 2026 from the old detector-evasion section; the synonym-swap technique was removed because it reproduces the elegant-variation tell — see catalog pattern 11.)",
+    "burstiness": {
+      "description": "Burstiness (sentence length variety) is a core naturalness signal — uniform sentence lengths read as machine output",
+      "target_burstiness_score": 0.7,
+      "_note": "Advisory reference value only since v3.19.0 — burstiness is no longer a gate (scoring-thresholds: burstiness_advisory).",
+      "technique": "Derive variation from content (caveat, example, source clause, qualification). Never insert content-free short sentences to move this number — see human_grounding_techniques.content_derived_variation."
+    },
+    "personal_touches": {
+      "first_person": {
+        "appropriate_in": ["blog", "article", "case study"],
+        "examples": ["I found that", "We discovered", "In my experience"]
+      },
+      "specific_examples": {
+        "description": "AI generalizes. Humans cite specific instances.",
+        "example": "Instead of 'companies', say 'We worked with a SaaS startup that...'"
+      }
+    }
+  },
+  "quality_preservation": {
+    "seo_keyword_protection": {
+      "description": "Humanization must NOT reduce keyword density below threshold",
+      "monitor": ["Primary keyword placement", "Secondary keyword density"],
+      "fallback": "If SEO score drops, loop back to Phase 6"
+    },
+    "factual_accuracy_protection": {
+      "description": "Humanization must NOT alter facts, citations, or data",
+      "immutable_elements": ["Statistics", "Citations", "Proper nouns", "Technical terms"]
+    },
+    "brand_voice_protection": {
+      "description": "Humanization must enhance (not replace) brand voice",
+      "preserve": ["Brand-specific terminology", "Required disclaimers", "Tone formality"]
+    }
+  },
+  "scoring_criteria": {
+    "ai_pattern_removal": {
+      "weight": 0.3,
+      "measure": "Percentage of telltale phrases removed"
+    },
+    "sentence_variety": {
+      "weight": 0.25,
+      "measure": "Burstiness score (variance in sentence length)"
+    },
+    "readability_improvement": {
+      "weight": 0.2,
+      "measure": "Flesch-Kincaid score maintained or improved"
+    },
+    "brand_personality_integration": {
+      "weight": 0.15,
+      "measure": "Presence of brand personality traits"
+    },
+    "seo_preservation": {
+      "weight": 0.1,
+      "measure": "SEO scorecard unchanged or improved"
+    }
+  },
+  "personality_profiles": {
+    "_description": "Configurable personality profiles for the Humanizer agent (Phase 6.5 Step 6). Each profile defines specific writing patterns, techniques, and constraints that shape how content is humanized while preserving factual accuracy.",
+    "authoritative": {
+      "description": "Data-first, definitive voice. Leads with evidence, makes strong claims backed by sources.",
+      "sentence_patterns": [
+        "Lead with the data point or finding",
+        "Use definitive language: 'The data shows' not 'The data seems to suggest'",
+        "Prefer active voice with strong verbs: 'drives', 'proves', 'reveals'",
+        "Minimal hedging — state positions clearly"
+      ],
+      "techniques": [
+        "Open paragraphs with statistics or research findings",
+        "Use 'Research confirms' / 'Data shows' / 'Evidence demonstrates'",
+        "Replace 'might' and 'could' with 'will' and 'does' (where supported by evidence)",
+        "Cite specific numbers rather than vague quantifiers",
+        "Close sections with definitive summary statements"
+      ],
+      "avoid": [
+        "Excessive hedging ('it might possibly suggest')",
+        "Weak qualifiers ('somewhat', 'arguably', 'potentially')",
+        "Passive constructions that dilute authority",
+        "Opinion framing ('we believe', 'in our opinion') — let data speak"
+      ],
+      "example_transforms": {
+        "before": "Companies might find that AI tools could potentially help with content creation.",
+        "after": "AI tools cut content production time by 47% — and the quality gains are measurable."
+      },
+      "best_for": ["whitepapers", "research_papers", "industry_reports", "case_studies"]
+    },
+    "conversational": {
+      "description": "Direct, engaging voice. Talks TO the reader. Uses questions, contractions, and informal bridges.",
+      "sentence_patterns": [
+        "Address the reader directly with 'you' and 'your'",
+        "Use contractions naturally: 'you're', 'it's', 'don't', 'won't'",
+        "Ask questions the reader is genuinely asking, and then answer them — not rhetorical questions used as a drumroll ('The result? Devastating.'), which is the rhetorical-Q&A tell",
+        "Use short sentences for punch. Then longer ones for explanation."
+      ],
+      "techniques": [
+        "Open sections with a question the reader is actually asking, phrased in their words: 'How long does agency review actually take?' — never a rhetorical warm-up ('Ever wondered why...?'), which is pattern 28 signposting",
+        "Earn emphasis with a specific, not a label: return to the number that matters instead of announcing it. 'Here's the thing', 'here's where it gets interesting', and 'the thing is' are pattern 42 significance markers — the drafter must not write them and the humanizer deletes them on sight",
+        "Include reader-directed asides: 'Sound familiar?', 'You've seen this before.'",
+        "Break formality with a sentence fragment ONLY where the brand's own writing_sample uses them — an inserted fragment the brand would not write is pattern 36 (see sentence_structure_patterns.sentence_fragments)",
+        "Use an occasional dash for a mid-thought addition — at most 1-2 per 500 words (see pattern 14)"
+      ],
+      "avoid": [
+        "Third-person corporate speak ('one should consider')",
+        "Formal transitions ('furthermore', 'moreover', 'consequently')",
+        "Passive voice (except for deliberate emphasis)",
+        "Overly long sentences without a natural pause"
+      ],
+      "example_transforms": {
+        "before": "Organizations should consider implementing AI content tools to improve their production efficiency.",
+        "after": "You're spending 6 hours on a blog post that should take 2. The gap is almost always research you already did and cannot find."
+      },
+      "best_for": ["blogs", "articles", "newsletters", "social_content"]
+    },
+    "technical": {
+      "description": "Precision-first voice. Preserves jargon, favors specificity, respects the reader's expertise.",
+      "sentence_patterns": [
+        "Use precise technical terminology without dumbing down",
+        "Define terms only on first use, then use freely",
+        "Favor process-oriented language: 'implements', 'configures', 'executes'",
+        "Use code-like precision in descriptions"
+      ],
+      "techniques": [
+        "Preserve domain-specific jargon (don't replace 'API endpoint' with 'connection point')",
+        "Use specific version numbers, measurements, and configurations",
+        "Structure with clear cause-and-effect: 'X happens because Y'",
+        "Include implementation context: runtime, environment, dependencies",
+        "Reference standards and specifications by name (ISO, RFC, IEEE)"
+      ],
+      "avoid": [
+        "Oversimplification ('basically', 'simply put', 'in layman's terms')",
+        "Marketing buzzwords ('cutting-edge', 'revolutionary', 'game-changing')",
+        "Vague quantifiers ('many', 'several', 'a lot') — use exact numbers",
+        "Analogies that sacrifice precision for accessibility"
+      ],
+      "example_transforms": {
+        "before": "The innovative AI solution leverages cutting-edge technology to transform content creation.",
+        "after": "The multi-agent pipeline uses a frontier LLM for research synthesis and a second frontier LLM for draft generation, with a separate validation model checking citation accuracy at 99.2% precision."
+      },
+      "best_for": ["technical_documentation", "developer_guides", "product_specs", "research_papers"]
+    },
+    "witty": {
+      "description": "Sharp, clever voice. Uses wordplay, unexpected comparisons, and self-aware asides without undermining credibility.",
+      "sentence_patterns": [
+        "Set up expectations, then subvert them",
+        "Use parenthetical asides for commentary",
+        "Deploy analogies from unexpected domains",
+        "Balance wit with substance — every joke earns its place"
+      ],
+      "techniques": [
+        "Wordplay on industry terms: 'Content marketing has a content problem'",
+        "Unexpected comparisons: 'Building a content strategy is like assembling IKEA furniture — you'll have pieces left over and wonder if it's supposed to wobble'",
+        "Self-aware meta-commentary: '(Yes, we see the irony of writing AI content about AI content.)'",
+        "Callback references to earlier points in the article",
+        "Understatement for impact: 'The results were... not terrible' (when results were exceptional)"
+      ],
+      "avoid": [
+        "Forced humor that derails the argument",
+        "Sarcasm that could be misread as literal",
+        "Pop culture references that will date quickly",
+        "Humor in regulated/sensitive content (healthcare, finance compliance sections)"
+      ],
+      "example_transforms": {
+        "before": "Many organizations struggle with content production at scale.",
+        "after": "Most companies produce content the way they did in 2019 — which is like navigating with a paper map while everyone else has GPS. It works, technically. But you're going to miss a lot of turns."
+      },
+      "best_for": ["blogs", "articles", "social_content", "newsletters"],
+      "caution_for": ["whitepapers", "regulated_industries", "formal_reports"]
+    }
+  },
+  "industry_specific_patterns": {
+    "_moved": "Industry-specific AI telltale phrases, preferred replacements, and compliance notes moved to config/industries/*.json under the humanizer_notes key (July 2026). The Humanizer agent (Phase 6.5 Step 1) should load config/industries/{industry}.json matching the brand profile and apply its humanizer_notes section. All 10 industries are now covered (previously only 5 here)."
+  }
+}

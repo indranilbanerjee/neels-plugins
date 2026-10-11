@@ -1,0 +1,25 @@
+---
+description: "Start a new month for a brand: folder and settings; a calendar to load -> parse-calendar; ideas -> ideate-month. \"start a new month for this brand\""
+argument-hint: "<brand-name> <YYYY-MM>"
+---
+
+# New Month
+
+Start monthly content calendar production. Initializes the output directory, loads brand config, and begins the production pipeline.
+
+## Steps
+1. Verify brand profile exists and is complete (pre-flight validation)
+2. Create output directory: `${CLAUDE_PLUGIN_DATA}/socialforge/output/{brand}/{YYYY-MM}/` (falls back to `~/socialforge-workspace/output/{brand}/{YYYY-MM}/` when `${CLAUDE_PLUGIN_DATA}` is unset)
+3. Initialize status-tracker.json and cost-log.json
+4. Ask for calendar source:
+   - **DOCX** — Upload a Word document with the monthly calendar
+   - **XLSX** — Upload an Excel spreadsheet (one row per post)
+   - **Notion** — Provide Notion database URL (requires Notion connector)
+   - **Structured text** — Paste or describe the calendar content
+5. Parse calendar → `/socialforge:parse-calendar`
+6. Match assets → `/socialforge:match-assets`
+7. Show production plan and estimated API costs
+8. Begin creative production on approval
+
+## After Initialization
+"Calendar loaded with {N} posts. Ready to generate creative. Run `/socialforge:generate-all` to produce all posts, or `/socialforge:generate-post P01` for a single post."

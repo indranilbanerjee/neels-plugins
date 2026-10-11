@@ -1,0 +1,176 @@
+{
+  "skill_name": "contentforge",
+  "notes": "All prompts use the --title bypass so runs are non-interactive and machine-evaluable. Artifact assertions check the canonical run directory ~/.claude-marketing/{brand-slug}/runs/{run_id}/ per the Pipeline Contract in skills/contentforge/SKILL.md. Thresholds referenced from config/scoring-thresholds.json.",
+  "evals": [
+    {
+      "id": 0,
+      "name": "Full pipeline smoke test (article)",
+      "prompt": "Write a 2000-word article about sustainable coffee packaging for an eco-friendly coffee brand called GreenBean. --type=article --brand=greenbean --keyword=\"sustainable coffee packaging\" --title=\"Sustainable Coffee Packaging: What Actually Works\"",
+      "expected_output": "A complete pipeline execution (Step 0.5 + phases 1-8, 10 quality gates) producing a fact-checked, brand-compliant, SEO-optimized article with inline citations and a full checkpoint audit trail",
+      "files": [],
+      "assertions": [
+        {
+          "text": "Run directory ~/.claude-marketing/greenbean/runs/{run_id}/ exists and run.json lists completed_phases containing all of: 0.5, 1, 2, 3, 3.5, 4, 5, 6, 6.5, 7, 8 with status 'completed'",
+          "type": "quantitative"
+        },
+        {
+          "text": "Checkpoint artifacts exist per the Pipeline Contract: phase-0.5-title.txt, phase-1-research.md, phase-2-factcheck.md, phase-3-draft.md, phase-3.5-visuals.md, phase-3.5-visual-manifest.json, phase-4-validation.md, phase-5-structured.md, phase-6-seo.md, phase-6-structure-manifest.json, phase-6.5-humanized.md, phase-7-review.json, phase-8-output.json",
+          "type": "quantitative"
+        },
+        {
+          "text": "Phases executed in correct order (Research → Fact Check → Draft → Visual → Validate → Structure → SEO → Humanize → Review → Output) with a [PHASE-AUDIT] line emitted per phase",
+          "type": "qualitative"
+        },
+        {
+          "text": "phase-0.5-title.txt contains exactly the bypassed title 'Sustainable Coffee Packaging: What Actually Works' and no interactive title-option prompt occurred",
+          "type": "quantitative"
+        },
+        {
+          "text": "Output includes inline citations from verified sources with URLs; word count is within ±10% of 2000",
+          "type": "quantitative"
+        },
+        {
+          "text": "SEO keyword placements present: title, first 100 words, ≥2 H2s, conclusion, meta description; meta title and meta description generated",
+          "type": "quantitative"
+        },
+        {
+          "text": "No hallucinated statistics — every data point in the article traces to an entry in phase-2-factcheck.md or phase-4-validation.md",
+          "type": "quantitative"
+        },
+        {
+          "text": "A .docx file exists (run directory and ~/Documents/ContentForge/GreenBean/) containing Appendices A, B, and C",
+          "type": "quantitative"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Regulated-industry whitepaper (pharma knowledge pack)",
+      "prompt": "Create a whitepaper on AI-powered clinical trial recruitment for a pharma company. --type=whitepaper --brand=pharmaco --title=\"AI-Powered Clinical Trial Recruitment: An Evidence Review\"",
+      "expected_output": "A fact-checked whitepaper with pharma industry knowledge pack calibration, domain-specific validation, visual asset annotations, and strict evidence standards",
+      "files": [],
+      "assertions": [
+        {
+          "text": "Industry knowledge pack (pharma) is loaded and SME calibration is applied in Phase 3",
+          "type": "qualitative"
+        },
+        {
+          "text": "Domain-specific validation in Phase 4 checks regulatory compliance and terminology accuracy",
+          "type": "qualitative"
+        },
+        {
+          "text": "phase-3.5-visual-manifest.json exists and every chart specification traces to a verified statistic in phase-2-factcheck.md",
+          "type": "quantitative"
+        },
+        {
+          "text": "phase-7-review.json applies the pharma industry threshold override from config/scoring-thresholds.json (not the default pass threshold)",
+          "type": "quantitative"
+        },
+        {
+          "text": "Content uses appropriate pharma terminology without oversimplification",
+          "type": "qualitative"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "BFSI FAQ with compliance and schema rules",
+      "prompt": "Write an FAQ page about home loan refinancing for a financial services brand. --type=faq --brand=finserve --title=\"Home Loan Refinancing: Your Questions Answered\"",
+      "expected_output": "A structured FAQ with verified financial data, BFSI knowledge pack calibration, and appropriate disclaimers",
+      "files": [],
+      "assertions": [
+        {
+          "text": "BFSI industry knowledge pack is loaded for financial content calibration",
+          "type": "qualitative"
+        },
+        {
+          "text": "Schema markup appropriate to content type is included in SEO output (Article + Organization baseline; FAQPage only because this IS a dedicated FAQ page)",
+          "type": "quantitative"
+        },
+        {
+          "text": "Financial disclaimers are present where required, and word count is within the FAQ range of 600-1200",
+          "type": "quantitative"
+        },
+        {
+          "text": "All interest rates and financial figures cite authoritative sources recorded in phase-2-factcheck.md",
+          "type": "quantitative"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Phase 7 scoring dimension test",
+      "prompt": "Create a blog post about remote work productivity tips for brand 'techstartup' (technology industry, conversational tone). --type=blog --brand=techstartup --title=\"Remote Work Productivity: Tips That Survive Contact With Reality\" Verify the Phase 7 scoring output.",
+      "expected_output": "Phase 7 produces phase-7-review.json with all 5 dimensions scored 1-10, composite score calculated as the weighted average per config/scoring-thresholds.json, and a pass/fail decision",
+      "files": [],
+      "assertions": [
+        {
+          "text": "phase-7-review.json exists in the run directory and contains exactly these 5 dimension keys: content_quality, citation_integrity, brand_compliance, seo_performance, readability",
+          "type": "quantitative"
+        },
+        {
+          "text": "Composite score equals the weighted average using the dimension weights in config/scoring-thresholds.json, rounded to 1 decimal",
+          "type": "quantitative"
+        },
+        {
+          "text": "Each dimension score is between 1.0 and 10.0",
+          "type": "quantitative"
+        },
+        {
+          "text": "Decision is APPROVED only if composite meets the pass threshold in config/scoring-thresholds.json AND all dimension minimums are met",
+          "type": "quantitative"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Empty guardrails compliance test",
+      "prompt": "Create a blog post about investment strategy basics for a BFSI brand whose profile has EMPTY guardrails (no prohibited_claims, no required_disclaimers). --type=blog --brand=bareinvest --title=\"Investment Strategy Basics for First-Time Investors\" Verify the system warns about missing guardrails.",
+      "expected_output": "System warns that guardrails are empty for a regulated industry before starting the pipeline. Phase 5 reports compliance as SKIPPED (not PASSED). Phase 7 applies the empty-guardrails penalty per config/scoring-thresholds.json.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "Pre-flight validation warns: guardrails empty for regulated industry, and asks before proceeding",
+          "type": "qualitative"
+        },
+        {
+          "text": "Phase 5 brand compliance reports 'skipped_empty_guardrails' status, NOT 'passed'",
+          "type": "qualitative"
+        },
+        {
+          "text": "phase-7-review.json shows the Brand Compliance score includes the empty-guardrails penalty and the run is flagged for manual review",
+          "type": "quantitative"
+        },
+        {
+          "text": "Final output includes guardrails status in the Quality Scorecard / Completion Card",
+          "type": "qualitative"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Title bypass and brand-personality drafting test",
+      "prompt": "Create an article about AI in supply chain management for brand 'logicorp' (witty personality, conversational tone, B2B SaaS industry). --type=article --brand=logicorp --title=\"Your Supply Chain Called. It Wants an AI Copilot.\" Verify the --title bypass behavior and brand-voice application.",
+      "expected_output": "The --title bypass skips option generation entirely, checkpoints the supplied title verbatim, and the pipeline applies the witty/conversational brand personality in drafting and humanizing.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "No title options are generated and no user selection is requested — Phase 1 starts directly after Step 0 init and the 0.5 checkpoint",
+          "type": "quantitative"
+        },
+        {
+          "text": "phase-0.5-title.txt contains exactly 'Your Supply Chain Called. It Wants an AI Copilot.' (verbatim, unmodified)",
+          "type": "quantitative"
+        },
+        {
+          "text": "Draft and humanized output reflect the witty/conversational brand personality (casual language, clever framing) per the brand profile passed to phases 3 and 6.5",
+          "type": "qualitative"
+        },
+        {
+          "text": "run.json meta captures the run inputs (keyword/audience/word-count/tone where provided) so the run is resumable cross-session",
+          "type": "quantitative"
+        }
+      ]
+    }
+  ]
+}
