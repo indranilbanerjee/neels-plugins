@@ -1,7 +1,7 @@
 # Digital Marketing Pro for Hermes Agent: three toolkits, one listing
 
 This is the folder Hermes installs from the [neels-plugins marketplace](https://github.com/indranilbanerjee/neels-plugins) as
-`digital-marketing-pro` (version 3.55.2). Hermes allows one plugin per vendor, so the Hermes
+`digital-marketing-pro` (version 3.56.0). Hermes allows one plugin per vendor, so the Hermes
 listing holds three of our marketing plugins as skill groups. **207 skills in all.** It is
 generated, never hand-edited: `scripts/build_hermes_bundle.py` in the marketplace repo copies each
 plugin's runtime files from its release commit and records the commit and a sha256 per file in

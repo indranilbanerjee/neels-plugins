@@ -5,6 +5,13 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.56.0] - 2026-10-11
+
+- One combined Hermes listing, as Hermes Agent's maintainers asked: `hermes/digital-marketing-pro/` bundles Digital Marketing Pro, ContentForge and SocialForge as `strategy/`, `content/` and `social/` skill groups (207 skills), copied from each release commit; `scripts/build_hermes_bundle.py` regenerates it deterministically; `tests/test_hermes_bundle.py` (17) rebuilds and compares it; the real Hermes validator passes it. Hermes-only: the three plugins stay separate everywhere else.
+- Routing re-checked from a fresh install with no regressions; a trigger case for Digital Marketing Pro's `execute-action`.
+- README: Hermes and OpenClaw install commands (the platform list said 9 but showed 7).
+- Suite total 1,946 (CF 762 + DMP 613 + SF 516 + marketplace 55).
+
 ## [3.55.2] - 2026-10-10
 
 - SocialForge 1.29.2: every paid path quoted (generate-post and interactive mode had none; the image-compositor agent refuses an unquoted paid call); previews described as one card per platform, badge off the artwork; no manifest names a file that does not ship.

@@ -4,20 +4,20 @@
 
 Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.55.2-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.56.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-207%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-1928%20across%20suite-brightgreen.svg)](#whats-new)
+[![Total tests](https://img.shields.io/badge/tests-1946%20across%20suite-brightgreen.svg)](#whats-new)
 [![Surfaces](https://img.shields.io/badge/all%203%20plugins-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
 [![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
 [![Sponsor](https://img.shields.io/badge/sponsor-%E2%9D%A4-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/indranilbanerjee)
 
-> 🆕 **October 10, 2026 — marketplace v3.55.2: every claim checked against the code** (ContentForge **4.5.2** · Digital Marketing Pro **3.35.2** · SocialForge **1.29.2**). A line-by-line check of the new README sections against the code found eight claims that were wrong or overstated, and one real gap: two SocialForge paths could start paid image or video generation without a quote. Every paid path now shows a live quote and waits for "go"; every Digital Marketing Pro script that needs a missing package prints the exact pinned install command (all three plugins now pin every optional package); the README examples, output-folder layout and "never do" panels now say exactly what the code does, and new guards keep them that way. **1,928 tests passing.**
+> 🆕 **October 11, 2026 — marketplace v3.56.0: one combined Hermes listing** (ContentForge **4.5.2** · Digital Marketing Pro **3.35.2** · SocialForge **1.29.2**). Hermes Agent's maintainers passed all three plugins' security re-reviews and asked each vendor for one catalog entry, so `hermes/digital-marketing-pro/` now holds a Hermes-only bundle: Digital Marketing Pro, ContentForge and SocialForge as three skill groups (207 skills), generated from each release by `scripts/build_hermes_bundle.py` and checked file by file. The combined entry is awaiting the maintainer's merge. Everywhere else the three plugins stay separate. Routing re-checked from a fresh install: no regressions. **1,946 tests passing.**
+>
+> Previously — **October 10, 2026 — marketplace v3.55.2: every claim checked against the code** (ContentForge **4.5.2** · Digital Marketing Pro **3.35.2** · SocialForge **1.29.2**). A line-by-line check of the new README sections against the code found eight claims that were wrong or overstated, and one real gap: two SocialForge paths could start paid image or video generation without a quote. Every paid path now shows a live quote and waits for "go"; every Digital Marketing Pro script that needs a missing package prints the exact pinned install command (all three plugins now pin every optional package); the README examples, output-folder layout and "never do" panels now say exactly what the code does, and new guards keep them that way. **1,928 tests passing.**
 >
 > Previously — **October 10, 2026 — marketplace v3.55.1: previews that show the image, and docs that tell the truth** (ContentForge **4.5.1** · Digital Marketing Pro **3.35.1** · SocialForge **1.29.1**). Rendering a real SocialForge preview for its README found that every platform preview had shown a broken-image icon while reporting success; SocialForge 1.29.1 embeds the image and checks it was drawn, keeps line breaks, and counts inline hashtags against the platform limit (an X post had been reported within 280 and published at 282). A documentation truth pass across all three plugins corrected every stale claim it found, and the doc-count guards now check the phrasings that had rotted. New diagrams, a real preview, "Try this first" and "What it will never do" sections, and a tip for 200k context windows. **1,891 tests passing.**
->
-> Previously — **October 10, 2026 — marketplace v3.55.0: safer by default, after a Hermes security review** (ContentForge **4.5.0** · Digital Marketing Pro **3.35.1** · SocialForge **1.29.0**). A maintainer review of our Hermes Agent catalog listings asked for changes in all three plugins, and every point is fixed with a test that fails if the fix is undone. **No script installs a package on its own any more:** a missing package prints the exact pinned install command instead. **Names from outside can no longer choose a file path:** every brand, month, run and client name passes one containment check, including a ContentForge migration step that could have written a downloaded file anywhere on disk. **Digital Marketing Pro's live writes need a single-use approval record for that exact request**, approved after you type yes; autopilot proposes instead of acting unless you set a standing rule, and the docs say plainly what the record can and cannot prove. **SocialForge quotes paid generation and waits for "go"**, and API keys stay out of the chat. C2PA signing is pinned to the current c2pa-python, which had been refusing the manifests the plugins built. **1,871 tests passing.**
 >
 > Older releases: [CHANGELOG.md](CHANGELOG.md)
 
@@ -62,6 +62,10 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 ---
 
 ## What's new
+
+### v3.56.0 (October 11, 2026) — one combined Hermes listing
+
+CF **4.5.2** · DMP **3.35.2** · SF **1.29.2** · suite **1,946 tests**. Hermes Agent's maintainers passed all three re-reviews and asked for one plugin per vendor. `hermes/digital-marketing-pro/` is a Hermes-only bundle with three skill groups: `strategy/` (Digital Marketing Pro), `content/` (ContentForge) and `social/` (SocialForge), each copied from its release commit with `git archive`, 207 skills with no name collisions, a stdlib adapter and a manifest with a sha256 per file. `scripts/build_hermes_bundle.py` regenerates it deterministically and refuses an unclean or unpushed source; `tests/test_hermes_bundle.py` (17 tests) rebuilds it and compares every file, and Hermes's own validator passes it. Hermes skills load only when asked, so the three groups cost no context until used. The three plugins remain separate products on every other platform. Also: routing re-checked from a fresh install (DMP 50/55, CF 26/26, SF 25/25, the same known misses and no regressions), a trigger case for `execute-action`, and Hermes and OpenClaw install commands added below.
 
 ### v3.55.2 (October 10, 2026) — every claim checked against the code
 
@@ -174,6 +178,16 @@ grok plugin install <plugin-name>
 agy plugin install https://github.com/indranilbanerjee/digital-marketing-pro
 agy plugin install https://github.com/indranilbanerjee/contentforge
 agy plugin install https://github.com/indranilbanerjee/socialforge
+
+# Hermes Agent (from each repo; the one combined catalog entry is awaiting review)
+hermes plugins install indranilbanerjee/digital-marketing-pro
+hermes plugins install indranilbanerjee/contentforge
+hermes plugins install indranilbanerjee/socialforge
+
+# OpenClaw
+openclaw plugins install git:github.com/indranilbanerjee/digital-marketing-pro
+openclaw plugins install git:github.com/indranilbanerjee/contentforge
+openclaw plugins install git:github.com/indranilbanerjee/socialforge
 ```
 
 ---
