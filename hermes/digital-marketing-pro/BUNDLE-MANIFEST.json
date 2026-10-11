@@ -3,7 +3,7 @@
   "generated_files": {
     ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
     "README.md": "7e761983269403667c4dae85c22c0dc2e0549d541e31c8e45047c1d88154ab02",
-    "__init__.py": "40642c2ba6101d59184c2ea5e699a1e9df6d1b56c6da5ae21989ced534f9c888",
+    "__init__.py": "eadeeb9b4c92446aee813d6eb994a511e7365fe9176ca6d9b9efee408ed412fb",
     "plugin.yaml": "501b14dce6ca8486d6efda5693e945659f42bd27a52cf65e3b394d14dc791991"
   },
   "generator": "scripts/build_hermes_bundle.py",

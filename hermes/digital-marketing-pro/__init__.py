@@ -7,8 +7,8 @@ own repo, with `skills/` next to `scripts/`, `references/` and the rest, so ever
 
 register(ctx) walks the three `skills/` folders and exposes every SKILL.md through
 ctx.register_skill(name, path). Names are the skills' own names (a test keeps them unique across
-the groups); Hermes namespaces them as `digital-marketing-pro:<skill>` and loads them only on
-request, so registering all of them adds nothing to the system prompt.
+the groups); Hermes namespaces them as `digital-marketing-pro:<skill>` and, while the plugin is
+enabled, lists every one by name in the system prompt's <available_skills> (no description is passed).
 
 This listing registers no tools, hooks or middleware, so there is nothing to switch on or off per
 group. Standard library only; it never raises (a problem is logged and the rest still register).

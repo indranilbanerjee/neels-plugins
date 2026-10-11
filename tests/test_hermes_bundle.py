@@ -107,8 +107,11 @@ def listing_problems(tree: dict[str, bytes]) -> list[str]:
     expected = f"{len(names)} rows, about {gen.listing_chars(names):,} characters"
     if expected not in readme:
         out.append(f"README does not state the system-prompt cost it really has ({expected})")
-    if re.search(r"(?i)adds nothing to the system prompt|not listed in the system prompt", readme):
+    false_claim = r"(?i)adds nothing to the system prompt|not listed in the system prompt|only on\s+request"
+    if re.search(false_claim, readme):
         out.append("README says the skills cost nothing in the system prompt; Hermes lists them")
+    if re.search(false_claim, " ".join(tree["__init__.py"].decode("utf-8").split())):
+        out.append("__init__.py says the skills cost nothing in the system prompt; Hermes lists them")
     return out
 
 
@@ -296,6 +299,10 @@ class TestPlantedFailuresAreFlagged(unittest.TestCase):
         self.assertTrue(any("cost nothing" in p for p in listing_problems(t)))
         t["README.md"] = re.sub(r"about [\d,]+ characters", "about 1 characters", readme).encode()
         self.assertTrue(any("does not state" in p for p in listing_problems(t)))
+        t = self.planted()
+        init = t["__init__.py"].decode("utf-8")
+        t["__init__.py"] = (init + "\n# Hermes loads them only on request, so this adds nothing to the system prompt.\n").encode()
+        self.assertTrue(any(p.startswith("__init__.py says") for p in listing_problems(t)))
 
     def test_a_non_stdlib_import_in_init_is_flagged(self):
         t = self.planted()
