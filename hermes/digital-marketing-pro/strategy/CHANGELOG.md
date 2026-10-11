@@ -6,6 +6,36 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 
 ---
 
+## [3.35.4] - 2026-10-12
+
+### One approval can no longer fire twice, `$?` says whether anything was sent, and skills name the Python to use
+
+Found by a fresh-install smoke test of the installed plugins (a new session that tested them as a first-time user would), and reproduced offline before fixing. Each fix has a test that fails on the 3.35.3 code.
+
+**Fixed — a double send after a slow response (`scripts/connector_executor.py`)**
+
+- An approval record was released whenever a send failed without an HTTP status, on the reading that nothing had reached the platform. But a timeout or reset can come after the request was delivered, or after "200 OK" arrived and while the body was still being read, and those have no status either. The record went back to approved, so the same approval could send the request a second time. Now a record is released only when the error proves no connection was made: a refused connection (`ConnectionRefusedError`, `ECONNREFUSED`, WinError 10061), a DNS failure (`socket.gaierror`) or a proxy refusing the tunnel. Every other failure, timeouts included, consumes the record with `status: unknown_outcome` and `outcome: "unknown: the request may have reached the platform; check it there before preparing again"`, keeps `http_status` when the status line had arrived, and is logged and recorded as `unknown` rather than as success or failure. A short `--timeout` against a slow host therefore consumes the record. The request still goes through `urllib.request.urlopen`.
+- A network error or an unknown outcome had no `success` field, so the fire step exited 0. It now exits 1.
+
+**Fixed — `--execute` exited 0 when nothing was sent**
+
+- With no connector configured, an MCP-only connector, a missing credential variable or an incomplete request, `--execute` sent nothing but exited 0, which a caller chaining on `$?` reads as success. It now exits 3. The exit status is: 0 sent and succeeded (or a local action ran, or a dry run); 1 an error, a non-2xx response or an unknown outcome; 2 nothing sent, an approval record is needed; 3 nothing sent, nothing this executor could send. The JSON still says why (`execute_blocked_reason`).
+- Preparing a write needs the connector's credential set, and that is now documented as intended: the exact request, auth header included (and Mailchimp's data-centre URL, which comes from the key), is built before its hash is recorded, so no record is approved for a request that could not fire. Without the variable, no record is written and the command exits 3, naming it.
+- `commands/execute-action.md` (flow table, safety list, exit statuses) and PRIVACY.md say all of this. PRIVACY.md also no longer says the record is created by the approval step: the script writes it, and the approval step approves it.
+
+**Fixed — a refused SERP snapshot still reported counts (`scripts/serp-snapshot.py`)**
+
+- When a snapshot was refused (exit 1), its summary still counted the invalid rows (an AI Overview "cited" where none was present counted as a citation). A refused snapshot now has no summary and is marked `refused: true`.
+
+**Changed — skills say which Python to run**
+
+- Many macOS and Linux systems have no `python` command, only `python3`. The script-location line in all 111 files that run a script (skills, commands and one reference file) now ends: "Run them with Python 3.10 or newer: `python`, or `python3` where `python` is not found (macOS, many Linux systems)." The commands keep `python`. `tests/test_script_root_fallback.py` requires the new line, and a file still carrying the old one fails it.
+
+**Tests**
+
+- New `tests/test_executor_exit_codes.py` (10) and `tests/test_executor_delivery.py` (10, with a small stub server on 127.0.0.1: the platform stalls before the status, stalls after "200 OK", completes, or refuses the connection; no network). The 3.35.3 code fails both stall cases (the second fire reached the stub) and exits 0 on a missing credential. `tests/test_approval_gate.py` now releases only on a real DNS error and consumes on a timeout; `tests/test_serp_snapshot.py` gains the refused-summary checks.
+- Suite: 665 tests.
+
 ## [3.35.3] - 2026-10-11
 
 ### Fatigue forecasts count calendar days, and rank-monitor reads a SERP snapshot from any provider

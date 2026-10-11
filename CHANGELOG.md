@@ -5,6 +5,11 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.56.3] - 2026-10-12
+
+- Fixes from a fresh-install smoke test. Digital Marketing Pro 3.35.4: an approval record is released only when it is proven nothing was sent (a stalled reply could otherwise fire one approval twice); not-sent and unknown outcomes exit non-zero. SocialForge 1.29.3: every spending path quotes first and waits for "go" (edit-image had no quote), guarded by discovery. ContentForge 4.5.3 and all three: the script-location line names the Python to run; the hero skills say the same.
+- Suite total 2,016 (CF 765 + DMP 665 + SF 529 + marketplace 57).
+
 ## [3.56.2] - 2026-10-12
 
 - Hermes bundle rebuilt from the plugins' latest commits (DMP f84e7ba): Digital Marketing Pro's Agent Skills table gives each tool's documented skills folder (ten listed install commands were not in those tools' docs) and the HOL Guard referral badge is removed. No code changed.

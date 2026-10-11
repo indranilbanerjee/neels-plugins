@@ -30,6 +30,17 @@ Design constraints:
     HubSpot POST 201, Klaviyo 200, etc.)
   * Timeouts default to 30 s; configurable
   * Secrets are redacted from all returned output via redact_secrets().
+  * Exit status says whether anything was sent (exit_code_for): 0 sent and
+    succeeded, a local action ran, or a dry run; 1 an error, or sent and the
+    service reported failure; 2 nothing sent, an approval record is needed;
+    3 nothing sent, --execute was given but there was nothing to send (no
+    connector configured, an MCP-only connector, a missing credential, an
+    incomplete request). The JSON says why in execute_blocked_reason.
+  * Preparing a write needs the connector's credential set: the exact request,
+    auth header included (and Mailchimp's data-centre URL, read from the key),
+    is built before its hash is recorded, so a record is never approved for a
+    request that could not fire. Without it the command exits 3, writes no
+    record and says which variable to set.
 
 API:
     execute_manifest(http_request, env=None, data=None, timeout=30) -> dict
@@ -39,9 +50,11 @@ API:
 """
 from __future__ import annotations
 
+import errno
 import json
 import os
 import re
+import socket
 import sys
 import time
 import urllib.error
@@ -57,6 +70,24 @@ import _common  # noqa: E402
 from connector_resolver import ACTION_SPECS, resolve_action  # type: ignore  # noqa: E402
 
 APPROVAL_BLOCKED_EXIT = 2
+NOT_EXECUTED_EXIT = 3
+
+
+def exit_code_for(result, execute: bool) -> int:
+    """The CLI exit status, so a caller chaining on `$?` knows whether anything was sent.
+
+    Before 3.35.4, `--execute` exited 0 when nothing was sent because no connector
+    was configured or the credential was missing, which reads as success.
+    """
+    if not isinstance(result, dict) or "error" in result:
+        return 1
+    if result.get("approval_required") and not result.get("execute_attempted"):
+        return APPROVAL_BLOCKED_EXIT       # 2: nothing sent; follow next_steps
+    if execute and result.get("execute_attempted") is False:
+        return NOT_EXECUTED_EXIT           # 3: nothing sent; see execute_blocked_reason
+    if result.get("execution", {}).get("success") is False or result.get("success") is False:
+        return 1
+    return 0
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -363,9 +394,32 @@ def build_request(http_request: dict, env: dict | None = None,
             "body_bytes": body_bytes, "body": body_template}
 
 
+def _proves_nothing_sent(exc: BaseException) -> bool:
+    """True only for errors that prove no connection was made, so the platform
+    cannot have seen the request: connection refused, a DNS failure, or a proxy
+    refusing the tunnel. A timeout or reset can happen after the request was
+    written (or after the status line arrived), so it proves nothing."""
+    reason = exc.reason if isinstance(exc, urllib.error.URLError) else exc
+    if isinstance(reason, (ConnectionRefusedError, socket.gaierror)):
+        return True
+    if isinstance(reason, OSError) and (reason.errno == errno.ECONNREFUSED
+                                        or getattr(reason, "winerror", None) == 10061):
+        return True
+    # A timeout (socket.timeout / TimeoutError, raised at connect time or while the body
+    # is being written) proves nothing, so it never releases a record.
+    return isinstance(reason, (OSError, str)) and "Tunnel connection failed" in str(reason)
+
+
 def send_request(built: dict, timeout: int = 30) -> dict:
-    """Send a request produced by build_request(). Never raises on HTTP errors.
-    A result without 'http_status' means nothing reached the platform."""
+    """Send a request produced by build_request(). Never raises.
+
+    Every result carries `sent`. `sent: False` (status network_error) is returned
+    only when the error proves no connection was made, and only then may an approval
+    record be released. Any other failure (a timeout or reset while writing the request,
+    waiting for the status or reading the body) is status unknown_outcome with
+    `sent: True`: the platform may have acted, so the record is consumed and the result
+    keeps http_status when the status line had arrived. Before 3.35.4 a timeout after
+    delivery released the record, so one approval could fire twice."""
     method, url, headers, body_bytes = built["method"], built["url"], built["headers"], built["body_bytes"]
     started = time.time()
     req = urllib.request.Request(url, data=body_bytes, method=method)
@@ -374,6 +428,7 @@ def send_request(built: dict, timeout: int = 30) -> dict:
 
     # Fire
     response = None
+    status_code = None
     try:
         response = urllib.request.urlopen(req, timeout=timeout)
         status_code = response.status
@@ -384,22 +439,23 @@ def send_request(built: dict, timeout: int = 30) -> dict:
             raw = e.read()
         except Exception:
             raw = b""
-    except urllib.error.URLError as e:
-        return {
-            "status": "network_error",
-            "error": f"URLError: {e.reason}",
+    except Exception as e:  # URLError, timeouts, resets, protocol errors
+        failed = {
+            "error": f"{type(e).__name__}: {getattr(e, 'reason', e)}",
             "method": method,
             "url": url,
             "elapsed_ms": int((time.time() - started) * 1000),
         }
-    except Exception as e:
-        return {
-            "status": "error",
-            "error": f"{type(e).__name__}: {e}",
-            "method": method,
-            "url": url,
-            "elapsed_ms": int((time.time() - started) * 1000),
-        }
+        if status_code is None and _proves_nothing_sent(e):
+            return {"status": "network_error", "sent": False, **failed}
+        failed.update({
+            "status": "unknown_outcome",
+            "sent": True,
+            "outcome": "unknown: the request may have reached the platform; check it there before preparing again",
+        })
+        if status_code is not None:
+            failed["http_status"] = status_code
+        return failed
     finally:
         if response is not None:
             try:
@@ -418,6 +474,7 @@ def send_request(built: dict, timeout: int = 30) -> dict:
 
     return {
         "status": "executed",
+        "sent": True,
         "http_status": status_code,
         "method": method,
         "url": url,
@@ -434,8 +491,10 @@ def send_request(built: dict, timeout: int = 30) -> dict:
 
 
 def _check_success(result: dict, profile: dict) -> dict:
-    """Apply per-connector success-code + post-check logic."""
+    """Apply per-connector success-code + post-check logic. Anything that did not
+    complete (network_error, unknown_outcome, error) is not a success."""
     if result.get("status") != "executed":
+        result["success"] = False
         return result
     success_codes = profile.get("success_codes", [200, 201, 202])
     http_status = result.get("http_status")
@@ -621,10 +680,14 @@ def execute_action(action_id: str, brand: str, *,
     resolved["execute_attempted"] = True
     resolved["execution"] = exec_result
     if approval_path is not None:
-        sent = exec_result.get("http_status") is not None
+        # Released only when send_request proved nothing reached the platform.
+        sent = exec_result.get("sent") is not False
+        unknown = exec_result.get("status") == "unknown_outcome"
         _common.settle_approval(approval_path, approval_record, approval_item, sent=sent,
                                 success=bool(exec_result.get("success")), request_hash=payload_hash,
-                                summary=exec_result.get("http_status") or exec_result.get("error"))
+                                summary=(exec_result.get("outcome") if unknown else None)
+                                or exec_result.get("http_status") or exec_result.get("error"),
+                                outcome="unknown" if unknown else None)
         resolved["approval"] = {"approval_id": approval_id, "payload_hash": payload_hash,
                                 "consumed": sent, "status": approval_record.get("status")}
 
@@ -743,7 +806,8 @@ def _log_execution(action_id: str, brand: str, connector: str,
         "platform": connector,
         "operation": operation,
         "action_type": f"{action_id}-via-{connector}",
-        "result": "success" if success else "failure",
+        "result": ("unknown" if exec_result.get("status") == "unknown_outcome"
+                   else "success" if success else "failure"),
         "http_status": exec_result.get("http_status"),
         "elapsed_ms": exec_result.get("elapsed_ms"),
         "executed_at": datetime.now().isoformat(),
@@ -851,18 +915,8 @@ if __name__ == "__main__":
                             data=data, timeout=args.timeout,
                             approval_id=args.approval_id, **extra_kwargs)
     # Redact any secrets that may have leaked into the output (e.g. a
-    # substituted URL echoed by the missing_credential branch), then exit
-    # non-zero when the execution reported failure (M1) so $? is trustworthy.
+    # substituted URL echoed by the missing_credential branch), then exit with a
+    # status that says whether anything was sent (exit_code_for) so $? is trustworthy.
     result = redact_secrets(result)
     print(json.dumps(result, indent=2, default=str))
-    if isinstance(result, dict) and result.get("approval_required") and not result.get("execute_attempted"):
-        sys.exit(APPROVAL_BLOCKED_EXIT)  # 2: nothing fired; follow next_steps
-    _success = True
-    if isinstance(result, dict):
-        if "error" in result:
-            _success = False
-        elif result.get("execution", {}).get("success") is False:
-            _success = False
-        elif result.get("success") is False:
-            _success = False
-    sys.exit(0 if _success else 1)
+    sys.exit(exit_code_for(result, args.execute))

@@ -9,7 +9,7 @@ view-preference: v1-only
 
 # /digital-marketing-pro:client-validation-document — Part 5: The One True Stop
 
-> **Script location.** If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this plugin's `scripts/` folder, next to `skills/`.
+> **Script location.** If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this plugin's `scripts/` folder, next to `skills/`. Run them with Python 3.10 or newer: `python`, or `python3` where `python` is not found (macOS, many Linux systems).
 
 This skill produces the Part 5 deliverable: the Client Validation Document. It is the only point in the engagement where unbiased v1 findings are formally presented to the client for accept/reject/edit decisions.
 

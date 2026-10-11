@@ -1,6 +1,6 @@
 # SERP snapshot format (`rank-monitor --features`)
 
-> **Script location.** If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this plugin's `scripts/` folder, next to `skills/`.
+> **Script location.** If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this plugin's `scripts/` folder, next to `skills/`. Run them with Python 3.10 or newer: `python`, or `python3` where `python` is not found (macOS, many Linux systems).
 
 Search Console reports positions for a verified property, not the SERP-feature layout of each query. Any SERP API or rank tracker can export that layout. Save one export per check as a CSV file or a JSON array, then validate it:
 
@@ -8,7 +8,7 @@ Search Console reports positions for a verified property, not the SERP-feature l
 python "${CLAUDE_PLUGIN_ROOT}/scripts/serp-snapshot.py" --file snapshot.csv --brand-domain example.com
 ```
 
-The script reads only the file you name. It makes no network request, reads no API key and contains no provider code, so the export can come from any tool. Exit 0 means every row is valid; exit 1 lists every bad row (fix the export, do not use a partly valid file); exit 2 means the file could not be read.
+The script reads only the file you name. It makes no network request, reads no API key and contains no provider code, so the export can come from any tool. Exit 0 means every row is valid; exit 1 lists every bad row, marks the file `refused` and gives no summary (fix the export, do not use a partly valid file); exit 2 means the file could not be read.
 
 ## Columns
 
@@ -39,7 +39,7 @@ waterproof trail shoes,gb,en-GB,12,false,,true,
 ## What the script returns
 
 - `rows`: each row normalised (lower-case `gl`, `-` in `hl`, the snippet owner as a bare domain). With `--brand-domain`, each row also gets `brand_owns_featured_snippet` (the brand's domain or any subdomain of it).
-- `summary`: queries, how many rank, AI Overviews present and citing the brand, People Also Ask boxes, featured snippets, and (with `--brand-domain`) snippets the brand owns.
+- `summary` (only when every row is valid): queries, how many rank, AI Overviews present and citing the brand, People Also Ask boxes, featured snippets, and (with `--brand-domain`) snippets the brand owns.
 - `errors`: every problem, each naming its row and column.
 
 ## How the skill uses it

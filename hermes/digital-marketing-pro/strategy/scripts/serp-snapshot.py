@@ -23,8 +23,8 @@ Usage:
     python serp-snapshot.py --file snapshot.csv
     python serp-snapshot.py --file snapshot.json --brand-domain example.com
 
-Exit codes: 0 valid, 1 one or more rows invalid (all errors are listed), 2 bad arguments
-or an unreadable file.
+Exit codes: 0 valid, 1 one or more rows invalid (all errors are listed, `refused: true`, and no
+summary is given), 2 bad arguments or an unreadable file.
 
 Dependencies: none (stdlib only)
 """
@@ -167,7 +167,13 @@ def validate(rows, brand_domain=None):
     }
     if brand_domain:
         summary["featured_snippets_owned_by_brand"] = count("brand_owns_featured_snippet")
+    if errors:
+        # A refused snapshot has no summary: counts that include a bad row (an AI Overview
+        # "cited" with none present, say) would be read as facts.
+        summary = None
     result = {"rows": out, "summary": summary, "errors": errors}
+    if errors:
+        result["refused"] = True
     if ignored:
         result["ignored_columns"] = sorted(ignored)
     return result

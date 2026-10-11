@@ -22,7 +22,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 7570
+      "bytes": 7686
     },
     {
       "name": "ad-creative",
@@ -94,7 +94,7 @@
         "gsc-ai-performance"
       ],
       "doc_files": 5,
-      "bytes": 44231
+      "bytes": 44347
     },
     {
       "name": "agency-dashboard",
@@ -114,7 +114,7 @@
         "performance-report"
       ],
       "doc_files": 1,
-      "bytes": 9737
+      "bytes": 9853
     },
     {
       "name": "agent-readiness-audit",
@@ -134,7 +134,7 @@
         "tech-seo-audit"
       ],
       "doc_files": 1,
-      "bytes": 14919
+      "bytes": 15035
     },
     {
       "name": "analytics-insights",
@@ -170,7 +170,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 7387
+      "bytes": 7503
     },
     {
       "name": "attribution-model",
@@ -212,7 +212,7 @@
         "brand-setup"
       ],
       "doc_files": 6,
-      "bytes": 53758
+      "bytes": 53874
     },
     {
       "name": "audience-profile",
@@ -240,7 +240,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 7140
+      "bytes": 7256
     },
     {
       "name": "backlink-gap",
@@ -263,7 +263,7 @@
         "seo-drift"
       ],
       "doc_files": 1,
-      "bytes": 10747
+      "bytes": 10863
     },
     {
       "name": "brand-setup",
@@ -283,7 +283,7 @@
         "switch-brand"
       ],
       "doc_files": 1,
-      "bytes": 7438
+      "bytes": 7554
     },
     {
       "name": "budget-optimizer",
@@ -298,7 +298,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 6317
+      "bytes": 6433
     },
     {
       "name": "budget-tracker",
@@ -315,7 +315,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 7164
+      "bytes": 7280
     },
     {
       "name": "c2pa-metadata",
@@ -355,7 +355,7 @@
         "validate-profile"
       ],
       "doc_files": 1,
-      "bytes": 16115
+      "bytes": 16231
     },
     {
       "name": "campaign-orchestrator",
@@ -370,7 +370,7 @@
         "brand-setup"
       ],
       "doc_files": 8,
-      "bytes": 63824
+      "bytes": 63940
     },
     {
       "name": "campaign-plan",
@@ -405,7 +405,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 6605
+      "bytes": 6721
     },
     {
       "name": "case-study-plan",
@@ -450,7 +450,7 @@
         "eval-content"
       ],
       "doc_files": 1,
-      "bytes": 17299
+      "bytes": 17415
     },
     {
       "name": "churn-risk",
@@ -465,7 +465,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 9013
+      "bytes": 9129
     },
     {
       "name": "client-onboarding",
@@ -508,7 +508,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 9039
+      "bytes": 9155
     },
     {
       "name": "client-validation-document",
@@ -521,7 +521,7 @@
       "gates": [],
       "cross_refs": [],
       "doc_files": 1,
-      "bytes": 13454
+      "bytes": 13570
     },
     {
       "name": "cohort-analysis",
@@ -536,7 +536,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 10714
+      "bytes": 10830
     },
     {
       "name": "competitor-alerts",
@@ -582,7 +582,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 12258
+      "bytes": 12374
     },
     {
       "name": "competitor-pages",
@@ -613,7 +613,7 @@
         "send-notification"
       ],
       "doc_files": 1,
-      "bytes": 7775
+      "bytes": 7891
     },
     {
       "name": "content-brief",
@@ -657,7 +657,7 @@
         "seo-drift"
       ],
       "doc_files": 1,
-      "bytes": 11726
+      "bytes": 11842
     },
     {
       "name": "content-engine",
@@ -692,7 +692,7 @@
         "verify-claims"
       ],
       "doc_files": 18,
-      "bytes": 155942
+      "bytes": 156058
     },
     {
       "name": "content-repurpose",
@@ -707,7 +707,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 7185
+      "bytes": 7301
     },
     {
       "name": "context-engine",
@@ -774,7 +774,7 @@
         "validate-profile"
       ],
       "doc_files": 56,
-      "bytes": 882009
+      "bytes": 882473
     },
     {
       "name": "continuous-improvement-loop",
@@ -804,7 +804,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 9218
+      "bytes": 9334
     },
     {
       "name": "cowork-setup",
@@ -823,7 +823,7 @@
         "status"
       ],
       "doc_files": 1,
-      "bytes": 10698
+      "bytes": 10814
     },
     {
       "name": "creative-health",
@@ -838,7 +838,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 9707
+      "bytes": 9823
     },
     {
       "name": "creative-testing-framework",
@@ -858,7 +858,7 @@
         "check"
       ],
       "doc_files": 1,
-      "bytes": 10519
+      "bytes": 10635
     },
     {
       "name": "credential-switch",
@@ -877,7 +877,7 @@
         "client-report"
       ],
       "doc_files": 1,
-      "bytes": 9540
+      "bytes": 9656
     },
     {
       "name": "crisis-response",
@@ -909,7 +909,7 @@
         "lead-import"
       ],
       "doc_files": 1,
-      "bytes": 12913
+      "bytes": 13029
     },
     {
       "name": "cro",
@@ -926,7 +926,7 @@
         "brand-setup"
       ],
       "doc_files": 7,
-      "bytes": 100095
+      "bytes": 100211
     },
     {
       "name": "dark-funnel",
@@ -956,7 +956,7 @@
         "segment-audience"
       ],
       "doc_files": 1,
-      "bytes": 15053
+      "bytes": 15169
     },
     {
       "name": "data-import",
@@ -971,7 +971,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 9525
+      "bytes": 9641
     },
     {
       "name": "digital-pr",
@@ -986,7 +986,7 @@
         "brand-setup"
       ],
       "doc_files": 7,
-      "bytes": 51797
+      "bytes": 51913
     },
     {
       "name": "email-sequence",
@@ -1021,7 +1021,7 @@
         "brand-setup"
       ],
       "doc_files": 10,
-      "bytes": 146931
+      "bytes": 147047
     },
     {
       "name": "engagement-workflow",
@@ -1044,7 +1044,7 @@
         "seo-audit"
       ],
       "doc_files": 1,
-      "bytes": 25565
+      "bytes": 25681
     },
     {
       "name": "entity-audit",
@@ -1059,7 +1059,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 9022
+      "bytes": 9138
     },
     {
       "name": "eval-config",
@@ -1078,7 +1078,7 @@
         "quality-report"
       ],
       "doc_files": 1,
-      "bytes": 10558
+      "bytes": 10674
     },
     {
       "name": "eval-content",
@@ -1121,7 +1121,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 8759
+      "bytes": 8875
     },
     {
       "name": "exec-summary",
@@ -1140,7 +1140,7 @@
         "competitor-analysis"
       ],
       "doc_files": 1,
-      "bytes": 14005
+      "bytes": 14121
     },
     {
       "name": "executive-dashboard",
@@ -1169,7 +1169,7 @@
         "message-test"
       ],
       "doc_files": 1,
-      "bytes": 8107
+      "bytes": 8223
     },
     {
       "name": "four-core-documents",
@@ -1199,7 +1199,7 @@
         "brand-setup"
       ],
       "doc_files": 6,
-      "bytes": 55337
+      "bytes": 55453
     },
     {
       "name": "funnel-audit",
@@ -1215,7 +1215,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 3989
+      "bytes": 4105
     },
     {
       "name": "geo-monitor",
@@ -1233,7 +1233,7 @@
         "gsc-ai-performance"
       ],
       "doc_files": 1,
-      "bytes": 12365
+      "bytes": 12481
     },
     {
       "name": "goal-filter",
@@ -1260,7 +1260,7 @@
         "brand-setup"
       ],
       "doc_files": 8,
-      "bytes": 108869
+      "bytes": 108985
     },
     {
       "name": "growth-plan",
@@ -1295,7 +1295,7 @@
         "seo-drift"
       ],
       "doc_files": 1,
-      "bytes": 15376
+      "bytes": 15492
     },
     {
       "name": "help",
@@ -1326,7 +1326,7 @@
         "status"
       ],
       "doc_files": 1,
-      "bytes": 10719
+      "bytes": 10835
     },
     {
       "name": "hreflang-check",
@@ -1427,7 +1427,7 @@
         "brand-setup"
       ],
       "doc_files": 8,
-      "bytes": 111364
+      "bytes": 111480
     },
     {
       "name": "integrations",
@@ -1444,7 +1444,7 @@
         "launch-ad-campaign"
       ],
       "doc_files": 1,
-      "bytes": 4204
+      "bytes": 4320
     },
     {
       "name": "intelligence-report",
@@ -1459,7 +1459,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 7353
+      "bytes": 7469
     },
     {
       "name": "journey-design",
@@ -1474,7 +1474,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 10386
+      "bytes": 10502
     },
     {
       "name": "keyword-cluster",
@@ -1497,7 +1497,7 @@
         "seo-implement"
       ],
       "doc_files": 1,
-      "bytes": 10152
+      "bytes": 10268
     },
     {
       "name": "keyword-research",
@@ -1513,7 +1513,7 @@
         "keyword-cluster"
       ],
       "doc_files": 1,
-      "bytes": 7345
+      "bytes": 7461
     },
     {
       "name": "landing-page-audit",
@@ -1571,7 +1571,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 15917
+      "bytes": 16033
     },
     {
       "name": "launch-campaign",
@@ -1598,7 +1598,7 @@
         "validate-profile"
       ],
       "doc_files": 1,
-      "bytes": 13975
+      "bytes": 14091
     },
     {
       "name": "launch-plan",
@@ -1630,7 +1630,7 @@
         "crm-sync"
       ],
       "doc_files": 1,
-      "bytes": 13450
+      "bytes": 13566
     },
     {
       "name": "lead-magnet-ideas",
@@ -1659,7 +1659,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 6268
+      "bytes": 6384
     },
     {
       "name": "live-dashboard",
@@ -1674,7 +1674,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 10589
+      "bytes": 10705
     },
     {
       "name": "local-seo",
@@ -1690,7 +1690,7 @@
         "brand-setup"
       ],
       "doc_files": 5,
-      "bytes": 101887
+      "bytes": 102003
     },
     {
       "name": "local-seo-audit",
@@ -1705,7 +1705,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 4904
+      "bytes": 5020
     },
     {
       "name": "localize-campaign",
@@ -1725,7 +1725,7 @@
         "translate-content"
       ],
       "doc_files": 1,
-      "bytes": 14355
+      "bytes": 14471
     },
     {
       "name": "loop-detect",
@@ -1740,7 +1740,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 9246
+      "bytes": 9362
     },
     {
       "name": "market-weather",
@@ -1755,7 +1755,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 6658
+      "bytes": 6774
     },
     {
       "name": "marketing-automation",
@@ -1771,7 +1771,7 @@
         "brand-setup"
       ],
       "doc_files": 5,
-      "bytes": 97513
+      "bytes": 97629
     },
     {
       "name": "martech-audit",
@@ -1813,7 +1813,7 @@
         "focus-group"
       ],
       "doc_files": 1,
-      "bytes": 7804
+      "bytes": 7920
     },
     {
       "name": "multilingual-score",
@@ -1844,7 +1844,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 7761
+      "bytes": 7877
     },
     {
       "name": "narrative-tracker",
@@ -1859,7 +1859,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 8896
+      "bytes": 9012
     },
     {
       "name": "page-seo-analysis",
@@ -1888,7 +1888,7 @@
         "launch-ad-campaign"
       ],
       "doc_files": 14,
-      "bytes": 206309
+      "bytes": 206425
     },
     {
       "name": "pdf-report",
@@ -1920,7 +1920,7 @@
         "performance-report"
       ],
       "doc_files": 1,
-      "bytes": 8067
+      "bytes": 8183
     },
     {
       "name": "performance-report",
@@ -1957,7 +1957,7 @@
         "lead-import"
       ],
       "doc_files": 1,
-      "bytes": 13420
+      "bytes": 13536
     },
     {
       "name": "pr-pitch",
@@ -1985,7 +1985,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 8426
+      "bytes": 8542
     },
     {
       "name": "programmatic-seo",
@@ -2015,7 +2015,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 7792
+      "bytes": 7908
     },
     {
       "name": "publish-blog",
@@ -2030,7 +2030,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 11723
+      "bytes": 11839
     },
     {
       "name": "qbr-plan",
@@ -2083,7 +2083,7 @@
         "serp-tracker"
       ],
       "doc_files": 2,
-      "bytes": 15456
+      "bytes": 15766
     },
     {
       "name": "recall",
@@ -2098,7 +2098,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 6155
+      "bytes": 6271
     },
     {
       "name": "redirect-manager",
@@ -2113,7 +2113,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 10088
+      "bytes": 10204
     },
     {
       "name": "region-config",
@@ -2146,7 +2146,7 @@
         "brand-setup"
       ],
       "doc_files": 7,
-      "bytes": 91323
+      "bytes": 91439
     },
     {
       "name": "retargeting-strategy",
@@ -2161,7 +2161,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 6932
+      "bytes": 7048
     },
     {
       "name": "review-response",
@@ -2192,7 +2192,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 5672
+      "bytes": 5788
     },
     {
       "name": "save-knowledge",
@@ -2209,7 +2209,7 @@
         "sync-memory"
       ],
       "doc_files": 1,
-      "bytes": 8423
+      "bytes": 8539
     },
     {
       "name": "schedule-social",
@@ -2225,7 +2225,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 13637
+      "bytes": 13753
     },
     {
       "name": "search-knowledge",
@@ -2242,7 +2242,7 @@
         "sync-memory"
       ],
       "doc_files": 1,
-      "bytes": 8415
+      "bytes": 8531
     },
     {
       "name": "segment-audience",
@@ -2259,7 +2259,7 @@
         "lead-import"
       ],
       "doc_files": 1,
-      "bytes": 14391
+      "bytes": 14507
     },
     {
       "name": "send-email-campaign",
@@ -2275,7 +2275,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 12660
+      "bytes": 12776
     },
     {
       "name": "send-notification",
@@ -2290,7 +2290,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 11893
+      "bytes": 12009
     },
     {
       "name": "send-report",
@@ -2305,7 +2305,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 13605
+      "bytes": 13721
     },
     {
       "name": "send-sms",
@@ -2320,7 +2320,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 12618
+      "bytes": 12734
     },
     {
       "name": "seo-audit",
@@ -2345,7 +2345,7 @@
         "tech-seo-audit"
       ],
       "doc_files": 2,
-      "bytes": 18106
+      "bytes": 18338
     },
     {
       "name": "seo-drift",
@@ -2366,7 +2366,7 @@
         "seo-audit"
       ],
       "doc_files": 1,
-      "bytes": 10857
+      "bytes": 10973
     },
     {
       "name": "seo-implement",
@@ -2381,7 +2381,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 8326
+      "bytes": 8442
     },
     {
       "name": "seo-plan",
@@ -2437,7 +2437,7 @@
         "brand-setup"
       ],
       "doc_files": 2,
-      "bytes": 18775
+      "bytes": 18891
     },
     {
       "name": "signal-mine",
@@ -2503,7 +2503,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 8209
+      "bytes": 8325
     },
     {
       "name": "status",
@@ -2523,7 +2523,7 @@
         "switch-brand"
       ],
       "doc_files": 1,
-      "bytes": 9195
+      "bytes": 9311
     },
     {
       "name": "story-mine",
@@ -2552,7 +2552,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 1463
+      "bytes": 1579
     },
     {
       "name": "sync-memory",
@@ -2568,7 +2568,7 @@
         "save-knowledge"
       ],
       "doc_files": 1,
-      "bytes": 8844
+      "bytes": 8960
     },
     {
       "name": "team-assign",
@@ -2583,7 +2583,7 @@
         "brand-setup"
       ],
       "doc_files": 1,
-      "bytes": 12810
+      "bytes": 12926
     },
     {
       "name": "tech-seo-audit",
@@ -2600,7 +2600,7 @@
         "seo-audit"
       ],
       "doc_files": 1,
-      "bytes": 8365
+      "bytes": 8481
     },
     {
       "name": "technical-seo",
@@ -2615,7 +2615,7 @@
         "brand-setup"
       ],
       "doc_files": 6,
-      "bytes": 111027
+      "bytes": 111143
     },
     {
       "name": "translate-content",
@@ -2632,7 +2632,7 @@
         "language-config"
       ],
       "doc_files": 1,
-      "bytes": 10944
+      "bytes": 11060
     },
     {
       "name": "validate-output",
@@ -2679,7 +2679,7 @@
         "switch-brand"
       ],
       "doc_files": 1,
-      "bytes": 12676
+      "bytes": 12792
     },
     {
       "name": "verify-claims",
@@ -2698,7 +2698,7 @@
         "eval-content"
       ],
       "doc_files": 1,
-      "bytes": 9354
+      "bytes": 9470
     },
     {
       "name": "video-packaging",

@@ -4,16 +4,16 @@
 
 Install three open-source plugins from one marketplace. The same skills install natively on **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.56.2-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.56.3-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-207%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-1980%20across%20suite-brightgreen.svg)](#whats-new)
+[![Total tests](https://img.shields.io/badge/tests-2016%20across%20suite-brightgreen.svg)](#whats-new)
 [![Surfaces](https://img.shields.io/badge/all%203%20plugins-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#platform-compatibility)
 
 [![Built by Indranil "Neel" Banerjee — Neelverse Marketing Suite — Sponsor this project](docs/assets/author-banner.svg)](https://github.com/sponsors/indranilbanerjee)
 
-> 🆕 **October 12, 2026 — marketplace v3.56.2:** the Hermes bundle carries the final docs; Digital Marketing Pro 3.35.3 (calendar-day fatigue forecasts, a SERP snapshot input); every README in one suite layout. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
+> 🆕 **October 12, 2026 — marketplace v3.56.3:** one approval fires once (Digital Marketing Pro 3.35.4); every paid SocialForge path quotes first (1.29.3); every skill says which Python to run. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -99,6 +99,10 @@ To update manually instead, see the [Updating](#updating) section below.
 
 ## What's new
 
+### v3.56.3 (October 12, 2026) — fixes from a fresh-install smoke test
+
+CF **4.5.3** · DMP **3.35.4** · SF **1.29.3** · suite **2,016 tests**. A fresh session tested the installed plugins and found what the suites had not. **Digital Marketing Pro 3.35.4:** one approval could fire twice when a platform's reply stalled after the request arrived; a record is now released only when it is proven nothing was sent, and every not-sent or unknown outcome exits non-zero. **SocialForge 1.29.3:** image edits, reactive posts, revisions, review's regenerate and generate-all now quote paid generation and wait for "go", with a guard that finds every spending path. **All three plugins and the hero skills** say which Python to run (`python`, or `python3` where `python` is not found).
+
 ### v3.56.2 (October 12, 2026) — the Hermes bundle carries the final docs
 
 CF **4.5.2** · DMP **3.35.3** · SF **1.29.2** · suite **1,980 tests**. The Hermes bundle is rebuilt from the plugins' latest commits, so it carries their corrected docs: Digital Marketing Pro's Agent Skills table now gives each tool's documented skills folder (ten install commands it listed were not in those tools' docs), and the HOL Guard badge, which linked to a referral page, is gone. No code changed.
@@ -106,10 +110,6 @@ CF **4.5.2** · DMP **3.35.3** · SF **1.29.2** · suite **1,980 tests**. The He
 ### v3.56.1 (October 11, 2026) — Digital Marketing Pro 3.35.3, and READMEs that read as one suite
 
 CF **4.5.2** · DMP **3.35.3** · SF **1.29.2** · suite **1,980 tests**. **Digital Marketing Pro 3.35.3:** a community fix (PR #17, credited) makes creative-fatigue forecasts count calendar days, with CTR-only, newest-first and timestamped histories accepted; `rank-monitor --features` reads a SERP snapshot exported from any SERP API or rank tracker (no vendor code, no keys). **All READMEs** now follow one order: a short first screen (six badges, the author banner, a one-line release note, the install command, one diagram), then Try this first, What it will never do, What it costs, Quick start and Who it is for. Unverifiable comparisons, unsourced dollar figures and model names that rot were removed; new diagrams for SEO onboarding and SocialForge's four creative modes. The Hermes bundle is rebuilt from these releases.
-
-### v3.56.0 (October 11, 2026) — one combined Hermes listing
-
-CF **4.5.2** · DMP **3.35.2** · SF **1.29.2** · suite **1,948 tests**. Hermes Agent's maintainers passed all three re-reviews and asked for one plugin per vendor. `hermes/digital-marketing-pro/` is a Hermes-only bundle with three skill groups: `strategy/` (Digital Marketing Pro), `content/` (ContentForge) and `social/` (SocialForge), each copied from its release commit with `git archive`, 207 skills with no name collisions, a stdlib adapter and a manifest with a sha256 per file. `scripts/build_hermes_bundle.py` regenerates it deterministically and refuses an unclean or unpushed source; `tests/test_hermes_bundle.py` (17 tests) rebuilds it and compares every file, and Hermes's own validator passes it. With the plugin enabled, Hermes lists the 207 skill names in its system prompt (about 8,845 characters, roughly 2,211 tokens; names only, no descriptions), the same as three separate listings would. The three plugins remain separate products on every other platform. Also: routing re-checked from a fresh install (DMP 50/55, CF 26/26, SF 25/25, the same known misses and no regressions), a trigger case for `execute-action`, and Hermes and OpenClaw install commands added below.
 
 Older releases are in [CHANGELOG.md](CHANGELOG.md).
 
@@ -119,9 +119,9 @@ Older releases are in [CHANGELOG.md](CHANGELOG.md).
 
 | Plugin | Version | What it does |
 |--------|---------|--------------|
-| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.35.3 | End-to-end engagement methodology for agencies and in-house teams — 164 skills, 24 specialist agents, the 12-Part Strategy Flow producing the Four Core Documents, a content-engine run auditor that re-derives every "ready" claim, provenance-stamped benchmarks, 6-platform AEO/GEO audit, 16 privacy-law jurisdictions, EU AI Act Article 50 disclosure + C2PA signing, an agent-readiness audit for AI crawlers and agentic commerce. 94 stdlib Python scripts; connectors opt-in. |
-| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 4.5.2 | Content lifecycle system — 22 skills, 13 specialist agents, a 10-phase pipeline with 10 quality gates, 43-pattern AI-detection humanizer, fact-checker subagent, run auditor, three-category internal linking, real `.docx` output with C2PA signing, and a measure-audit-plan loop that compounds per brand, under a published Quality Contract. README in 12 languages; five hero skills as claude.ai `.skill` uploads. |
-| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.29.2 | Social creative engine — 21 skills, 18 commands, 5 agents: research and calendar in, on-brand creative out. Asset-first compositing (brand photos stay pixel-faithful), AI image + video through provider chains where nothing fails silently, 9-platform copy adaptation, human approval gates, delivery audit, C2PA signing. Prices and models looked up live, never stored. |
+| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.35.4 | End-to-end engagement methodology for agencies and in-house teams — 164 skills, 24 specialist agents, the 12-Part Strategy Flow producing the Four Core Documents, a content-engine run auditor that re-derives every "ready" claim, provenance-stamped benchmarks, 6-platform AEO/GEO audit, 16 privacy-law jurisdictions, EU AI Act Article 50 disclosure + C2PA signing, an agent-readiness audit for AI crawlers and agentic commerce. 94 stdlib Python scripts; connectors opt-in. |
+| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 4.5.3 | Content lifecycle system — 22 skills, 13 specialist agents, a 10-phase pipeline with 10 quality gates, 43-pattern AI-detection humanizer, fact-checker subagent, run auditor, three-category internal linking, real `.docx` output with C2PA signing, and a measure-audit-plan loop that compounds per brand, under a published Quality Contract. README in 12 languages; five hero skills as claude.ai `.skill` uploads. |
+| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.29.3 | Social creative engine — 21 skills, 18 commands, 5 agents: research and calendar in, on-brand creative out. Asset-first compositing (brand photos stay pixel-faithful), AI image + video through provider chains where nothing fails silently, 9-platform copy adaptation, human approval gates, delivery audit, C2PA signing. Prices and models looked up live, never stored. |
 
 All three install natively on **9 platforms** — Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes Agent, OpenClaw, Grok — plus 35+ Agent Skills clients. Live counts and test totals: see each repo's README.
 

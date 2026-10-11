@@ -7,7 +7,7 @@ disable-model-invocation: false
 
 # /digital-marketing-pro:execute-action — Fire an Action Against Real API
 
-> **Script location.** If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this plugin's `scripts/` folder, next to `skills/`.
+> **Script location.** If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this plugin's `scripts/` folder, next to `skills/`. Run them with Python 3.10 or newer: `python`, or `python3` where `python` is not found (macOS, many Linux systems).
 
 Resolves an action via `connector_resolver` and (optionally) executes it via `connector_executor` using stdlib `urllib.request`. No third-party deps, no OAuth flow — credentials read from env vars only.
 
@@ -15,9 +15,9 @@ Resolves an action via `connector_resolver` and (optionally) executes it via `co
 
 | Step | Command | What happens |
 |------|---------|-------------|
-| 1. Prepare | `--execute` (no `--approval-id`) | Builds the exact request (data substituted, credential named but never shown), writes a **pending** approval record holding its sha256 and a script-rendered `preview`, sends nothing, exits 2. |
+| 1. Prepare | `--execute` (no `--approval-id`) | Builds the exact request (data substituted, credential named but never shown), writes a **pending** approval record holding its sha256 and a script-rendered `preview`, sends nothing, exits 2. Needs the connector's credential variable set: the request, auth header included (and Mailchimp's data-centre URL, read from the key), is built before its hash is recorded, so no record is ever approved for a request that could not fire. Without it the command writes no record and exits 3, naming the variable. |
 | 2. Approve | `approval-manager.py --brand <slug> --action approve --id <id>` | Run this **only after the user reads the preview and types `yes`**. Pending records expire after 30 minutes unreviewed. |
-| 3. Fire | `--execute --approval-id <id>` | Rebuilds the request; it fires only if the hash matches, the record is approved, inside its 15-minute fire window, and unused. The record is consumed once the request is sent (any HTTP status) and released if nothing was sent (for example a DNS failure). |
+| 3. Fire | `--execute --approval-id <id>` | Rebuilds the request; it fires only if the hash matches, the record is approved, inside its 15-minute fire window, and unused. The record is consumed once the request may have been sent and released only when nothing can have been: a refused connection, a DNS failure or a proxy refusing the tunnel. A timeout or reset (while sending, waiting for the status or reading the body) consumes it with `status: unknown_outcome`: the platform may have acted, so check it there before preparing again. A short `--timeout` against a slow host therefore consumes the record. Exits 0 on success, 1 on a non-2xx, unknown or failed outcome. |
 
 Read operations fire on `--execute` alone. With no flags it is a dry run: the resolved manifest, no HTTP call, no record. `--confirm` is accepted for old scripts but adds nothing.
 
@@ -87,11 +87,13 @@ SLACK_BOT_TOKEN=xoxb-xxx \
 1. **No --execute** -> no HTTP call ever fires, and resolving has no side effects
 2. **Write op without a matching approved record** -> nothing is sent (exit 2, with the next step)
 3. **Changed request, reused, expired or other-brand record** -> refused before anything is sent
-4. **OAuth-only connector** -> blocked with alternative pointing to the MCP path (outside the record check)
-5. **Missing env var** -> blocked with `setup_hint_credential` naming the var
-6. **Unconfigured connector** -> blocked at resolver level (mode=stub_unconfigured)
+4. **OAuth-only connector** -> blocked with alternative pointing to the MCP path (outside the record check, exit 3)
+5. **Missing env var** -> blocked with `setup_hint_credential` naming the var, no record written (exit 3)
+6. **Unconfigured connector** -> blocked at resolver level (mode=stub_unconfigured, exit 3)
 7. **Unresolved placeholder** -> request NEVER sent (would have leaked literal `{VAR}` text)
-8. **Every fired call** -> logged to `brands/{brand}/executions/exec-{connector}-{action}-{ts}.json`, writes with a full copy of the approval record
+8. **Every fired call** -> logged to `brands/{brand}/executions/exec-{connector}-{action}-{ts}.json`, writes with a full copy of the approval record; an unknown outcome is logged as `unknown`, not as success or failure
+
+**Exit status** says whether anything was sent, so a script can chain on it: `0` sent and succeeded (or a local action ran, or a dry run without `--execute`); `1` an error, a non-2xx response or an unknown outcome; `2` nothing sent, an approval record is needed (follow `next_steps`); `3` nothing sent, `--execute` was given but there was nothing this executor could send (no connector configured, an MCP-only connector, a missing credential, an incomplete request; `execute_blocked_reason` says which). Before 3.35.4 the last case exited 0.
 
 ## See also
 

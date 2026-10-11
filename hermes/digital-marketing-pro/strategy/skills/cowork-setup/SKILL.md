@@ -7,7 +7,7 @@ effort: low
 
 # /digital-marketing-pro:cowork-setup
 
-> **Script location.** If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this plugin's `scripts/` folder, next to `skills/`.
+> **Script location.** If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this plugin's `scripts/` folder, next to `skills/`. Run them with Python 3.10 or newer: `python`, or `python3` where `python` is not found (macOS, many Linux systems).
 
 The one-time setup that makes Digital Marketing Pro persistent in Cowork by a team. Wires up the Cowork → Drive routing so brand profiles, campaign plans, audit reports, and run records survive past the end of the current Cowork session.
 

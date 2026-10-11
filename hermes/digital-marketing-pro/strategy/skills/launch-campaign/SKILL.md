@@ -7,7 +7,7 @@ allowed-tools: Read Bash Glob Grep
 
 # /digital-marketing-pro:launch-campaign — Multi-Channel Campaign Launch Orchestrator
 
-> **Script location.** If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this plugin's `scripts/` folder, next to `skills/`.
+> **Script location.** If your host does not set `${CLAUDE_PLUGIN_ROOT}`, the scripts are in this plugin's `scripts/` folder, next to `skills/`. Run them with Python 3.10 or newer: `python`, or `python3` where `python` is not found (macOS, many Linux systems).
 
 This skill takes an **approved** campaign plan (from `/digital-marketing-pro:campaign-plan`) and walks it through every step required to go live: pre-launch gates, channel-by-channel activation, CRM record creation, kickoff comms to the team, and day-1 monitoring setup. It complements — and is broader than — `/digital-marketing-pro:launch-ad-campaign`, which handles only paid-ads activation on Google / Meta / LinkedIn / TikTok.
 

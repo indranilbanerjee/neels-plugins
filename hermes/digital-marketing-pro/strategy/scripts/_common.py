@@ -427,20 +427,23 @@ def mark_approval_in_flight(path, record: dict, item_index) -> None:
 
 
 def settle_approval(path, record: dict, item_index, *, sent: bool, success: bool,
-                    request_hash: str, summary=None) -> None:
-    """After the attempt. Not sent (network error before the platform saw it):
-    release the claim. Sent, whatever the HTTP status: consume it, because the
-    platform may have acted."""
+                    request_hash: str, summary=None, outcome=None) -> None:
+    """After the attempt. Not sent (an error that proves no connection was made):
+    release the claim. Sent, whatever the HTTP status, or outcome unknown (a timeout
+    or reset after the request may have been delivered): consume it, because the
+    platform may have acted. `outcome="unknown"` is recorded as such, not as failure."""
+    result = outcome or ("success" if success else "failure")
     now = _iso(_utcnow())
     if item_index is None:  # standing
         if sent:
             record.setdefault("uses", []).append({"at": now, "payload_hash": request_hash,
-                                                  "success": success, "summary": summary})
+                                                  "success": success, "result": result,
+                                                  "summary": summary})
     elif item_index == -1:
         if sent:
             record["status"] = "executed" if success else "failed"
             record["consumed_at"] = now
-            record["execution_result"] = "success" if success else "failure"
+            record["execution_result"] = result
             record["platform_response"] = summary
         else:
             record["status"] = "approved"
@@ -451,7 +454,7 @@ def settle_approval(path, record: dict, item_index, *, sent: bool, success: bool
         item.pop("in_flight_at", None)
         if sent:
             item["consumed_at"] = now
-            item["execution_result"] = "success" if success else "failure"
+            item["execution_result"] = result
         else:
             item["last_unsent_attempt"] = now
         if all(it.get("consumed_at") for it in record["items"]):
