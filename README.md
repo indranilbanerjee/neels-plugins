@@ -2,24 +2,18 @@
 
 > **You run marketing for a single brand, an agency portfolio, or a content team — and you want the same depth across every brand, every article, every campaign, with no per-platform lock-in. You don't want to learn six different "AI marketing" SaaS UIs that all charge per-seat per-month.**
 
-Install three open-source plugins from one marketplace. Same skills, same agents, same outputs across **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
+Install three open-source plugins from one marketplace. The same skills install natively on **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
 [![Version](https://img.shields.io/badge/version-3.56.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#-available-plugins)
+[![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-207%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
 [![Total tests](https://img.shields.io/badge/tests-1948%20across%20suite-brightgreen.svg)](#whats-new)
-[![Surfaces](https://img.shields.io/badge/all%203%20plugins-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#-platform-compatibility)
-[![Cowork](https://img.shields.io/badge/Cowork-team%20persistent-brightgreen.svg)](#-platform-compatibility)
-[![Sponsor](https://img.shields.io/badge/sponsor-%E2%9D%A4-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/indranilbanerjee)
+[![Surfaces](https://img.shields.io/badge/all%203%20plugins-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#platform-compatibility)
 
-> 🆕 **October 11, 2026 — marketplace v3.56.0: one combined Hermes listing** (ContentForge **4.5.2** · Digital Marketing Pro **3.35.2** · SocialForge **1.29.2**). Hermes Agent's maintainers passed all three plugins' security re-reviews and asked each vendor for one catalog entry, so `hermes/digital-marketing-pro/` now holds a Hermes-only bundle: Digital Marketing Pro, ContentForge and SocialForge as three skill groups (207 skills), generated from each release by `scripts/build_hermes_bundle.py` and checked file by file. The combined entry is awaiting the maintainer's merge. Everywhere else the three plugins stay separate. Routing re-checked from a fresh install: no regressions. **1,948 tests passing.**
->
-> Previously — **October 10, 2026 — marketplace v3.55.2: every claim checked against the code** (ContentForge **4.5.2** · Digital Marketing Pro **3.35.2** · SocialForge **1.29.2**). A line-by-line check of the new README sections against the code found eight claims that were wrong or overstated, and one real gap: two SocialForge paths could start paid image or video generation without a quote. Every paid path now shows a live quote and waits for "go"; every Digital Marketing Pro script that needs a missing package prints the exact pinned install command (all three plugins now pin every optional package); the README examples, output-folder layout and "never do" panels now say exactly what the code does, and new guards keep them that way. **1,928 tests passing.**
->
-> Previously — **October 10, 2026 — marketplace v3.55.1: previews that show the image, and docs that tell the truth** (ContentForge **4.5.1** · Digital Marketing Pro **3.35.1** · SocialForge **1.29.1**). Rendering a real SocialForge preview for its README found that every platform preview had shown a broken-image icon while reporting success; SocialForge 1.29.1 embeds the image and checks it was drawn, keeps line breaks, and counts inline hashtags against the platform limit (an X post had been reported within 280 and published at 282). A documentation truth pass across all three plugins corrected every stale claim it found, and the doc-count guards now check the phrasings that had rotted. New diagrams, a real preview, "Try this first" and "What it will never do" sections, and a tip for 200k context windows. **1,891 tests passing.**
->
-> Older releases: [CHANGELOG.md](CHANGELOG.md)
+[![Built by Indranil "Neel" Banerjee — Neelverse Marketing Suite — Sponsor this project](docs/assets/author-banner.svg)](https://github.com/sponsors/indranilbanerjee)
+
+> 🆕 **October 11, 2026 — marketplace v3.56.0:** one combined Hermes listing; every paid generation quoted first; docs checked claim by claim against the code. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -51,6 +45,42 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 - **The three plugins are free** (MIT-licensed).
 - **Model usage (tokens).** On a subscription (Claude Pro, Max, Team or Enterprise in Claude Code or Cowork; a ChatGPT plan in Codex; a Cursor or Copilot plan; the same goes for other hosts' plans) the tokens count against your plan's usage limits instead of being billed per token; check your plan for any optional extra-usage billing. Only pay-as-you-go API-key users pay per token. Context (the skill listing, a skill's instructions; in Hermes, the 207 skill names of the combined listing) uses context window and usage allowance for everyone, and money only for API users.
 - **Services you connect with your own keys** (image and video generation, SEO and data APIs, ad, email and CRM platforms, Google Drive, Airtable) are billed by those providers, whatever plan you are on. SocialForge quotes each paid generation before it runs.
+
+---
+
+## Quick start
+
+### 1. Add this marketplace to Claude
+
+```
+/plugin marketplace add indranilbanerjee/neels-plugins
+```
+
+In Cowork: Settings → Plugins → Add Marketplace → paste `indranilbanerjee/neels-plugins`.
+
+### 2. Browse available plugins
+
+```
+/plugin list neels-plugins
+```
+
+### 3. Install a plugin
+
+```
+/plugin install contentforge@neels-plugins
+```
+
+(Replace `contentforge` with `digital-marketing-pro` or `socialforge` as desired.)
+
+> **On a 200k context window?** Claude Code lists every installed skill in a budget of 1% of the context window. With all three plugins installed, a 200k window has room for skill names only, so Claude can't see what each skill does. Add `"skillListingBudgetFraction": 0.05` to your Claude Code `settings.json` to fix that. On a 1M window the full list already fits.
+
+### 4. Stay current — turn auto-update on (recommended)
+
+**Third-party marketplaces have auto-update OFF by default in Claude Code.** When we ship a new ContentForge / DM Pro / SocialForge release, you will not be notified — you will keep running whatever version you installed first.
+
+To get future updates automatically: open `/plugin`, go to the **Marketplaces** tab, find `neels-plugins`, and toggle **Enable auto-update**. After an auto-update fires you will be prompted to run `/reload-plugins` to pick up changes mid-session (no full Claude Code restart needed; conversation context preserved).
+
+To update manually instead, see the [Updating](#updating) section below.
 
 ---
 
@@ -97,43 +127,7 @@ Older releases are in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
-## 🚀 Quick Start
-
-### 1. Add this marketplace to Claude
-
-```
-/plugin marketplace add indranilbanerjee/neels-plugins
-```
-
-In Cowork: Settings → Plugins → Add Marketplace → paste `indranilbanerjee/neels-plugins`.
-
-### 2. Browse available plugins
-
-```
-/plugin list neels-plugins
-```
-
-### 3. Install a plugin
-
-```
-/plugin install contentforge@neels-plugins
-```
-
-(Replace `contentforge` with `digital-marketing-pro` or `socialforge` as desired.)
-
-> **On a 200k context window?** Claude Code lists every installed skill in a budget of 1% of the context window. With all three plugins installed, a 200k window has room for skill names only, so Claude can't see what each skill does. Add `"skillListingBudgetFraction": 0.05` to your Claude Code `settings.json` to fix that. On a 1M window the full list already fits.
-
-### 4. Stay current — turn auto-update on (recommended)
-
-**Third-party marketplaces have auto-update OFF by default in Claude Code.** When we ship a new ContentForge / DM Pro / SocialForge release, you will not be notified — you will keep running whatever version you installed first.
-
-To get future updates automatically: open `/plugin`, go to the **Marketplaces** tab, find `neels-plugins`, and toggle **Enable auto-update**. After an auto-update fires you will be prompted to run `/reload-plugins` to pick up changes mid-session (no full Claude Code restart needed; conversation context preserved).
-
-To update manually instead, see the [Updating](#updating) section below.
-
----
-
-## 📦 Available Plugins
+## Available plugins
 
 | Plugin | Version | What it does |
 |--------|---------|--------------|
@@ -198,7 +192,7 @@ openclaw plugins install git:github.com/indranilbanerjee/socialforge
 
 ---
 
-## 🌐 Platform Compatibility
+## Platform compatibility
 
 | Feature | Claude Code CLI | Anthropic Cowork |
 |---|---|---|
@@ -213,7 +207,7 @@ ContentForge v3.9.1's connectors reference catalog includes Pipedream, Composio,
 
 ---
 
-## 🛡️ Compliance
+## Compliance
 
 All three plugins are designed to comply with the [Anthropic Software Directory Policy](https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy):
 
@@ -225,7 +219,7 @@ All three plugins are designed to comply with the [Anthropic Software Directory 
 
 ---
 
-## 🧠 Shared model curator (v3.5.1+)
+## Shared model curator
 
 All three plugins ship the same model-selection infrastructure under `scripts/`:
 
@@ -237,7 +231,7 @@ Why it matters: frontier models change every ~6 weeks. Hardcoding `claude-sonnet
 
 ---
 
-## 🔧 For Developers
+## For developers
 
 ### Adding a New Plugin to This Marketplace
 
@@ -337,6 +331,6 @@ Sponsors from $25/mo are listed in [SPONSORS.md](SPONSORS.md).
 
 ---
 
-## 📄 License
+## License
 
 MIT © Indranil Banerjee. See [LICENSE](LICENSE).
