@@ -72,7 +72,7 @@ def _load_json(path):
     if not path.exists():
         return None, f"File not found: {path.name}"
     try:
-        return json.loads(path.read_text(encoding="utf-8")), None
+        return json.loads(path.read_text(encoding="utf-8-sig")), None
     except json.JSONDecodeError:
         return None, f"Corrupted JSON: {path.name}"
 
@@ -91,7 +91,7 @@ def _update_roster(team_dir, member_id, action="add", summary=None):
     roster = []
     if roster_path.exists():
         try:
-            roster = json.loads(roster_path.read_text(encoding="utf-8"))
+            roster = json.loads(roster_path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError:
             roster = []
 

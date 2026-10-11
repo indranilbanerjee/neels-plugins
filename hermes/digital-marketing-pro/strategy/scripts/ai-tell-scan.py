@@ -429,7 +429,7 @@ def main():
         print(json.dumps({"error": f"file not found: {path}"}))
         sys.exit(1)
 
-    result = ai_tell_scan(path.read_text(encoding="utf-8", errors="replace"),
+    result = ai_tell_scan(path.read_text(encoding="utf-8-sig", errors="replace"),
                           args.max_flagged_pct)
     if args.paragraph_flags:
         result = {k: result[k] for k in

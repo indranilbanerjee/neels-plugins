@@ -81,7 +81,7 @@ def get_registry(force_reload: bool = False) -> dict[str, Any]:
         return _REGISTRY_CACHE
     path = _find_registry()
     try:
-        _REGISTRY_CACHE = json.loads(path.read_text(encoding="utf-8"))
+        _REGISTRY_CACHE = json.loads(path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError as exc:
         raise ValueError(f"Malformed {REGISTRY_FILENAME} at {path}: {exc}") from exc
     return _REGISTRY_CACHE
@@ -267,7 +267,7 @@ def _cmd_check_params(path_str: str, *, as_json: bool = False) -> int:
             print(msg, file=sys.stderr)
         return 2
 
-    text = path.read_text(encoding="utf-8", errors="replace")
+    text = path.read_text(encoding="utf-8-sig", errors="replace")
     # Look for opus-4-7 or opus-4-8 string anywhere in the file (rough — but the
     # whole resolver pattern is alias-first, so an explicit string hit is the
     # one to catch).

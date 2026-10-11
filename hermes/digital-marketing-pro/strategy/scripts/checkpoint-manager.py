@@ -115,7 +115,7 @@ def _load_manifest(brand: str, run_id: str) -> dict | None:
     f = _run_dir(brand, run_id) / "run.json"
     if not f.exists():
         return None
-    return json.loads(f.read_text(encoding="utf-8"))
+    return json.loads(f.read_text(encoding="utf-8-sig"))
 
 
 def _save_manifest(brand: str, run_id: str, manifest: dict) -> None:
@@ -247,7 +247,7 @@ def load_step(brand: str, run_id: str, step: str) -> dict:
     return {
         "step": step,
         "artifact": str(artifact),
-        "content": artifact.read_text(encoding="utf-8") if artifact.exists() else None,
+        "content": artifact.read_text(encoding="utf-8-sig") if artifact.exists() else None,
     }
 
 
@@ -373,7 +373,7 @@ def main() -> int:
         elif args.action == "save":
             content = args.content
             if args.content_file:
-                content = Path(args.content_file).expanduser().read_text(encoding="utf-8")
+                content = Path(args.content_file).expanduser().read_text(encoding="utf-8-sig")
             result = save_step(args.brand, args.run_id, args.step, content, args.extension, args.label)
         elif args.action == "status":
             result = get_status(args.brand, args.run_id)

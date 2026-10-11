@@ -45,7 +45,7 @@ def probe_version() -> dict:
     if not pj.exists():
         return {"error": f"plugin.json missing at {pj}"}
     try:
-        data = json.loads(pj.read_text(encoding="utf-8"))
+        data = json.loads(pj.read_text(encoding="utf-8-sig"))
         return {
             "name": data.get("name"),
             "version": data.get("version"),
@@ -75,7 +75,7 @@ def probe_connectors() -> dict:
     http_count = 0
     if http_ref.exists():
         try:
-            data = json.loads(http_ref.read_text(encoding="utf-8"))
+            data = json.loads(http_ref.read_text(encoding="utf-8-sig"))
             servers = data.get("mcpServers_reference") or data.get("mcpServers") or {}
             http_count = sum(1 for cfg in servers.values()
                              if isinstance(cfg, dict) and cfg.get("type") == "http")
@@ -85,7 +85,7 @@ def probe_connectors() -> dict:
     npx_count = 0
     if npx_example.exists():
         try:
-            data = json.loads(npx_example.read_text(encoding="utf-8"))
+            data = json.loads(npx_example.read_text(encoding="utf-8-sig"))
             servers = data.get("mcpServers") or {}
             npx_count = sum(1 for cfg in servers.values()
                             if isinstance(cfg, dict) and cfg.get("command") == "npx")
@@ -96,7 +96,7 @@ def probe_connectors() -> dict:
     active_names: list[str] = []
     if active.exists():
         try:
-            data = json.loads(active.read_text(encoding="utf-8"))
+            data = json.loads(active.read_text(encoding="utf-8-sig"))
             servers = data.get("mcpServers") or {}
             active_count = len(servers)
             active_names = sorted(servers.keys())
@@ -215,7 +215,7 @@ def _count_dirs(directory: Path) -> int:
 
 def _extract_description(md_path: Path) -> str:
     try:
-        text = md_path.read_text(encoding="utf-8", errors="replace")
+        text = md_path.read_text(encoding="utf-8-sig", errors="replace")
     except OSError:
         return ""
     m = re.match(r"^---\n(.*?)\n---", text, flags=re.DOTALL)
@@ -234,7 +234,7 @@ def _extract_description(md_path: Path) -> str:
 def _is_writable(p: Path) -> bool:
     try:
         test = p / ".dmp-write-probe"
-        test.write_text("ok")
+        test.write_text("ok", encoding="utf-8")
         test.unlink()
         return True
     except (OSError, PermissionError):

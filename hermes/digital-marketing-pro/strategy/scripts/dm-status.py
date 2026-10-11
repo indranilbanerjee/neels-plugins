@@ -81,7 +81,7 @@ def resolve_brand_slug(provided: Optional[str]) -> Optional[str]:
     if not pointer.exists():
         return None
     try:
-        data = json.loads(pointer.read_text(encoding="utf-8"))
+        data = json.loads(pointer.read_text(encoding="utf-8-sig"))
         return data.get("active_slug")
     except (json.JSONDecodeError, OSError):
         return None
@@ -103,7 +103,7 @@ def collect_brand_section(brand_slug: str) -> dict[str, Any]:
         return section
 
     try:
-        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+        profile = json.loads(profile_path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError as exc:
         section["error"] = f"profile.json is not valid JSON: {exc}"
         return section
@@ -175,7 +175,7 @@ def collect_engagements_section(brand_slug: str) -> dict[str, Any]:
             })
             continue
         try:
-            state = json.loads(state_path.read_text(encoding="utf-8"))
+            state = json.loads(state_path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError:
             section["engagements"].append({
                 "engagement_id": eng_dir.name,
@@ -233,7 +233,7 @@ def collect_insights_section(brand_slug: str) -> dict[str, Any]:
         return section
 
     try:
-        data = json.loads(insights_path.read_text(encoding="utf-8"))
+        data = json.loads(insights_path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError as exc:
         section["error"] = f"insights.json is not valid JSON: {exc}"
         return section
@@ -286,7 +286,7 @@ def collect_compliance_section(brand_slug: str) -> dict[str, Any]:
         return section
 
     try:
-        data = json.loads(violations_path.read_text(encoding="utf-8"))
+        data = json.loads(violations_path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError as exc:
         section["error"] = f"violations file is not valid JSON: {exc}"
         return section

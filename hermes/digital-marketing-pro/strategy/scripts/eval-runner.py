@@ -148,7 +148,7 @@ def _resolve_active_brand():
     if not ACTIVE_BRAND_FILE.exists():
         return None
     try:
-        data = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8"))
+        data = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8-sig"))
         return data.get("active_slug") or None
     except (json.JSONDecodeError, OSError):
         return None
@@ -167,7 +167,7 @@ def _resolve_content(args):
         if not file_path.exists():
             return None
         try:
-            return file_path.read_text(encoding="utf-8")
+            return file_path.read_text(encoding="utf-8-sig")
         except Exception:
             return None
 

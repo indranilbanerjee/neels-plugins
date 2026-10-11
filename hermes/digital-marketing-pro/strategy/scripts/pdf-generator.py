@@ -64,7 +64,7 @@ def _load_json(path, default=None):
     if not path.exists():
         return default
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError, OSError):
         return default
 
@@ -282,7 +282,7 @@ def get_report(slug, report_id):
         return {"error": f"Report '{report_id}' not found."}
 
     meta = _load_json(meta_path, {})
-    content = md_path.read_text(encoding="utf-8") if md_path.exists() else ""
+    content = md_path.read_text(encoding="utf-8-sig") if md_path.exists() else ""
     meta["content"] = content
     return meta
 
@@ -322,7 +322,7 @@ def export_markdown(slug, report_id):
         print(json.dumps({"error": f"Report '{report_id}' not found."}))
         return False
 
-    sys.stdout.write(md_path.read_text(encoding="utf-8"))
+    sys.stdout.write(md_path.read_text(encoding="utf-8-sig"))
     return True
 
 

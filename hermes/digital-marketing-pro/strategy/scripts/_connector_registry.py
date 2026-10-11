@@ -432,7 +432,7 @@ def _load_mcp_json():
     if not MCP_JSON.exists():
         return {}
     try:
-        data = json.loads(MCP_JSON.read_text(encoding="utf-8"))
+        data = json.loads(MCP_JSON.read_text(encoding="utf-8-sig"))
         return data.get("mcpServers", {})
     except (json.JSONDecodeError, KeyError, OSError):
         return {}
@@ -548,4 +548,4 @@ if __name__ == "__main__":
         configured, evidence = is_connector_configured("slack")
         print(f"\nSlack probe: configured={configured}, evidence={evidence}")
         sys.exit(0)
-    print("Usage: python _connector_registry.py self-test")
+    print(f'Usage: {sys.executable or "python"} "{Path(__file__).resolve()}" self-test')

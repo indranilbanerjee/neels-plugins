@@ -410,7 +410,7 @@ def _load_evidence(filepath):
     if not path.exists():
         return None, f"Evidence file not found: {filepath}"
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError as exc:
         return None, f"Invalid JSON in evidence file: {exc}"
 
@@ -437,7 +437,7 @@ def main():
             print(json.dumps({"error": f"File not found: {args.file}"}))
             sys.exit(1)
         try:
-            text = file_path.read_text(encoding="utf-8")
+            text = file_path.read_text(encoding="utf-8-sig")
         except Exception as exc:
             print(json.dumps({"error": f"Could not read file: {exc}"}))
             sys.exit(1)

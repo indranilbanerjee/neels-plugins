@@ -44,7 +44,7 @@ def _rebuild_index_from_files(executions_dir):
     rebuilt = []
     for fp in sorted(executions_dir.glob("exec-*.json")):
         try:
-            e = json.loads(fp.read_text(encoding="utf-8"))
+            e = json.loads(fp.read_text(encoding="utf-8-sig"))
         except (json.JSONDecodeError, OSError):
             continue
         rebuilt.append({
@@ -66,7 +66,7 @@ def _load_index(executions_dir):
     if not index_path.exists():
         return _rebuild_index_from_files(executions_dir)
     try:
-        return json.loads(index_path.read_text(encoding="utf-8"))
+        return json.loads(index_path.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError, OSError):
         return _rebuild_index_from_files(executions_dir)
 
@@ -151,7 +151,7 @@ def get_history(slug, platform=None, status=None, limit=50):
     executions = []
     for fp in sorted(executions_dir.glob("exec-*.json"), reverse=True):
         try:
-            execution = json.loads(fp.read_text(encoding="utf-8"))
+            execution = json.loads(fp.read_text(encoding="utf-8-sig"))
             executions.append(execution)
         except json.JSONDecodeError:
             continue
@@ -255,7 +255,7 @@ def resume_launch(slug, data):
     if executions_dir.exists():
         for fp in sorted(executions_dir.glob("exec-*.json")):
             try:
-                e = json.loads(fp.read_text(encoding="utf-8"))
+                e = json.loads(fp.read_text(encoding="utf-8-sig"))
             except (json.JSONDecodeError, OSError):
                 continue
             haystack = f"{e.get('content_id') or ''} {e.get('details') or ''}"

@@ -829,7 +829,7 @@ def _execute_arm_watchdog(brand, kwargs):
     }
 
     path = watchdog_dir / f"{watchdog_id}.json"
-    path.write_text(json.dumps(config, indent=2))
+    path.write_text(json.dumps(config, indent=2), encoding="utf-8")
 
     return {
         "status": "armed",
@@ -1171,4 +1171,4 @@ if __name__ == "__main__":
         r = resolve_action("audit-workflows", "test-brand")
         print(json.dumps(r, indent=2)[:600])
         sys.exit(0)
-    print("Usage: python connector_resolver.py self-test")
+    print("Usage: " + _common.script_command("connector_resolver.py", "self-test"))

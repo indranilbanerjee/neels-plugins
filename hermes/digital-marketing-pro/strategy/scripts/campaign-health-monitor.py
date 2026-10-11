@@ -157,7 +157,7 @@ def _load_guardrails(brand_dir):
     gp = config_dir / "guardrails.json"
     if gp.exists():
         try:
-            return json.loads(gp.read_text(encoding="utf-8"))
+            return json.loads(gp.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError:
             pass
     return dict(DEFAULT_GUARDRAILS)
@@ -538,7 +538,7 @@ def corrections_history(slug, since=None, campaign_id=None):
     corrections = []
     for fp in sorted(cdir.glob("*.json")):
         try:
-            c = json.loads(fp.read_text(encoding="utf-8"))
+            c = json.loads(fp.read_text(encoding="utf-8-sig"))
             corrections.append(c)
         except json.JSONDecodeError:
             continue

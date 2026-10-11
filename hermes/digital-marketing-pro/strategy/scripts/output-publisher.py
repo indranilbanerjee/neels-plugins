@@ -142,7 +142,7 @@ def publish_run(args) -> dict:
     manifest_file = run_dir / "run.json"
     if not manifest_file.exists():
         return {"error": f"no run found: brand={args.brand} run_id={args.run_id}"}
-    manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8-sig"))
     workflow = manifest.get("workflow", "engagement")
 
     results = []

@@ -571,7 +571,7 @@ def _resolve_text(args) -> str:
             print(json.dumps({"error": f"File not found: {file_path}"}, indent=2))
             sys.exit(1)
         try:
-            return file_path.read_text(encoding="utf-8")
+            return file_path.read_text(encoding="utf-8-sig")
         except Exception as exc:
             print(json.dumps({"error": f"Could not read file: {exc}"}, indent=2))
             sys.exit(1)
@@ -586,7 +586,7 @@ def _resolve_schema(args) -> tuple:
             print(json.dumps({"error": f"Custom schema file not found: {custom_path}"}, indent=2))
             sys.exit(1)
         try:
-            schema = json.loads(custom_path.read_text(encoding="utf-8"))
+            schema = json.loads(custom_path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError as exc:
             print(json.dumps({"error": f"Invalid JSON in custom schema: {exc}"}, indent=2))
             sys.exit(1)

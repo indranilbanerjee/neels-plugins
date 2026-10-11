@@ -458,7 +458,7 @@ def main():
             print()
             sys.exit(1)
         try:
-            content = path.read_text(encoding="utf-8")
+            content = path.read_text(encoding="utf-8-sig")
         except Exception as exc:
             json.dump({"error": f"Could not read file: {exc}"}, sys.stdout, indent=2)
             print()

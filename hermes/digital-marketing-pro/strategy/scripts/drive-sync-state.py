@@ -82,7 +82,7 @@ def read_cowork_config() -> dict:
         return {"configured": False,
                 "note": "Run /digital-marketing-pro:cowork-setup to wire DMP for Cowork team usage."}
     try:
-        data = json.loads(COWORK_CONFIG_PATH.read_text(encoding="utf-8"))
+        data = json.loads(COWORK_CONFIG_PATH.read_text(encoding="utf-8-sig"))
         data["configured"] = True
         return data
     except (json.JSONDecodeError, OSError) as e:
@@ -247,7 +247,7 @@ def list_runs_needing_sync(brand: str) -> dict:
         if not pending_path.exists():
             continue
         try:
-            pending = json.loads(pending_path.read_text(encoding="utf-8"))
+            pending = json.loads(pending_path.read_text(encoding="utf-8-sig"))
         except (json.JSONDecodeError, OSError):
             continue
         if pending.get("pending"):
@@ -280,7 +280,7 @@ def _read_brand_sync(brand: str) -> dict:
     if not path.exists():
         return {}
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError, OSError):
         return {}
 
@@ -295,7 +295,7 @@ def _read_pending(path: Path) -> dict:
     if not path.exists():
         return {"pending": [], "uploaded": []}
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
         data.setdefault("pending", [])
         data.setdefault("uploaded", [])
         return data

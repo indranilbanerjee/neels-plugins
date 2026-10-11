@@ -31,7 +31,7 @@ def load_channels(args):
         if not path.exists():
             return None, f"File not found: {args.file}"
         try:
-            data = json.loads(path.read_text(encoding="utf-8"))
+            data = json.loads(path.read_text(encoding="utf-8-sig"))
         except (json.JSONDecodeError, OSError) as exc:
             return None, f"Failed to read file: {exc}"
     elif args.channels:

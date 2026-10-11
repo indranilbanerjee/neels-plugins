@@ -540,7 +540,7 @@ def main():
             print()
             sys.exit(0)
         try:
-            lines = path.read_text(encoding="utf-8").splitlines()
+            lines = path.read_text(encoding="utf-8-sig").splitlines()
             urls.extend([line.strip() for line in lines if line.strip() and not line.strip().startswith("#")])
         except Exception as exc:
             json.dump({"error": f"Could not read file: {exc}"}, sys.stdout, indent=2)

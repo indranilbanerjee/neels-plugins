@@ -6,6 +6,34 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 
 ---
 
+## [3.35.6] - 2026-10-12
+
+### Quoted script paths, BOM-safe inputs, hints that run from any folder
+
+From the fresh-install smoke test's final pass (the 3.35.5 gate checks all passed). Each fix has a test that fails on the 3.35.5 code.
+
+**Fixed — five unquoted script paths**
+
+- `client-validation-document` (decision-matrix), `engagement-workflow` (init, add-stone-fact, add-opinion) and `status` (dm-status) ran `python ${CLAUDE_PLUGIN_ROOT}/scripts/…` without quotes, which breaks when the plugin's folder has a space in it (`C:\Users\Jane Doe\…`). They, and two path mentions in campaign-audit and launch-campaign, are now quoted. `tests/test_script_root_fallback.py` requires every `${CLAUDE_PLUGIN_ROOT}/scripts/…` path to sit in double quotes and now discovers files recursively (`skills/**`, `commands/**`, `agents/**`), so no supporting file can sit outside its rules.
+
+**Fixed — inputs saved with a BOM (Excel, PowerShell)**
+
+- `utm-generator.py --csv` read a BOM into the first column name, so with Excel's default "CSV UTF-8" export every row reported "Invalid URL: no domain found" and `base_url: null`, and the script exited 0. `connector_executor.py --prepare-batch` refused a plan saved by PowerShell 5.1 (`Out-File`, `Set-Content -Encoding utf8`) with "Unexpected UTF-8 BOM". Both now read the file the same with or without a BOM, and a batch's hashes are the same for both copies (they come from the parsed requests).
+- The same rule now holds for every script: all 157 text reads use `utf-8-sig`, which reads plain UTF-8 unchanged, and all 50 text writes name `utf-8` (never a BOM). That includes 22 reads and writes that named no encoding and so used the platform default, cp1252 on Windows. `tests/test_text_encodings.py` checks every call.
+
+**Fixed — printed hints that worked only from the plugin's folder**
+
+- action-doctor (`refresh_models.py`, `connector-status.py`), ai-visibility-checker (`refresh_models.py`), setup (`--switch-brand` back) and two self-test usage lines printed `python scripts/x.py` or `python x.py`. They now print the running interpreter and the script's absolute, quoted path, built by the new `_common.script_command()`, as the missing-package messages already did. A test fails on any relative run hint a script prints.
+
+**Changed — the unknown-outcome close-out**
+
+- `approval-manager.py --action mark-executed` writes `resolved_from_unknown_at` as a UTC-aware time, like `consumed_at`, so the two compare and sort together. A second `mark-executed` on a recorded execution now says "this execution is already recorded; the record stays used" (it had credited `connector_executor.py` even when a person closed out the record).
+
+**Tests**
+
+- New `tests/test_text_encodings.py` (6: the read/write encoding rule over every call with a scanner plant, the same CSV with and without a BOM, a BOM batch plan with identical hashes, no relative run hint, an absolute `script_command`). `tests/test_script_root_fallback.py` gains the quoting rule and its plant. `tests/test_executor_delivery.py` checks that both close-out times are UTC-aware and the neutral repeat note.
+- Suite: 680 tests.
+
 ## [3.35.5] - 2026-10-12
 
 ### Agents say where the scripts are, and an unknown outcome is recorded as unknown

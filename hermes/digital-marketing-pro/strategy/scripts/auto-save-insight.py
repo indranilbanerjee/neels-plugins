@@ -121,7 +121,7 @@ def is_opted_in(brand_slug: str) -> tuple[bool, str]:
     if not profile_path.exists():
         return False, f"no profile found at {profile_path}"
     try:
-        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+        profile = json.loads(profile_path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError as exc:
         return False, f"profile.json is not valid JSON: {exc}"
     flag = profile.get("auto_save_insights", False)
@@ -199,7 +199,7 @@ def save_directly(brand_slug: str, payload: dict[str, Any]) -> dict[str, Any]:
     container: dict[str, Any]
     if insights_path.exists():
         try:
-            data = json.loads(insights_path.read_text(encoding="utf-8"))
+            data = json.loads(insights_path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError:
             data = {"insights": []}
         if isinstance(data, list):

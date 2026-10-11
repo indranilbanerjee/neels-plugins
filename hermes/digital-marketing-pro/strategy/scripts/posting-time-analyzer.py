@@ -458,7 +458,7 @@ def main():
             print(json.dumps({"error": f"history file not found: {args.history}"}))
             return 1
         try:
-            entries = json.loads(path.read_text(encoding="utf-8"))
+            entries = json.loads(path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError as exc:
             print(json.dumps({"error": f"history file is not valid JSON: {exc}"}))
             return 1

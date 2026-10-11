@@ -5,6 +5,11 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.56.5] - 2026-10-12
+
+- The fresh-install smoke test's final pass. All three plugins: a file a person or an agent writes is read whether or not it starts with a byte-order mark (PowerShell 5.1's default output, Notepad and Excel's "CSV UTF-8" all write one). Digital Marketing Pro 3.35.6: utm-generator silently reported every URL in such a CSV as missing; a PowerShell-written batch plan could not be approved (the hash is the same either way). ContentForge 4.5.5: audit-ledger could not read such a file, and the authorship check flagged the author's own first sentence as rewritten and blocked the run. SocialForge 1.29.5: generate-all's quote plan from PowerShell was refused. Every command a script prints is now absolute (the interpreter that is running and the script's full path), the script-invocation guards discover files at any depth, and DMP's quotes every `${CLAUDE_PLUGIN_ROOT}` path.
+- Suite total 2,060 (CF 779 + DMP 680 + SF 544 + marketplace 57).
+
 ## [3.56.4] - 2026-10-12
 
 - Second round from the fresh-install smoke test. Digital Marketing Pro 3.35.5: an outcome nobody can confirm is recorded as `unknown` (never `failed`, so nothing invites a resend), and the user closes it out after checking the platform; the write skills that send through a connected app's MCP retry only a request that provably never arrived, and after a timeout check the platform first; all 24 agents say where the scripts are. ContentForge 4.5.4 and SocialForge 1.29.4: every script runs from any folder (relative and unquoted script paths fixed, each guarded by discovery); SocialForge's generate-all keeps its quote plan in the month folder instead of `/tmp` (PowerShell could not find it), and a missing plan file is a clean refusal instead of a traceback.

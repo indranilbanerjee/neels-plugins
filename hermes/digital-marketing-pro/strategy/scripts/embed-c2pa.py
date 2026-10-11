@@ -130,7 +130,7 @@ def plugin_version():
     """Read the plugin version from .claude-plugin/plugin.json at runtime."""
     try:
         manifest_path = Path(__file__).parent.parent / ".claude-plugin" / "plugin.json"
-        return json.loads(manifest_path.read_text(encoding="utf-8")).get("version", "unknown")
+        return json.loads(manifest_path.read_text(encoding="utf-8-sig")).get("version", "unknown")
     except Exception:
         return "unknown"
 

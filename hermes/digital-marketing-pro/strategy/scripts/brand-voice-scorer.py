@@ -198,7 +198,7 @@ def load_brand_profile(slug: str) -> dict:
             ),
         }
     try:
-        with open(profile_path, "r", encoding="utf-8") as fh:
+        with open(profile_path, "r", encoding="utf-8-sig") as fh:
             profile = json.load(fh)
     except json.JSONDecodeError as exc:
         return {"error": f"Invalid JSON in {profile_path}: {exc}"}
@@ -521,7 +521,7 @@ def main() -> None:
             }, indent=2))
             sys.exit(1)
         try:
-            text = file_path.read_text(encoding="utf-8")
+            text = file_path.read_text(encoding="utf-8-sig")
         except Exception as exc:
             print(json.dumps({
                 "error": f"Could not read file: {exc}",

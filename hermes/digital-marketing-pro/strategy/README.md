@@ -6,16 +6,16 @@ Run `/digital-marketing-pro:engagement` against each brand. Same 12-Part Strateg
 
 Open-source AI marketing plugin — **164 skills, 24 specialist agents, EU AI Act Article 50 ready, Cowork team-persistent**. Built for marketing agencies, in-house teams running 50–200 brands, and consultancies. Installs on **Claude Code** (CLI + IDE), **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** + 35+ Agent Skills platforms. Created by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow).
 
-[![Version](https://img.shields.io/badge/version-3.35.5-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.35.6-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/indranilbanerjee/digital-marketing-pro?style=flat&logo=github&color=yellow)](https://github.com/indranilbanerjee/digital-marketing-pro/stargazers)
-[![Tests](https://img.shields.io/badge/tests-672%2F672%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-680%2F680%20passing-brightgreen.svg)](tests/)
 [![Platforms](https://img.shields.io/badge/platforms-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#works-on-40-agent-harnesses-via-the-agent-skills-open-standard)
 [![EU AI Act](https://img.shields.io/badge/EU%20AI%20Act-Article%2050%20ready-darkred.svg)](skills/context-engine/compliance-rules.md)
 
 [![Built by Indranil "Neel" Banerjee — Neelverse Marketing Suite — Sponsor this project](docs/assets/author-banner.svg)](https://github.com/sponsors/indranilbanerjee)
 
-> 🆕 **Just shipped — v3.35.5 (October 12, 2026):** every agent says where the scripts are and which Python to use; an unknown send outcome is recorded as unknown, never as failed. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
+> 🆕 **Just shipped — v3.35.6 (October 12, 2026):** script paths are quoted, inputs saved by Excel or PowerShell read correctly, and printed hints run from any folder. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
 
 ```bash
 # Install — one line
@@ -195,7 +195,7 @@ Other marketing plugins exist, including Anthropic's own marketing plugin and co
 | AEO / GEO | **A 6-platform audit, including Google AI Mode** |
 | Where it runs | **9 native hosts**: Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes, OpenClaw, Grok |
 | Live-write safety | **Single-use approval record for writes it sends itself; MCP writes: typed yes + host prompt** |
-| Tests | **672 stdlib unittest** tests |
+| Tests | **680 stdlib unittest** tests |
 | License | **MIT: no telemetry, no seats** |
 
 ---
@@ -292,7 +292,7 @@ Output: HTTP calls for the 8 executable connectors (Slack, HubSpot, Klaviyo, Sen
 
 ---
 
-## Supported surfaces (v3.35.5)
+## Supported surfaces (v3.35.6)
 
 | Platform | Install command | Manifest path | Status |
 |---|---|---|---|
@@ -404,6 +404,10 @@ If you run into a platform-specific install snag, file a [GitHub issue](https://
 
 ## What's new
 
+### v3.35.6 — quoted paths, BOM-safe inputs, hints that run anywhere (October 12, 2026)
+
+From the fresh-install smoke test's final pass. Five skill commands ran an unquoted `${CLAUDE_PLUGIN_ROOT}` path, which breaks in a folder with a space; every such path is now quoted and a test checks them all. `utm-generator.py --csv` turned Excel's "CSV UTF-8" export into rows of missing URLs (still exiting 0), and `--prepare-batch` refused a plan saved by PowerShell; every script now reads files with or without a BOM and never writes one. Printed hints run a script by the interpreter and its absolute path. 680 tests.
+
 ### v3.35.5 — agents say where the scripts are; unknown means unknown (October 12, 2026)
 
 Found by the fresh-install smoke test's re-run. The 24 agents run scripts but had no script-location line, so on hosts without `${CLAUDE_PLUGIN_ROOT}` they had no fallback and no Python note; they have it now, as do 27 reference files, and the banners that ran `benchmark_book.py` by a bare `scripts/` path use the plugin-root path. A test now finds every file that runs a script. An approval whose send timed out after the request may have arrived is saved with status `unknown` instead of `failed`, so nobody re-prepares it by hand; the execution log counts unknowns, `mark-executed` closes one out after you check the platform, and the approval framework no longer says to retry an error that may have been delivered. Write skills that go through MCP tools retry only a request that provably never arrived; after a timeout they check the platform first. 672 tests.
@@ -411,10 +415,6 @@ Found by the fresh-install smoke test's re-run. The 24 agents run scripts but ha
 ### v3.35.4 — one approval fires once; `$?` says whether anything was sent (October 12, 2026)
 
 Found by a fresh-install smoke test. A timeout after a request reached the platform (or after "200 OK" arrived) released its approval record, so one approval could send twice after a slow response; now only a refused connection, a DNS failure or a refused proxy tunnel releases a record, and anything else is consumed and reported as an unknown outcome to check on the platform. `connector_executor.py --execute` exits 3 when nothing could be sent (no connector, an MCP-only connector, a missing credential) instead of 0, and an unknown or network-error outcome exits 1. A refused SERP snapshot no longer reports counts. Every script-running skill now says to use Python 3.10 or newer, as `python` or `python3`. 665 tests.
-
-### v3.35.3 — fatigue forecasts count calendar days; SERP snapshots from any provider (October 11, 2026)
-
-`creative-fatigue-predictor.py` read row numbers as days, so a daily CTR series that had already crossed its fatigue threshold was called "performing steadily" and a weekly series with 28 days of runway was called "URGENT" at 3. Forecasts now use calendar days from the latest row and report a crossed threshold as 0 days; the fix was contributed by @andromia3 (PR #17). The follow-up accepts what real exports look like: no CPM (a CTR-only forecast, with `signals_used`), newest-first rows, ISO timestamps and numeric strings, with every error naming its row. `rank-monitor --features` can now read a SERP snapshot (position, AI Overview presence and citation, People Also Ask, featured-snippet owner) exported from any SERP API or rank tracker, validated by the new stdlib `scripts/serp-snapshot.py`, which reads only that file. 642 tests.
 
 Older releases are in [CHANGELOG.md](CHANGELOG.md).
 
@@ -715,7 +715,7 @@ Yes. Each brand has its own `~/.claude-marketing/brands/<brand-slug>/` directory
 Skip to `/digital-marketing-pro:campaign-plan`. Every individual surface (campaign / SEO / content / competitor / email / report) is independently runnable. The full engagement is the canonical path, not the only path.
 
 **Q: Will this work on Codex / Cursor / Copilot CLI / Antigravity?**
-Yes — verified-real native manifests ship for all 9 surfaces (CC, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes Agent, OpenClaw, Grok). See [Supported surfaces](#supported-surfaces-v3355) above for per-platform install commands.
+Yes — verified-real native manifests ship for all 9 surfaces (CC, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes Agent, OpenClaw, Grok). See [Supported surfaces](#supported-surfaces-v3356) above for per-platform install commands.
 
 **Q: I run my team on Anthropic Cowork. Does brand state persist between sessions?**
 Yes — but you need to run `/digital-marketing-pro:cowork-setup` once per team first (v3.12.0). Cowork's per-session filesystem is ephemeral, and `${CLAUDE_PLUGIN_DATA}` is too ([open issue #51398](https://github.com/anthropics/claude-code/issues/51398)). The setup wizard routes brand profiles + plans + reports through a Google Drive MCP so everything survives across sessions and is shared across the team. Multi-team isolation via per-team folder names.
@@ -788,7 +788,7 @@ Use the direct repo form: `grok plugin install indranilbanerjee/digital-marketin
 ### General (any platform)
 
 **"Tests in `tests/` fail when I `git clone` locally"**
-Run `python tests/run_all.py` from the repo root. All 672 tests are stdlib-only — no `pip install` needed. If they fail, the most likely cause is a Python version mismatch (DMP supports Python 3.10+) or a clone that omitted some `skills/` subdirectories. Try `git clone --depth=1` again.
+Run `python tests/run_all.py` from the repo root. All 680 tests are stdlib-only — no `pip install` needed. If they fail, the most likely cause is a Python version mismatch (DMP supports Python 3.10+) or a clone that omitted some `skills/` subdirectories. Try `git clone --depth=1` again.
 
 **"`/digital-marketing-pro:doctor` shows my action as stub_unconfigured"**
 That action needs an MCP connector configured. Run `python scripts/connector-status.py --action setup-guide --name <connector-name>` for the exact setup snippet. Add it to your `.mcp.json` under `mcpServers`, restart your agent, and the action becomes `manifest_ready`. See [Connector-aware action resolver](#connector-aware-action-resolver) for the full readiness model.

@@ -58,7 +58,7 @@ def get_brand_dir(slug):
 def _load_approval(filepath):
     """Load a single approval JSON file."""
     try:
-        return json.loads(filepath.read_text(encoding="utf-8"))
+        return json.loads(filepath.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError, OSError):
         return None
 
@@ -320,14 +320,14 @@ def mark_executed(slug, approval_id, data):
         # there, record what happened; the record stays consumed either way.
         approval["status"] = "executed" if execution_result == "success" else "failed"
         approval["execution_result"] = execution_result
-        approval["resolved_from_unknown_at"] = datetime.now().isoformat()
+        approval["resolved_from_unknown_at"] = _common._iso(_common._utcnow())  # UTC-aware, like consumed_at
         approval["platform_response"] = data.get("platform_response") or approval.get("platform_response")
         _common.atomic_write_json(filepath, approval)
         return {"status": approval["status"], "approval_id": approval_id,
                 "note": "recorded what the platform shows for an unknown outcome; the record stays used"}
     if approval["status"] in ("executed", "failed") and approval.get("consumed_at"):
         return {"status": approval["status"], "approval_id": approval_id,
-                "note": "connector_executor.py already recorded this execution"}
+                "note": "this execution is already recorded; the record stays used"}
     if approval["status"] != "approved":
         return {"error": f"Cannot mark executed: current status is '{approval['status']}', expected 'approved'."}
 

@@ -50,7 +50,7 @@ def collect_skill_sizes() -> list[dict]:
         if not skill_md.exists():
             continue
         try:
-            text = skill_md.read_text(encoding="utf-8", errors="replace")
+            text = skill_md.read_text(encoding="utf-8-sig", errors="replace")
         except OSError:
             continue
         lines = text.count("\n") + (1 if text and not text.endswith("\n") else 0)

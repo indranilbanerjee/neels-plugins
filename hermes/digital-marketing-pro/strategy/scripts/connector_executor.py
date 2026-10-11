@@ -879,7 +879,7 @@ if __name__ == "__main__":
             print(json.dumps({"error": "--brand is required with --prepare-batch"}, indent=2))
             sys.exit(1)
         try:
-            items = json.loads(Path(args.prepare_batch).read_text(encoding="utf-8"))
+            items = json.loads(Path(args.prepare_batch).read_text(encoding="utf-8-sig"))
             assert isinstance(items, list) and items
         except Exception as exc:
             print(json.dumps({"error": f"--prepare-batch needs a JSON list of items: {exc}"}, indent=2))

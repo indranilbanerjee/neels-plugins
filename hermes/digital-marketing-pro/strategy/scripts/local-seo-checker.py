@@ -543,7 +543,7 @@ def main():
                 print()
                 sys.exit(0)
             try:
-                file_data = json.loads(path.read_text(encoding="utf-8"))
+                file_data = json.loads(path.read_text(encoding="utf-8-sig"))
                 if isinstance(file_data, list):
                     citations.extend(file_data)
                 else:

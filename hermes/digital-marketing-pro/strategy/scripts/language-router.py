@@ -321,7 +321,7 @@ def _get_text(args):
             print(json.dumps({"error": f"File not found: {args.file}"}))
             sys.exit(1)
         try:
-            return path.read_text(encoding="utf-8")
+            return path.read_text(encoding="utf-8-sig")
         except OSError as exc:
             print(json.dumps({"error": f"Cannot read file: {exc}"}))
             sys.exit(1)
@@ -581,7 +581,7 @@ def _brand_translation_pref(brand, target):
         profile_path = brand_dir(brand) / "profile.json"
         if not profile_path.exists():
             return None
-        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+        profile = json.loads(profile_path.read_text(encoding="utf-8-sig"))
         prefs = (profile.get("language") or {}).get("translation_preferences") or {}
         return prefs.get(target) or None
     except Exception:

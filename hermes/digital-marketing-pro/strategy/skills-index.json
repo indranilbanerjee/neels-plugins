@@ -355,7 +355,7 @@
         "validate-profile"
       ],
       "doc_files": 1,
-      "bytes": 16231
+      "bytes": 16233
     },
     {
       "name": "campaign-orchestrator",
@@ -521,7 +521,7 @@
       "gates": [],
       "cross_refs": [],
       "doc_files": 1,
-      "bytes": 13570
+      "bytes": 13572
     },
     {
       "name": "cohort-analysis",
@@ -1044,7 +1044,7 @@
         "seo-audit"
       ],
       "doc_files": 1,
-      "bytes": 25681
+      "bytes": 25687
     },
     {
       "name": "entity-audit",
@@ -1598,7 +1598,7 @@
         "validate-profile"
       ],
       "doc_files": 1,
-      "bytes": 14091
+      "bytes": 14093
     },
     {
       "name": "launch-plan",
@@ -2523,7 +2523,7 @@
         "switch-brand"
       ],
       "doc_files": 1,
-      "bytes": 9311
+      "bytes": 9313
     },
     {
       "name": "story-mine",

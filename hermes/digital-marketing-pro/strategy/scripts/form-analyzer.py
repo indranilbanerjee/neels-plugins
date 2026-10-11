@@ -312,7 +312,7 @@ def main():
             print()
             sys.exit(1)
         try:
-            raw_fields = path.read_text(encoding="utf-8")
+            raw_fields = path.read_text(encoding="utf-8-sig")
         except Exception as exc:
             json.dump({"error": f"Failed to read file: {exc}"}, sys.stdout, indent=2)
             print()

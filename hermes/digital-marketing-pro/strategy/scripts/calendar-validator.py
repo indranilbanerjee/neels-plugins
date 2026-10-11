@@ -385,7 +385,7 @@ def main():
             print()
             sys.exit(1)
         try:
-            raw_entries = json.loads(path.read_text(encoding="utf-8"))
+            raw_entries = json.loads(path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid JSON in file: {exc}"}, sys.stdout, indent=2)
             print()

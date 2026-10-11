@@ -86,12 +86,12 @@ def analyze_skill(skill_dir: Path, skill_names: set[str]) -> dict:
     # Normalize line endings before measuring: git converts LF<->CRLF per
     # checkout config, so on-disk sizes differ between a dev clone and an
     # installed copy of the SAME commit. The contract must not care.
-    texts = [f.read_text(encoding="utf-8", errors="replace").replace("\r\n", "\n")
+    texts = [f.read_text(encoding="utf-8-sig", errors="replace").replace("\r\n", "\n")
              for f in files]
     all_text = "\n".join(texts)
     skill_md = skill_dir / "SKILL.md"
     front = parse_frontmatter(
-        skill_md.read_text(encoding="utf-8", errors="replace")) if skill_md.exists() else {}
+        skill_md.read_text(encoding="utf-8-sig", errors="replace")) if skill_md.exists() else {}
 
     referenced = sorted(set(SCRIPT_REF.findall(all_text)))
     existing = [s for s in referenced if (SCRIPTS_DIR / s).exists()]
@@ -157,7 +157,7 @@ def main() -> int:
             print(f"DRIFT: {INDEX_PATH.name} missing — run build_skills_index.py",
                   file=sys.stderr)
             return 1
-        committed = INDEX_PATH.read_text(encoding="utf-8")
+        committed = INDEX_PATH.read_text(encoding="utf-8-sig")
         if committed != rendered:
             print(f"DRIFT: {INDEX_PATH.name} does not match the repo — "
                   "run build_skills_index.py and commit the result.", file=sys.stderr)

@@ -50,7 +50,7 @@ def _load_json(path):
     if not path.exists():
         return None, f"File not found: {path.name}"
     try:
-        return json.loads(path.read_text(encoding="utf-8")), None
+        return json.loads(path.read_text(encoding="utf-8-sig")), None
     except json.JSONDecodeError:
         return None, f"Corrupted JSON: {path.name}"
 

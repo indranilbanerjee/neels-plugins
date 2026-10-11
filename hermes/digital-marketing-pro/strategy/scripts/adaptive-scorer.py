@@ -70,7 +70,7 @@ def load_brand_context(slug):
         return None, f"Brand profile not found for '{slug}'."
 
     try:
-        profile = json.loads(profile_path.read_text())
+        profile = json.loads(profile_path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError:
         return None, f"Brand profile corrupted for '{slug}'."
 
@@ -79,7 +79,7 @@ def load_brand_context(slug):
     insights_path = brand_dir / "insights.json"
     if insights_path.exists():
         try:
-            insights = json.loads(insights_path.read_text())
+            insights = json.loads(insights_path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError:
             pass
 
@@ -188,7 +188,7 @@ def main():
         if not fpath.exists():
             print(json.dumps({"error": f"File not found: {args.file}"}))
             sys.exit(1)
-        text = fpath.read_text(encoding="utf-8")
+        text = fpath.read_text(encoding="utf-8-sig")
 
     json.dump({
         "brand": args.brand,

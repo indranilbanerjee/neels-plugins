@@ -254,4 +254,4 @@ In the conversation, print:
 - [`performance-check`](../performance-check/SKILL.md) — lighter metrics-only snapshot
 - [`competitor-analysis`](../competitor-analysis/SKILL.md) — pairs naturally with the AEO/GEO section
 - [`aeo-audit`](../aeo-audit/SKILL.md) — deeper AI-engine visibility audit if Section 5 raises concerns
-- `${CLAUDE_PLUGIN_ROOT}/scripts/performance-monitor.py` — underlying data pulls
+- `"${CLAUDE_PLUGIN_ROOT}/scripts/performance-monitor.py"` — underlying data pulls

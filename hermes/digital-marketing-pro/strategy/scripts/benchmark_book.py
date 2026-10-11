@@ -99,7 +99,7 @@ def _load() -> dict:
     if not p.exists():
         return {"entries": {}}
     try:
-        return json.loads(p.read_text(encoding="utf-8"))
+        return json.loads(p.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError:
         # A corrupt book must never silently become an empty one — that would
         # erase provenance. Surface it and stop.

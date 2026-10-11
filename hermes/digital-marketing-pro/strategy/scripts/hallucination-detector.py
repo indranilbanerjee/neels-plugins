@@ -551,7 +551,7 @@ def main():
             print(json.dumps({"error": f"File not found: {args.file}"}))
             sys.exit(1)
         try:
-            text = file_path.read_text(encoding="utf-8")
+            text = file_path.read_text(encoding="utf-8-sig")
         except Exception as exc:
             print(json.dumps({"error": f"Could not read file: {exc}"}))
             sys.exit(1)

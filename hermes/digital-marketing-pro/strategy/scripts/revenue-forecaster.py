@@ -343,7 +343,7 @@ def main():
             print()
             sys.exit(1)
         try:
-            content = path.read_text(encoding="utf-8")
+            content = path.read_text(encoding="utf-8-sig")
             historical = json.loads(content)
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid JSON in file: {exc}"}, sys.stdout, indent=2)

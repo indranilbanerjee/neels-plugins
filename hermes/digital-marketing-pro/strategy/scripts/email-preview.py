@@ -209,7 +209,7 @@ def main():
         if not path.exists():
             print(json.dumps({"error": f"File not found: {args.file}"}))
             sys.exit(1)
-        body = path.read_text(encoding="utf-8")
+        body = path.read_text(encoding="utf-8-sig")
 
     full_text = " ".join(filter(None, [args.subject, args.preview, body]))
     spam_analysis = detect_spam_words(full_text)

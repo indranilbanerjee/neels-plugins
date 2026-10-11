@@ -200,7 +200,7 @@ def main():
         if not path.exists():
             print(json.dumps({"error": f"File not found: {args.file}"}))
             sys.exit(1)
-        headlines = [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        headlines = [line.strip() for line in path.read_text(encoding="utf-8-sig").splitlines() if line.strip()]
 
     if not headlines:
         print(json.dumps({"error": "No headlines provided"}))

@@ -143,7 +143,7 @@ def write_json_atomic(path: Path, data: Any) -> None:
 def read_json(path: Path) -> Any:
     if not path.exists():
         raise FileNotFoundError(f"File not found: {path}")
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
 def slugify(value: str) -> str:
@@ -505,7 +505,7 @@ def cmd_decision_matrix(args: argparse.Namespace) -> None:
         if not validation_path.exists():
             err(f"validation file not found: {validation_path}")
         try:
-            validation = json.loads(validation_path.read_text(encoding="utf-8"))
+            validation = json.loads(validation_path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError as exc:
             err(f"invalid JSON in validation file: {exc}")
         triggers = validation.get("triggers", [])
@@ -643,7 +643,7 @@ def cmd_lif_show(args: argparse.Namespace) -> None:
         err(f"LIF not found: {path}")
     out({
         "lif_path": str(path),
-        "contents": path.read_text(encoding="utf-8"),
+        "contents": path.read_text(encoding="utf-8-sig"),
     })
 
 
@@ -658,7 +658,7 @@ def _refresh_lif_file(brand: str, engagement_id: str, entry: dict[str, Any],
     path = lif_path(brand, engagement_id)
     if not path.exists():
         return False
-    text = path.read_text(encoding="utf-8")
+    text = path.read_text(encoding="utf-8-sig")
     stamp = now_iso()
     text = re.sub(r"^\*\*Last updated:\*\* .*$",
                   f"**Last updated:** {stamp}", text, count=1, flags=re.MULTILINE)

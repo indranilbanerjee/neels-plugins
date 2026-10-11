@@ -121,7 +121,7 @@ def _model_curator_status():
             "age_days": None,
             "severity": "warn",
             "message": "Model registry has no last_updated timestamp. Treat all model IDs as suspect.",
-            "action": "python refresh_models.py (from the plugin scripts/ directory)",
+            "action": _common.script_command("refresh_models.py"),
         }
     severity = "ok"
     message = f"Model registry is {age} days old. Within the {REGISTRY_STALE_WARN_DAYS}-day refresh window."
@@ -133,7 +133,7 @@ def _model_curator_status():
             "Frontier models shift ~every 6 weeks; deprecated IDs will start returning 404 silently."
         )
         action = ("Set ANTHROPIC_API_KEY / OPENAI_API_KEY / GEMINI_API_KEY / EVOLINK_API_KEY "
-                  "in your environment, then run: python refresh_models.py "
+                  "in your environment, then run: " + _common.script_command("refresh_models.py") + " "
                   "(cross-shell: the POSIX 'VAR=... command' prefix does not work in PowerShell)")
     elif age >= REGISTRY_STALE_WARN_DAYS:
         severity = "warn"
@@ -142,7 +142,7 @@ def _model_curator_status():
             "Run refresh_models.py to check provider drift before any high-volume run."
         )
         action = ("Set ANTHROPIC_API_KEY / OPENAI_API_KEY / GEMINI_API_KEY / EVOLINK_API_KEY "
-                  "in your environment, then run: python refresh_models.py "
+                  "in your environment, then run: " + _common.script_command("refresh_models.py") + " "
                   "(cross-shell: the POSIX 'VAR=... command' prefix does not work in PowerShell)")
 
     return {
@@ -261,7 +261,7 @@ def _format_text_report(brand, rows, counts):
     unconfigured = [r for r in rows if r["mode"] == "stub_unconfigured"]
     if unconfigured:
         lines.append(f"To unlock the {len(unconfigured)} stub-unconfigured action(s):")
-        lines.append("  python scripts/connector-status.py --action setup-guide --name <connector>")
+        lines.append("  " + _common.script_command("connector-status.py", "--action setup-guide --name <connector>"))
         lines.append("  ... then add the printed snippet to .mcp.json under mcpServers.")
         lines.append("")
         lines.append("Or run any individual action -- it returns the same setup hint inline.")

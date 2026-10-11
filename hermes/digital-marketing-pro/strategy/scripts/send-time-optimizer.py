@@ -470,7 +470,7 @@ def main():
             _common.finish({"error": f"history file not found: {args.history}"})
             sys.exit(1)
         try:
-            entries = json.loads(path.read_text(encoding="utf-8"))
+            entries = json.loads(path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError as exc:
             _common.finish({"error": f"history file is not valid JSON: {exc}"})
             sys.exit(1)

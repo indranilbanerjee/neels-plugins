@@ -111,7 +111,7 @@ def load_manifest(manifest_path):
     """Load a _manifest.json file, returning empty dict if missing."""
     if manifest_path.exists():
         try:
-            return json.loads(manifest_path.read_text(encoding="utf-8"))
+            return json.loads(manifest_path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError:
             return {}
     return {}
@@ -127,7 +127,7 @@ def count_rules_in_file(filepath):
     """Count rules/items in a markdown file (lines starting with - or *)."""
     if not filepath.exists():
         return 0
-    content = filepath.read_text(encoding="utf-8")
+    content = filepath.read_text(encoding="utf-8-sig")
     count = 0
     for line in content.splitlines():
         stripped = line.strip()
@@ -159,7 +159,7 @@ def rebuild_manifest(guidelines_dir, slug):
             }
             if cat_key == "restrictions":
                 # Count banned words and restricted claims separately
-                content = filepath.read_text(encoding="utf-8")
+                content = filepath.read_text(encoding="utf-8-sig")
                 banned = 0
                 claims = 0
                 in_banned = False
@@ -184,7 +184,7 @@ def rebuild_manifest(guidelines_dir, slug):
                 entry["banned_words"] = banned
                 entry["restricted_claims"] = claims
             elif cat_key == "channel-styles":
-                content = filepath.read_text(encoding="utf-8")
+                content = filepath.read_text(encoding="utf-8-sig")
                 channels = sum(1 for line in content.splitlines()
                              if line.strip().startswith("##") and not line.strip().startswith("###"))
                 entry["channels_covered"] = channels
@@ -287,7 +287,7 @@ def get_category(slug, category):
         files = {}
         for f in sorted(custom_dir.iterdir()):
             if f.is_file() and f.suffix == ".md":
-                files[f.name] = f.read_text(encoding="utf-8")
+                files[f.name] = f.read_text(encoding="utf-8-sig")
         return {"category": "custom", "files": files, "count": len(files)}
 
     cat_info = GUIDELINE_CATEGORIES[category]
@@ -300,7 +300,7 @@ def get_category(slug, category):
             "note": f"No {category} guidelines configured. Use /digital-marketing-pro:import-guidelines to add.",
         }
 
-    content = filepath.read_text(encoding="utf-8")
+    content = filepath.read_text(encoding="utf-8-sig")
     return {
         "category": category,
         "exists": True,
@@ -337,7 +337,7 @@ def save_category(slug, category, content=None, filepath=None):
         source = Path(filepath)
         if not source.exists():
             return {"error": f"Source file not found: {filepath}"}
-        save_content = source.read_text(encoding="utf-8")
+        save_content = source.read_text(encoding="utf-8-sig")
     elif content:
         save_content = content
     else:
@@ -448,7 +448,7 @@ def get_template(slug, name):
     return {
         "name": name,
         "file": filepath.name,
-        "content": filepath.read_text(encoding="utf-8"),
+        "content": filepath.read_text(encoding="utf-8-sig"),
     }
 
 
@@ -467,7 +467,7 @@ def save_template(slug, name, content=None, filepath=None, description=""):
         source = Path(filepath)
         if not source.exists():
             return {"error": f"Source file not found: {filepath}"}
-        save_content = source.read_text(encoding="utf-8")
+        save_content = source.read_text(encoding="utf-8-sig")
     elif content:
         save_content = content
     else:
@@ -546,7 +546,7 @@ def get_sop(name):
     return {
         "name": name,
         "file": filepath.name,
-        "content": filepath.read_text(encoding="utf-8"),
+        "content": filepath.read_text(encoding="utf-8-sig"),
     }
 
 
@@ -563,7 +563,7 @@ def save_sop(name, content=None, filepath=None, description=""):
         source = Path(filepath)
         if not source.exists():
             return {"error": f"Source file not found: {filepath}"}
-        save_content = source.read_text(encoding="utf-8")
+        save_content = source.read_text(encoding="utf-8-sig")
     elif content:
         save_content = content
     else:

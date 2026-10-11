@@ -57,7 +57,7 @@ def _load_json(path):
     if not path.exists():
         return []
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError, OSError):
         return []
 
@@ -86,7 +86,7 @@ def update_meta(slug, url, title=None, description=None,
     old_values = None
     for fp in changes_dir.glob("meta-*.json"):
         try:
-            existing = json.loads(fp.read_text(encoding="utf-8"))
+            existing = json.loads(fp.read_text(encoding="utf-8-sig"))
             if existing.get("url") == url and existing.get("status") == "completed":
                 old_values = {
                     "title": existing.get("new_title"),
@@ -182,7 +182,7 @@ def create_redirect(slug, source_url, target_url, redirect_type):
     existing_redirects = {}
     for fp in redirects_dir.glob("redirect-*.json"):
         try:
-            r = json.loads(fp.read_text(encoding="utf-8"))
+            r = json.loads(fp.read_text(encoding="utf-8-sig"))
             existing_redirects[r.get("source_url")] = r.get("target_url")
         except (json.JSONDecodeError, OSError):
             continue
@@ -285,7 +285,7 @@ def bulk_meta_update(slug, spec_file):
         return {"error": f"Spec file not found: {spec_file}"}
 
     try:
-        entries = json.loads(spec_path.read_text(encoding="utf-8"))
+        entries = json.loads(spec_path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError:
         return {"error": "Invalid JSON in spec file"}
 
@@ -340,7 +340,7 @@ def get_status(slug, status_filter="all"):
             if fp.name.startswith("_"):
                 continue
             try:
-                record = json.loads(fp.read_text(encoding="utf-8"))
+                record = json.loads(fp.read_text(encoding="utf-8-sig"))
                 changes.append(record)
             except (json.JSONDecodeError, OSError):
                 continue
@@ -371,7 +371,7 @@ def complete_change(slug, change_id):
             if fp.name.startswith("_"):
                 continue
             try:
-                record = json.loads(fp.read_text(encoding="utf-8"))
+                record = json.loads(fp.read_text(encoding="utf-8-sig"))
                 rid = (record.get("change_id") or record.get("deployment_id")
                        or record.get("redirect_id") or record.get("request_id"))
                 if rid == change_id:

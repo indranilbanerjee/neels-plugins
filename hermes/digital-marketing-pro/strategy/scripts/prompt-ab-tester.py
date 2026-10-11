@@ -52,7 +52,7 @@ def resolve_brand(slug):
 
     if ACTIVE_BRAND_FILE.exists():
         try:
-            active = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8"))
+            active = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8-sig"))
             return active.get("active_slug")
         except (json.JSONDecodeError, OSError):
             pass
@@ -94,7 +94,7 @@ def load_test(tests_dir, test_name):
     if not filepath.exists():
         return None, f"Test '{test_name}' not found."
     try:
-        return json.loads(filepath.read_text(encoding="utf-8")), None
+        return json.loads(filepath.read_text(encoding="utf-8-sig")), None
     except json.JSONDecodeError:
         return None, f"Test file corrupted: {test_name}.json"
 
@@ -102,7 +102,7 @@ def load_test(tests_dir, test_name):
 def save_test(tests_dir, test_name, data):
     """Save a test file."""
     filepath = tests_dir / f"{test_name}.json"
-    filepath.write_text(json.dumps(data, indent=2))
+    filepath.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
 # ---------------------------------------------------------------------------
@@ -314,7 +314,7 @@ def action_list_tests(slug, limit):
     tests = []
     for fp in sorted(tests_dir.glob("*.json")):
         try:
-            data = json.loads(fp.read_text(encoding="utf-8"))
+            data = json.loads(fp.read_text(encoding="utf-8-sig"))
         except (json.JSONDecodeError, OSError):
             continue
 

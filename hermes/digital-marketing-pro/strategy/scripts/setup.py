@@ -84,7 +84,7 @@ def check_brand():
         return False
 
     try:
-        active = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8"))
+        active = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8-sig"))
         slug = active.get("active_slug", "")
         profile_path = BRANDS_DIR / slug / "profile.json"
 
@@ -92,7 +92,7 @@ def check_brand():
             print(f"BROKEN_BRAND: Active brand '{slug}' profile not found.")
             return False
 
-        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+        profile = json.loads(profile_path.read_text(encoding="utf-8-sig"))
         brand_name = profile.get("brand_name", slug)
         print(f"BRAND_ACTIVE: {brand_name}")
         return True
@@ -113,7 +113,7 @@ def print_brand_summary():
         return False
 
     try:
-        active = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8"))
+        active = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8-sig"))
         slug = active.get("active_slug", "")
         profile_path = BRANDS_DIR / slug / "profile.json"
 
@@ -126,7 +126,7 @@ def print_brand_summary():
             print("===")
             return False
 
-        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+        profile = json.loads(profile_path.read_text(encoding="utf-8-sig"))
         name = profile.get("brand_name", slug)
         biz = profile.get("business_model", {})
         ind = profile.get("industry", {})
@@ -144,7 +144,7 @@ def print_brand_summary():
         idx_path = BRANDS_DIR / slug / "campaigns" / "_index.json"
         if idx_path.exists():
             try:
-                camp_count = len(json.loads(idx_path.read_text(encoding="utf-8")))
+                camp_count = len(json.loads(idx_path.read_text(encoding="utf-8-sig")))
             except Exception:
                 pass
 
@@ -183,7 +183,7 @@ def print_brand_summary():
         gl_parts = []
         if gl_manifest.exists():
             try:
-                gl = json.loads(gl_manifest.read_text(encoding="utf-8"))
+                gl = json.loads(gl_manifest.read_text(encoding="utf-8-sig"))
                 total_rules = gl.get("total_rules", 0)
                 cats = len(gl.get("categories", {}))
                 custom = len(gl.get("custom_files", []))
@@ -201,7 +201,7 @@ def print_brand_summary():
             tmpl_manifest = tmpl_dir / "_manifest.json"
             if tmpl_manifest.exists():
                 try:
-                    tmpl_count = len(json.loads(tmpl_manifest.read_text(encoding="utf-8")).get("templates", {}))
+                    tmpl_count = len(json.loads(tmpl_manifest.read_text(encoding="utf-8-sig")).get("templates", {}))
                 except Exception:
                     pass
         if tmpl_count:
@@ -211,7 +211,7 @@ def print_brand_summary():
             sop_manifest = sops_dir / "_manifest.json"
             if sop_manifest.exists():
                 try:
-                    sop_count = len(json.loads(sop_manifest.read_text(encoding="utf-8")).get("sops", {}))
+                    sop_count = len(json.loads(sop_manifest.read_text(encoding="utf-8-sig")).get("sops", {}))
                 except Exception:
                     pass
         if sop_count:
@@ -294,7 +294,7 @@ def install_deps(mode="lite"):
 
         # Update settings with install mode
         if SETTINGS_FILE.exists():
-            settings = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
+            settings = json.loads(SETTINGS_FILE.read_text(encoding="utf-8-sig"))
             settings["install_mode"] = mode
             _common.atomic_write_json(SETTINGS_FILE, settings)
 
@@ -400,7 +400,7 @@ def create_brand(name, slug=None):
     if ACTIVE_BRAND_FILE.exists():
         try:
             previous = json.loads(
-                ACTIVE_BRAND_FILE.read_text(encoding="utf-8")).get("active_slug")
+                ACTIVE_BRAND_FILE.read_text(encoding="utf-8-sig")).get("active_slug")
         except (json.JSONDecodeError, OSError):
             previous = None
 
@@ -413,7 +413,7 @@ def create_brand(name, slug=None):
     if previous and previous != slug:
         print(f"ACTIVE_BRAND_CHANGED: {previous} -> {slug}")
         print(f"  Every skill that reads the active brand now resolves to {slug!r}.")
-        print(f"  To go back: python setup.py --switch-brand {previous}")
+        print(f"  To go back: {_common.script_command('setup.py', '--switch-brand ' + previous)}")
     print(f"Profile: {profile_path}")
     return str(profile_path)
 
@@ -428,7 +428,7 @@ def list_brands():
     active_slug = ""
     if ACTIVE_BRAND_FILE.exists():
         try:
-            active = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8"))
+            active = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8-sig"))
             active_slug = active.get("active_slug", "")
         except json.JSONDecodeError:
             pass
@@ -438,7 +438,7 @@ def list_brands():
             profile_path = item / "profile.json"
             if profile_path.exists():
                 try:
-                    profile = json.loads(profile_path.read_text(encoding="utf-8"))
+                    profile = json.loads(profile_path.read_text(encoding="utf-8-sig"))
                     is_active = "* " if item.name == active_slug else "  "
                     brands.append(
                         f"{is_active}{profile.get('brand_name', item.name)} [{item.name}]"
@@ -475,7 +475,7 @@ def switch_brand(slug):
                         p = item / "profile.json"
                         if p.exists():
                             try:
-                                data = json.loads(p.read_text(encoding="utf-8"))
+                                data = json.loads(p.read_text(encoding="utf-8-sig"))
                                 if slug in data.get("brand_name", "").lower():
                                     available.append(item.name)
                             except json.JSONDecodeError:
@@ -489,7 +489,7 @@ def switch_brand(slug):
 
     # Load and validate profile
     try:
-        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+        profile = json.loads(profile_path.read_text(encoding="utf-8-sig"))
         brand_name = profile.get("brand_name", slug)
     except json.JSONDecodeError:
         print(f"BRAND_ERROR: Profile for '{slug}' is corrupted.")
@@ -518,13 +518,13 @@ def migrate_schema():
             profile_path = item / "profile.json"
             if profile_path.exists():
                 try:
-                    profile = json.loads(profile_path.read_text(encoding="utf-8"))
+                    profile = json.loads(profile_path.read_text(encoding="utf-8-sig"))
                     current_version = profile.get("schema_version", "0.0.0")
 
                     if current_version != SCHEMA_VERSION:
                         # Backup before migration
                         backup_path = item / "profile.backup.json"
-                        backup_path.write_text(profile_path.read_text(encoding="utf-8"), encoding="utf-8")
+                        backup_path.write_text(profile_path.read_text(encoding="utf-8-sig"), encoding="utf-8")
 
                         # Apply migrations (add new fields with defaults)
                         profile["schema_version"] = SCHEMA_VERSION

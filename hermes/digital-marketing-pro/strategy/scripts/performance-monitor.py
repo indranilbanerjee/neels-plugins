@@ -49,7 +49,7 @@ def _load_snapshots(perf_dir):
         return snapshots
     for fp in sorted(perf_dir.glob("snapshot-*.json")):
         try:
-            snapshot = json.loads(fp.read_text())
+            snapshot = json.loads(fp.read_text(encoding="utf-8-sig"))
             snapshots.append(snapshot)
         except json.JSONDecodeError:
             continue
@@ -115,7 +115,7 @@ def pull_metrics(slug, data):
     }
 
     filepath = perf_dir / f"snapshot-{timestamp}.json"
-    filepath.write_text(json.dumps(snapshot, indent=2))
+    filepath.write_text(json.dumps(snapshot, indent=2), encoding="utf-8")
     _prune_snapshots(perf_dir)
 
     return {
@@ -146,7 +146,7 @@ def save_snapshot(slug, data):
     }
 
     filepath = perf_dir / f"snapshot-{timestamp}.json"
-    filepath.write_text(json.dumps(snapshot, indent=2))
+    filepath.write_text(json.dumps(snapshot, indent=2), encoding="utf-8")
     _prune_snapshots(perf_dir)
 
     # Count remaining

@@ -309,7 +309,7 @@ def main():
     if not path.is_file():
         print(json.dumps({"error": f"file not found: {path}"}))
         sys.exit(1)
-    print(json.dumps(structure_scan(path.read_text(encoding="utf-8", errors="replace")),
+    print(json.dumps(structure_scan(path.read_text(encoding="utf-8-sig", errors="replace")),
                      indent=2, ensure_ascii=False))
 
 

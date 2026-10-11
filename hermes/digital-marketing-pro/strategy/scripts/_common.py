@@ -295,6 +295,17 @@ def install_command(packages) -> str:
     return f"{exe} -m pip install {' '.join(pinned_specs(packages))}"
 
 
+def script_command(script: str, args: str = "") -> str:
+    """A command line that runs one of this plugin's scripts from any folder: the running
+    interpreter and the script's absolute, quoted path. Printed hints use it instead of
+    `python scripts/x.py`, which works only when the shell sits in the plugin's folder."""
+    exe = sys.executable or "python"
+    if " " in exe:
+        exe = f'"{exe}"'
+    path = Path(__file__).resolve().parent / script
+    return f'{exe} "{path}"' + (f" {args}" if args else "")
+
+
 # ── Approval records (payload-bound, single-use, windowed) ──────────
 #
 # What this proves, and what it does not: the model runs every command, so no
@@ -503,7 +514,7 @@ def load_json_safe(path):
             "recovery": "Initialise it first (e.g. --action init) or check the brand name.",
         }
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError, OSError) as exc:
         return {
             "error": f"corrupt or unreadable JSON at {path}: {type(exc).__name__}: {exc}",

@@ -223,7 +223,7 @@ def _load_serps(serps_path: Path | None) -> dict[str, set[str]]:
         return {}
     if not serps_path.is_file():
         raise FileNotFoundError(f"SERPs JSON not found: {serps_path}")
-    raw = json.loads(serps_path.read_text(encoding="utf-8"))
+    raw = json.loads(serps_path.read_text(encoding="utf-8-sig"))
     out: dict[str, set[str]] = {}
     for kw, urls in raw.items():
         if isinstance(urls, list):

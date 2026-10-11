@@ -62,14 +62,14 @@ def save_campaign(slug, data):
 
     # Save campaign file
     filepath = campaigns_dir / f"{campaign_id}.json"
-    filepath.write_text(json.dumps(campaign, indent=2))
+    filepath.write_text(json.dumps(campaign, indent=2), encoding="utf-8")
 
     # Update campaign index
     index_path = campaigns_dir / "_index.json"
     index = []
     if index_path.exists():
         try:
-            index = json.loads(index_path.read_text())
+            index = json.loads(index_path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError:
             index = []
 
@@ -88,7 +88,7 @@ def save_campaign(slug, data):
             break
     else:
         index.append(entry)
-    index_path.write_text(json.dumps(index, indent=2))
+    index_path.write_text(json.dumps(index, indent=2), encoding="utf-8")
 
     return {
         "status": "saved",
@@ -110,7 +110,7 @@ def list_campaigns(slug):
         return {"campaigns": [], "total": 0, "note": "No campaigns saved yet."}
 
     try:
-        index = json.loads(index_path.read_text())
+        index = json.loads(index_path.read_text(encoding="utf-8-sig"))
         return {"campaigns": index, "total": len(index)}
     except json.JSONDecodeError:
         return {"error": "Campaign index is corrupted."}
@@ -127,7 +127,7 @@ def get_campaign(slug, campaign_id):
         return {"error": f"Campaign '{campaign_id}' not found."}
 
     try:
-        return json.loads(filepath.read_text())
+        return json.loads(filepath.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError:
         return {"error": f"Campaign file corrupted: {campaign_id}"}
 
@@ -151,7 +151,7 @@ def save_performance(slug, data):
     }
 
     filepath = perf_dir / f"{campaign_id}-{timestamp}.json"
-    filepath.write_text(json.dumps(snapshot, indent=2))
+    filepath.write_text(json.dumps(snapshot, indent=2), encoding="utf-8")
 
     return {"status": "saved", "snapshot_id": snapshot["snapshot_id"], "path": str(filepath)}
 
@@ -166,7 +166,7 @@ def save_insight(slug, data):
     insights = []
     if insights_path.exists():
         try:
-            insights = json.loads(insights_path.read_text())
+            insights = json.loads(insights_path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError:
             insights = []
 
@@ -182,7 +182,7 @@ def save_insight(slug, data):
 
     # Keep last 200 insights
     insights = insights[-200:]
-    insights_path.write_text(json.dumps(insights, indent=2))
+    insights_path.write_text(json.dumps(insights, indent=2), encoding="utf-8")
 
     return {"status": "saved", "total_insights": len(insights)}
 
@@ -198,7 +198,7 @@ def get_insights(slug, insight_type=None, limit=20):
         return {"insights": [], "total": 0, "note": "No insights saved yet."}
 
     try:
-        insights = json.loads(insights_path.read_text())
+        insights = json.loads(insights_path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError:
         return {"error": "Insights file corrupted."}
 
@@ -220,7 +220,7 @@ def save_violation(slug, data):
     violations = []
     if violations_path.exists():
         try:
-            violations = json.loads(violations_path.read_text())
+            violations = json.loads(violations_path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError:
             violations = []
 
@@ -238,7 +238,7 @@ def save_violation(slug, data):
 
     # Keep last 500 violations
     violations = violations[-500:]
-    violations_path.write_text(json.dumps(violations, indent=2))
+    violations_path.write_text(json.dumps(violations, indent=2), encoding="utf-8")
 
     return {"status": "saved", "total_violations": len(violations)}
 
@@ -254,7 +254,7 @@ def get_violations(slug, category=None, severity=None, limit=50):
         return {"violations": [], "total": 0, "note": "No violations recorded."}
 
     try:
-        violations = json.loads(violations_path.read_text())
+        violations = json.loads(violations_path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError:
         return {"error": "Violations file corrupted."}
 

@@ -112,7 +112,7 @@ To resume an interrupted run, use `/digital-marketing-pro:resume` — it reloads
 **Steps:**
 
 1. Validate that the brand profile exists at `~/.claude-marketing/brands/{brand-slug}/profile.json`. If not, instruct the user to run `/digital-marketing-pro:brand-setup` first.
-2. Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/engagement-state.py init --brand {brand-slug} --id {engagement-id}`.
+2. Run `python "${CLAUDE_PLUGIN_ROOT}/scripts/engagement-state.py" init --brand {brand-slug} --id {engagement-id}`.
 3. Confirm the directory tree was created and report the next required action (Part 1 intake).
 4. Walk the user through Part 1 Stone vs Opinion intake by asking the questions one batch at a time.
 
@@ -132,7 +132,7 @@ For each Stone fact, capture:
 
 Save each via:
 ```
-python ${CLAUDE_PLUGIN_ROOT}/scripts/engagement-state.py add-stone-fact --brand {slug} --id {id} --fact-json '{"category":"...","fact":"...","source":"..."}'
+python "${CLAUDE_PLUGIN_ROOT}/scripts/engagement-state.py" add-stone-fact --brand {slug} --id {id} --fact-json '{"category":"...","fact":"...","source":"..."}'
 ```
 
 **Opinion — what the client believes:**
@@ -151,7 +151,7 @@ For each Opinion, capture:
 
 Save each via:
 ```
-python ${CLAUDE_PLUGIN_ROOT}/scripts/engagement-state.py add-opinion --brand {slug} --id {id} --hypothesis-json '{"category":"...","hypothesis":"...","client_evidence":"...","research_question":"..."}'
+python "${CLAUDE_PLUGIN_ROOT}/scripts/engagement-state.py" add-opinion --brand {slug} --id {id} --hypothesis-json '{"category":"...","hypothesis":"...","client_evidence":"...","research_question":"..."}'
 ```
 
 **On completion of Part 1:** mark Part 1 as completed via `mark-part-completed --part 1`, advise the user to proceed to Part 2 (External Research).

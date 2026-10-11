@@ -134,7 +134,7 @@ def resolve_brand(slug: str | None) -> str:
         sys.exit(1)
 
     try:
-        data = json.loads(active_path.read_text(encoding="utf-8"))
+        data = json.loads(active_path.read_text(encoding="utf-8-sig"))
         active_slug = data.get("slug") or data.get("brand") or data.get("active")
         if not active_slug:
             print(json.dumps({
@@ -166,7 +166,7 @@ def load_config(slug: str) -> dict:
     path = _config_path(slug)
     if path.exists():
         try:
-            return json.loads(path.read_text(encoding="utf-8"))
+            return json.loads(path.read_text(encoding="utf-8-sig"))
         except json.JSONDecodeError:
             # Corrupted file — recreate with defaults
             pass

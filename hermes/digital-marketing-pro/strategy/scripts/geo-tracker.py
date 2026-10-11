@@ -75,7 +75,7 @@ def _load_json(path):
     if not path.exists():
         return []
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
         return data if isinstance(data, list) else [data]
     except (json.JSONDecodeError, OSError):
         return []
@@ -86,7 +86,7 @@ def _load_json_obj(path):
     if not path.exists():
         return {}
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError, OSError):
         return {}
 

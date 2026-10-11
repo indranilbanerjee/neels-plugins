@@ -65,7 +65,7 @@ def _load_json(path, default=None):
     if not path.exists():
         return default
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError, OSError):
         return default
 
@@ -86,7 +86,7 @@ def _rebuild_memory_index(memory_dir):
         return rebuilt
     for fp in sorted(stored_dir.glob("*.json")):
         try:
-            e = json.loads(fp.read_text(encoding="utf-8"))
+            e = json.loads(fp.read_text(encoding="utf-8-sig"))
         except (json.JSONDecodeError, OSError):
             continue
         rebuilt.append({
@@ -107,7 +107,7 @@ def _load_memory_index(memory_dir):
     if not index_path.exists():
         return _rebuild_memory_index(memory_dir)
     try:
-        return json.loads(index_path.read_text(encoding="utf-8"))
+        return json.loads(index_path.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError, OSError):
         return _rebuild_memory_index(memory_dir)
 

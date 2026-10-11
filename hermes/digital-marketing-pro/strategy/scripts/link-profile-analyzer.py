@@ -487,7 +487,7 @@ def main():
             print()
             sys.exit(0)
         try:
-            content = path.read_text(encoding="utf-8")
+            content = path.read_text(encoding="utf-8-sig")
             links_raw = json.loads(content)
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid JSON in file: {exc}"}, sys.stdout, indent=2)

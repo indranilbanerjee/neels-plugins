@@ -61,7 +61,7 @@ def resolve_brand(slug):
 
     if ACTIVE_BRAND_FILE.exists():
         try:
-            active = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8"))
+            active = json.loads(ACTIVE_BRAND_FILE.read_text(encoding="utf-8-sig"))
             return active.get("active_slug")
         except (json.JSONDecodeError, OSError):
             pass
@@ -101,7 +101,7 @@ def load_evals(quality_dir, days=None, content_type=None):
     evals = []
     for fp in sorted(evals_dir.glob("eval-*.json")):
         try:
-            data = json.loads(fp.read_text(encoding="utf-8"))
+            data = json.loads(fp.read_text(encoding="utf-8-sig"))
         except (json.JSONDecodeError, OSError):
             continue
 
@@ -123,7 +123,7 @@ def load_summary(quality_dir):
     summary_path = quality_dir / "_summary.json"
     if summary_path.exists():
         try:
-            return json.loads(summary_path.read_text(encoding="utf-8"))
+            return json.loads(summary_path.read_text(encoding="utf-8-sig"))
         except (json.JSONDecodeError, OSError):
             pass
     return {}
@@ -132,7 +132,7 @@ def load_summary(quality_dir):
 def save_summary(quality_dir, summary):
     """Write the rolling summary file."""
     summary_path = quality_dir / "_summary.json"
-    summary_path.write_text(json.dumps(summary, indent=2))
+    summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
 
 # ---------------------------------------------------------------------------
@@ -169,7 +169,7 @@ def action_log_eval(slug, data):
     # Save individual eval file
     evals_dir = quality_dir / "evals"
     filepath = evals_dir / f"{eval_id}.json"
-    filepath.write_text(json.dumps(record, indent=2))
+    filepath.write_text(json.dumps(record, indent=2), encoding="utf-8")
 
     # Update running summary
     summary = load_summary(quality_dir)

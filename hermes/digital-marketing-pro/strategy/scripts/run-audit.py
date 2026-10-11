@@ -59,7 +59,7 @@ REQUIRED = ["00-input.md", "01-research.md", "02-outline.md", "03-draft-v1.md",
 
 
 def _read(p: pathlib.Path) -> str:
-    with open(p, "r", encoding="utf-8", newline="") as fh:
+    with open(p, "r", encoding="utf-8-sig", newline="") as fh:
         return fh.read()
 
 

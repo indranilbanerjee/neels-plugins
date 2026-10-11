@@ -57,7 +57,7 @@ def _load_journey(brand_dir, journey_id):
     if not fp.exists():
         return None, f"Journey '{journey_id}' not found."
     try:
-        return json.loads(fp.read_text(encoding="utf-8")), None
+        return json.loads(fp.read_text(encoding="utf-8-sig")), None
     except json.JSONDecodeError:
         return None, f"Journey file corrupted: {journey_id}"
 
@@ -279,7 +279,7 @@ def list_journeys(slug):
     journeys = []
     for fp in sorted(jdir.glob("*.json")):
         try:
-            j = json.loads(fp.read_text(encoding="utf-8"))
+            j = json.loads(fp.read_text(encoding="utf-8-sig"))
             journeys.append({
                 "journey_id": j.get("journey_id", fp.stem),
                 "name": j.get("name", "Untitled"),

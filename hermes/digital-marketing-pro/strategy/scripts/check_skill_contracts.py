@@ -53,7 +53,7 @@ def extract_script_spec(path: Path) -> dict | None:
     """Return {flags, subcommands, actions, uses_argparse} for a script, or
     None if the script does not use argparse."""
     try:
-        src = path.read_text(encoding="utf-8")
+        src = path.read_text(encoding="utf-8-sig")
     except (OSError, UnicodeDecodeError):
         return None
     if "argparse" not in src and "add_argument" not in src:
@@ -178,7 +178,7 @@ def lint(specs: dict[str, dict], only_script: str | None = None) -> list[dict]:
         if not base.exists():
             continue
         for md in sorted(base.rglob("*.md")):
-            text = md.read_text(encoding="utf-8")
+            text = md.read_text(encoding="utf-8-sig")
             rel = md.relative_to(PLUGIN_ROOT).as_posix()
             for snippet in _iter_command_snippets(text):
                 for m in _INVOKE_RE.finditer(snippet):

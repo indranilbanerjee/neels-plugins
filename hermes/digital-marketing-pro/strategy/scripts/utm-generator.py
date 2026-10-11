@@ -139,7 +139,7 @@ def process_csv(filepath, with_qr=False):
         return {"error": f"File not found: {filepath}"}
     results = []
     try:
-        with open(path, newline="", encoding="utf-8") as f:
+        with open(path, newline="", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             for i, row in enumerate(reader):
                 r = build_utm_url(
