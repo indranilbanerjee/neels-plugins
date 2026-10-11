@@ -5,6 +5,11 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.56.6] - 2026-10-12
+
+- The fresh-install smoke test's recheck. All three plugins: a command a script prints pastes and runs in Git Bash (Claude Code's Bash tool on Windows) and PowerShell alike, from any folder: forward slashes, the script path always quoted, and a trailing comment telling PowerShell users to add `&` when the interpreter path has a space. A script that reports an error no longer exits 0: Digital Marketing Pro 3.35.7 fixes 15 scripts (utm-generator: 0 all built, 1 none, 3 partial; argument errors exit 2) and SocialForge 1.29.6 four (render_carousel without Playwright, edit_image, adapt_copy, credential setup). ContentForge 4.5.6: the script-location guard covers every instruction file by default (utils/loop-tracker.md had a relative path), and text-metrics no longer echoes a byte-order mark.
+- Suite total 2,092 (CF 786 + DMP 694 + SF 555 + marketplace 57).
+
 ## [3.56.5] - 2026-10-12
 
 - The fresh-install smoke test's final pass. All three plugins: a file a person or an agent writes is read whether or not it starts with a byte-order mark (PowerShell 5.1's default output, Notepad and Excel's "CSV UTF-8" all write one). Digital Marketing Pro 3.35.6: utm-generator silently reported every URL in such a CSV as missing; a PowerShell-written batch plan could not be approved (the hash is the same either way). ContentForge 4.5.5: audit-ledger could not read such a file, and the authorship check flagged the author's own first sentence as rewritten and blocked the run. SocialForge 1.29.5: generate-all's quote plan from PowerShell was refused. Every command a script prints is now absolute (the interpreter that is running and the script's full path), the script-invocation guards discover files at any depth, and DMP's quotes every `${CLAUDE_PLUGIN_ROOT}` path.

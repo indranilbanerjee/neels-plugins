@@ -476,7 +476,7 @@ def main():
             sys.stdout, indent=2,
         )
         print()
-        sys.exit(0)
+        sys.exit(2)
 
     # Load links
     links_raw = None
@@ -485,35 +485,35 @@ def main():
         if not path.exists():
             json.dump({"error": f"File not found: {args.file}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(1)
         try:
             content = path.read_text(encoding="utf-8-sig")
             links_raw = json.loads(content)
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid JSON in file: {exc}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(1)
         except Exception as exc:
             json.dump({"error": f"Could not read file: {exc}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(1)
     else:
         try:
             links_raw = json.loads(args.links)
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid JSON in --links: {exc}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(2)
 
     if not isinstance(links_raw, list):
         json.dump({"error": "Links data must be a JSON array"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(1)
 
     if len(links_raw) == 0:
         json.dump({"error": "Links array is empty"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(1)
 
     try:
         result = analyze_profile(links_raw, args.brand_domain)
@@ -521,6 +521,7 @@ def main():
     except Exception as exc:
         json.dump({"error": f"Analysis failed: {exc}"}, sys.stdout, indent=2)
         print()
+        sys.exit(1)
 
 
 if __name__ == "__main__":

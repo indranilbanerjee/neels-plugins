@@ -6,6 +6,30 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 
 ---
 
+## [3.35.7] - 2026-10-12
+
+### Errors exit non-zero everywhere, and printed commands paste into Git Bash
+
+From the fresh-install smoke test's recheck of 3.35.6 (BOM inputs, discovery, the approval gate and printed hints from PowerShell all passed). Each fix has a test that fails on the 3.35.6 code.
+
+**Fixed — printed commands failed in Git Bash**
+
+- `_common.script_command()` and `_common.install_command()` printed Windows paths with backslashes, which Git Bash (Claude Code's Bash tool on Windows) strips: `C:\Python313\python.exe` became `C:Python313python.exe: command not found`, exit 127. Commands now use forward slashes, which both Git Bash and PowerShell accept. The script path is always double-quoted. The interpreter is quoted only when its path has a space, because PowerShell reads a quoted first token as a string and needs `& "..."`, which bash does not have; that case ends with a comment both shells ignore, `# in PowerShell, put & before it`. The missing-package messages (including embed-c2pa's) and the copy in `_connector_registry.py` follow the same rule.
+
+**Fixed — scripts that reported an error and exited 0**
+
+- The class connector-executor fixed in 3.35.4, found in 15 more scripts. A caller chaining on `$?` read each of these as success:
+  - `utm-generator.py`: a missing CSV was reported nested under `results`, and a CSV whose every row failed (the 3.35.5 BOM case) exited 0. A file problem is now a top-level error. The exit status, given in `--help`, is 0 when every URL was built, 1 when nothing was built and 3 when some rows failed (a partial batch; `summary` counts both).
+  - `tech-seo-auditor.py`, `local-seo-checker.py`, `ad-budget-pacer.py`, `link-profile-analyzer.py` and `review-response-drafter.py` printed an error and then called `sys.exit(0)` (34 places).
+  - `budget-optimizer.py`, `roi-calculator.py`, `clv-calculator.py` and `content-repurposer.py` printed an error and returned. ad-budget-pacer, link-profile-analyzer and review-response-drafter fell through the same way after "…failed".
+  - `connector-status.py`, `drive-sync-state.py`, `brand-voice-scorer.py`, `content-scorer.py` and `output-validator.py` printed an error result (an unknown connector, a missing `--brand`, empty text, empty content) with no check. claim-verifier, hallucination-detector, plugin-metadata and eval-config-manager get the same check for error results the CLI cannot currently reach.
+- A bad argument now exits 2, as argparse does, and a failure such as a missing file or empty input exits 1. The missing-package fallbacks keep exit 0 with `"fallback": true`, as CONTRIBUTING.md documents.
+
+**Tests**
+
+- New `tests/test_exit_status.py` (14). Exact command shapes for an interpreter with and without a space. The printed command run through Git Bash from another folder; the PowerShell note parsed by `bash -n`. A failing input for each fixed script with its exit code. utm-generator's 0 / 1 / 3. The fallback that keeps 0. A light check over every `main()` that a printed error dict is followed by a non-zero exit, with a plant. The 3.35.6 scripts fail every behavioural case. CONTRIBUTING.md gains convention 8 (exit status).
+- Suite: 694 tests.
+
 ## [3.35.6] - 2026-10-12
 
 ### Quoted script paths, BOM-safe inputs, hints that run from any folder

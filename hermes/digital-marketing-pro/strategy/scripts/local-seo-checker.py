@@ -514,7 +514,7 @@ def main():
     if not args.nap and not args.gbp:
         json.dump({"error": "Provide --nap (with --citations or --file) and/or --gbp for analysis"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(2)
 
     nap_result = None
     gbp_result = None
@@ -526,7 +526,7 @@ def main():
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid JSON in --nap: {exc}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(2)
 
         citations = []
         if args.citations:
@@ -535,13 +535,13 @@ def main():
             except json.JSONDecodeError as exc:
                 json.dump({"error": f"Invalid JSON in --citations: {exc}"}, sys.stdout, indent=2)
                 print()
-                sys.exit(0)
+                sys.exit(2)
         if args.file:
             path = Path(args.file)
             if not path.exists():
                 json.dump({"error": f"File not found: {args.file}"}, sys.stdout, indent=2)
                 print()
-                sys.exit(0)
+                sys.exit(1)
             try:
                 file_data = json.loads(path.read_text(encoding="utf-8-sig"))
                 if isinstance(file_data, list):
@@ -549,25 +549,25 @@ def main():
                 else:
                     json.dump({"error": "Citations file must contain a JSON array"}, sys.stdout, indent=2)
                     print()
-                    sys.exit(0)
+                    sys.exit(1)
             except json.JSONDecodeError as exc:
                 json.dump({"error": f"Invalid JSON in file: {exc}"}, sys.stdout, indent=2)
                 print()
-                sys.exit(0)
+                sys.exit(1)
             except Exception as exc:
                 json.dump({"error": f"Could not read file: {exc}"}, sys.stdout, indent=2)
                 print()
-                sys.exit(0)
+                sys.exit(1)
 
         if not citations:
             json.dump({"error": "NAP analysis requires --citations or --file with citation data"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(2)
 
         if not isinstance(citations, list):
             json.dump({"error": "--citations must be a JSON array"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(2)
 
         nap_result = analyze_nap(canonical, citations)
 
@@ -578,7 +578,7 @@ def main():
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid JSON in --gbp: {exc}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(2)
 
         gbp_result = analyze_gbp(gbp_data, industry=args.industry)
 

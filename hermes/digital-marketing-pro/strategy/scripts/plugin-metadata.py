@@ -329,7 +329,7 @@ def main() -> int:
     else:
         print(json.dumps(data, indent=2, ensure_ascii=False))
 
-    return 0
+    return 1 if isinstance(data, dict) and "error" in data else 0
 
 
 if __name__ == "__main__":

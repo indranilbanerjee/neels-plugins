@@ -409,8 +409,7 @@ def main() -> None:
     # --- get-config ---
     if args.action == "get-config":
         result = action_get_config(slug)
-        print(json.dumps(result, indent=2))
-        return
+        _common.finish(result)  # exit 1 on an error result
 
     # --- set-threshold ---
     if args.action == "set-threshold":
@@ -424,8 +423,7 @@ def main() -> None:
         if "error" in result:
             print(json.dumps(result, indent=2))
             sys.exit(1)
-        print(json.dumps(result, indent=2))
-        return
+        _common.finish(result)  # exit 1 on an error result
 
     # --- set-weights ---
     if args.action == "set-weights":
@@ -436,8 +434,7 @@ def main() -> None:
         if "error" in result:
             print(json.dumps(result, indent=2))
             sys.exit(1)
-        print(json.dumps(result, indent=2))
-        return
+        _common.finish(result)  # exit 1 on an error result
 
     # --- set-auto-reject ---
     if args.action == "set-auto-reject":
@@ -448,14 +445,12 @@ def main() -> None:
         if "error" in result:
             print(json.dumps(result, indent=2))
             sys.exit(1)
-        print(json.dumps(result, indent=2))
-        return
+        _common.finish(result)  # exit 1 on an error result
 
     # --- reset ---
     if args.action == "reset":
         result = action_reset(slug)
-        print(json.dumps(result, indent=2))
-        return
+        _common.finish(result)  # exit 1 on an error result
 
 
 if __name__ == "__main__":

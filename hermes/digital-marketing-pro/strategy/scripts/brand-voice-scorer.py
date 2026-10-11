@@ -530,7 +530,7 @@ def main() -> None:
 
     # Score
     result = score_content(text, profile)
-    print(json.dumps(result, indent=2))
+    _common.finish(result)  # exit 1 on an error result (empty text)
 
 
 if __name__ == "__main__":

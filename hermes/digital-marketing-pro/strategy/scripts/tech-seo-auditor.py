@@ -528,29 +528,29 @@ def main():
             else:
                 json.dump({"error": "--urls must be a JSON array of strings"}, sys.stdout, indent=2)
                 print()
-                sys.exit(0)
+                sys.exit(2)
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid JSON in --urls: {exc}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(2)
     if args.file:
         path = Path(args.file)
         if not path.exists():
             json.dump({"error": f"File not found: {args.file}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(1)
         try:
             lines = path.read_text(encoding="utf-8-sig").splitlines()
             urls.extend([line.strip() for line in lines if line.strip() and not line.strip().startswith("#")])
         except Exception as exc:
             json.dump({"error": f"Could not read file: {exc}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(1)
 
     if not urls:
         json.dump({"error": "Provide at least one URL via --url, --urls, or --file"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(2)
 
     # --- Resolve checks ---
     if args.checks.strip().lower() == "all":
@@ -561,7 +561,7 @@ def main():
         if invalid:
             json.dump({"error": f"Unknown checks: {', '.join(sorted(invalid))}. Valid: {', '.join(sorted(ALL_CHECKS))}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(2)
 
     # --- Run audits ---
     results = []

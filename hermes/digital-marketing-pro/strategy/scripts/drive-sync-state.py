@@ -369,7 +369,7 @@ def main():
     else:
         result = {"error": f"unknown action: {args.action}"}
 
-    print(json.dumps(result, indent=2))
+    _common.finish(result)  # exit 1 on an error result
 
 
 if __name__ == "__main__":

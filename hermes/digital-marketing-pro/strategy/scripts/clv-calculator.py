@@ -369,17 +369,17 @@ def main():
     if args.margin <= 0 or args.margin > 100:
         json.dump({"error": "margin must be between 0 (exclusive) and 100 (inclusive)"}, sys.stdout, indent=2)
         print()
-        return
+        sys.exit(2)
 
     if args.discount_rate < 0:
         json.dump({"error": "discount-rate must be non-negative"}, sys.stdout, indent=2)
         print()
-        return
+        sys.exit(2)
 
     if args.cac is not None and args.cac < 0:
         json.dump({"error": "cac must be non-negative"}, sys.stdout, indent=2)
         print()
-        return
+        sys.exit(2)
 
     # --- Run selected model ---
     if args.model == "simple":

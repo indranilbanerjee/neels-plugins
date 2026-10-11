@@ -928,7 +928,7 @@ def main() -> None:
 
     # Score
     result = score_content(text, args.content_type, args.keyword)
-    print(json.dumps(result, indent=2))
+    _common.finish(result)  # exit 1 on an error result (empty text, unknown type)
 
 
 if __name__ == "__main__":

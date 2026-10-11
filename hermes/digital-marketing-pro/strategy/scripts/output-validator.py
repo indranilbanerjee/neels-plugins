@@ -625,7 +625,7 @@ def main() -> None:
         text = _resolve_text(args)
         result = check_format_only(text)
         print(json.dumps(result, indent=2))
-        return
+        sys.exit(1 if isinstance(result, dict) and "error" in result else 0)
 
     # --- validate ---
     if args.action == "validate":
@@ -636,7 +636,7 @@ def main() -> None:
         schema, schema_name = _resolve_schema(args)
         result = validate_content(text, schema, schema_name)
         print(json.dumps(result, indent=2))
-        return
+        sys.exit(1 if isinstance(result, dict) and "error" in result else 0)
 
 
 if __name__ == "__main__":

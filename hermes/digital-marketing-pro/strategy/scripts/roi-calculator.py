@@ -284,12 +284,12 @@ def main():
     if err:
         json.dump({"error": err}, sys.stdout, indent=2)
         print()
-        return
+        sys.exit(1 if str(err).startswith(("File not found", "Failed to read")) else 2)
 
     if args.ltv is not None and args.ltv <= 0:
         json.dump({"error": "LTV must be a positive number"}, sys.stdout, indent=2)
         print()
-        return
+        sys.exit(2)
 
     # --- Compute per-channel metrics ---
     total_revenue = sum(ch["revenue"] for ch in channels)

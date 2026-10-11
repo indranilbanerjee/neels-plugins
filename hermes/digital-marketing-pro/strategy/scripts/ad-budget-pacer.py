@@ -304,32 +304,32 @@ def main():
     if args.budget <= 0:
         json.dump({"error": "Budget must be a positive number"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(2)
 
     if args.period_days <= 0:
         json.dump({"error": "Period days must be a positive integer"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(2)
 
     if args.days_elapsed < 0:
         json.dump({"error": "Days elapsed cannot be negative"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(2)
 
     if args.days_elapsed > args.period_days:
         json.dump({"error": "Days elapsed cannot exceed period days"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(2)
 
     if args.days_elapsed == 0:
         json.dump({"error": "Days elapsed must be at least 1 for pacing analysis"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(2)
 
     if args.spend_to_date < 0:
         json.dump({"error": "Spend to date cannot be negative"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(2)
 
     # Parse optional daily spend
     daily_spend = None
@@ -339,12 +339,12 @@ def main():
             if not isinstance(daily_spend, list):
                 json.dump({"error": "daily-spend must be a JSON array of numbers"}, sys.stdout, indent=2)
                 print()
-                sys.exit(0)
+                sys.exit(2)
             daily_spend = [float(v) for v in daily_spend]
         except (json.JSONDecodeError, ValueError) as exc:
             json.dump({"error": f"Invalid daily-spend JSON: {exc}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(2)
 
     # Parse optional channels
     channels_data = None
@@ -354,11 +354,11 @@ def main():
             if not isinstance(channels_data, list):
                 json.dump({"error": "channels must be a JSON array"}, sys.stdout, indent=2)
                 print()
-                sys.exit(0)
+                sys.exit(2)
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid channels JSON: {exc}"}, sys.stdout, indent=2)
             print()
-            sys.exit(0)
+            sys.exit(2)
 
     # --- Core calculations ---
     try:
@@ -396,6 +396,7 @@ def main():
     except Exception as exc:
         json.dump({"error": f"Pacing calculation failed: {exc}"}, sys.stdout, indent=2)
         print()
+        sys.exit(1)
 
 
 if __name__ == "__main__":

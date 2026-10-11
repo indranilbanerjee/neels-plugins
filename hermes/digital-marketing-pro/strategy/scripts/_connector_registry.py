@@ -548,4 +548,9 @@ if __name__ == "__main__":
         configured, evidence = is_connector_configured("slack")
         print(f"\nSlack probe: configured={configured}, evidence={evidence}")
         sys.exit(0)
-    print(f'Usage: {sys.executable or "python"} "{Path(__file__).resolve()}" self-test')
+    # Same shape as _common.script_command (this module does not import _common): forward
+    # slashes for Git Bash, the script path quoted, the interpreter quoted only with a space.
+    exe = (sys.executable or "python").replace("\\", "/")
+    exe = f'"{exe}"' if " " in exe else exe
+    note = "  # in PowerShell, put & before it" if exe.startswith('"') else ""
+    print(f'Usage: {exe} "{Path(__file__).resolve().as_posix()}" self-test{note}')

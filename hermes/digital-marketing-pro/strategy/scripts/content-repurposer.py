@@ -565,11 +565,11 @@ def main():
             if not isinstance(key_points, list):
                 json.dump({"error": "key-points must be a JSON array of strings"}, sys.stdout, indent=2)
                 print()
-                return
+                sys.exit(2)
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid JSON in --key-points: {exc}"}, sys.stdout, indent=2)
             print()
-            return
+            sys.exit(2)
 
     platforms = None
     if args.platforms:
@@ -578,17 +578,17 @@ def main():
             if not isinstance(platforms, list):
                 json.dump({"error": "platforms must be a JSON array of strings"}, sys.stdout, indent=2)
                 print()
-                return
+                sys.exit(2)
         except json.JSONDecodeError as exc:
             json.dump({"error": f"Invalid JSON in --platforms: {exc}"}, sys.stdout, indent=2)
             print()
-            return
+            sys.exit(2)
 
     # --- Validate title ---
     if not args.title.strip():
         json.dump({"error": "Title cannot be empty"}, sys.stdout, indent=2)
         print()
-        return
+        sys.exit(2)
 
     # --- Generate plan ---
     output = generate_plan(args.content_type, args.title.strip(), key_points, platforms, args.brand)

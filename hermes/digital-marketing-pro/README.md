@@ -1,7 +1,7 @@
 # Digital Marketing Pro for Hermes Agent: three toolkits, one listing
 
 This is the folder Hermes installs from the [neels-plugins marketplace](https://github.com/indranilbanerjee/neels-plugins) as
-`digital-marketing-pro` (version 3.56.5). Hermes allows one plugin per vendor, so the Hermes
+`digital-marketing-pro` (version 3.56.6). Hermes allows one plugin per vendor, so the Hermes
 listing holds three of our marketing plugins as skill groups. **207 skills in all.** It is
 generated, never hand-edited: `scripts/build_hermes_bundle.py` in the marketplace repo copies each
 plugin's runtime files from its release commit and records the commit and a sha256 per file in
@@ -9,9 +9,9 @@ plugin's runtime files from its release commit and records the commit and a sha2
 
 | Folder | Plugin | Version | Commit | Skills | What it covers |
 |---|---|---|---|---|---|
-| `strategy/` | [digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro) | 3.35.6 | `15061bb4f50e` | 164 | marketing strategy, SEO/AEO/GEO, paid media, CRM and analytics |
-| `content/` | [contentforge](https://github.com/indranilbanerjee/contentforge) | 4.5.5 | `c480f269f94f` | 22 | long-form content: research, fact-check, draft, humanize, audit |
-| `social/` | [socialforge](https://github.com/indranilbanerjee/socialforge) | 1.29.5 | `ca57750ad08c` | 21 | social creative: calendar to images, carousels, video and copy |
+| `strategy/` | [digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro) | 3.35.7 | `cfb06dae144d` | 164 | marketing strategy, SEO/AEO/GEO, paid media, CRM and analytics |
+| `content/` | [contentforge](https://github.com/indranilbanerjee/contentforge) | 4.5.6 | `2d1ebdae024a` | 22 | long-form content: research, fact-check, draft, humanize, audit |
+| `social/` | [socialforge](https://github.com/indranilbanerjee/socialforge) | 1.29.6 | `dec2e7b97c73` | 21 | social creative: calendar to images, carousels, video and copy |
 
 On every other platform (Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, OpenClaw,
 Grok) the three plugins are separate products installed from their own repos, which stay

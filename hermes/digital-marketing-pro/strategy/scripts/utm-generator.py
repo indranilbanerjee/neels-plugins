@@ -158,8 +158,14 @@ def process_csv(filepath, with_qr=False):
     return results
 
 
+EXIT_STATUS = ("Exit status: 0 every URL was built; 1 nothing was built (the CSV is missing, unreadable or has "
+               "no rows, or every row, or the single URL, is invalid); 3 some rows were built and some failed "
+               "(each failed row carries its own error, and summary counts both).")
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Batch UTM parameter generation with GA4 validation")
+    parser = argparse.ArgumentParser(description="Batch UTM parameter generation with GA4 validation",
+                                     epilog=EXIT_STATUS)
     parser.add_argument("--base-url", help="Base URL to tag")
     parser.add_argument("--campaign", default="", help="Campaign name")
     parser.add_argument("--source", default="", help="Traffic source")
@@ -174,7 +180,20 @@ def main():
         parser.error("Provide --base-url or --csv")
 
     if args.csv_file:
-        output = {"mode": "batch", "results": process_csv(args.csv_file, with_qr=args.qr)}
+        rows = process_csv(args.csv_file, with_qr=args.qr)
+        if isinstance(rows, dict):  # the file itself failed: missing or unreadable
+            output, code = {"mode": "batch", "error": rows["error"], "results": []}, 1
+        else:
+            failed = sum(1 for r in rows if "error" in r)
+            output = {"mode": "batch", "summary": {"rows": len(rows), "built": len(rows) - failed, "failed": failed},
+                      "results": rows}
+            if not rows:
+                output["error"], code = "the CSV has no data rows", 1
+            elif failed == len(rows):
+                # Before 3.35.7 this exited 0: a CSV whose header was misread made every row fail silently.
+                output["error"], code = f"every row failed ({failed} of {len(rows)}); see each row's error", 1
+            else:
+                code = 3 if failed else 0
     else:
         result = build_utm_url(
             base_url=args.base_url,
@@ -186,9 +205,11 @@ def main():
             with_qr=args.qr,
         )
         output = {"mode": "single", "result": result}
+        code = 1 if "error" in result else 0
 
     json.dump(output, sys.stdout, indent=2)
     print()
+    sys.exit(code)
 
 
 if __name__ == "__main__":

@@ -447,7 +447,7 @@ def main():
     if not args.review.strip():
         json.dump({"error": "Review text cannot be empty"}, sys.stdout, indent=2)
         print()
-        sys.exit(0)
+        sys.exit(1)
 
     platform = args.platform.lower().strip() if args.platform else None
 
@@ -464,6 +464,7 @@ def main():
     except Exception as exc:
         json.dump({"error": f"Analysis failed: {exc}"}, sys.stdout, indent=2)
         print()
+        sys.exit(1)
 
 
 if __name__ == "__main__":

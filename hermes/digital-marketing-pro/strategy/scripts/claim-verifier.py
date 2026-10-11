@@ -483,6 +483,7 @@ def main():
         result = {"error": f"Unknown action: {args.action}"}
 
     print(json.dumps(result, indent=2))
+    sys.exit(1 if isinstance(result, dict) and "error" in result else 0)  # $? must say it failed
 
 
 if __name__ == "__main__":

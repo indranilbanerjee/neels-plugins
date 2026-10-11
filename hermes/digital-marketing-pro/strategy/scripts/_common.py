@@ -286,24 +286,37 @@ def pinned_specs(packages) -> list:
     return out
 
 
+POWERSHELL_NOTE = "  # in PowerShell, put & before it"
+
+
+def _shell_command(rest: str) -> str:
+    """`<interpreter> <rest>` that pastes into Git Bash and PowerShell alike.
+
+    Forward slashes: Git Bash (Claude Code's Bash tool on Windows) strips backslashes, so
+    `C:\\Python313\\python.exe` became `C:Python313python.exe` and exit 127. The interpreter
+    is quoted only when it holds a space, because PowerShell reads a quoted first token as a
+    string and needs `& "..."`, which bash does not have; that case carries a trailing
+    comment, which both shells ignore, telling PowerShell users to add the `&`."""
+    exe = sys.executable or "python"
+    exe = exe.replace("\\", "/")
+    if " " in exe:
+        return f'"{exe}" {rest}{POWERSHELL_NOTE}'
+    return f"{exe} {rest}"
+
+
 def install_command(packages) -> str:
     """The exact, pinned command a user would run to install `packages` into the
     interpreter running this script."""
-    exe = sys.executable or "python"
-    if " " in exe:
-        exe = f'"{exe}"'
-    return f"{exe} -m pip install {' '.join(pinned_specs(packages))}"
+    return _shell_command(f"-m pip install {' '.join(pinned_specs(packages))}")
 
 
 def script_command(script: str, args: str = "") -> str:
     """A command line that runs one of this plugin's scripts from any folder: the running
-    interpreter and the script's absolute, quoted path. Printed hints use it instead of
-    `python scripts/x.py`, which works only when the shell sits in the plugin's folder."""
-    exe = sys.executable or "python"
-    if " " in exe:
-        exe = f'"{exe}"'
-    path = Path(__file__).resolve().parent / script
-    return f'{exe} "{path}"' + (f" {args}" if args else "")
+    interpreter and the script's absolute path, always double-quoted, with forward slashes.
+    Printed hints use it instead of `python scripts/x.py`, which works only when the shell
+    sits in the plugin's folder."""
+    path = (Path(__file__).resolve().parent / script).as_posix()
+    return _shell_command(f'"{path}"' + (f" {args}" if args else ""))
 
 
 # ── Approval records (payload-bound, single-use, windowed) ──────────

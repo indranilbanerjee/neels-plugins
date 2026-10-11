@@ -363,7 +363,7 @@ def main():
     if args.no_secrets:
         result = _redact_secrets(result)
 
-    print(json.dumps(result, indent=2))
+    _common.finish(result)  # exit 1 on an error result
 
 
 if __name__ == "__main__":

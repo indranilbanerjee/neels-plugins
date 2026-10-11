@@ -292,22 +292,22 @@ def main():
     if err:
         json.dump({"error": err}, sys.stdout, indent=2)
         print()
-        return
+        sys.exit(1 if str(err).startswith(("File not found", "Failed to read")) else 2)
 
     if args.total_budget <= 0:
         json.dump({"error": "total-budget must be a positive number"}, sys.stdout, indent=2)
         print()
-        return
+        sys.exit(2)
 
     if args.min_spend < 0:
         json.dump({"error": "min-spend must be non-negative"}, sys.stdout, indent=2)
         print()
-        return
+        sys.exit(2)
 
     if not (0 <= args.test_budget_pct < 100):
         json.dump({"error": "test-budget-pct must be between 0 and 99"}, sys.stdout, indent=2)
         print()
-        return
+        sys.exit(2)
 
     # --- Optimise ---
     allocation, test_budget = optimise(
