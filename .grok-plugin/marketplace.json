@@ -4,7 +4,7 @@
     "name": "Indranil Banerjee",
     "url": "https://github.com/indranilbanerjee"
   },
-  "description": "Marketplace for the Neelverse marketing suite — Digital Marketing Pro, ContentForge, SocialForge",
+  "description": "Marketplace for the Neelverse plugin suite: Digital Marketing Pro, ContentForge, SocialForge and CutForge",
   "plugins": [
     {
       "name": "digital-marketing-pro",
@@ -38,6 +38,17 @@
         "url": "https://github.com/indranilbanerjee/socialforge.git"
       },
       "homepage": "https://github.com/indranilbanerjee/socialforge"
+    },
+    {
+      "name": "cutforge",
+      "description": "Open-source video creation and editing plugin: your photos, clips and voice notes become story-led films, brand films, explainers and ads. 13 skills, 4 reviewer agents, a tested Remotion engine. Runs on Claude Code, Codex, Cursor, Antigravity.",
+      "version": "1.0.1",
+      "category": "video",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/indranilbanerjee/cutforge.git"
+      },
+      "homepage": "https://github.com/indranilbanerjee/cutforge"
     }
   ]
 }

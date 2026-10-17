@@ -1,19 +1,19 @@
 # Neel's Plugin Marketplace
 
-> **You run marketing for a single brand, an agency portfolio, or a content team — and you want the same depth across every brand, every article, every campaign, with no per-platform lock-in. You don't want to learn six different "AI marketing" SaaS UIs that all charge per-seat per-month.**
+> **You run marketing for a single brand, an agency portfolio, or a content team — and you want the same depth across every brand, every article, every campaign, every film, with no per-platform lock-in. You don't want to learn six different "AI marketing" SaaS UIs that all charge per-seat per-month.**
 
-Install three open-source plugins from one marketplace. The same skills install natively on **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
+Install four open-source plugins from one marketplace: strategy, long-form content, social and video. The same skills install natively on **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.56.7-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.57.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Plugins](https://img.shields.io/badge/plugins-3-orange.svg)](#available-plugins)
-[![Total skills](https://img.shields.io/badge/skills-207%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-2134%20across%20suite-brightgreen.svg)](#whats-new)
-[![Surfaces](https://img.shields.io/badge/all%203%20plugins-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#platform-compatibility)
+[![Plugins](https://img.shields.io/badge/plugins-4-orange.svg)](#available-plugins)
+[![Total skills](https://img.shields.io/badge/skills-220%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
+[![Total tests](https://img.shields.io/badge/tests-2188%20across%20suite-brightgreen.svg)](#whats-new)
+[![Surfaces](https://img.shields.io/badge/all%204%20plugins-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#platform-compatibility)
 
 [![Built by Indranil "Neel" Banerjee — Neelverse Marketing Suite — Sponsor this project](docs/assets/author-banner.svg)](https://github.com/sponsors/indranilbanerjee)
 
-> 🆕 **October 12, 2026 — marketplace v3.56.7:** SocialForge's credential setup never waits for input it was not asked for (1.29.7); printed commands keep their arguments (ContentForge 4.5.7); the propose-only command works from any folder (Digital Marketing Pro 3.35.8). [What's new](#whats-new) · [Changelog](CHANGELOG.md)
+> 🆕 **October 17, 2026: marketplace v3.57.0.** CutForge joins the suite: an open-source video creation and editing plugin that turns your photos, clips and voice notes into story-led films, brand films, explainers and ads (13 skills, v1.0.1). The suite is now four plugins and 220 skills. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -21,30 +21,33 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 
 ## Which plugin do I need?
 
-![Which plugin do I need: Digital Marketing Pro plans the strategy and runs campaigns, ContentForge writes publish-ready long-form, SocialForge produces a month of social; you hand a brief to ContentForge and a content calendar to SocialForge, and each plugin runs on its own](docs/assets/which-plugin.svg)
+![Which plugin do I need: Digital Marketing Pro plans the strategy and runs campaigns, ContentForge writes publish-ready long-form, SocialForge produces a month of social, CutForge turns raw footage into a finished film; you hand a brief to ContentForge, a content calendar to SocialForge and a film brief to CutForge, and each plugin runs on its own](docs/assets/which-plugin.svg)
 
 | Your job-to-be-done | Install | What's in the box |
 |---|---|---|
 | **Run end-to-end brand-strategy engagements across a portfolio** (agencies, in-house, consultants) | [`digital-marketing-pro`](https://github.com/indranilbanerjee/digital-marketing-pro) | 164 skills · 24 agents · 12-Part Strategy Flow · 6-platform AEO/GEO · agent-readiness audit · EU AI Act Article 50 · Cowork-team-persistent · multi-brand · multi-jurisdiction compliance |
 | **Produce publish-ready long-form content** (blog posts, white papers, case studies, executive briefs) | [`contentforge`](https://github.com/indranilbanerjee/contentforge) | 22 skills · 13 agents · 10 quality gates · 43-pattern AI humanizer · fact-checker · run auditor · lifecycle loop (audit→refresh→measure→plan) · real `.docx` output · C2PA signing |
 | **Produce social media assets at agency scale** (carousels, single-image posts, AI image / video creatives) | [`socialforge`](https://github.com/indranilbanerjee/socialforge) | 21 skills · 5 agents · 18 commands · research-month · asset-first compositing · AI image + video via your connected providers · delivery audit · C2PA signing |
+| **Make a film or a brand video from your own footage** (family and milestone films, tributes, brand films, explainers, ads, pharma and BFSI videos) | [`cutforge`](https://github.com/indranilbanerjee/cutforge) | 13 skills · 4 reviewer agents · a tested Remotion + ffmpeg + Python engine (48 tools) · timing derived from the measured narration · speech-to-text-verified voice · designed sound · nine QC layers · AI only where no camera was |
 
-**The three plugins are complementary, not overlapping.** A typical agency workflow uses all three: DMP for strategy + campaign planning, ContentForge for the long-form articles a campaign produces, SocialForge for the social assets a campaign produces. Each plugin is self-contained and keeps its own brand setup, so set the brand up once in each plugin you use.
+**The four plugins are complementary, not overlapping.** A typical agency workflow: DMP for strategy + campaign planning, ContentForge for the long-form articles a campaign produces, SocialForge for its month of social assets (including short AI video creatives), CutForge for the brand film, explainer or ads cut from real footage. Each plugin is self-contained and keeps its own brand setup, so set the brand up once in each plugin you use.
 
 ### What these plugins will never do
 
-- **Install software on their own.** A missing package prints the exact pinned install command for you to run.
-- **Send, publish or spend without your say-so.** Live writes wait for your typed `yes` (Digital Marketing Pro also requires a single-use approval record for that exact request), and SocialForge shows a live quote before any paid image or video generation and waits for "go".
+- **Install software on their own.** A missing package prints the exact install command for you to run.
+- **Send, publish or spend without your say-so.** Live writes wait for your typed `yes` (Digital Marketing Pro also requires a single-use approval record for that exact request), and SocialForge shows a live quote before any paid image or video generation and waits for "go". CutForge's paid voice and AI-art tools refuse to run without a `GO_AHEAD.txt` and stop at the budget cap you set.
 - **Ask for an API key in the chat.** Keys come from environment variables.
 - **Connect to anything you did not set up.** No MCP server ships enabled and no hooks run.
+- **Put AI on a real person's face.** CutForge generates only what no camera captured and refuses AI inputs that contain a face.
 - **Remove or hide AI watermarks.** AI involvement is disclosed, with C2PA provenance where the format supports it.
 - **Depend on each other.** Each plugin is self-contained and useful alone.
 
 ### What it costs
 
-- **The three plugins are free** (MIT-licensed).
+- **The four plugins are free** (MIT-licensed).
 - **Model usage (tokens).** On a subscription (Claude Pro, Max, Team or Enterprise in Claude Code or Cowork; a ChatGPT plan in Codex; a Cursor or Copilot plan; the same goes for other hosts' plans) the tokens count against your plan's usage limits instead of being billed per token; check your plan for any optional extra-usage billing. Only pay-as-you-go API-key users pay per token. Context (the skill listing, a skill's instructions; in Hermes, the 207 skill names of the combined listing) uses context window and usage allowance for everyone, and money only for API users.
-- **Services you connect with your own keys** (image and video generation, SEO and data APIs, ad, email and CRM platforms, Google Drive, Airtable) are billed by those providers, whatever plan you are on. SocialForge quotes each paid generation before it runs.
+- **Services you connect with your own keys** (image and video generation, voice and speech-to-text, SEO and data APIs, ad, email and CRM platforms, Google Drive, Airtable) are billed by those providers, whatever plan you are on. SocialForge quotes each paid generation before it runs; CutForge logs every paid call and stops at your cap.
+- **CutForge renders on your own machine** (Remotion, ffmpeg and Python), so there are no cloud render fees. Remotion itself is free for individuals and companies of up to 3 people; larger companies need a Remotion Company License for commercial work.
 
 ---
 
@@ -70,13 +73,13 @@ In Cowork: Settings → Plugins → Add Marketplace → paste `indranilbanerjee/
 /plugin install contentforge@neels-plugins
 ```
 
-(Replace `contentforge` with `digital-marketing-pro` or `socialforge` as desired.)
+(Replace `contentforge` with `digital-marketing-pro`, `socialforge` or `cutforge` as desired.)
 
-> **On a 200k context window?** Claude Code lists every installed skill in a budget of 1% of the context window. With all three plugins installed, a 200k window has room for skill names only, so Claude can't see what each skill does. Add `"skillListingBudgetFraction": 0.05` to your Claude Code `settings.json` to fix that. On a 1M window the full list already fits.
+> **On a 200k context window?** Claude Code lists every installed skill in a budget of 1% of the context window. With all four plugins installed, a 200k window has room for skill names only, so Claude can't see what each skill does. Add `"skillListingBudgetFraction": 0.05` to your Claude Code `settings.json` to fix that. On a 1M window the full list already fits.
 
 ### 4. Stay current — turn auto-update on (recommended)
 
-**Third-party marketplaces have auto-update OFF by default in Claude Code.** When we ship a new ContentForge / DM Pro / SocialForge release, you will not be notified — you will keep running whatever version you installed first.
+**Third-party marketplaces have auto-update OFF by default in Claude Code.** When we ship a new ContentForge / DM Pro / SocialForge / CutForge release, you will not be notified — you will keep running whatever version you installed first.
 
 To get future updates automatically: open `/plugin`, go to the **Marketplaces** tab, find `neels-plugins`, and toggle **Enable auto-update**. After an auto-update fires you will be prompted to run `/reload-plugins` to pick up changes mid-session (no full Claude Code restart needed; conversation context preserved).
 
@@ -93,11 +96,16 @@ To update manually instead, see the [Updating](#updating) section below.
 | 🚀 **Marketing automation builder** (n8n / Zapier / Make / Pipedream) | DMP's connector-resolver + executor pattern. 8 verified HTTP connectors execute end-to-end; 28 more (OAuth-only connectors and the official ad-platform MCP servers) return manifest-ready specs for the MCP path. |
 | 💼 **Solo consultant** / freelance marketer | One engagement produces the full document set (Four Core Documents, Growth Plan, channel strategies) as files you own and can bill against. Installs on Codex / Cursor / Copilot CLI / Antigravity for terminal-native or IDE-native workflows. |
 | 📈 **Growth team** / product marketer | Funnel architecture, attribution, MMM, incrementality testing, retention, churn — all anchored to the strategy document. |
+| 🎬 **Video team, editor or family archivist** | CutForge turns years of phone media or a brand shoot into a story-led film: verified people and dates, narration timed from the measured voice, designed sound, and one-chapter fixes instead of full re-renders. |
 | 🛡 **Compliance-led marketer** (EU · UK · India · Brazil · California) | EU AI Act Article 50, C2PA content provenance, deepfake disclosure, GDPR + CCPA + DPDPA + LGPD + 12 more jurisdictions baked into every output. |
 
 ---
 
 ## What's new
+
+### v3.57.0 (October 17, 2026): CutForge joins the suite
+
+CutForge **1.0.1** · suite **4 plugins, 220 skills, 2,188 tests**. CutForge is an open-source video creation and editing plugin, from raw footage to final cut. Thirteen skills cover the whole job (brief, archive research, story, look test, storyboard, narration, sound, AI art only where no camera was, render, QC, delivery and revisions), with four reviewer agents and a tested Remotion, ffmpeg and Python engine. It was distilled from a real 20-minute production and every mistake made in it. It installs on the same nine platforms as the rest of the suite. The marketplace tests now check every listed plugin from one list, so a new plugin cannot skip the count checks.
 
 ### v3.56.7 (October 12, 2026) — nothing waits for input it was not asked for
 
@@ -106,10 +114,6 @@ CF **4.5.7** · DMP **3.35.8** · SF **1.29.7** · suite **2,134 tests**. The sm
 ### v3.56.6 (October 12, 2026) — commands that paste anywhere, errors that say so
 
 CF **4.5.6** · DMP **3.35.7** · SF **1.29.6** · suite **2,092 tests**. The smoke test pasted every command a script prints into Git Bash and PowerShell from another folder: Git Bash dropped the backslashes. Commands now use forward slashes and run in both. It also fed scripts input that must fail: 19 printed an error and exited 0, so anything chaining on the exit code read success. They now exit non-zero (2 for a bad argument, 1 for a failure).
-
-### v3.56.5 (October 12, 2026) — files from PowerShell, Notepad and Excel
-
-CF **4.5.5** · DMP **3.35.6** · SF **1.29.5** · suite **2,060 tests**. The smoke test's final pass fed every input a person or an agent writes twice, plain and with the byte-order mark that PowerShell 5.1, Notepad and Excel's "CSV UTF-8" add. Four inputs broke, one silently: Digital Marketing Pro's UTM generator reported every URL in such a CSV as missing. All three plugins now read these files either way, ContentForge's authorship check no longer blocks a run over a draft saved in Notepad, and every command a script prints runs from any folder.
 
 Older releases are in [CHANGELOG.md](CHANGELOG.md).
 
@@ -122,8 +126,9 @@ Older releases are in [CHANGELOG.md](CHANGELOG.md).
 | **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.35.8 | End-to-end engagement methodology for agencies and in-house teams — 164 skills, 24 specialist agents, the 12-Part Strategy Flow producing the Four Core Documents, a content-engine run auditor that re-derives every "ready" claim, provenance-stamped benchmarks, 6-platform AEO/GEO audit, 16 privacy-law jurisdictions, EU AI Act Article 50 disclosure + C2PA signing, an agent-readiness audit for AI crawlers and agentic commerce. 94 stdlib Python scripts; connectors opt-in. |
 | **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 4.5.7 | Content lifecycle system — 22 skills, 13 specialist agents, a 10-phase pipeline with 10 quality gates, 43-pattern AI-detection humanizer, fact-checker subagent, run auditor, three-category internal linking, real `.docx` output with C2PA signing, and a measure-audit-plan loop that compounds per brand, under a published Quality Contract. README in 12 languages; five hero skills as claude.ai `.skill` uploads. |
 | **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.29.7 | Social creative engine — 21 skills, 18 commands, 5 agents: research and calendar in, on-brand creative out. Asset-first compositing (brand photos stay pixel-faithful), AI image + video through provider chains where nothing fails silently, 9-platform copy adaptation, human approval gates, delivery audit, C2PA signing. Prices and models looked up live, never stored. |
+| **[cutforge](https://github.com/indranilbanerjee/cutforge)** | 1.0.1 | Video creation and editing, from raw footage to final cut: 13 skills, 4 reviewer agents and a tested engine of 48 tools (Remotion, ffmpeg, Python). A one-screen brief, archive research with face groups and real-sound discovery, story design, a look test, a storyboard the client ticks once, narration verified by speech-to-text, designed sound, chunked resumable renders, nine QC layers, verified delivery and revision rounds. Family and milestone films, tributes, brand films, explainers, ads, and pharma or BFSI videos with India-first compliance. |
 
-All three install natively on **9 platforms** — Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes Agent, OpenClaw, Grok — plus 35+ Agent Skills clients. Live counts and test totals: see each repo's README.
+All four install natively on **9 platforms** — Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes Agent, OpenClaw, Grok — plus 35+ Agent Skills clients. Live counts and test totals: see each repo's README.
 
 ### Standalone skills
 
@@ -153,6 +158,7 @@ codex plugin add <plugin-name>@neels-plugins
 /add-plugin digital-marketing-pro@https://github.com/indranilbanerjee/digital-marketing-pro
 /add-plugin contentforge@https://github.com/indranilbanerjee/contentforge
 /add-plugin socialforge@https://github.com/indranilbanerjee/socialforge
+/add-plugin cutforge@https://github.com/indranilbanerjee/cutforge
 
 # GitHub Copilot CLI
 copilot plugin marketplace add indranilbanerjee/neels-plugins
@@ -166,16 +172,19 @@ grok plugin install <plugin-name>
 agy plugin install https://github.com/indranilbanerjee/digital-marketing-pro
 agy plugin install https://github.com/indranilbanerjee/contentforge
 agy plugin install https://github.com/indranilbanerjee/socialforge
+agy plugin install https://github.com/indranilbanerjee/cutforge
 
 # Hermes Agent (from each repo; the one combined catalog entry is awaiting review)
 hermes plugins install indranilbanerjee/digital-marketing-pro
 hermes plugins install indranilbanerjee/contentforge
 hermes plugins install indranilbanerjee/socialforge
+hermes plugins install indranilbanerjee/cutforge
 
 # OpenClaw
 openclaw plugins install git:github.com/indranilbanerjee/digital-marketing-pro
 openclaw plugins install git:github.com/indranilbanerjee/contentforge
 openclaw plugins install git:github.com/indranilbanerjee/socialforge
+openclaw plugins install git:github.com/indranilbanerjee/cutforge
 ```
 
 ---
@@ -184,7 +193,7 @@ openclaw plugins install git:github.com/indranilbanerjee/socialforge
 
 | Feature | Claude Code CLI | Anthropic Cowork |
 |---|---|---|
-| All 3 plugins install | ✓ | ✓ |
+| All 4 plugins install | ✓ | ✓ |
 | Skills, agents, custom commands | ✓ | ✓ |
 | Persistent data via `${CLAUDE_PLUGIN_DATA}` | ✓ | ✓ |
 | Python scripts via Bash | ✓ | ✓ |
@@ -197,19 +206,19 @@ ContentForge v3.9.1's connectors reference catalog includes Pipedream, Composio,
 
 ## Compliance
 
-All three plugins are designed to comply with the [Anthropic Software Directory Policy](https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy):
+All four plugins are designed to comply with the [Anthropic Software Directory Policy](https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy):
 
 - No financial transaction processing
 - No advertising or ad-serving
 - No circumvention of Claude safety guardrails
-- AI-generated images (where supported) require explicit user approval and are produced in a clear marketing-content context
+- AI-generated images and video (where supported) require explicit user approval, and CutForge never applies AI to a real person's face
 - All MCP connectors use OAuth 2.0 or API-key authentication via the connector provider's official endpoint
 
 ---
 
 ## Shared model curator
 
-All three plugins ship the same model-selection infrastructure under `scripts/`:
+Digital Marketing Pro, ContentForge and SocialForge ship the same model-selection infrastructure under `scripts/` (CutForge sets its voice and AI-art providers per project):
 
 - **`model_registry.json`** — single source of truth for every AI model id used by the plugin (Claude / GPT / Gemini / Imagen / Veo / Kling / Higgsfield), with vendor, tier, modality, status, and `replacement_id` for deprecated entries.
 - **`resolve_model.py`** — resolver. Aliases like `latest-balanced-anthropic`, `latest-image-google`, `latest-video-wavespeed` resolve to concrete ids at call time; deprecated ids passed via `--model` auto-fall-forward to their replacement with a stderr warning.
@@ -234,7 +243,7 @@ Why it matters: frontier models change every ~6 weeks. Hardcoding `claude-sonnet
 ```
 neels-plugins/
 ├── .claude-plugin/
-│   └── marketplace.json     ← Plugin catalog (3 plugins)
+│   └── marketplace.json     ← Plugin catalog (4 plugins)
 ├── CHANGELOG.md             ← Release history
 ├── LICENSE                  ← MIT
 └── README.md                ← This file
@@ -242,10 +251,10 @@ neels-plugins/
 
 ### Plugin Coexistence Pattern
 
-All three plugins follow a strict "no global side-effects" pattern as of May 2026:
+All four plugins follow a strict "no global side-effects" pattern:
 
-- `hooks/hooks.json` ships as `{"hooks":{}}`. Plugin hooks fire globally on every Claude Code operation regardless of working directory, so embedding compliance/verification logic in hooks pollutes unrelated work. The work lives instead in agent files (where it runs in proper context) and Quality Gate criteria.
-- No `.mcp.json` ships (it is gitignored), so no MCP server connects when you install. Plugin-bundled MCP servers auto-connect on plugin enable, which means shipping N servers triggers N connection attempts (and likely auth prompts) for users who only want some of them. Each plugin ships its full connector catalog as a `.mcp.json.connectors-reference` file with per-entry auth notes; users opt in via the plugin's connect skill.
+- No hooks run. DMP, ContentForge and SocialForge ship `hooks/hooks.json` as `{"hooks":{}}`; CutForge ships no hooks file. Plugin hooks fire globally on every Claude Code operation regardless of working directory, so embedding compliance/verification logic in hooks pollutes unrelated work. The work lives instead in agent files (where it runs in proper context) and Quality Gate criteria.
+- No `.mcp.json` ships (it is gitignored), so no MCP server connects when you install. Plugin-bundled MCP servers auto-connect on plugin enable, which means shipping N servers triggers N connection attempts (and likely auth prompts) for users who only want some of them. The three marketing plugins ship their full connector catalogs as `.mcp.json.connectors-reference` files with per-entry auth notes; users opt in via the plugin's connect skill. CutForge needs no connectors.
 
 If you contribute a plugin to this marketplace, please follow the same pattern.
 
@@ -259,7 +268,7 @@ If you contribute a plugin to this marketplace, please follow the same pattern.
 >
 > **Fix:**
 > 1. **In the chat UI** — click the **Plugins** button at the bottom of the chat → **Manage plugins** → find the plugin → look for Update / Refresh / Remove. If there's no Update button, **Remove** then **Add plugin** → re-install from `indranilbanerjee/neels-plugins`. The re-pull fetches the latest version.
-> 2. **For slash-command management** — switch to Claude Code (CLI or IDE) or Cowork. All three plugins run identically across every Anthropic surface; you're choosing where to type management commands.
+> 2. **For slash-command management** — switch to Claude Code (CLI or IDE) or Cowork. All four plugins run identically across every Anthropic surface; you're choosing where to type management commands.
 >
 > The rest of this section assumes you're in Claude Code or Cowork.
 

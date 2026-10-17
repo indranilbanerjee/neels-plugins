@@ -1,8 +1,8 @@
 {
   "name": "neels-plugins",
   "interface": {
-    "displayName": "Neel's Marketing Plugins",
-    "shortDescription": "Three open-source marketing plugins — Digital Marketing Pro, ContentForge, SocialForge. Runs on Claude Code, Codex, Cursor, Antigravity. MIT-licensed.",
+    "displayName": "Neel's Plugins",
+    "shortDescription": "Four open-source plugins: Digital Marketing Pro, ContentForge, SocialForge and CutForge. Strategy, long-form content, social and video. Runs on Claude Code, Codex, Cursor, Antigravity. MIT-licensed.",
     "developerName": "Indranil Banerjee",
     "category": "Productivity",
     "websiteURL": "https://indranil.in"
@@ -49,6 +49,20 @@
       "category": "Productivity",
       "description": "A monthly content calendar in, finished on-brand social creative out — and when no calendar exists, /ideate-month plans the month from brand pillars, live signals, and last month's MEASURED wins (/ingest-performance ranks analytics exports with sample floors — flat months say so honestly). AI images and video via provider chains where nothing fails silently, 9-platform copy with mechanism-aware CTAs, human approval gates, C2PA signed for EU AI Act Article 50. 21 skills, live model+price lookup.",
       "version": "1.29.7"
+    },
+    {
+      "name": "cutforge",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/indranilbanerjee/cutforge.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Productivity",
+      "description": "Open-source video creation and editing plugin: your photos, clips and voice notes become story-led films, brand films, explainers and ads. 13 skills, 4 reviewer agents, a tested Remotion engine. Runs on Claude Code, Codex, Cursor, Antigravity.",
+      "version": "1.0.1"
     }
   ]
 }

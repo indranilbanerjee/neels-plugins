@@ -5,6 +5,13 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.57.0] - 2026-10-17
+
+- CutForge 1.0.1 joins the marketplace in all five manifests: an open-source video creation and editing plugin, from raw footage to final cut (13 skills, 4 reviewer agents, a tested Remotion, ffmpeg and Python engine of 48 tools). 1.0.1 escapes two invisible joiner characters in its voice tool that Hermes Agent's install scanner reads as hidden text, and adds the suite's scanner guard.
+- Marketplace descriptions name four plugins; the Codex listing is now "Neel's Plugins". README: the which-plugin diagram, the job table, the plugin table, install commands for every platform, costs (CutForge renders locally; Remotion's own licence) and the never-do list cover CutForge. CutForge is installed from its own repo on Hermes; the combined Hermes catalog listing is rebuilt at 3.57.0 with no content change.
+- Tests: one `SUITE` list drives every sibling-truth check (skill counts in descriptions, the suite skills badge, the README table), and a new test fails if a listed plugin is missing from it. CutForge joins the expected source repos and the Hermes admission run.
+- Suite total 2,188 (CF 803 + DMP 700 + SF 574 + CutForge 53 + marketplace 58).
+
 ## [3.56.7] - 2026-10-12
 
 - The fresh-install smoke test's recheck of 3.56.6. SocialForge 1.29.7: credential setup with no key waited forever for input on Windows (Claude Code's Bash tool keeps stdin open, and `< NUL` looks like a console); it now reads a key only from a flag, the environment, an explicit `--api-key-stdin` or an explicit prompt, and otherwise stops at once with exit 2. ContentForge 4.5.7: a recovery command dropped its `--brand`/`--run-id` into the PowerShell comment when Python's path has a space; arguments now go inside the command. ContentForge and SocialForge pip hints take the same paste-anywhere shape. Digital Marketing Pro 3.35.8: PRIVACY.md's command for turning autopilot back to propose-only works from any folder, and its script-location guard covers every instruction file by default. All three: no text after a printed command, and no script reads stdin unless asked. SocialForge's test suite had written test entries to the user's real failure log on every run since that log was introduced; the ContentForge and SocialForge suites now run in temporary folders and fail if anything reaches a real one.

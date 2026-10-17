@@ -6,7 +6,8 @@ and capability checks (`hermes plugins validate`). On 2026-10-04 all three
 suite plugins rated dangerous on harmless lines written like attacks, so a
 Hermes user could not install any of them. Each plugin now carries a stdlib
 guard for those patterns; this test runs the real validator, which only this
-repo can do without making a plugin depend on Hermes.
+repo can do without making a plugin depend on Hermes. CutForge (3.57.0) is
+installed from its own repo; it is not part of the combined catalog listing.
 
 It needs a Hermes source checkout and a Python environment with Hermes's
 dependencies, given as HERMES_SRC (the checkout's root, with hermes_cli/,
@@ -28,7 +29,8 @@ MARKETPLACE = Path(__file__).resolve().parent.parent
 SUITE_ROOT = MARKETPLACE.parent
 PLUGINS = {"digital-marketing-pro": ("digital-marketing-pro",),
            "contentforge": ("ContentForge", "contentforge"),
-           "socialforge": ("SocialForge", "socialforge")}
+           "socialforge": ("SocialForge", "socialforge"),
+           "cutforge": ("CutForge", "cutforge")}
 
 PROBE = """
 import json, sys

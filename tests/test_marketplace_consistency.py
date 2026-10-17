@@ -22,7 +22,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 
-# Each platform reads a different file; all five describe the same three plugins.
+# Each platform reads a different file; all five describe the same plugins.
 MANIFESTS = {
     "claude": REPO / ".claude-plugin" / "marketplace.json",
     "cursor": REPO / ".cursor-plugin" / "marketplace.json",
@@ -195,6 +195,7 @@ class TestListingDescriptions(unittest.TestCase):
             "digital-marketing-pro": "indranilbanerjee/digital-marketing-pro",
             "contentforge": "indranilbanerjee/contentforge",
             "socialforge": "indranilbanerjee/socialforge",
+            "cutforge": "indranilbanerjee/cutforge",
         }
         for name in MANIFESTS:
             for pname, p in plugins(load(name)).items():
@@ -208,6 +209,12 @@ class TestListingDescriptions(unittest.TestCase):
                                   f"{name}/{pname} points at {repo}")
 
 
+# The plugin repos this marketplace lists. A new plugin joins here, and every
+# sibling-truth check below (skill counts in descriptions, the suite badge, the
+# README table) covers it. CutForge joined in 3.57.0.
+SUITE = ("digital-marketing-pro", "contentforge", "socialforge", "cutforge")
+
+
 def _sibling(name):
     """Locate a sibling plugin repo checkout regardless of directory-name case.
     Returns None when the sibling is not checked out (e.g. marketplace-only CI)."""
@@ -218,13 +225,21 @@ def _sibling(name):
     return None
 
 
+class TestSuiteListIsComplete(unittest.TestCase):
+    def test_suite_tuple_names_every_listed_plugin(self):
+        """A plugin listed in the manifests but missing from SUITE would skip
+        every sibling-truth check silently."""
+        self.assertEqual(set(SUITE), set(plugins(load("claude"))),
+                         "SUITE and the marketplace list different plugins")
+
+
 class TestDescriptionCountsMatchSiblings(unittest.TestCase):
     """Listing descriptions are what a user reads before installing. They said
     "163 skills" and "20 skills" after both plugins had grown, because only the
     README table was compared with the sibling repos."""
 
     def test_skill_counts_in_every_manifest_description(self):
-        for repo_name in ("digital-marketing-pro", "contentforge", "socialforge"):
+        for repo_name in SUITE:
             sib = _sibling(repo_name)
             if sib is None:
                 self.skipTest("sibling repos not checked out beside the marketplace")
@@ -276,14 +291,14 @@ class TestReadmeLiveness(unittest.TestCase):
                                  f"README live section still says '{needle}'")
 
     def test_suite_skills_badge_matches_sibling_truth(self):
-        sibs = [_sibling(n) for n in ("contentforge", "digital-marketing-pro", "socialforge")]
+        sibs = [_sibling(n) for n in SUITE]
         if not all(sibs):
             self.skipTest("sibling repos not checked out beside the marketplace")
         truth = sum(len([d for d in (s / "skills").iterdir() if d.is_dir()]) for s in sibs)
         m = re.search(r"badge/skills-(\d+)%20across%20suite", self.readme)
         self.assertIsNotNone(m, "suite skills badge not found in README")
         self.assertEqual(int(m.group(1)), truth,
-                         f"skills badge says {m.group(1)}, the three repos ship {truth}")
+                         f"skills badge says {m.group(1)}, the suite repos ship {truth}")
 
     def test_suite_tests_badge_matches_changelog(self):
         """The CHANGELOG top entries record 'Suite total N' at each release; the badge
@@ -309,9 +324,7 @@ class TestReadmeLiveness(unittest.TestCase):
                               f"{name} row does not show manifest version {entry['version']}")
 
     def test_plugin_table_rows_match_sibling_truth(self):
-        for repo_name, display in (("contentforge", "contentforge"),
-                                   ("digital-marketing-pro", "digital-marketing-pro"),
-                                   ("socialforge", "socialforge")):
+        for repo_name, display in ((n, n) for n in SUITE):
             sib = _sibling(repo_name)
             if sib is None:
                 self.skipTest("sibling repos not checked out beside the marketplace")
