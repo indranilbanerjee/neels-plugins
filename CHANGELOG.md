@@ -5,6 +5,12 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.57.8] - 2026-10-27
+
+- Digital Marketing Pro 3.39.1 and SocialForge 1.30.1 (the same router file): when the router cannot read a provider's live list (offline, a timeout, provider trouble), a model you name is now checked against the deprecations record in the plugin's hint book as well as the shipped registry, and the stricter answer wins. Before, offline, a Gemini model that Google's page marks as shut down was sent with only a warning that the registry did not know it; now it is refused before anything is sent, naming the replacement. A model whose requests Google now routes to another is sent with a warning that the answer comes from that model. A model list still going after 20 pages is refused instead of being used short.
+- SocialForge 1.30.1: a run served by Vertex AI ignores the Gemini API's deprecations record, because Vertex retires models on its own schedule.
+- Hermes bundle rebuilt. Suite total 2,725 (CF 887 + DMP 882 + SF 741 + CutForge 156 + marketplace 59).
+
 ## [3.57.7] - 2026-10-27
 
 - Digital Marketing Pro 3.39.0: the model router reaches Google. It reads the models your key can use from Google's own list, with the key in the `x-goog-api-key` header, and takes retirement and release dates from a record of Google's deprecations page, kept with its source and the date it was read. It never picks a preview, a moving `latest` alias, a dated snapshot or an endpoint Google now redirects to another model, and it refuses a model the page marks as shut down. No Digital Marketing Pro job uses Google yet; this plugin holds the router's canonical file. A replacement taken from a vendor's deprecations page is now named as the vendor's recommendation, not as the router's own pick.
