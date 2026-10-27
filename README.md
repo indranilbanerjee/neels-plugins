@@ -4,16 +4,16 @@
 
 Install four open-source plugins from one marketplace: strategy, long-form content, social and video. The same skills install natively on **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.57.4-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.57.5-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-4-orange.svg)](#available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-220%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-2459%20across%20suite-brightgreen.svg)](#whats-new)
+[![Total tests](https://img.shields.io/badge/tests-2570%20across%20suite-brightgreen.svg)](#whats-new)
 [![Surfaces](https://img.shields.io/badge/all%204%20plugins-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#platform-compatibility)
 
 [![Built by Indranil "Neel" Banerjee — Neelverse Marketing Suite — Sponsor this project](docs/assets/author-banner.svg)](https://github.com/sponsors/indranilbanerjee)
 
-> 🆕 **October 27, 2026: marketplace v3.57.4.** Digital Marketing Pro picks AI models by job from each provider's live list, not by a stored name; speech models join the shared registry as pins that expire; every privacy-law jurisdiction re-read at its source. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
+> 🆕 **October 27, 2026: marketplace v3.57.5.** CutForge 1.1.0 quotes every paid voice and AI-art call from a price read on the provider's page and spends only on your `--go`; Digital Marketing Pro picks AI models by job from each provider's live list, and checks a model you name even offline. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -35,7 +35,7 @@ A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [Link
 ### What these plugins will never do
 
 - **Install software on their own.** A missing package prints the exact install command for you to run.
-- **Send, publish or spend without your say-so.** Live writes wait for your typed `yes` (Digital Marketing Pro also requires a single-use approval record for that exact request), and SocialForge shows a live quote before any paid image or video generation and waits for "go". CutForge's paid voice and AI-art tools refuse to run without a `GO_AHEAD.txt` and stop at the budget cap you set.
+- **Send, publish or spend without your say-so.** Live writes wait for your typed `yes` (Digital Marketing Pro also requires a single-use approval record for that exact request), and SocialForge shows a live quote before any paid image or video generation and waits for "go". CutForge's paid voice and AI-art tools print a quote from a price read on the provider's page and spend only when you run them with `--go`, within the budget cap you set.
 - **Ask for an API key in the chat.** Keys come from environment variables.
 - **Connect to anything you did not set up.** No MCP server ships enabled and no hooks run.
 - **Put AI on a real person's face.** CutForge generates only what no camera captured and refuses AI inputs that contain a face.
@@ -103,6 +103,10 @@ To update manually instead, see the [Updating](#updating) section below.
 
 ## What's new
 
+### v3.57.5 (October 27, 2026): CutForge quotes before it spends
+
+CF **4.5.11** · DMP **3.38.2** · SF **1.29.11** · CutForge **1.1.0** · suite **2,570 tests**. CutForge's paid voice and AI-art tools now print a quote and spend nothing until you say `--go`; the price is one read on the provider's own page, recorded with its source and good for a week. Its speech models come from the suite's shared registry, so a retired or expiring model is refused with a reason instead of failing mid-render. Digital Marketing Pro's model router checks a model you name against that registry even when the provider's list can't be reached.
+
 ### v3.57.4 (October 27, 2026): models chosen by job, not by name
 
 CF **4.5.10** · DMP **3.38.1** · SF **1.29.10** · CutForge **1.0.1** · suite **2,459 tests**. Digital Marketing Pro's AI-visibility checker now asks Anthropic and OpenAI which models your key can use and picks by job: the newest current, generally available model in the right line, at least 14 days old. A model you name that is retiring is kept with a warning; a retired one is refused with its replacement named. The shared model registry gains speech models as pins that expire, and every privacy-law jurisdiction in Digital Marketing Pro was re-read at its source.
@@ -110,10 +114,6 @@ CF **4.5.10** · DMP **3.38.1** · SF **1.29.10** · CutForge **1.0.1** · suite
 ### v3.57.3 (October 27, 2026): model lists current, and new search signals
 
 CF **4.5.9** · DMP **3.37.0** · SF **1.29.9** · CutForge **1.0.1** · suite **2,383 tests**. The model lists in all three plugins were rebuilt from the vendors' own pages, with tests that fail when a model passes its shutdown date or a shortcut points at one that is going away. Digital Marketing Pro adds Google's new AI fetchers to its agent-readiness audit, Cloudflare settings that can block search crawlers, Bing's citation-gap data, and guidance on Google's AI-feature control.
-
-### v3.57.1 and v3.57.2 (October 27, 2026): connector setup offers only vendor-verified packages
-
-CF **4.5.8** · DMP **3.36.1** · SF **1.29.8** · CutForge **1.0.1** · suite **2,302 tests**. Most npm package names our connector setup offered did not exist or belonged to unrelated publishers, and running one hands it your API keys. Digital Marketing Pro and ContentForge now give a command only for a vendor's own package, pinned to an exact version, and point everything else to the vendor's hosted connector; a weekly check confirms each one. Digital Marketing Pro moves to Meta's API v26 before v24 stops on 10 November, with every API version and sunset date in one tested table, and its compliance rules are current ahead of India's 13 November, the FCC's 25 November and the EU's 2 December dates. SocialForge never spends on a provider you were not quoted.
 
 Older releases are in [CHANGELOG.md](CHANGELOG.md).
 
@@ -123,10 +123,10 @@ Older releases are in [CHANGELOG.md](CHANGELOG.md).
 
 | Plugin | Version | What it does |
 |--------|---------|--------------|
-| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.38.1 | End-to-end engagement methodology for agencies and in-house teams — 164 skills, 24 specialist agents, the 12-Part Strategy Flow producing the Four Core Documents, a content-engine run auditor that re-derives every "ready" claim, provenance-stamped benchmarks, 6-platform AEO/GEO audit, 16 privacy-law jurisdictions, EU AI Act Article 50 disclosure + C2PA signing, an agent-readiness audit for AI crawlers and agentic commerce. 98 stdlib Python scripts; connectors opt-in. |
-| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 4.5.10 | Content lifecycle system — 22 skills, 13 specialist agents, a 10-phase pipeline with 10 quality gates, 43-pattern AI-detection humanizer, fact-checker subagent, run auditor, three-category internal linking, real `.docx` output with C2PA signing, and a measure-audit-plan loop that compounds per brand, under a published Quality Contract. README in 12 languages; five hero skills as claude.ai `.skill` uploads. |
-| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.29.10 | Social creative engine — 21 skills, 18 commands, 5 agents: research and calendar in, on-brand creative out. Asset-first compositing (brand photos stay pixel-faithful), AI image + video through provider chains where nothing fails silently, 9-platform copy adaptation, human approval gates, delivery audit, C2PA signing. Prices and models looked up live, never stored. |
-| **[cutforge](https://github.com/indranilbanerjee/cutforge)** | 1.0.1 | Video creation and editing, from raw footage to final cut: 13 skills, 4 reviewer agents and a tested engine of 48 tools (Remotion, ffmpeg, Python). A one-screen brief, archive research with face groups and real-sound discovery, story design, a look test, a storyboard the client ticks once, narration verified by speech-to-text, designed sound, chunked resumable renders, nine QC layers, verified delivery and revision rounds. Family and milestone films, tributes, brand films, explainers, ads, and pharma or BFSI videos with India-first compliance. |
+| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.38.2 | End-to-end engagement methodology for agencies and in-house teams — 164 skills, 24 specialist agents, the 12-Part Strategy Flow producing the Four Core Documents, a content-engine run auditor that re-derives every "ready" claim, provenance-stamped benchmarks, 6-platform AEO/GEO audit, 16 privacy-law jurisdictions, EU AI Act Article 50 disclosure + C2PA signing, an agent-readiness audit for AI crawlers and agentic commerce. 98 stdlib Python scripts; connectors opt-in. |
+| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 4.5.11 | Content lifecycle system — 22 skills, 13 specialist agents, a 10-phase pipeline with 10 quality gates, 43-pattern AI-detection humanizer, fact-checker subagent, run auditor, three-category internal linking, real `.docx` output with C2PA signing, and a measure-audit-plan loop that compounds per brand, under a published Quality Contract. README in 12 languages; five hero skills as claude.ai `.skill` uploads. |
+| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.29.11 | Social creative engine — 21 skills, 18 commands, 5 agents: research and calendar in, on-brand creative out. Asset-first compositing (brand photos stay pixel-faithful), AI image + video through provider chains where nothing fails silently, 9-platform copy adaptation, human approval gates, delivery audit, C2PA signing. Prices and models looked up live, never stored. |
+| **[cutforge](https://github.com/indranilbanerjee/cutforge)** | 1.1.0 | Video creation and editing, from raw footage to final cut: 13 skills, 4 reviewer agents and a tested engine of 52 tools (Remotion, ffmpeg, Python). A one-screen brief, archive research with face groups and real-sound discovery, story design, a look test, a storyboard the client ticks once, narration verified by speech-to-text, designed sound, chunked resumable renders, nine QC layers, verified delivery and revision rounds. Family and milestone films, tributes, brand films, explainers, ads, and pharma or BFSI videos with India-first compliance. |
 
 All four install natively on **9 platforms** — Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes Agent, OpenClaw, Grok — plus 35+ Agent Skills clients. Live counts and test totals: see each repo's README.
 
@@ -218,7 +218,7 @@ All four plugins are designed to comply with the [Anthropic Software Directory P
 
 ## Shared model curator
 
-Digital Marketing Pro, ContentForge and SocialForge ship the same model-selection infrastructure under `scripts/` (CutForge sets its voice and AI-art providers per project):
+Digital Marketing Pro, ContentForge and SocialForge ship the same model-selection infrastructure under `scripts/` (CutForge sets its voice and AI-art providers per project, and resolves its speech models through a copy of the same registry in each project's `tools/`):
 
 - **`model_registry.json`** — single source of truth for every AI model id used by the plugin (Claude / GPT / Gemini / Imagen / Veo / Kling / Higgsfield, and speech models as pins that expire), with vendor, tier, modality, status, and `replacement_id` for deprecated entries.
 - **`resolve_model.py`** — resolver. Aliases like `latest-balanced-anthropic`, `latest-image-google`, `latest-video-wavespeed` resolve to concrete ids at call time; deprecated ids passed via `--model` auto-fall-forward to their replacement with a stderr warning.

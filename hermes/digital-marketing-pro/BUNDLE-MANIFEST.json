@@ -2,23 +2,23 @@
   "bundle": "digital-marketing-pro",
   "generated_files": {
     ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
-    "README.md": "ea716cea56ed033356caf65f4d3098258c6fe6fae8d712249173ea5180a137a1",
-    "__init__.py": "17608ab9fd48038bd182707613cf67741cb58655e8750ffecc97cdd4ed53b8c2",
-    "plugin.yaml": "e47fbd52028f6c613c3f6d990054be34000ce3c1d9799ff6451bad528baa59bc"
+    "README.md": "46adff9fcae342a566361515523e862746737ec83aec36c3d7bff644e2a93a18",
+    "__init__.py": "5d885ccda2d343afe09d5ad2d6cb1c345df5d217f5cd5eb08a412e1277f9d564",
+    "plugin.yaml": "77fc576670611f506a8ec7b7afa203fb3b583e0cef756e6c98459376aaa37b58"
   },
   "generator": "scripts/build_hermes_bundle.py",
   "groups": {
     "content": {
-      "commit": "7f7d651a402c9c18b969c2b3889d70c520cf680e",
+      "commit": "bf7b909f6544588ec6240f151c1324533d8c2efd",
       "files": {
         ".mcp.json.connectors-reference": "8c651edfff1932431b2da0674a767891807ddff6645765d96654a09fe39db928",
         ".mcp.json.example": "7d3dc5bfed5e2ea777179d4bbbf60b03ed6332a0e10c959bf96bbab51ccdaee1",
-        "CHANGELOG.md": "4e961cb416f952e5a7d26dbdf7685fc2b5936d90b0ee6e13970fa1d7b4d227df",
+        "CHANGELOG.md": "6f69e2a25e7e53e0b310520ed089b35ef3d1b3b890a3f98cc8786c658f38fcb5",
         "CONNECTORS.md": "08cb94fd90afdb9e6961f4b782bc7d57722c58f8633a7e54aa9062bdc42d1d96",
         "LICENSE": "5c47db69f5dbaa89082a03f1a236eaa484c15d44f9dd6ea17d0dc8532a9b6cba",
         "NOTICE.md": "b989009a4f289bcad58577f1d36968a58d931665c1e3d4cad84997b73a8ae80a",
         "PRIVACY.md": "100b13b7a0fca9856969d0d01a6832c2e00f6c73b8467ca5ddeab88c00ca1971",
-        "README.md": "7cb62cbfb4d5acf87a488171b61ef3d773fed827473b509cefe5c8925be1aeb5",
+        "README.md": "e6fe0d968c56591a857426fc5cdd6e6e0053f4cce2857bfd6968c28eb5568970",
         "agents/01-researcher.md": "3cce58f83d0a6ff07824a65bfd21e0f90347ed9557b694bc1e5575585f9c95ab",
         "agents/02-fact-checker.md": "11878c9f89f897200e5a767db6f63650ccd4a30570d3b13600917b39d4a7c1e0",
         "agents/03-content-drafter.md": "b8f8d990d7cc88dd9862f9b67a75e26ce4d353c5d54507c24935a6efeca71434",
@@ -84,7 +84,7 @@
         "scripts/generate-docx.py": "6864b52dbc88a08cc758995b9edb3d81100e27493cc5b35f03f6a4610f14ae67",
         "scripts/harvest-brand-pages.py": "86280aa4cb2e7f70758904f70d12d9d1316f61f9aa9bf17388207f4b2141e19a",
         "scripts/local-tracker.py": "f29a13aa26185dbced89b551a5069be4479df0d90a3be6b09b41c2590f40584e",
-        "scripts/model_registry.json": "261e5998c97e232c504fd83cb7704fd523b7e0a5217e5957998e22bde69671c8",
+        "scripts/model_registry.json": "3ee4e49f713fab42abbbbce68e2239d3ac8c08eacd161de380f7a386728f23e4",
         "scripts/npm_allowlist.py": "cbe9e89ac2be83b18ef997ea45d87b1345a4be01c631bc8689fda6a44bf23a67",
         "scripts/pipeline-tracker.py": "60442958f77a35baf4882cb83c204b2135985f9fb38b868d37a74a8cddfc4b66",
         "scripts/plugin-metadata.py": "0ff268ab43986edda4f7811941b9b1cd3d1da869217b92a4c504ccf6ec97146a",
@@ -158,18 +158,18 @@
       "plugin": "contentforge",
       "repo": "https://github.com/indranilbanerjee/contentforge",
       "skills": 22,
-      "version": "4.5.10"
+      "version": "4.5.11"
     },
     "social": {
-      "commit": "eb841bbc69145185a18ff1713cbd0b62dbae5744",
+      "commit": "7a74c22885d096f4aa4ef87df7d190091b526c6d",
       "files": {
         ".mcp.json.connectors-reference": "267515b481d3493e702d1549b9bf63a3ae7a63cb1c056473868cb53ce14a9e65",
         ".mcp.json.example": "9ec6d96394664286fad94fa747b0148d8ed342220489be17621be86dba74fdf6",
-        "CHANGELOG.md": "dcd3bbb3243c9f23b065a44aee5b439e4fe76f5337d6c7795dec6479e81ce82a",
+        "CHANGELOG.md": "9c517e4910b2b2342a1d6ade248188d7b6400dfe9f0bd9fbbeea27b8e6a8a1ea",
         "CONNECTORS.md": "2f047f02b27e77a0b6714503917af0c3db5657943a7217034a271f6b41a63a19",
         "LICENSE": "dd0710500cf52a6296b15e26c5a7f2cc0477ca26b44b0eb0dd16202e3662a57a",
         "PRIVACY.md": "2824a6ba058dc86b3b0d91f041ef1be8d870f8954d990548a008a11240f787a8",
-        "README.md": "7623936534622460d2b312a0ddebeba5984927f5405f13f9c55c6045e167a835",
+        "README.md": "b1309b5edd36622e1a64093460daabe525437f1f2d21da2dc98000e7fe2c8018",
         "agents/carousel-builder.md": "de5d278af67de29a8916be5101fd9104cb9342012a697593959b2809db93c369",
         "agents/compliance-checker.md": "2e90def7ca9e70a9239a0912c78e57753c05aafa579fa52c270f50d147106879",
         "agents/copy-adapter.md": "eae4b1d6524a7512d04fafe2df4e4ca8b42582b6add8d61804d447888126ff87",
@@ -253,7 +253,7 @@
         "scripts/install_deps.py": "056ae3eb5b570d98034ff4c63126f1ea37dfc66f0f5bced5108b26117e03c946",
         "scripts/match_assets.py": "1426b3e2307d34bcb5db2973de817943b8bcd5f86cd6fd1dca693bff9c94320a",
         "scripts/model_book.py": "05e0d592ed2dd663dcb674c28a4a928a639d060966bbb64ab4ed10f908cf95f7",
-        "scripts/model_registry.json": "a09a3950c9564adaf5ef6359c63020828a02c215eb2ff29cdbd9e173fa55b318",
+        "scripts/model_registry.json": "31d3a2220e7cc2fd0c9b50165402af44db241aff8851b7854c47a9146271d2ba",
         "scripts/platform_limits.json": "1c3e10d7562af24381863f6a5fc04d14ec9484c82f2638e377ab585bf0197302",
         "scripts/price_book.py": "458901493b87d39265af99512730cd1ea465d299ceb40bea37aae0918b0abf9e",
         "scripts/provider_failures.py": "64a87cb15f1dbeb4671b54e9de69bd5dd6688c957ef527155f793df9b98fdbff",
@@ -293,18 +293,18 @@
       "plugin": "socialforge",
       "repo": "https://github.com/indranilbanerjee/socialforge",
       "skills": 21,
-      "version": "1.29.10"
+      "version": "1.29.11"
     },
     "strategy": {
-      "commit": "c66d6a6437560d6d17eef71de9a0ec7328a9063b",
+      "commit": "b2ff777e6a57b404821290ace80b04f1ff892f92",
       "files": {
         ".mcp.json.connectors-reference": "c3453575c1292bd05f116352f337114fd4a09c20c1d93f81124ea30ce2f99475",
         ".mcp.json.example": "c16177ddf8fc84be0dabf1d1ab60f8c43590f401d03416d5a5040540d71817b1",
-        "CHANGELOG.md": "cf46fea6f7b9a57fe543da731602955881360b0d047e868304829ac87eda9e37",
+        "CHANGELOG.md": "42ec855c55042b101c39feb55ba330c777a6112e1af8650946d6414e07ffc535",
         "CONNECTORS.md": "95f8d78ade7b887659faa1bf08b8c9ed202e6aeef0f424bb5542de924dd2696d",
         "LICENSE": "b8777f5d230e1d91144bd9127fbb56092dbbdaaabbbfd18c0ce78620f18ca7f4",
         "PRIVACY.md": "95d2b786513965734abbb5d7997612bef3c8cb9cd1926842af7c461429cb380f",
-        "README.md": "a2cf4fd9536ce914ac336d0613e07de30c0cebfb412b65c70cfeb3d7da0af153",
+        "README.md": "78220b7d8aebf07171387070ce54560eb385afd0065bd8332d9b6fb237215995",
         "agents/agency-operations.md": "df178df1879e8797a53b9e80b6560a124d3647ff1f7a35533cd9cccc53065360",
         "agents/analytics-analyst.md": "7562096518c21c115e93a50519954ad0dc61167290f3d30f7cb11cea2eeb0a60",
         "agents/brand-guardian.md": "a3791f8be5591bd325f5764bcd78f56faa6f28f75efa074f38f7720ddf818e91",
@@ -336,7 +336,7 @@
         "commands/execute-action.md": "f64ce4251ed2125f470defc458506838eb190ac8891b586c02cfd9d36d6af11a",
         "commands/output-folder.md": "44ba7de0d663a88a2b0bf57dcaab56d8f77477c52534bad501bceb9b17e619ef",
         "commands/resume.md": "4d1c17beeee6ec2fe4a702a8bd22d4997e8467456101403a5f281c42720d945e",
-        "docs/MODEL-CURATOR.md": "3b001cf8bb1effbd364dfd37acca23f8ecbd763a5d901c0befd6181e9f580e58",
+        "docs/MODEL-CURATOR.md": "6667e1a569937e5e34a06ff8f3f363685ff8295622b63796547381cc3106c159",
         "docs/architecture.md": "6f1473894d1525220c40ae0e4b6f83145d88badc2e2b5e8af120a6941cafdd23",
         "docs/brand-guidelines.md": "0c6ae356423dfae086e7032f58bfc62638bc47b50fb7f0d79b1ffe3acba6e4a1",
         "docs/c2pa-production-cert-guide.md": "d12ee0d9fb21d848140b1592adfcc9053e4967b35cfbb4c52dfa2deac711f1c5",
@@ -352,7 +352,7 @@
         "scripts/adaptive-scorer.py": "1ff684f5f1ba6a4e8762f5746e2f1e73a5145b864b54b6bae1f73f1f36112135",
         "scripts/agent-readiness-audit.py": "4abef0e8c8156cd638d005ce3d941cf4f8ae56822c23f92e18a45f9c38ec9c32",
         "scripts/ai-tell-scan.py": "e16d2d5cd83880bbd909e517ac5100baf0b7cfe45c64cd593197277d85c28b79",
-        "scripts/ai-visibility-checker.py": "98b02b97bca2fd968c5e149579b211afda951d9942fc4ef45e754a911b9fb078",
+        "scripts/ai-visibility-checker.py": "2bc314c5c1c642516886e0dc5cd3502deb61d883ab80c805f773b87131e10a37",
         "scripts/approval-manager.py": "c2daeac271155780bfe045ee971169ed25759a63adc30510b0d394398fd20485",
         "scripts/audience-simulator.py": "751121ed94272fb6e1e5f288bca5a99fcfb531eed312ef8162383ced5d480bcb",
         "scripts/authorship.py": "6d3b23ab19edc6aa231127e92491a70484063d8db66865959b5720724113da1f",
@@ -408,8 +408,8 @@
         "scripts/macro-signal-tracker.py": "9fb9d2552581c56de4a365fdeafb034199109337eb23d74aa952044e2d0fe94d",
         "scripts/memory-manager.py": "446dda3e1696c72a2fac75703bf8de19801ca424f4e6fe14d7efab03417f3a3f",
         "scripts/model_hints.json": "510690c88bcd0670935fd5e5e5e09a89bae6d0b33cf920a390b34e97356cee0b",
-        "scripts/model_registry.json": "2fb50fed8edb8b9ed940cda9bfeeaf74c34b1415ff3331b3cc06098e485c506c",
-        "scripts/model_router.py": "9c25bf034326f40d16a491bc030980c11b666f3b88281c7f8faeba69e273e0f7",
+        "scripts/model_registry.json": "a9164ae14a609665c918dd29583dbcf07deb97dd7dbf309c3ee698dd3f46be75",
+        "scripts/model_router.py": "bafe590e13d3862ca364a03be33118053398a44e5ba143df0c65dc60f3c7763b",
         "scripts/narrative-mapper.py": "63b41592514228100f6557a69013f4443329e7c806b3889552a650dfd57ba5e9",
         "scripts/npm_allowlist_check.py": "e43fde0b33e575e48e55261779157994ea4fe9f1e5fe8026a5e9c9a02a03fa30",
         "scripts/output-publisher.py": "fed1f042d9ba9da16c2b8da93bcd06a65caab8d4b4f29d0302c91afe5acfb72f",
@@ -422,7 +422,7 @@
         "scripts/quality-tracker.py": "13b71ced0bbc8d02967725de3a030afa7b2e3d25a84584c05e27cabe5755fc34",
         "scripts/readability-analyzer.py": "b3c09e3c39cba24d920472a6b1072ec1e2eb60cb512a393bbb314d27ac81dd03",
         "scripts/refresh_models.py": "910a48181d297909a8a26ba4dd8e5691ce6f1bbba747456ded8c5383bff371bd",
-        "scripts/registry_mirror.py": "fc70a7c773eddf970c997200a04d3cf9e00af93380b702d427da22f0191c4d80",
+        "scripts/registry_mirror.py": "9027db9dd8b5fafd0b623b2da032874e1ff84c165ff89b90a683bd52886a6fe9",
         "scripts/report-generator.py": "7dd30897236e218915d318dc52dcd8318557259a6d4d12d364352b63177b83bf",
         "scripts/requirements.txt": "b85ac256695b032e4511ca71c7047dba953af3a591eee9b47af3d89b2238983b",
         "scripts/resolve_model.py": "9483a08645d45aea9a04afed45e6d6b8aefd3da3578376a2488669fdce91120c",
@@ -798,8 +798,8 @@
       "plugin": "digital-marketing-pro",
       "repo": "https://github.com/indranilbanerjee/digital-marketing-pro",
       "skills": 164,
-      "version": "3.38.1"
+      "version": "3.38.2"
     }
   },
-  "version": "3.57.4"
+  "version": "3.57.5"
 }

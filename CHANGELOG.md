@@ -5,6 +5,13 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.57.5] - 2026-10-27
+
+- CutForge 1.1.0: a paid voice or AI-art tool run without `--go` prints a quote and exits 4, spending nothing. The quote comes from a price read on the provider's own page and recorded with that page; a price expires after a week, and CutForge ships none. A run with `--go` must name the providers it was quoted for, and the budget cap is kept per currency. A `GO_AHEAD.txt` file no longer counts as the go, because an agent can create one. Speech models resolve through a copy of the suite's model registry, which refuses retired models and expired pins; Sarvam transcription moves off a model the vendor no longer lists; OpenAI speech without a model you name refuses, because its replacement runs only on the Realtime API. Setup requires Node 22, checks ffmpeg and the pinned Remotion, and prints pinned install commands. Windows fixes for shell-script line ends, byte-order marks and temp paths. Agent descriptions cut from about 2,212 to about 825 always-on tokens. 52 engine tools; 146 tests (from 53).
+- Digital Marketing Pro 3.38.2: when the model router cannot reach a provider's list (offline, a timeout, provider trouble), a model you name is still checked against the shipped registry: a retiring one is kept with a warning naming its date and replacement, a retired one is refused before any request. Public files no longer name internal working notes, with a test that keeps it so.
+- ContentForge 4.5.11 and SocialForge 1.29.11: the registry copy no longer cites a file a reader cannot open, with the same test.
+- Hermes bundle rebuilt. Suite total 2,570 (CF 863 + DMP 841 + SF 662 + CutForge 146 + marketplace 58).
+
 ## [3.57.4] - 2026-10-27
 
 - Digital Marketing Pro 3.38.1: four SEO skill descriptions (keyword clustering, comparing two Search Console exports, the 12-month plan, technical fixes) now name the jobs a blind routing test showed they were missing, with a test that keeps the words.
