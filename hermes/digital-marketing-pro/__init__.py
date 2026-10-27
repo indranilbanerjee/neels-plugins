@@ -24,7 +24,7 @@ from pathlib import Path
 logger = logging.getLogger("digital-marketing-pro")
 
 PLUGIN_ROOT = Path(__file__).resolve().parent
-PLUGIN_VERSION = "3.57.1"
+PLUGIN_VERSION = "3.57.2"
 GROUPS = ("strategy", "content", "social",)
 
 

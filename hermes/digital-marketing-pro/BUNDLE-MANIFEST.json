@@ -2,9 +2,9 @@
   "bundle": "digital-marketing-pro",
   "generated_files": {
     ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
-    "README.md": "3826d28ec1fec5d7114f31e77403f4efcef09fe8164021cfd7f1aa3c2095d199",
-    "__init__.py": "f5e03ca0db526896161d1a1dd196580ffee2c6ef9619f437e5638b6d84fa60b5",
-    "plugin.yaml": "a445a92b74368661fbd5babc634aaa0a567aafe0781eec2509d4d18452c0fdce"
+    "README.md": "154e77faeaea0f1c3e6a4f24cc8a9d6f9161bdd1f067c98f472228f5a36fc98a",
+    "__init__.py": "7b8ef5b80322583afa325c10fb3f72885228d539691231a7af211421b560a95e",
+    "plugin.yaml": "8e6010d7d5b915b5231fd87da2706622e8acd8d333c59baf2c856b2d313e615b"
   },
   "generator": "scripts/build_hermes_bundle.py",
   "groups": {
@@ -296,15 +296,15 @@
       "version": "1.29.8"
     },
     "strategy": {
-      "commit": "fe0a02b1d362c8b4ea68d6a1f084f23c95ad15c6",
+      "commit": "3340641ecfa3d3ecdb766e77b0db0f7fd219f8c7",
       "files": {
         ".mcp.json.connectors-reference": "c3453575c1292bd05f116352f337114fd4a09c20c1d93f81124ea30ce2f99475",
         ".mcp.json.example": "c16177ddf8fc84be0dabf1d1ab60f8c43590f401d03416d5a5040540d71817b1",
-        "CHANGELOG.md": "8c5a90dd8516c4ef8d7ee38d4caeb9aa9772510b9d4c6813f0990b986ec9e613",
+        "CHANGELOG.md": "8368e256a2e870ec30257095fda1b961de27dd2f21460b359f57101add795f3c",
         "CONNECTORS.md": "95f8d78ade7b887659faa1bf08b8c9ed202e6aeef0f424bb5542de924dd2696d",
         "LICENSE": "b8777f5d230e1d91144bd9127fbb56092dbbdaaabbbfd18c0ce78620f18ca7f4",
         "PRIVACY.md": "e126d324c18ddcd1b8e4df171095b1a9c3b58d399629cd47578ba1c80894d0ff",
-        "README.md": "7b7be58353ffac67c204cc0a69fbfb80a3556026647465c41610a95000bee1a5",
+        "README.md": "09fbee8758c0ba6ea8e033b97bceba76098550b73ece99edb55f9f1ab2748261",
         "agents/agency-operations.md": "df178df1879e8797a53b9e80b6560a124d3647ff1f7a35533cd9cccc53065360",
         "agents/analytics-analyst.md": "7562096518c21c115e93a50519954ad0dc61167290f3d30f7cb11cea2eeb0a60",
         "agents/brand-guardian.md": "a3791f8be5591bd325f5764bcd78f56faa6f28f75efa074f38f7720ddf818e91",
@@ -445,7 +445,7 @@
         "scripts/tech-seo-auditor.py": "33edfef68c9bed77ce64a705fa3813870554dc1c620c6e9c93a5c58024a0e6fc",
         "scripts/utm-generator.py": "aa08b596c3c2569740bc813c1c989d0eda2936b14bba8d02bed9acbef81c560f",
         "settings.json.example": "27d5cd740cc21969ad2302fc5b4ae9095d56527d05744b1a134aadf6ca882d11",
-        "skills-index.json": "7c56681be0ae146ee01ee8e822ddceeae501fc04c8f835ac96d9dfeb4ed93ebc",
+        "skills-index.json": "a026fa5e1c7fec612051678e3aa224a3c2b192b405bb0d7505162fff346f994e",
         "skills/ab-test-plan/SKILL.md": "b6e577d5dac2b6e3a75da66410cef8c19fac66d9b167ab30e8a62ee845b41673",
         "skills/ad-creative/SKILL.md": "3134235008d6fe512e3fbbaa8f364fce39a3ed67ddee69170020d2777f9cc0b9",
         "skills/add-integration/SKILL.md": "9e2d631f4ecb5dacaa42821becb2ce2af13977eceec18db05f0d368e498a1f41",
@@ -544,7 +544,7 @@
         "skills/context-engine/channel-families.md": "c1ac114293760b9e02af7078a66fbf009a20f91b67614d8b3886bac5f7f8f1f2",
         "skills/context-engine/competitive-monitoring-guide.md": "c306b16b3f960f7be8c3a7340a986809e69ab3c663c481e5d3bdcd7791abc7ac",
         "skills/context-engine/competitor-3-question-output.md": "71cb81e83cac4d8a6696d46524cd984b1aacbb675e8cfbc14f4d428d2bd57ff8",
-        "skills/context-engine/compliance-rules.md": "29403038f8f6ec95c5c53316350b844b9098bc231e4ec378ed9ffed324b7ad9e",
+        "skills/context-engine/compliance-rules.md": "9fd3bb7ebba431fd09a2e48d770fbebbbfd558674d9417f315d21117f17e888f",
         "skills/context-engine/compound-intelligence-guide.md": "d2b40a7495cf90b76cf2e8de7d5ca45cf482651536c60b2970b9e498237cb117",
         "skills/context-engine/creative-intelligence-guide.md": "3e922586074ff85845026490af8ed881a2b8c2e1b374f7b423e18a6b06525d15",
         "skills/context-engine/crm-integration-guide.md": "1b837c67d7fed7b08827a78dae1ddd8282a9117fe7250793739ef44d54a294f5",
@@ -552,10 +552,10 @@
         "skills/context-engine/decision-framework.md": "8ac7e6e4a16bd98c44ed2dd739b870e4ce45109abcf9e59ca8c1851cb78f1c24",
         "skills/context-engine/decision-matrix-rerun.md": "68655d7987e0eef42cc77931d14da5870e86f29e3a68a6077422c2683df78e18",
         "skills/context-engine/engagement-flow-methodology.md": "98e94b8571ac4957b37be0a67ee03e762edd4b1dc097d67ab80474c2f8f5699d",
-        "skills/context-engine/eu-code-of-practice.md": "fd606a8e628aabd046a2adb62565828ae7c39193bd7ced47237cb179694cd204",
+        "skills/context-engine/eu-code-of-practice.md": "e5995de7ceefe588c489e770c279e9d882f5a6cf0f2d909a7804a96ebf79d2b6",
         "skills/context-engine/eval-framework-guide.md": "ff20093ea9c616a9e0f54e6f4c7d84f441c797174d7a72108dc9dc7233387b08",
         "skills/context-engine/eval-rubrics.md": "48d80985cdffb7fc392b438a93d1cf5dab78aa43a3f6cf1d8fca0c088230b9be",
-        "skills/context-engine/execution-workflows.md": "6d15db4a7c0deadc7130d27bdda1d3298415641b140e511be478f0c4feb68073",
+        "skills/context-engine/execution-workflows.md": "b6db5af56014fa53fb2cc8b513cc20140363f9a8ca9a9d9a1f7b8c08aa11cc7a",
         "skills/context-engine/five-digital-markets.md": "256dbc71ae68314da54aa4acf3c644fad5fe9db2d71befa2a0e9a308614efdba",
         "skills/context-engine/fixed-vs-variable-budget.md": "2c35032f3ba183dcb722d9e7ea46e276aaeb17960bba80436e179b6701f66580",
         "skills/context-engine/four-core-documents-spec.md": "626fbac89abb7ed6885108f5d206f26b1457781fb4a33085a540b82f96bce2b4",
@@ -564,12 +564,12 @@
         "skills/context-engine/growth-plan-template.md": "026f93e0d9e7236a57646b3906eb528ff380610e18856e07dc6ab95b6adc20c4",
         "skills/context-engine/guidelines-framework.md": "957e33516a722c2809d7e88a0329a74579b2595c6ff43b1f2dd96cb4be073511",
         "skills/context-engine/in-market-out-market.md": "15f1c3f4c995d988ae24945a7add79d6e5e3d11fbc1f9004bef13bbeaede5085",
-        "skills/context-engine/india-market-context.md": "1e5672ea1a0b87874d2868165cf84e476c86afade34ca2ea65d4e62371928c6f",
+        "skills/context-engine/india-market-context.md": "9954e5dd34581a3d5916a3e503ea00a5b8442075dfc3ee6a5d7580f4eb3f3065",
         "skills/context-engine/industry-profiles.md": "4027ffcced4e0856879962b3a94f37934f34e38db7803122a970f93cb1eba9ab",
         "skills/context-engine/intelligence-layer.md": "222a04b33fea5f3a2784cfe202027ffdb7c92f78463a4726683f378ab6d4d449",
         "skills/context-engine/journey-growth-guide.md": "637bc220368d164fc98d0e85d6c8eb08f25003c28ba447c1c18d6eb582abaed5",
         "skills/context-engine/living-instruction-file-spec.md": "45cfcb08cd006dffe97ffe2e40a7a25266003ee255f47151a18498ccde927ae4",
-        "skills/context-engine/market-intelligence-guide.md": "bb2e14e8269f51a811b10539d94b7eb05c80daec36b0f94e5a34fe75ea45cb5f",
+        "skills/context-engine/market-intelligence-guide.md": "0ecae2009fd6c0c8b7b3580b35c45879c58f3494af4438febc77bca190d4ec41",
         "skills/context-engine/marketing-science-guide.md": "40d0cb32c8c9b6dfe04219d9c91b4f32d450c23bcc0854361c2994ed7fdd7a97",
         "skills/context-engine/memory-architecture.md": "09e52f6149f8e87df5421aef1cd5ee521cfda309fa6b9a8e2f8292b60c2a3cb4",
         "skills/context-engine/monthly-report-template.md": "b1ad1c3113aa861213bd58a29e608f0ddc5ca0432a4340a480134a9130f70da1",
@@ -755,7 +755,7 @@
         "skills/send-email-campaign/SKILL.md": "8719d18a8e35a4dfbdb31ec5db92c1f0f116e02e37e1aae2cb27dc49f7c0eab5",
         "skills/send-notification/SKILL.md": "7a3abc4af678f7fee1bea4c6b0db0c460c2382c0c18039d4403381479cc344b6",
         "skills/send-report/SKILL.md": "b2399d4c9f49d4a64bb47e41b329b30f8ef88a11537ab6d8c67b1d916c03c5fc",
-        "skills/send-sms/SKILL.md": "e762a46e5bfd60d1da5724f4fb9fa36d6ea6881f1b23b6d50bef10fb80b68ab2",
+        "skills/send-sms/SKILL.md": "17285cfff013356edf1f7ed149d60cdff4a302e51fbe679268292082da23079a",
         "skills/seo-audit/SKILL.md": "dfe28cd0885951eb64b667e1f044b99b394360a7fa283c62a4d6afdce1b6792a",
         "skills/seo-audit/dimension-checklists.md": "d1e85e684096f84a4a64e5fc296df8baec378e325930428f9771507458cff5b3",
         "skills/seo-audit/evals/evals.json": "c368706ca098ccf9b2c927b393a6df52bc780b669307dd49fd4975a2c2f9d834",
@@ -795,8 +795,8 @@
       "plugin": "digital-marketing-pro",
       "repo": "https://github.com/indranilbanerjee/digital-marketing-pro",
       "skills": 164,
-      "version": "3.36.0"
+      "version": "3.36.1"
     }
   },
-  "version": "3.57.1"
+  "version": "3.57.2"
 }

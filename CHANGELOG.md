@@ -5,6 +5,11 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.57.2] - 2026-10-27
+
+- Digital Marketing Pro 3.36.1: compliance rules brought up to date from primary sources, ahead of their dates. India's DPDP Rules (G.S.R. 846(E), 13 Nov 2025) with their phasing: Consent Managers from 13 Nov 2026, core duties from 13 May 2027. The FCC's TCPA revocation rule (effective 25 Nov 2026). The EU AI Act Article 50(2) transitional deadline (2 Dec 2026) and the republishing rule. UK PECR changes under the Data (Use and Access) Act. California's current penalties, AB 853 and AB 566. Oklahoma and Alabama dates. A dated-obligations table with a "verified on" stamp per jurisdiction, and tests that fail when a date passes or a stamp goes stale.
+- Hermes bundle rebuilt. Suite total 2,302 (CF 839 + DMP 747 + SF 605 + CutForge 53 + marketplace 58).
+
 ## [3.57.1] - 2026-10-27
 
 - Connector setup offers only vendor-verified packages. `npx -y <name>` runs whatever is published under that name with the user's API keys in its environment, and most of the package names Digital Marketing Pro and ContentForge offered for connectors did not exist on npm or were published by unrelated third parties. Both plugins now give a runnable command only for a package the service's own vendor publishes, pinned to an exact version (Digital Marketing Pro: Pinecone, DataForSEO, DeepL; ContentForge: DeepL); every other connector says "no verified connector" and points to the vendor's own hosted connector where one exists, with no command and no credentials. Tests keep anything runnable inside the allowlist, and a weekly workflow checks each listed package still exists with the expected publisher (Digital Marketing Pro 3.35.9, ContentForge 4.5.8).
