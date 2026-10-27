@@ -290,6 +290,24 @@ class TestReadmeLiveness(unittest.TestCase):
                 self.assertNotIn(needle, self.live,
                                  f"README live section still says '{needle}'")
 
+    def test_cutforge_tool_counts_match_sibling_truth(self):
+        """The plugin table said 53 tools while the job table above it still said 48
+        (found 2026-10-27): only skill counts were compared with the sibling repos.
+        CutForge's own tests keep its README's tool count true, so every count here
+        must agree with that one."""
+        sib = _sibling("cutforge")
+        if sib is None:
+            self.skipTest("sibling repos not checked out beside the marketplace")
+        m = re.search(r"engine of (\d+) tools", (sib / "README.md").read_text(encoding="utf-8"))
+        self.assertIsNotNone(m, "CutForge's README no longer states its tool count")
+        stated = [(ln, int(n)) for ln in self.live.splitlines() if "cutforge" in ln.lower()
+                  for n in re.findall(r"(\d+) tools\b", ln)]
+        self.assertTrue(stated, "the README states no CutForge tool count")
+        for line, n in stated:
+            with self.subTest(claim=line[:70]):
+                self.assertEqual(n, int(m.group(1)),
+                                 f"README says {n} tools; CutForge's README says {m.group(1)}")
+
     def test_suite_skills_badge_matches_sibling_truth(self):
         sibs = [_sibling(n) for n in SUITE]
         if not all(sibs):

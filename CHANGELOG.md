@@ -5,6 +5,15 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.57.7] - 2026-10-27
+
+- Digital Marketing Pro 3.39.0: the model router reaches Google. It reads the models your key can use from Google's own list, with the key in the `x-goog-api-key` header, and takes retirement and release dates from a record of Google's deprecations page, kept with its source and the date it was read. It never picks a preview, a moving `latest` alias, a dated snapshot or an endpoint Google now redirects to another model, and it refuses a model the page marks as shut down. No Digital Marketing Pro job uses Google yet; this plugin holds the router's canonical file. A replacement taken from a vendor's deprecations page is now named as the vendor's recommendation, not as the router's own pick.
+- SocialForge 1.30.0: asset indexing picks the model that reads your brand photos with that router (an exact copy), from the models your Gemini key can use: the brand's pin, then `--model`, then the router, then the shipped default, tagged offline. The index records which model read each photo. A retired model, a rejected key or no usable model stops the run before any photo is sent. `.webp` photos are sent as `image/webp`.
+- The registry-refresh script in Digital Marketing Pro 3.39.0, ContentForge 4.5.12 and SocialForge 1.30.0 sent the Gemini key as `?key=` in the URL, where proxies and server logs keep it, and read only the first page of Anthropic's and Google's model lists, so models on later pages could be reported as gone. The key now goes only in a header, every page is read, and a refused call is reported by its status alone.
+- ContentForge 4.5.12: `feature_card.py` checks for matplotlib and Pillow before drawing and refuses, writing nothing. Before, it crashed without matplotlib and, without Pillow, left a card on disk it had not verified. The five hero `.skill` bundles are unchanged.
+- Marketplace: a test compares every CutForge tool count in this README with CutForge's own README. The job table still said 48 tools; it now says 53.
+- Hermes bundle rebuilt. Suite total 2,695 (CF 887 + DMP 868 + SF 725 + CutForge 156 + marketplace 59).
+
 ## [3.57.6] - 2026-10-27
 
 - CutForge 1.1.1: `-h` / `--help` on any engine tool prints its usage and runs nothing, and an unknown option exits 2. Before, `--help` on some tools wrote sound files, generated demo media, re-mixed a film or began a model download, and others crashed. A test runs every tool's help with the network off and checks no project file changed. `new_project.py` exits 2 for a target inside the plugin folder or a folder that isn't empty. 53 engine tools; 156 tests.
