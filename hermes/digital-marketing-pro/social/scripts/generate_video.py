@@ -15,12 +15,12 @@ Override per-call with --video-model.
 
 Setup (WaveSpeed — for Kling):
     export WAVESPEED_API_KEY=your-key (get at https://wavespeed.ai/accesskey)
-    pip install wavespeed
+    python install_deps.py --groups video   (prints the pinned commands)
 
 Setup (Vertex AI — for Veo):
     export GOOGLE_CLOUD_PROJECT=your-project-id
     gcloud auth application-default login
-    pip install google-genai
+    python install_deps.py --groups image   (pins google-genai)
 """
 
 import argparse
@@ -464,7 +464,7 @@ def generate_video_chain(prompt, output_path, image_path, duration, aspect_ratio
     status NEEDS_REQUOTE and nothing is spent on it. A rung that cannot run at all (no credentials, or Veo without
     Vertex) spends nothing and is skipped with its reason recorded.
     """
-    from provider_failures import failure_payload, requote_payload, fallback_notice, record
+    from provider_failures import failure_payload, requote_payload, fallback_fields, record
     attempts = []
     order = list(VIDEO_RUNGS)
     if preferred in order:
@@ -492,9 +492,7 @@ def generate_video_chain(prompt, output_path, image_path, duration, aspect_ratio
                                                duration, sound, attempts=attempts)
         if result and result.get("status") == "success":
             if attempts:
-                result["fallback_from"] = ", ".join(dict.fromkeys(a["provider"] for a in attempts))
-                result["earlier_attempts"] = attempts
-                result["provider_notice"] = fallback_notice(attempts, prov)
+                result.update(fallback_fields(attempts, prov))
             if withheld:
                 result["not_run_unquoted"] = withheld
             if last_image_path and result.get("last_frame_used") is not True:

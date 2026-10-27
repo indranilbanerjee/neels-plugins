@@ -6,6 +6,91 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 
 ---
 
+## [3.37.0] - 2026-10-27
+
+### Google's new crawler tokens, Cloudflare's block modes, Bing's citation gaps, Google's AI-feature control and Preferred Sources
+
+From the 2026-10-27 freshness review. Every fact below was read at its primary source that day. Each guard has a test that fails on the 3.36.2 code or text.
+
+**Changed — the agent-readiness audit knows Google's user-triggered fetchers**
+
+- `scripts/agent-readiness-audit.py` now audits two more Google tokens:
+  - `Google-Agent`: agents on Google infrastructure that browse and act on a user's request;
+  - `Google-GeminiNotebook`: URLs a user adds as sources in a Gemini Notebook project.
+- Both are user fetches, so blocking them fails like blocking ChatGPT-User. Google says such fetchers "generally ignore robots.txt rules", and it is testing Web Bot Auth with the `https://agent.bot.goog` identity.
+- A robots.txt group that still names `Google-NotebookLM` now warns: Google lists it as a former agent, "supported until August 2026". Source: [Google user-triggered fetchers](https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers) (updated 2026-08-19).
+- The public `digital-marketing-pro-agent-readiness` hero is re-synced, and its 125 tests, parity included, pass against this release.
+
+**Added — guidance**
+
+- **Cloudflare's block modes**, in `/digital-marketing-pro:agent-readiness-audit` and `/digital-marketing-pro:tech-seo-audit`. Since 15 Sep 2026, Cloudflare's **Block** and **Block on pages with ads** settings also apply to Googlebot, Bingbot and Applebot, so **Block** takes a site out of search; **Disallow AI Training** keeps search crawlers and publishes a no-training preference. A clean robots.txt no longer proves crawlers can reach the site. Source: [Cloudflare](https://blog.cloudflare.com/accountable-mixed-use-ai-crawlers/).
+- **Bing Topics Portfolio (beta, 13 Oct 2026)**, in `/digital-marketing-pro:geo-monitor` and `/digital-marketing-pro:aeo-audit`. Per topic it shows approximate citations across all sites, how many sites are cited, and Top Opportunity Queries, where others are cited and you aren't. It is the first first-party citation-gap list; use it to seed probe sets, and label its figures approximate. Source: [Bing Webmaster blog](https://blogs.bing.com/webmaster/2026/10/introducing-topics-portfolio-beta-in-ai-performance/).
+- **Google's Search generative AI control**, in `/digital-marketing-pro:aeo-geo` and `/digital-marketing-pro:gsc-ai-performance`. Search Console → Settings → Search generative AI excludes a site from AI Overviews, AI Mode and Discover's AI features. Google says it "isn't used as a ranking or inclusion signal affecting other parts of Search" and "doesn't affect AI training". The guidance names the cost too: every AI-feature impression, and the Preferred Sources badge in AI features. Source: [Search Console help](https://support.google.com/webmasters/answer/16908024).
+- **Preferred Sources playbook item**, in `/digital-marketing-pro:aeo-geo`. Use is up more than 7x in 2026 (Google, 15 Oct). Add Google's button or the deep link `https://www.google.com/preferences/source?q=<domain>`; only domains and subdomains qualify, and the AI Mode badge needs the site included in Search generative AI features. Source: [Search Central](https://developers.google.com/search/docs/appearance/preferred-sources).
+
+**Tests**
+
+- `tests/test_agent_readiness_audit.py`: the two tokens, a blocked Google-Agent fails, and the retired token warns. On 3.36.2: 3 failures and 1 error.
+- New: `tests/test_search_guidance.py`. It checks that the skill's crawler table equals the script's tokens, that the guidance stays present, and that no skill names Google-NotebookLM as current. On 3.36.2 text: 2 failures.
+- Suite: 759 tests.
+
+## [3.36.2] - 2026-10-27
+
+### The model registry refreshed from the vendors' pages, with checks that its dates and statuses stay true
+
+The canonical registry (`scripts/model_registry.json`, which ContentForge and SocialForge copy) had last been reviewed on 2026-10-04 and was wrong in places by 2026-10-27. Every vendor page was re-read that day (Anthropic, OpenAI, the Gemini API and Vertex AI), and the reviewed patch is in `_shared/REGISTRY-PATCH-2026-10-27.md`. Each guard below has a test that fails on the 3.36.1 registry, doc or scanner.
+
+**Fixed — aliases**
+
+- `latest-fast-anthropic` → `claude-haiku-5-5` (released 2026-10-07). Haiku 4.5 is now `supported` with a replacement; its "not sooner than 2026-10-15" floor has passed and no deprecation notice had been issued, which the entry records as `retirement_checked`.
+- `latest-text-google` → `gemini-4-argon` (GA 2026-10-13).
+- `latest-image-balanced-google` → `gemini-nano-banana-2.1`. Nano Banana 2 (`gemini-3.1-flash-image`) was deprecated on 2026-10-06.
+- New: `latest-video-gemini-api` → `gemini-omni-1.1-flash`, the Gemini API's video model (a different call shape from Veo), and `latest-fast-google` → `gemini-3.5-flash-lite`.
+- `latest-video-google` stays on `veo-3.1-generate-001`, now verified GA on Vertex AI. It is Vertex-only, and its retirement is "November 17, 2026 or later".
+
+**Fixed — wrong statuses and dates**
+
+- `gemini-2.5-flash-image` was marked "retired 2026-10-02". That was its release date; its shutdown is 2027-03-15.
+- Gemini 2.5 Pro, Flash and Flash-Lite are not deprecated: they are served to past users with no shutdown date. The 2026-10-16 shutdown is no longer on Google's page.
+- OpenAI:
+  - `gpt-4o` and `gpt-4o-mini` are deprecated (shutdown 2027-01-14, replacement `gpt-6-luna`);
+  - `gpt-4o-2024-05-13` is retired (2026-10-23);
+  - the gpt-5 and o3 families now fall forward to the gpt-5.6 models OpenAI names.
+- `claude-sonnet-4-5-20250929` carries its announced 2026-11-30 retirement. Every Claude entry now carries its "not sooner than" floor.
+- Added: Claude Haiku 5.5, Mythos 5.1, Mythos 5 and Mythos Preview; GPT-6.1 Terra, GPT Image 1.5 and GPT Image 1 Mini (shutdown 2026-12-01); Gemini 4 Argon, 3.6 Flash, 3.7 Flash, 3.5 Flash-Lite, Nano Banana 2.1, Nano Banana 2 Lite and 3 Flash preview; Veo 3.1 Fast and Lite on Vertex.
+- `gemini-omni` is renamed to the id Google uses, `gemini-omni-flash-preview` (shut down 2026-10-22).
+- Eleven ids retired more than 90 days ago are dropped. The rule: keep a retired id for about 90 days, so `check()` still answers "retired, use X", then drop it.
+- `next_review_due` is 2026-11-16.
+
+**Changed — the sampling-parameter guidance and scan**
+
+- Anthropic API version 2026-10-21 rejects `temperature`, `top_p` and `top_k` on every model (HTTP 400). The registry note is now `anthropic_sampling_parameters`, and `resolve_model.py --check-params` flags those parameters in any file that names a Claude model id or a `latest-*-anthropic` alias. It used to check only Opus 4.7 and 4.8.
+- A new `veo_backend` note records that a Gemini API key alone cannot make a Veo clip.
+
+**Docs**
+
+- `docs/MODEL-CURATOR.md`: the alias table, last updated in July, is regenerated from the registry, and a test keeps it in step. The parameter section is rewritten.
+- `settings.json.example` falls back to Haiku 5.5. `docs/claude-interfaces.md` and the README examples name current models.
+
+**Added — `tests/test_model_registry_dates.py`**
+
+- It fails when:
+  - a live entry is past its shutdown date, or past its "not sooner than" floor without a re-check in the last 30 days;
+  - a deprecated entry is past its shutdown date;
+  - an alias points at a deprecated or retired id, or at one shutting down within 30 days;
+  - a replacement is missing or not live;
+  - a retired id lingers more than 120 days;
+  - `next_review_due` has passed;
+  - the curator doc's alias table drifts.
+- Against the 3.36.1 registry it finds 17 problems. It joins `tests/run_all.py --dated` and the weekly job.
+- The resolver tests now pick their deprecated, retired and current fixtures from the live registry, so a refresh can't strand them.
+
+**Tests**
+
+- New: `tests/test_model_registry_dates.py` (6). Updated: `tests/test_resolve_model.py`.
+- Suite: 753 tests.
+- ContentForge and SocialForge take the same entries and aliases in their own releases. Until they do, DMP's cross-repo registry test reports the difference in a full checkout.
+
 ## [3.36.1] - 2026-10-27
 
 ### Compliance rules brought up to date, with the dates in one table that a test watches

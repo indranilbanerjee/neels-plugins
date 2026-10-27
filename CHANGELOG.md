@@ -5,6 +5,13 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.57.3] - 2026-10-27
+
+- Model lists refreshed from the vendors' own pages in all three plugins (Digital Marketing Pro 3.36.2, ContentForge 4.5.9, SocialForge 1.29.9): Claude Haiku 5.5 as the fast model, Gemini 4 Argon and Nano Banana 2.1 added, Gemini 2.5's status and an image model's shutdown date corrected, Claude Sonnet 4.5 marked for its 30 November retirement, retired ids removed after 90 days. New tests fail when a model passes its shutdown date, a shortcut points at a model that is going away, or the review date passes.
+- Digital Marketing Pro 3.37.0: Google's Google-Agent and Google-GeminiNotebook fetchers in the agent-readiness audit (and its public hero skill), Cloudflare's block modes that can stop search crawlers, Bing's Topics Portfolio citation gaps, guidance on Google's Search generative AI control, and a Preferred Sources step.
+- ContentForge 4.5.9: the one allowlisted connector command is pinned (deepl-mcp-server@1.3.14) and the allowlist check rejects anything unpinned. SocialForge 1.29.9: a fallback names the provider that actually failed; SocialForge passes the plugin directory's own validation profile.
+- Hermes bundle rebuilt. Suite total 2,383 (CF 857 + DMP 759 + SF 656 + CutForge 53 + marketplace 58).
+
 ## [3.57.2] - 2026-10-27
 
 - Digital Marketing Pro 3.36.1: compliance rules brought up to date from primary sources, ahead of their dates. India's DPDP Rules (G.S.R. 846(E), 13 Nov 2025) with their phasing: Consent Managers from 13 Nov 2026, core duties from 13 May 2027. The FCC's TCPA revocation rule (effective 25 Nov 2026). The EU AI Act Article 50(2) transitional deadline (2 Dec 2026) and the republishing rule. UK PECR changes under the Data (Use and Access) Act. California's current penalties, AB 853 and AB 566. Oklahoma and Alabama dates. A dated-obligations table with a "verified on" stamp per jurisdiction, and tests that fail when a date passes or a stamp goes stale.
