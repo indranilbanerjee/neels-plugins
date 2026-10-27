@@ -5,6 +5,11 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.57.6] - 2026-10-27
+
+- CutForge 1.1.1: `-h` / `--help` on any engine tool prints its usage and runs nothing, and an unknown option exits 2. Before, `--help` on some tools wrote sound files, generated demo media, re-mixed a film or began a model download, and others crashed. A test runs every tool's help with the network off and checks no project file changed. `new_project.py` exits 2 for a target inside the plugin folder or a folder that isn't empty. 53 engine tools; 156 tests.
+- Hermes bundle rebuilt (its content is unchanged; CutForge installs on Hermes on its own). Suite total 2,580 (CF 863 + DMP 841 + SF 662 + CutForge 156 + marketplace 58).
+
 ## [3.57.5] - 2026-10-27
 
 - CutForge 1.1.0: a paid voice or AI-art tool run without `--go` prints a quote and exits 4, spending nothing. The quote comes from a price read on the provider's own page and recorded with that page; a price expires after a week, and CutForge ships none. A run with `--go` must name the providers it was quoted for, and the budget cap is kept per currency. A `GO_AHEAD.txt` file no longer counts as the go, because an agent can create one. Speech models resolve through a copy of the suite's model registry, which refuses retired models and expired pins; Sarvam transcription moves off a model the vendor no longer lists; OpenAI speech without a model you name refuses, because its replacement runs only on the Realtime API. Setup requires Node 22, checks ffmpeg and the pinned Remotion, and prints pinned install commands. Windows fixes for shell-script line ends, byte-order marks and temp paths. Agent descriptions cut from about 2,212 to about 825 always-on tokens. 52 engine tools; 146 tests (from 53).

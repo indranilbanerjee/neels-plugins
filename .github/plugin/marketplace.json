@@ -2,7 +2,7 @@
   "name": "neels-plugins",
   "metadata": {
     "description": "Four open-source plugins: Digital Marketing Pro, ContentForge, SocialForge and CutForge. Strategy, long-form content, social and video. Runs on Claude Code, Codex, Cursor, Antigravity. MIT-licensed.",
-    "version": "3.57.5"
+    "version": "3.57.6"
   },
   "owner": {
     "name": "Indranil Banerjee",
@@ -68,7 +68,7 @@
         "repo": "indranilbanerjee/cutforge"
       },
       "description": "Open-source video creation and editing plugin: your photos, clips and voice notes become story-led films, brand films, explainers and ads. 13 skills, 4 reviewer agents, a tested Remotion engine. Runs on Claude Code, Codex, Cursor, Antigravity.",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "license": "MIT",
       "keywords": [
         "video-editing",

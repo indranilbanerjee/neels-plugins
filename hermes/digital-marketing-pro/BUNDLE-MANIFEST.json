@@ -2,9 +2,9 @@
   "bundle": "digital-marketing-pro",
   "generated_files": {
     ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
-    "README.md": "46adff9fcae342a566361515523e862746737ec83aec36c3d7bff644e2a93a18",
-    "__init__.py": "5d885ccda2d343afe09d5ad2d6cb1c345df5d217f5cd5eb08a412e1277f9d564",
-    "plugin.yaml": "77fc576670611f506a8ec7b7afa203fb3b583e0cef756e6c98459376aaa37b58"
+    "README.md": "a1a58c13646a35db315ad084833928385d95d048ffe45bcba2dd914b39a56d08",
+    "__init__.py": "224dc918c6f03ee257eb7d443cbe67394400f3fa161155d27994aac682b2bda6",
+    "plugin.yaml": "5fe407b49468b2c2a6fc8bd702be1e2fdb289064a57bc9b828e884be868217c6"
   },
   "generator": "scripts/build_hermes_bundle.py",
   "groups": {
@@ -801,5 +801,5 @@
       "version": "3.38.2"
     }
   },
-  "version": "3.57.5"
+  "version": "3.57.6"
 }
