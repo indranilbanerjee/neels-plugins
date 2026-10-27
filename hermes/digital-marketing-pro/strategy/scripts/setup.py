@@ -49,6 +49,22 @@ FULL_PACKAGES = LITE_PACKAGES + [
 LITE_DEPS = _common.pinned_specs(LITE_PACKAGES)
 FULL_DEPS = _common.pinned_specs(FULL_PACKAGES)
 
+# Python 3.10 reached end of life on 2026-10-01. DMP keeps running on it because
+# Claude's Cowork VM ran Python 3.10.12 when last checked; a hard 3.11 floor would
+# break every Cowork user. setup.py names the recommendation without promising a date.
+RECOMMENDED_PYTHON = (3, 11)
+
+
+def python_version_notice(version_info=sys.version_info):
+    """A warning line when this Python is older than the recommended one, else None."""
+    if tuple(version_info[:2]) >= RECOMMENDED_PYTHON:
+        return None
+    running = f"{version_info[0]}.{version_info[1]}"
+    return (f"PYTHON_WARNING: you are running Python {running}. "
+            "Python 3.10 reached end of life on 2026-10-01. Digital Marketing Pro still runs on it, "
+            "and will move to 3.11 once Claude's Cowork environment does (it ran 3.10.12 when last "
+            "checked). Use 3.11 or newer where you can.")
+
 
 def init_memory_dirs():
     """Create the persistent memory directory structure."""
@@ -561,6 +577,11 @@ def main():
     parser.add_argument("--summary", action="store_true", help="Print rich brand context summary")
 
     args = parser.parse_args()
+
+    # stderr, so callers that parse DEPS_OK / INSTALL_OK lines on stdout are unaffected.
+    notice = python_version_notice()
+    if notice:
+        print(notice, file=sys.stderr)
 
     # Always ensure memory dirs exist
     init_memory_dirs()

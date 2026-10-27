@@ -7,6 +7,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [4.5.8] - 2026-10-27
+
+### Connector setup only offers vendor-verified packages
+
+**Security**
+
+- `npx -y <name>` downloads and runs whatever is published under that name, with the credentials in its environment, and a
+  name nobody has registered can be registered by anyone. The connector catalog handed out package names for nine
+  connectors, and `.mcp.json.example` for three more. Four of those names are not registered on npm at all, and the rest are
+  community packages rather than the services' own vendors'. ContentForge now gives a runnable command only for a package
+  listed in `config/verified-npx-packages.json` (the package name, the expected npm publisher, and the vendor's
+  repository). Today that is `deepl-mcp-server`, published by DeepL.
+- WordPress, HubSpot CMS, Semrush, Confluence, Sarvam AI, Twitter/X, LinkedIn and Instagram are now "no verified
+  connector". `connector-status.py` (`setup-guide`, `check`, `status`, `list-available`) and `/contentforge:cf-connect` print
+  the options (the vendor's own MCP server where one exists, an aggregator, or skipping it) and write no command and no
+  environment variables. A registry entry that says npx for an unlisted package is treated as manual as well.
+- `.mcp.json.example` ships only the DeepL entry; the Stability AI, nanobanana and imagenate entries are removed.
+  `/contentforge:cf-add-integration` no longer searches npm or guesses a package name: a community package the user names
+  themselves is labelled an unverified third party and shown with its npm facts, and any entry is pinned to the version
+  they reviewed.
+- Prose: the retired package names are gone from `.mcp.json.connectors-reference`, and `CONNECTORS.md`, `USER-GUIDE.md`,
+  `cf-audit` and `cf-calendar` no longer describe Google Sheets, WordPress or the image servers as npx connectors.
+
+**Added**
+
+- `scripts/npm_allowlist.py`: `--check` (offline) and `--online` (npm, read-only) with a Markdown issue body. The new
+  `.github/workflows/npm-allowlist.yml` runs both every week and opens an issue naming the package when either fails.
+- `tests/test_npx_allowlist.py` (25 tests): the offline guard, planted with the 4.5.7 example file, a registry that still
+  hands out the unregistered names, and scoped, versioned and other-runner names; a recursive scan of every shipped text
+  file for `npx -y <name>`; the converted connectors give no command, package or environment variables in any action; an
+  unlisted npx entry is still treated as manual; and the weekly check against a planted 404, no versions, a changed
+  publisher or repository, a deprecated latest version and an unreachable registry.
+
+**Also in 4.5.8**
+
+- **Always-on cost under 2,000 tokens.** `claude plugin details contentforge` measured ~2,112 tokens added to every session
+  (the directory highlights 2,000 or more). Ten agent descriptions are shorter, two of them (268 and 216 characters) from
+  well over the 150-character rule; the measure is ~1,958. Agent names and what each agent does are unchanged.
+- **Instagram hashtags are capped at 5**, not 8-12. Instagram's verified @creators account announced on Threads on
+  2025-12-18: "Starting today, Instagram will allow up to 5 hashtags in a reel or post." The Help Center page could not be
+  read, so the spec says to treat 5 as the cap, and puts hashtags at the end of the caption because whether a first-comment
+  hashtag counts is not documented. Threads takes ONE topic tag per post (Meta's Threads API page, read 2026-10-27), not
+  1-3. `USER-GUIDE.md` also said Instagram 20-30 hashtags, LinkedIn 1,300 characters and Threads 3-5 hashtags; the
+  templates file said 8-12 for Instagram. All follow the spec now.
+- **One-command install** on Claude Code 2.1.292 or newer: `claude plugin install contentforge --marketplace
+  indranilbanerjee/neels-plugins`. The two-step route stays for older versions and for use inside a session.
+- **Python 3.10 warning.** Python 3.10 reached end of life on 2026-10-01. `setup.py` prints `PYTHON_WARNING=...` when it runs
+  on it: ContentForge still runs on 3.10 and will move to 3.11 once Claude's Cowork environment does (it ran 3.10.12 when last
+  checked), so no release is promised. Use 3.11 or newer where you can. Nothing stops working.
+- `tests/test_always_on_budget.py` (11 tests, planted with the 4.5.7 agent descriptions, the 8-12 hashtag spec and the first wording of the Python
+  warning, which promised 3.11 for a named release). Tests 828 -> 839, 0 skipped.
+
 ## [4.5.7] - 2026-10-12
 
 ### The audit recovery command keeps its arguments, and the install hint pastes into Git Bash and PowerShell

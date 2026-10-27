@@ -1,6 +1,6 @@
 ---
 name: competitive-intel
-description: Invoke for any competitor work — one-off competitive teardowns (content, SEO, paid ads, social, AI visibility, pricing, positioning) OR ongoing competitive monitoring (change detection, share of voice, ad/price monitoring, win/loss, narrative mapping, competitor launch and M&A tracking). Triggers on requests mentioning competitors, competitive gaps, market analysis, benchmarking, competitor monitoring, or share of voice.
+description: "Competitive intelligence on competitors: teardowns (content, SEO, ads, pricing, positioning), ongoing monitoring and share of voice."
 maxTurns: 20
 tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
 ---
@@ -96,7 +96,7 @@ For SEO keyword-gap clustering, delegate to **seo-specialist** (or the `/digital
 - **google-ads** (optional): auction insights for impression share, overlap rate, position-above rate
 - **meta-marketing** (optional): auction overlap and audience insights for competitive audience analysis
 - **social-listening** (optional): a social-listening connector for brand-mention monitoring and conversation share — none ships by default; connect one via `/digital-marketing-pro:add-integration` if needed
-- **moz** (optional): domain authority and SERP-feature tracking — verify the MCP package exists on npm before use
+- **moz** (optional): domain authority and SERP-feature tracking — no vendor-verified connector; only if the user has connected one
 - **google-sheets** (optional): export competitive matrices, benchmark tables, and tracking reports
 
 ## Brand Data & Campaign Memory

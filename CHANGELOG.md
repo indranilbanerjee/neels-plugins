@@ -5,6 +5,15 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.57.1] - 2026-10-27
+
+- Connector setup offers only vendor-verified packages. `npx -y <name>` runs whatever is published under that name with the user's API keys in its environment, and most of the package names Digital Marketing Pro and ContentForge offered for connectors did not exist on npm or were published by unrelated third parties. Both plugins now give a runnable command only for a package the service's own vendor publishes, pinned to an exact version (Digital Marketing Pro: Pinecone, DataForSEO, DeepL; ContentForge: DeepL); every other connector says "no verified connector" and points to the vendor's own hosted connector where one exists, with no command and no credentials. Tests keep anything runnable inside the allowlist, and a weekly workflow checks each listed package still exists with the expected publisher (Digital Marketing Pro 3.35.9, ContentForge 4.5.8).
+- Digital Marketing Pro 3.36.0: Meta's Marketing API v24.0 stops working on 10 November 2026; every platform API version now lives in one table with its sunset date (Meta v26.0, LinkedIn 202610 on the documented campaign path, Google Ads v26 without the retired developer token), tests fail 30 days before a sunset, and a weekly job runs them. The 24 agent descriptions are shorter (always-on cost down about 1,300 tokens).
+- SocialForge 1.29.8: a quote names only providers that can run (Google Veo needs Vertex AI; a Gemini API key alone no longer quotes it), and a fallback to a provider you were not quoted stops and asks for a new quote instead of spending.
+- ContentForge 4.5.8: under 2,000 always-on tokens; Instagram capped at 5 hashtags and Threads at one topic tag.
+- All three install in one command on Claude Code 2.1.292+ and note that Python 3.10 reached end of life (they still run on it).
+- Hermes bundle rebuilt. Suite total 2,295 (CF 839 + DMP 740 + SF 605 + CutForge 53 + marketplace 58).
+
 ## [3.57.0] - 2026-10-17
 
 - CutForge 1.0.1 joins the marketplace in all five manifests: an open-source video creation and editing plugin, from raw footage to final cut (13 skills, 4 reviewer agents, a tested Remotion, ffmpeg and Python engine of 48 tools). 1.0.1 escapes two invisible joiner characters in its voice tool that Hermes Agent's install scanner reads as hidden text, and adds the suite's scanner guard.

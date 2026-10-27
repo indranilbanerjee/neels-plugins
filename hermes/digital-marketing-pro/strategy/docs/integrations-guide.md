@@ -2,7 +2,7 @@
 
 > **Digital Marketing Pro** | For marketing operations managers
 >
-> This guide covers the 68-server MCP connector catalog shipped in `.mcp.json.example` (no `.mcp.json` ships — nothing auto-connects), how to configure them, how to manage credentials across multiple clients, and what the plugin can do with or without live connections.
+> This guide covers the services DMP can connect to (no `.mcp.json` ships — nothing auto-connects), how to configure them, how to manage credentials across multiple clients, and what the plugin can do with or without live connections.
 
 ---
 
@@ -50,7 +50,7 @@ In practical terms: instead of you manually pulling a GA4 report, pasting it int
 
 ### How the Plugin Uses MCP
 
-The plugin ships no `.mcp.json` (it is gitignored) — nothing is pre-configured and nothing auto-connects. A catalog of 68 MCP server definitions is provided in `.mcp.json.example` (npx/stdio transports), and an HTTP-connector catalog in `.mcp.json.connectors-reference`. You opt in by copying the entries you want into `.mcp.json` (or renaming the example file). Each one maps to a marketing platform or productivity tool and activates only when you set the required environment variables for that service.
+The plugin ships no `.mcp.json` (it is gitignored) — nothing is pre-configured and nothing auto-connects. Vendor-hosted HTTP servers are listed in `.mcp.json.connectors-reference`. `.mcp.json.example` carries runnable entries only for packages the vendor itself publishes on npm, pinned to an exact version (Pinecone, DataForSEO and DeepL today); services with neither are set up from the vendor's own documentation. A package name the vendor does not publish could be registered by anyone, who would then receive the API keys in its environment block, so DMP never offers a command for one. You opt in by copying the entries you want into your own `.mcp.json`; the per-service sections below list each service's environment variables.
 
 This is the key design principle: **the plugin works fully without any integrations enabled.** All 164 skills, 177 reference knowledge files (including the v3.0 methodology + framework refs), scoring scripts, brand voice analysis, compliance checking, campaign planning features, and the v3.0 12-Part engagement methodology + v3.2 quality gates operate entirely offline using built-in benchmarks and reference data. MCP integrations layer real data on top of that foundation.
 
@@ -194,13 +194,13 @@ You: Which queries have high impressions but low CTR? I want to optimize those p
 | Variable | Description |
 |---|---|
 | `GOOGLE_ADS_CUSTOMER_ID` | Your Google Ads customer ID (format: `123-456-7890`, without dashes in the env var) |
-| `GOOGLE_ADS_DEVELOPER_TOKEN` | Developer token from Google Ads API Center |
 | `GOOGLE_APPLICATION_CREDENTIALS` | Path to a Google Cloud service account JSON key file |
 
 **Where to get credentials:**
 1. Customer ID: Google Ads > top-right corner (the 10-digit number)
-2. Developer token: Google Ads > Tools & Settings > API Center. Apply for a developer token if you do not have one. Basic access is sufficient for read-only operations.
-3. Service account: Same Google Cloud setup. Enable the Google Ads API in your GCP project and link the service account.
+2. Service account: Same Google Cloud setup. Enable the Google Ads API in your GCP project and link the service account. Your API access level (Explorer, Basic or Standard) belongs to this Google Cloud project.
+
+No developer token: Google sunset developer tokens on 9 Sep 2026, and API access now comes from the Google Cloud project behind your OAuth client or service account ([Google's guide](https://developers.google.com/google-ads/api/docs/api-policy/developer-token)). If a server you wired yourself still asks for `GOOGLE_ADS_DEVELOPER_TOKEN`, Google ignores the header; there is no token to apply for.
 
 **Example usage:**
 ```
@@ -1677,8 +1677,8 @@ export HUBSPOT_ACCESS_TOKEN="<your hubspot access token>"
 Maintain separate MCP configuration files per client and swap the active one.
 
 ```bash
-# One-time setup: create per-client configs from the connector catalog
-# (no .mcp.json ships, so start from the example catalog and trim per client)
+# One-time setup: one config per client, built from the entries you use
+# (vendor-hosted HTTP entries from .mcp.json.connectors-reference, pinned vendor packages from .mcp.json.example)
 cp .mcp.json.example .mcp-acme-corp.json      # Edit with Acme Corp's servers + credentials
 cp .mcp.json.example .mcp-techflow.json        # Edit with TechFlow's servers + credentials
 cp .mcp.json.example .mcp-greenleaf.json       # Edit with GreenLeaf's servers + credentials
@@ -1866,7 +1866,7 @@ When connecting MCP integrations that access personal data (especially GA4, HubS
 |---|---|---|
 | Google Analytics 4 | `GA_PROPERTY_ID`, `GOOGLE_APPLICATION_CREDENTIALS` | GCP service account |
 | Google Search Console | `GSC_SITE_URL`, `GOOGLE_APPLICATION_CREDENTIALS` | GCP service account |
-| Google Ads | `GOOGLE_ADS_CUSTOMER_ID`, `GOOGLE_ADS_DEVELOPER_TOKEN`, `GOOGLE_APPLICATION_CREDENTIALS` | GCP service account |
+| Google Ads | `GOOGLE_ADS_CUSTOMER_ID`, `GOOGLE_APPLICATION_CREDENTIALS` | GCP service account |
 | Meta Business Suite | `META_ACCESS_TOKEN`, `META_AD_ACCOUNT_ID` | -- |
 | HubSpot CRM | `HUBSPOT_ACCESS_TOKEN` | -- |
 | Mailchimp | `MAILCHIMP_API_KEY` | -- |
@@ -1910,7 +1910,7 @@ When connecting MCP integrations that access personal data (especially GA4, HubS
 | Optimizely | `OPTIMIZELY_API_TOKEN`, `OPTIMIZELY_PROJECT_ID` | -- |
 | Supabase | `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` | -- |
 
-**Total unique variables:** 98 across all 68 integrations (because `GOOGLE_APPLICATION_CREDENTIALS` is shared across GA4, GSC, Google Ads, Sheets, YouTube, BigQuery, and Google Drive, and Pardot shares Salesforce OAuth credentials).
+**Total unique variables:** 98 across the services this guide covers (because `GOOGLE_APPLICATION_CREDENTIALS` is shared across GA4, GSC, Google Ads, Sheets, YouTube, BigQuery, and Google Drive, and Pardot shares Salesforce OAuth credentials).
 
 **Minimum setup for maximum coverage:** A single GCP service account JSON file + your GA4 Property ID + GSC Site URL gives you up to seven Google integrations (GA4, GSC, Sheets, YouTube, BigQuery, Google Drive, Google Ads) from a shared credential base.
 

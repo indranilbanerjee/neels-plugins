@@ -82,7 +82,12 @@
 
 In Claude Cowork, go to Settings > Plugins > Marketplace and search for "ContentForge" from the `neels-plugins` marketplace.
 
-Or, if using CLI:
+Or, if using CLI (Claude Code 2.1.292 or newer, one command):
+```
+claude plugin install contentforge --marketplace indranilbanerjee/neels-plugins
+```
+
+On an older version:
 ```
 claude plugin marketplace add indranilbanerjee/neels-plugins
 claude plugin install contentforge@neels-plugins
@@ -149,7 +154,7 @@ This tells you:
 - **Version** — Read from `.claude-plugin/plugin.json`, not hardcoded in any doc.
 - **PLUGIN_ROOT** — Where the plugin is installed. All scripts reference this path.
 - **SCRIPTS_DIR** — Where Python scripts live.
-- **Python version** — Must be 3.10+. Cowork VM has 3.10.12.
+- **Python version** — Must be 3.10+. Python 3.10 reached end of life on 2026-10-01. ContentForge still runs on it, and will move to 3.11 once Claude's Cowork environment does (it ran 3.10.12 when last checked); this line warns when it runs on 3.10. Use 3.11 or newer where you can.
 - **Connectors active** — How many entries are in your `.mcp.json` (none by default; the file does not exist until you add a connector).
 
 If you see errors here, check the [Troubleshooting](#21-troubleshooting) section.
@@ -365,11 +370,10 @@ Create a Google Sheet with these columns:
 /contentforge:cf-connect google-sheets
 ```
 
-This walks you through the setup. Google Sheets uses npx MCP (not HTTP), so you'll need:
+This walks you through the setup. Google Sheets tracking runs through a bundled Python script (not an MCP server), so you'll need:
 1. A Google Cloud Project
 2. Service Account with Sheets API enabled
 3. Credentials JSON file
-4. Add the npx server to `.mcp.json`
 
 See [CONNECTORS.md](../CONNECTORS.md) for detailed instructions.
 
@@ -747,7 +751,7 @@ Strategic Actions:
 
 **Supported platforms:**
 - **Webflow** (via HTTP MCP) — Direct publishing
-- **WordPress** (via npx MCP) — Direct publishing
+- **WordPress** — no verified connector: use WordPress.com's official MCP connector for sites hosted there, or an aggregator entry; ContentForge does not run a community package for it
 - **HTML export** (fallback) — Copy HTML to any CMS manually
 
 **What happens:**
@@ -765,11 +769,11 @@ Takes any ContentForge article and generates posts for:
 
 | Platform | Format |
 |----------|--------|
-| **LinkedIn** | Professional post, 1,300 char max, 3-5 hashtags |
+| **LinkedIn** | Professional post, 3,000 char max, 3-5 hashtags |
 | **Twitter/X** | Thread of 3-5 tweets, 280 char each, 2-3 hashtags |
-| **Instagram** | Caption with line breaks, 2,200 char max, 20-30 hashtags |
+| **Instagram** | Caption with line breaks, 2,200 char max, up to 5 hashtags |
 | **Facebook** | Engaging post, 500-1,000 chars, 1-2 hashtags |
-| **Threads** | Conversational post, 500 char max, 3-5 hashtags |
+| **Threads** | Conversational post, 500 char max, 1 topic tag |
 
 **How to use:**
 ```
@@ -1129,11 +1133,13 @@ Quick wins: Google Sheets, Google Drive (unlock tracking + knowledge vault)
 2. Authorize in your browser
 3. Done — connector is active
 
-**For npx connectors (Google Sheets, Google Drive, WordPress, etc.):**
-1. Set up required credentials (API keys, service accounts)
-2. Add environment variables to `.env`
+**For the npx connector (DeepL, the one package ContentForge gives a command for, because DeepL publishes it):**
+1. Set up the API key
+2. Add the environment variable to `.env`
 3. Add the npx server config to `.mcp.json`
 4. Restart Claude session
+
+Services with no vendor-published package (WordPress, HubSpot CMS, Semrush, Confluence, Sarvam AI, Twitter/X, LinkedIn, Instagram) are reported as "no verified connector": `/contentforge:cf-connect` prints the options and writes no command or credentials for them.
 
 `/contentforge:cf-connect` walks you through every step with copy-paste commands.
 
@@ -1320,7 +1326,7 @@ contentforge/
 ├── .claude-plugin/plugin.json     # Manifest (name, version, description, author)
 ├── .mcp.json                      # Not shipped (gitignored) — zero MCP servers auto-connect
 ├── .mcp.json.connectors-reference # Opt-in catalog: 16 HTTP connectors (Notion, Canva, Webflow, Slack, Gmail, Calendar, Figma, fal.ai, Replicate + Pipedream/Composio/Zapier/Make)
-├── .mcp.json.example              # 3 npx image-gen servers (Stability AI, nanobanana, imagenate) — CLI only
+├── .mcp.json.example              # 1 npx server (DeepL, published by DeepL) — CLI only
 ├── CONNECTORS.md                  # Full connector reference
 ├── README.md                      # Project overview
 ├── CHANGELOG.md                   # Release history
@@ -1411,7 +1417,7 @@ contentforge/
 │   ├── drive-folder-manager.md    # Drive folder layout conventions
 │   └── loop-tracker.md            # Loop accounting rules
 │
-├── scripts/                       # 29 Python scripts (stdlib; optional pinned packages are never auto-installed)
+├── scripts/                       # 30 Python scripts (stdlib; optional pinned packages are never auto-installed)
 │   ├── _common.py                 # Shared storage-root/brand-dir/atomic-write helpers
 │   ├── checkpoint-manager.py      # Per-phase run checkpoints (powers resume)
 │   ├── pipeline-tracker.py        # Phase start/end events + progress

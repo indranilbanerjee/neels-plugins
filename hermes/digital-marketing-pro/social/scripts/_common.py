@@ -15,6 +15,22 @@ import sys
 from pathlib import Path
 
 
+PYTHON_PREFERRED = (3, 11)
+
+
+def python_floor_warning(version=None):
+    """A warning when this interpreter is older than 3.11, else None.
+
+    Python 3.10 reached end of life on 2026-10-01 (PEP 619), but Claude's Cowork environment ran 3.10.12 when last checked,
+    so NO release is promised for the move: SocialForge still runs on 3.10 and will move to 3.11 once Cowork does. The warning says that,
+    conditionally, and asks for 3.11 or newer where the user can."""
+    found = tuple((version or sys.version_info)[:2])
+    if found < PYTHON_PREFERRED:
+        return ("Python 3.10 reached end of life on 2026-10-01. SocialForge still runs on it, and will move to 3.11 once Claude's Cowork "
+                "environment does (it ran 3.10.12 when last checked). Use 3.11 or newer where you can.")
+    return None
+
+
 def printed_command(*tokens: str) -> str:
     """A command to PRINT, ready to paste into Git Bash or PowerShell: the interpreter that is running now, then `tokens`. The
     interpreter path uses FORWARD slashes (bash drops a backslash, so `C:\\Python313\\python.exe` arrives as `C:Python313python.exe`)

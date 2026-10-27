@@ -4,16 +4,16 @@
 
 Install four open-source plugins from one marketplace: strategy, long-form content, social and video. The same skills install natively on **Claude Code**, **Anthropic Cowork**, **OpenAI Codex**, **Cursor 2.5+**, **GitHub Copilot CLI**, **Google Antigravity 2.0**, **Hermes Agent**, **OpenClaw**, and **Grok** (xAI Build CLI) + 35+ additional Agent Skills platforms — via the Agent Skills open standard. Zero global hooks, zero auto-connecting MCP servers, MIT-licensed, no telemetry, no seats.
 
-[![Version](https://img.shields.io/badge/version-3.57.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.57.1-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Plugins](https://img.shields.io/badge/plugins-4-orange.svg)](#available-plugins)
 [![Total skills](https://img.shields.io/badge/skills-220%20across%20suite-blueviolet.svg)](#which-plugin-do-i-need)
-[![Total tests](https://img.shields.io/badge/tests-2188%20across%20suite-brightgreen.svg)](#whats-new)
+[![Total tests](https://img.shields.io/badge/tests-2295%20across%20suite-brightgreen.svg)](#whats-new)
 [![Surfaces](https://img.shields.io/badge/all%204%20plugins-9%20native%20%2B%2035%20Agent%20Skills-success.svg)](#platform-compatibility)
 
 [![Built by Indranil "Neel" Banerjee — Neelverse Marketing Suite — Sponsor this project](docs/assets/author-banner.svg)](https://github.com/sponsors/indranilbanerjee)
 
-> 🆕 **October 17, 2026: marketplace v3.57.0.** CutForge joins the suite: an open-source video creation and editing plugin that turns your photos, clips and voice notes into story-led films, brand films, explainers and ads (13 skills, v1.0.1). The suite is now four plugins and 220 skills. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
+> 🆕 **October 27, 2026: marketplace v3.57.1.** Connector setup offers only vendor-verified, version-pinned packages; Digital Marketing Pro moves to Meta's API v26 before v24 stops on 10 November; SocialForge never spends on a provider you were not quoted. [What's new](#whats-new) · [Changelog](CHANGELOG.md)
 
 A custom plugin marketplace by [Indranil Banerjee](https://indranil.in) · [LinkedIn](https://www.linkedin.com/in/askneelnow/) · [X](https://x.com/askneelnow). Agent Skills was donated to the Agentic AI Foundation December 2025; adopted by **41+ agent products** by June 2026.
 
@@ -103,6 +103,10 @@ To update manually instead, see the [Updating](#updating) section below.
 
 ## What's new
 
+### v3.57.1 (October 27, 2026): connector setup offers only vendor-verified packages
+
+CF **4.5.8** · DMP **3.36.0** · SF **1.29.8** · CutForge **1.0.1** · suite **2,295 tests**. Most npm package names our connector setup offered did not exist or belonged to unrelated publishers, and running one hands it your API keys. Digital Marketing Pro and ContentForge now give a command only for a vendor's own package, pinned to an exact version, and point everything else to the vendor's hosted connector; a weekly check confirms each one. Digital Marketing Pro moves to Meta's API v26 before v24 stops on 10 November, with every API version and sunset date in one tested table. SocialForge never spends on a provider you were not quoted.
+
 ### v3.57.0 (October 17, 2026): CutForge joins the suite
 
 CutForge **1.0.1** · suite **4 plugins, 220 skills, 2,188 tests**. CutForge is an open-source video creation and editing plugin, from raw footage to final cut. Thirteen skills cover the whole job (brief, archive research, story, look test, storyboard, narration, sound, AI art only where no camera was, render, QC, delivery and revisions), with four reviewer agents and a tested Remotion, ffmpeg and Python engine. It was distilled from a real 20-minute production and every mistake made in it. It installs on the same nine platforms as the rest of the suite. The marketplace tests now check every listed plugin from one list, so a new plugin cannot skip the count checks.
@@ -110,10 +114,6 @@ CutForge **1.0.1** · suite **4 plugins, 220 skills, 2,188 tests**. CutForge is 
 ### v3.56.7 (October 12, 2026) — nothing waits for input it was not asked for
 
 CF **4.5.7** · DMP **3.35.8** · SF **1.29.7** · suite **2,134 tests**. The smoke test ran SocialForge's credential setup with no key the way an agent would, and it waited for input forever. It now stops at once and names the three ways to give a key. The same test, with Python installed in a folder whose name has a space, found a ContentForge recovery command that lost its arguments, and Digital Marketing Pro's command for switching autopilot back to propose-only only worked from the plugin's own folder. Both are fixed, and the guards now cover every instruction file by default. SocialForge's own test suite had been writing test entries into the user's real failure log; it now runs in temporary folders.
-
-### v3.56.6 (October 12, 2026) — commands that paste anywhere, errors that say so
-
-CF **4.5.6** · DMP **3.35.7** · SF **1.29.6** · suite **2,092 tests**. The smoke test pasted every command a script prints into Git Bash and PowerShell from another folder: Git Bash dropped the backslashes. Commands now use forward slashes and run in both. It also fed scripts input that must fail: 19 printed an error and exited 0, so anything chaining on the exit code read success. They now exit non-zero (2 for a bad argument, 1 for a failure).
 
 Older releases are in [CHANGELOG.md](CHANGELOG.md).
 
@@ -123,9 +123,9 @@ Older releases are in [CHANGELOG.md](CHANGELOG.md).
 
 | Plugin | Version | What it does |
 |--------|---------|--------------|
-| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.35.8 | End-to-end engagement methodology for agencies and in-house teams — 164 skills, 24 specialist agents, the 12-Part Strategy Flow producing the Four Core Documents, a content-engine run auditor that re-derives every "ready" claim, provenance-stamped benchmarks, 6-platform AEO/GEO audit, 16 privacy-law jurisdictions, EU AI Act Article 50 disclosure + C2PA signing, an agent-readiness audit for AI crawlers and agentic commerce. 94 stdlib Python scripts; connectors opt-in. |
-| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 4.5.7 | Content lifecycle system — 22 skills, 13 specialist agents, a 10-phase pipeline with 10 quality gates, 43-pattern AI-detection humanizer, fact-checker subagent, run auditor, three-category internal linking, real `.docx` output with C2PA signing, and a measure-audit-plan loop that compounds per brand, under a published Quality Contract. README in 12 languages; five hero skills as claude.ai `.skill` uploads. |
-| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.29.7 | Social creative engine — 21 skills, 18 commands, 5 agents: research and calendar in, on-brand creative out. Asset-first compositing (brand photos stay pixel-faithful), AI image + video through provider chains where nothing fails silently, 9-platform copy adaptation, human approval gates, delivery audit, C2PA signing. Prices and models looked up live, never stored. |
+| **[digital-marketing-pro](https://github.com/indranilbanerjee/digital-marketing-pro)** | 3.36.0 | End-to-end engagement methodology for agencies and in-house teams — 164 skills, 24 specialist agents, the 12-Part Strategy Flow producing the Four Core Documents, a content-engine run auditor that re-derives every "ready" claim, provenance-stamped benchmarks, 6-platform AEO/GEO audit, 16 privacy-law jurisdictions, EU AI Act Article 50 disclosure + C2PA signing, an agent-readiness audit for AI crawlers and agentic commerce. 94 stdlib Python scripts; connectors opt-in. |
+| **[contentforge](https://github.com/indranilbanerjee/contentforge)** | 4.5.8 | Content lifecycle system — 22 skills, 13 specialist agents, a 10-phase pipeline with 10 quality gates, 43-pattern AI-detection humanizer, fact-checker subagent, run auditor, three-category internal linking, real `.docx` output with C2PA signing, and a measure-audit-plan loop that compounds per brand, under a published Quality Contract. README in 12 languages; five hero skills as claude.ai `.skill` uploads. |
+| **[socialforge](https://github.com/indranilbanerjee/socialforge)** | 1.29.8 | Social creative engine — 21 skills, 18 commands, 5 agents: research and calendar in, on-brand creative out. Asset-first compositing (brand photos stay pixel-faithful), AI image + video through provider chains where nothing fails silently, 9-platform copy adaptation, human approval gates, delivery audit, C2PA signing. Prices and models looked up live, never stored. |
 | **[cutforge](https://github.com/indranilbanerjee/cutforge)** | 1.0.1 | Video creation and editing, from raw footage to final cut: 13 skills, 4 reviewer agents and a tested engine of 48 tools (Remotion, ffmpeg, Python). A one-screen brief, archive research with face groups and real-sound discovery, story design, a look test, a storyboard the client ticks once, narration verified by speech-to-text, designed sound, chunked resumable renders, nine QC layers, verified delivery and revision rounds. Family and milestone films, tributes, brand films, explainers, ads, and pharma or BFSI videos with India-first compliance. |
 
 All four install natively on **9 platforms** — Claude Code, Cowork, Codex, Cursor, Copilot CLI, Antigravity, Hermes Agent, OpenClaw, Grok — plus 35+ Agent Skills clients. Live counts and test totals: see each repo's README.
