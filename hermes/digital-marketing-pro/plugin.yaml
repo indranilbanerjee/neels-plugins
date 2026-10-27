@@ -4,12 +4,12 @@
 # with their own repos and manifests.
 
 name: digital-marketing-pro
-version: 3.57.3
+version: 3.57.4
 description: >-
   Three open-source marketing toolkits in one Hermes listing, 207 skills in all: Digital Marketing
-  Pro v3.37.0 (strategy, SEO/AEO/GEO, paid media, CRM, analytics; 164 skills), ContentForge v4.5.9
-  (long-form content, fact-check, humanize, audit; 22 skills) and SocialForge v1.29.9 (social
-  creative from a content calendar; 21 skills). Skills only: no tools, hooks or background
+  Pro v3.38.1 (strategy, SEO/AEO/GEO, paid media, CRM, analytics; 164 skills), ContentForge
+  v4.5.10 (long-form content, fact-check, humanize, audit; 22 skills) and SocialForge v1.29.10
+  (social creative from a content calendar; 21 skills). Skills only: no tools, hooks or background
   processes. Disclosure: optional scripts call third-party APIs with the user's own keys; packages
   and browsers install only when the user says yes; live writes need a typed yes and, for writes
   the plugin sends itself, a single-use approval record; see README.md and each group's

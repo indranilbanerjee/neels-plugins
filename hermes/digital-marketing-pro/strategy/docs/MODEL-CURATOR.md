@@ -3,7 +3,7 @@
 `scripts/model_registry.json` is the single source of truth for every AI model id that the plugin's scripts hand to a provider SDK. The resolver `scripts/resolve_model.py` reads the registry and answers three questions for the rest of the plugin:
 
 1. "What's the current best model for X?" → `resolve("latest-fast-anthropic")` returns the concrete id.
-2. "Is this model id still good?" → `check("claude-sonnet-4-5-20250929")` returns `("deprecated", "claude-sonnet-4-6")`.
+2. "Is this model id still good?" → `check("claude-sonnet-4-5-20250929")` returns `("deprecated", "claude-sonnet-5-5")`.
 3. "What's available?" → `list_models(vendor="google", modality="image-gen")` returns the matching catalog.
 
 This means a single edit to `model_registry.json` propagates to every script the next time it runs — no grep-and-replace across the plugin when a model is deprecated.
@@ -16,30 +16,41 @@ Hardcoding model strings like `claude-sonnet-4-5-20250929`, `gemini-2.0-flash`, 
 
 ---
 
-## How users override the model
+## How the plugin picks a model
 
-Every script that calls a provider model accepts `--model` (or `--openai-model` / `--anthropic-model` for scripts that hit two providers). Pass any id from the registry — or any id, even one the registry doesn't know about. The resolver will:
-
-- **Current id** → pass it through unchanged.
-- **Deprecated id** → print a `WARNING` to stderr and silently substitute the registered `replacement_id`.
-- **Unknown id** → print a `WARNING` and pass the id through (the call may still work; you just lose the deprecation safety net).
-- **No `--model`** → resolve via the script's default alias (e.g. `latest-balanced-anthropic`).
+The only DMP script that calls a model provider itself is `scripts/ai-visibility-checker.py` (API mode). Both of its legs now take their model from the router below; the registry is their offline fallback. The resolver (`resolve_model.py`) remains the registry's API: `resolve`, `check` and `list_models`, used offline and by the sibling plugins.
 
 ```bash
-# Default — uses the registry's latest-balanced-anthropic alias (claude-sonnet-4-6 today)
+# Default: each leg's model is chosen from the provider's live list
 python scripts/ai-visibility-checker.py --brand acme --mode api
 
-# Override to a specific id
-python scripts/ai-visibility-checker.py --brand acme --mode api --anthropic-model claude-opus-4-7
-
-# Pass a deprecated id — script warns and substitutes claude-sonnet-4-6
-python scripts/ai-visibility-checker.py --brand acme --mode api --anthropic-model claude-sonnet-4-5-20250929
-# WARNING (anthropic): claude-sonnet-4-5-20250929 is deprecated, using claude-sonnet-4-6 instead
-
-# See what's curated
+# The registry: what's curated, and what an alias or a deprecated id resolves to offline
 python scripts/ai-visibility-checker.py --list-models
 python scripts/resolve_model.py --list --vendor anthropic --status current
 ```
+
+---
+
+## The model router (both legs of the AI-visibility checker)
+
+`scripts/model_router.py` stops depending on model names for the decision. A job in `scripts/model_hints.json` names a provider and a model **line** or **family**, plus the capabilities it needs, never an id; every rule carries the page it was read from and the date. At run time the router lists the models the key can use (GET `/v1/models`) and picks the newest model in the line or family that is current, generally available (no preview, exp, beta, alpha or rc id, no dated snapshot, no fine-tune) and at least 14 days old. The registry alias (`default_alias`) is the fallback, used only offline.
+
+- **Anthropic** (`ai-visibility.probe.anthropic`, line `sonnet`): the list reports each model's `lifecycle`, `line`, `created_at`, `retires_at` and capabilities, so lifecycle is fully automatic.
+- **OpenAI** (`ai-visibility.probe.openai`, family `gpt-<version>-sol`): the list gives only `id`, `created`, `owned_by` and, when announced, `shutdown_date`. Selection is by family pattern over ids, highest version first. Lifecycle comes from that `shutdown_date` plus the `deprecations.openai` record an agent read from OpenAI's deprecations page into the hint book, with its source and date. The router names the record in its warnings once it is more than 30 days old. Fine-tuned models (`ft:BASE:org::id`) follow their base model's schedule, as OpenAI states, and are never picked or cached.
+- One list call per provider per 7 days per key name serves every job; the cache (`model-router-cache.json`) is keyed by the environment variable's name and holds chosen ids, lifecycle dates and counts, never the key, the list or a fine-tune's name. `MODEL_ROUTER_OFFLINE=1` makes no call.
+- A model asked for by name (`--anthropic-model`, `--openai-model`) is kept if current, kept with a warning if deprecated, and refused with exit 2 if retired, naming the replacement. Nothing is swapped silently.
+- A rejected key or an empty list stops the run before any probe is sent (exit 2). A timeout, provider trouble, or an Anthropic list without lifecycle fields falls back to the registry alias and tags the output `offline`.
+- The run's output carries `model_routing.anthropic` and `model_routing.openai`: the model asked for, the model sent, where the answer came from (`live`, `cache`, `requested` or `offline`) and when.
+
+```bash
+# Ask for deprecated models by name: kept, with a warning naming the router's choice
+python scripts/ai-visibility-checker.py --brand acme --mode api --anthropic-model claude-sonnet-4-5-20250929
+# WARNING (anthropic): claude-sonnet-4-5-20250929 is deprecated and retires 2026-11-30; the router would choose claude-sonnet-5-5. Keeping claude-sonnet-4-5-20250929 because it was asked for by name.
+python scripts/ai-visibility-checker.py --brand acme --mode api --openai-model gpt-4o-2024-08-06
+# WARNING (openai): gpt-4o-2024-08-06 is deprecated and retires 2027-01-14; the router would choose gpt-6-luna. Keeping gpt-4o-2024-08-06 because it was asked for by name.
+```
+
+When Sonnet 4.5 retires on 2026-11-30, a job with no model named keeps working without a registry edit, and a run that names Sonnet 4.5 stops with the replacement in the message.
 
 ---
 
@@ -70,8 +81,20 @@ python scripts/resolve_model.py --list --vendor anthropic --status current
 | `latest-text-evolink` | `gpt-5.2` (GPT-5.2) |
 | `latest-balanced-evolink` | `deepseek-chat` (DeepSeek Chat (V3)) |
 | `latest-fast-evolink` | `deepseek-v4-flash` (DeepSeek V4 Flash) |
+| `latest-tts-openai` | `gpt-realtime-2.1-mini` (GPT-Realtime-2.1 mini) |
+| `latest-stt-openai` | `gpt-transcribe` (GPT Transcribe) |
+| `latest-tts-elevenlabs` | `eleven_v4` (Eleven v4) |
+| `latest-stt-elevenlabs` | `scribe_v2` (Scribe v2) |
+| `latest-tts-sarvam` | `bulbul:v3` (Bulbul v3) |
+| `latest-stt-sarvam` | `saaras:v4` (Saaras v4) |
 
 This table is generated from `scripts/model_registry.json`; `tests/test_model_registry_dates.py` fails if it drifts. `latest-video-google` is Veo 3.1 on **Vertex AI only**; the Gemini API's video model is `latest-video-gemini-api` (Gemini Omni, a different call shape: see `param_compatibility_notes.veo_backend`).
+
+**Speech kinds are pins with an expiry.** No vendor list endpoint tells a speech model from a chat model, so the `text-to-speech` and `speech-to-text` entries are not discovered: each carries `pinned_on` and `pin_expires` (at most 92 days apart), and the weekly dated check fails once a pin expires, so someone re-reads the vendor page and re-pins. Three facts from the 2026-10-27 read change how callers work, not just which id they send:
+
+- OpenAI shuts down every `/v1/audio/speech` model (`tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`) on **2027-01-06**. Its replacement, `gpt-realtime-2.1-mini`, runs only on the Realtime API, so OpenAI text-to-speech needs a Realtime client.
+- OpenAI's `whisper-1` and `gpt-4o-transcribe` shut down on **2027-02-26**; `gpt-transcribe` takes the same `/v1/audio/transcriptions` call.
+- Sarvam's `/speech-to-text` accepts only `saaras:v4` and `saaras:v3` now; `saarika:v2.5` is deprecated. Send `mode="transcribe"` for a plain transcript.
 
 Run `python scripts/resolve_model.py --aliases` to list the live mappings.
 

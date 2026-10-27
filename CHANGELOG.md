@@ -5,6 +5,14 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.57.4] - 2026-10-27
+
+- Digital Marketing Pro 3.38.1: four SEO skill descriptions (keyword clustering, comparing two Search Console exports, the 12-month plan, technical fixes) now name the jobs a blind routing test showed they were missing, with a test that keeps the words.
+- Digital Marketing Pro 3.38.0: the AI-visibility checker picks its Claude and OpenAI models from each provider's own live model list, by model line or family and the capabilities the job needs, never by a stored name. It takes the newest model that is current, generally available and at least 14 days old; the same list on the same day gives the same answer. A model you name that is retiring is kept with a warning naming its retirement date; a retired one is refused before any request, with its replacement named. One list call per provider per week, none at install, and `MODEL_ROUTER_OFFLINE=1` makes none.
+- Digital Marketing Pro 3.37.1: every privacy-law jurisdiction re-read at its source and stamped with the date and sources (the UAE, Saudi Arabia, Thailand and CASL text corrected); TikTok's 1 January 2027 cutoff for Legacy Manual Flow campaigns recorded, with a test that fails 30 days before a vendor deadline; no agent pins a model.
+- Speech models join the shared model registry (Digital Marketing Pro 3.37.2, ContentForge 4.5.10, SocialForge 1.29.10): OpenAI, ElevenLabs and Sarvam text-to-speech and speech-to-text. No vendor's model list tells a speech model from a chat model, so each is a pin that expires within 92 days, and a test fails when one does. Each plugin's registry copy is now an exact mirror of the canonical file.
+- Hermes bundle rebuilt. Suite total 2,459 (CF 860 + DMP 829 + SF 659 + CutForge 53 + marketplace 58).
+
 ## [3.57.3] - 2026-10-27
 
 - Model lists refreshed from the vendors' own pages in all three plugins (Digital Marketing Pro 3.36.2, ContentForge 4.5.9, SocialForge 1.29.9): Claude Haiku 5.5 as the fast model, Gemini 4 Argon and Nano Banana 2.1 added, Gemini 2.5's status and an image model's shutdown date corrected, Claude Sonnet 4.5 marked for its 30 November retirement, retired ids removed after 90 days. New tests fail when a model passes its shutdown date, a shortcut points at a model that is going away, or the review date passes.

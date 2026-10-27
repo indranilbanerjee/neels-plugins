@@ -6,6 +6,248 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 
 ---
 
+## [3.38.1] - 2026-10-27
+
+### Four SEO descriptions fix vocabulary gaps seen in a blind eval
+
+A blind evaluation on 2026-10-27 exposed six SEO requests where none of the plugin's SEO skills fired at all. The requests were written by a tester who never saw the plugin's wording. All six missing jobs exist in the plugin; their descriptions just didn't use the words people asked with.
+
+**Changed: descriptions** (Stage-2 rule kept: 60–150 characters, median ≤110, one owner per quoted phrase, listing ≤26,000 characters)
+
+| Skill | Now also says | The request it missed |
+|---|---|---|
+| `keyword-cluster` | queries, topic hubs, spoke pages | sorting a list of queries into themes, a hub page per theme |
+| `seo-drift` | two exports, Search Console, two dates | two Search Console exports, explaining what moved between them |
+| `seo-plan` | organic, a phased year roadmap | a long-term organic plan for the year |
+| `technical-seo` | JS rendering (SSR, prerender), Web Vitals (LCP, INP), for developers | client-side JavaScript rendering, and LCP/INP fixes for a developer |
+
+- `technical-seo` and `tech-seo-audit` were checked against each other. Their misses were not confusion between the two: neither skill fired on the two missed requests, and `tech-seo-audit` routed all three of its own. They stay separate. `technical-seo` gives fix guidance for developers; `tech-seo-audit` runs a scripted site-wide crawl.
+- `serp-tracker` (deprecated) is shortened to "Deprecated; use rank-monitor --features." so the whole listing stays under its ceiling (25,999 of 26,000 characters).
+- No routing score is quoted. The blind set these misses came from is spent, so measuring these changes needs a fresh one.
+
+**Tests**
+
+- New: `tests/test_routing_vocabulary.py`. The four descriptions must keep the words the misses showed were needed. On the 3.38.0 wording: 1 failure, as planted. It measures nothing about routing.
+- Suite: 829 tests.
+
+## [3.38.0] - 2026-10-27
+
+### The model router: the AI-visibility checker picks its models from each provider's own live list
+
+The owner's ask was to stop depending on model names. Brain A's plan (`_shared/PLAN-2026-10-27-model-router.md`) split it in two: automate lifecycle fully, and automate selection conservatively. This release is its proof: one job with two providers.
+
+Both adapters were built fixtures first: the planted cases were written as failing tests before any selection code existed.
+- Anthropic: 25 tests failed against an interface-only stub.
+- OpenAI: 16 tests failed before the adapter existed.
+
+**Added: `scripts/model_router.py`** (stdlib; one file meant to be copied byte for byte into each plugin, with a parity test)
+
+- A job names a provider and a model **line** or **family**, plus the capabilities it needs, never an id. Rules live in the new hint book `scripts/model_hints.json`, and each one carries the page it was read from and the date.
+- At run time the router lists the models the key can use (GET `/v1/models`). In the job's line or family it picks the newest (highest version, then newest) model that is:
+  - current;
+  - generally available (no preview, exp, beta, alpha or rc id, no dated snapshot, no fine-tune);
+  - at least 14 days old;
+  - equipped with the job's capabilities.
+
+  The same list on the same day always gives the same answer.
+- **Anthropic adapter:** the list reports `lifecycle`, `line`, `created_at`, `retires_at` and capabilities, so lifecycle is fully automatic.
+- **OpenAI adapter (presence plus recorded lifecycle):**
+  - OpenAI's list gives `id`, `created`, `owned_by` and, as its reference now documents, an optional `shutdown_date`.
+  - A job names a family pattern over ids (`gpt-<version>-sol`), ranked by version.
+  - A model counts as deprecated when the list gives a `shutdown_date`, or when the `deprecations.openai` record names it. The record is what an agent read from OpenAI's deprecations page on 2026-10-27: 22 text-model ids with shutdown dates and replacements.
+  - The router names the record in its warnings once it is more than 30 days old.
+  - Fine-tuned models (`ft:BASE:org::id`) follow their base model's schedule, as OpenAI states. They are never picked, and their names (which at an agency name clients) are never cached.
+- A model **asked for by name** is kept if current. If deprecated, it is kept with a warning that names its retirement date and the router's choice. If retired, it is refused with exit 2 before any probe is sent, naming the replacement. Nothing is swapped silently.
+- **Failures:**
+  - a rejected key (401/403) or an empty list stops the run with the reason (exit 2);
+  - error messages carry the provider's error type and code, never its message, which can echo part of a key;
+  - a timeout, provider trouble, or an Anthropic list without lifecycle fields falls back to the registry alias and tags the result `offline`;
+  - a corrupted cache is rebuilt.
+- **Limits:**
+  - one list call per provider per 7 days per key name serves every job in the hint book;
+  - never at install or import;
+  - each key goes only to its own provider, the Anthropic one with the same `anthropic-version` header as the probes;
+  - the cache (`model-router-cache.json` in the plugin's data folder) is keyed by the environment variable's name, and holds chosen ids, lifecycle dates and counts;
+  - a value that looks like a key is refused as a credential name, and the CLI never echoes it;
+  - `MODEL_ROUTER_OFFLINE=1` makes no call.
+- A small CLI (`--hints`, `--job`, `--provider anthropic|openai`, `--credential-name`, `--requested`, `--default-model`, `--cache`) prints one JSON result.
+
+**Changed: `scripts/ai-visibility-checker.py`**
+
+- Both legs now take their model from the router: `ai-visibility.probe.anthropic` (line `sonnet`) and `ai-visibility.probe.openai` (family `gpt-<version>-sol`). The registry aliases `latest-balanced-anthropic` and `latest-balanced-openai` are now only the offline defaults.
+- The output carries `model_routing.anthropic` and `model_routing.openai`: the model asked for, the model sent, the basis (`live`, `cache`, `requested`, `offline`), the source and the time.
+- Behaviour change: `--anthropic-model` or `--openai-model` with a deprecated id used to be silently replaced by its registry successor. It is now kept with a warning, because the provider still serves it. A retired id is refused (exit 2).
+- **Natural experiment.** Claude Sonnet 4.5 retires 2026-11-30. With no model named, the checker keeps working with no registry edit. A run that names Sonnet 4.5 warns until that day, then stops with the replacement in the message.
+
+**Changed: the registry mirror reaches CutForge**
+
+- `scripts/sync_model_registry.sh` (through `scripts/registry_mirror.py`) now also mirrors the registry into CutForge, at `engine/template/tools/model_registry.json`. CutForge has no `scripts/` folder; `engine/template/` is what each new project copies, so the registry travels with every project, next to its resolver.
+- CutForge has no copy yet, so its first sync creates one, provided its `engine/template/tools/` folder exists. `--check` reports the missing copy as drift.
+- Folder names are tried in both spellings (`CutForge`/`cutforge`, `ContentForge`/`contentforge`, `SocialForge`/`socialforge`), because a case-sensitive disk matches only one.
+
+**Fixed**
+
+- `docs/MODEL-CURATOR.md`:
+  - `check("claude-sonnet-4-5-20250929")` was shown returning `claude-sonnet-4-6`; the registry says `claude-sonnet-5-5`;
+  - the override section described a substitution the checker no longer makes;
+  - both are rewritten, and a section describes the router.
+- `tests/test_content_engine_contract.py`: three tests errored on a machine without NLTK, because `brand-voice-scorer.py` exits at import. The README promises a stdlib-only suite. A stub now stands in, as `tests/test_exit_status.py` already does. Found by running the whole suite on a clean Python 3.10.18.
+
+**Docs**
+
+- `PRIVACY.md` describes both list calls: when they happen, what they send and to whom, what the cache keeps, and how to turn them off.
+- README, AGENTS.md and the script counts (97 → 98) are updated.
+
+**Tests**
+
+- New: `tests/test_model_router.py` (43) and `tests/fixtures/model_router/`. The fixtures follow the documented `/v1/models` response shape of each provider (read 2026-10-27), with test-data values. The tests cover:
+  - the planted cases;
+  - the fallbacks;
+  - the cache: fresh, stale, corrupted, offline, and contents (no key, no list, no fine-tune);
+  - the version header;
+  - capability filtering;
+  - OpenAI family ranking, shutdown dates from the list and from the record, fine-tunes following their base, and a stale record;
+  - a determinism snapshot per provider, each written by hand before the code;
+  - Sonnet 4.5 before and after its retirement;
+  - request shapes;
+  - the hint book's rules and records;
+  - the checker's use of the router;
+  - PRIVACY.md wording;
+  - parity with sibling copies (skipped until one exists).
+- `tests/test_model_registry_dates.py` (weekly dated job):
+  - the curator doc's examples must match the registry, or the hint book's record for OpenAI;
+  - the deprecations record fails after 45 days.
+- Suite: 827 tests, also run on Python 3.10.18 (no NLTK).
+- **Unverified:** whether Anthropic's list returns `lifecycle` and `line` under `anthropic-version: 2023-06-01`, the version the pinned SDK sends (the docs example uses 2026-10-21). If not, the router uses the registry default and says so. The first real run with a key will show which.
+
+## [3.37.2] - 2026-10-27
+
+### Speech models join the registry as pins with an expiry, and the registry sync becomes a two-way mirror
+
+Two jobs. The first lets the suite's video tool drop its hardcoded voice and transcription model ids. The second makes `sync_model_registry.sh` catch what it used to miss. Every vendor fact below was read on its own page on 2026-10-27. Each guard has a test that fails on the 3.37.1 registry, doc or script.
+
+**Added: speech kinds** (`scripts/model_registry.json`)
+
+- Two new tiers, `text-to-speech` and `speech-to-text`, and six aliases:
+
+  | Alias | Pinned to | Why |
+  |---|---|---|
+  | `latest-tts-openai` | `gpt-realtime-2.1-mini` | OpenAI's named replacement for every `/v1/audio/speech` model. It runs **only on the Realtime API** |
+  | `latest-stt-openai` | `gpt-transcribe` | Released 2026-07-28; same `/v1/audio/transcriptions` call as Whisper |
+  | `latest-tts-elevenlabs` | `eleven_v4` | Flagship since 2026-09-28; 90+ languages |
+  | `latest-stt-elevenlabs` | `scribe_v2` | Current batch model; `scribe_v1` is deprecated |
+  | `latest-tts-sarvam` | `bulbul:v3` | Sarvam's "stable model (API default)". `bulbul:v4-flash` is newer, but Sarvam publishes no release date for it |
+  | `latest-stt-sarvam` | `saaras:v4` | Default and recommended; generally available 2026-09-02 |
+
+- Thirteen entries, including the deprecated ids callers still send:
+  - `gpt-4o-mini-tts`: shuts down 2027-01-06, together with `tts-1` and `tts-1-hd`;
+  - `whisper-1` and `gpt-4o-transcribe`: shut down 2027-02-26;
+  - `saarika:v2.5`: deprecated, and Sarvam's `/speech-to-text` now accepts only `saaras:v4` and `saaras:v3`;
+  - `scribe_v1`: deprecated;
+  - `eleven_multilingual_v2`: previous generation, not deprecated.
+
+  `resolve_model.py --check saarika:v2.5` now reports it as deprecated and names `saaras:v4`.
+- **Pins, not discovery.** No vendor list endpoint tells a speech model from a chat model, so these entries can't be discovered. Each carries `pinned_on` and `pin_expires`, set 90 days apart.
+- Sources:
+  - OpenAI: models, deprecations, changelog, the text-to-speech guide, and the `gpt-transcribe` and `gpt-realtime-2.1-mini` pages;
+  - ElevenLabs: models page and changelog;
+  - Sarvam: models page, the text-to-speech and speech-to-text API references, the Saarika page and the changelog.
+
+**Changed: `scripts/sync_model_registry.sh` mirrors the registry**
+
+- Each sibling copy is now exactly the canonical registry minus the DMP-only families, keeping the sibling's own `$comment`. The merge lives in the new `scripts/registry_mirror.py` (stdlib), which also holds the DMP-only lists, and the shell script only finds Python.
+- The old surgical by-id update left entries DMP had dropped. It also never added canonical entries or alias keys that nothing pointed at yet, so the 3.36.2 sync had to be finished by hand.
+- `--check` now reports both directions:
+  - entries and alias keys a copy is missing;
+  - entries and alias keys upstream dropped;
+  - drifted entries;
+  - differing metadata.
+
+  It exits 1 on any drift. `--parent DIR` points it at another checkout layout, and an unknown flag exits 2.
+- The mirror refuses to write a copy whose alias or fall-forward would point at a DMP-only or missing entry.
+- Rebuilt from the 3.37.1 registry, the mirror reproduces both sibling copies byte for byte.
+
+**Fixed: docs**
+
+- `docs/MODEL-CURATOR.md`:
+  - adds the six speech aliases and a note on the three changes callers must make: OpenAI text-to-speech needs a Realtime client, Whisper swaps to `gpt-transcribe`, and Saarika moves to `saaras:v4` with `mode="transcribe"`;
+  - its worked examples still named `claude-sonnet-4-6` as the default and as the substitute for the deprecated Sonnet 4.5. They now say `claude-sonnet-5-5`, as the registry does.
+- README "Model curator" covers speech pins and the mirror.
+
+**Tests**
+
+- `tests/test_model_registry_dates.py`:
+  - rule 7: an entry in a pinned tier without `pinned_on` and `pin_expires`, a pin past its expiry, or a pin longer than 92 days fails. The weekly dated-checks job runs it;
+  - every speech kind has an alias per vendor, and each speech alias resolves to its kind;
+  - the curator doc's worked examples must name live targets.
+
+  On the 3.37.1 registry and doc: 2 failures.
+- `tests/test_model_registry_sync.py`:
+  - the mirror against throwaway sibling folders: both-direction drift, a write followed by an idempotent re-check, a refused dangling alias, a skipped sibling, and the shell wrapper passing its arguments;
+  - checked-out siblings must equal the mirror.
+
+  The 3.37.1 test module fails to import without `registry_mirror`. On the same both-direction scenario, the 3.37.1 `sync_model_registry.sh --check` printed "already in sync" for both siblings.
+- Suite: 780 tests. In the main tree, the cross-repo registry checks fail until the content plugins take the new mirror.
+
+## [3.37.1] - 2026-10-27
+
+### Every jurisdiction re-read at its source, TikTok's Smart+ cutoff, and no agent pins a model
+
+3.36.1 stamped eleven jurisdictions "pending re-check". This release re-reads them, plus the three US state items marked "reported", against the law itself and the regulator's own pages on 2026-10-27. Each guard below has a test that fails on the 3.37.0 code or text.
+
+**Fixed: compliance rules re-read at the source** (`skills/context-engine/compliance-rules.md`)
+
+- Every Section 1 jurisdiction now carries a dated "Verified" stamp that names its sources. Re-read: GDPR (1.1), CASL (1.5), LGPD (1.6), Australia (1.8), Singapore (1.9), PIPL (1.10), APPI (1.12), PIPA (1.13), Saudi PDPL (1.14), UAE (1.15) and Thai PDPA (1.16). No section is pending any more.
+- **UAE.**
+  - "Up to AED 20 million" had no basis. Decree-Law 45/2021 sets no fine amounts; a Cabinet decision is to set them (Art 26), and none is listed on uaelegislation.gov.ae.
+  - No Executive Regulation has been issued (the row said 2023–2024). Firms get six months from its issue (Art 29).
+  - The law has no legitimate-interest basis; the row said it had one.
+- **Saudi Arabia.**
+  - There is no data-localisation rule in force. Transfers follow the Transfer Regulation (v2.0, Aug 2024), and an October 2026 draft, still in consultation, would add one.
+  - "NCC" does not appear in the law: SDAIA is the competent authority (Art 30).
+  - Financial and location data are not "sensitive" under PDPL Art 1.
+  - The row now has the criminal fine (SAR 3M, Art 35), repeat-violation doubling (Art 36) and the email-marketing articles (PDPL Arts 25–26, Implementing Regulation Arts 28–29).
+- **Thailand.**
+  - "Sender identification" and "Thai-language notices" are not in the PDPA.
+  - The fine tiers (THB 1M/3M/5M, ss.82–90) and the PDPC's enforcement record to 1 Aug 2025 are added.
+  - The cookie-guidance claim and the 1 June 2022 enforcement date could not be confirmed and are marked UNVERIFIED.
+- **Earlier sections.**
+  - CASL has no private right of action: ss.47–51 were "Repealed before coming into force".
+  - Australia's inferred consent does not cover messages after a single purchase (ACMA). The Spam Act penalties are ACMA's dated figures, and the Privacy Act 2024 amendments and their dates are added.
+  - Singapore: deemed consent by notification, legitimate interests and business improvement cannot be used to send marketing (PDPC guidelines, rev. 29 Apr 2026); the row had listed them as marketing exceptions. The fine cap is 10% of Singapore turnover above S$10m (s.48J).
+  - China's in-country storage rule applies only to critical-infrastructure operators and handlers above the CAC's volume thresholds (PIPL Art 40), with the 2024 transfer exemptions.
+  - Korea's fine cap now follows PIPA Art 64-2 as in force on 11 Sep 2026, and the criminal maximum is 10 years.
+  - Japan's 2026 amendment (Act No. 56, in force on a date not yet set) is recorded.
+  - The GDPR rows separate law from good practice: double opt-in is practice, and the Digital Omnibus is still a proposal. The LGPD rows quote the ANPD's cookie guide and Resolutions 2/2022, 4/2023, 19/2024 and 32/2026.
+- **US states (1.4).**
+  - Colorado SB 26-189 was read in its signed text. It repeals and re-enacts the AI Act as an automated decision-making law from 1 Jan 2027: notice, explanation of adverse outcomes within 30 days, correction and human review; AG-only enforcement; a 60-day cure notice until 1 Jan 2030.
+  - Vermont S.71's signing on 16 Jun 2026 is confirmed by the Governor's bill-action page.
+  - Connecticut's 35,000-consumer threshold and its outright ban on processing a minor's data for targeted advertising or sale are confirmed by the Attorney General's CTDPA page, which also gives the penalty as up to $5,000 per violation. The row had said "nearly banning", and "typically $7,500–$10,000".
+  - Still reported: Vermont's act number and effective date, and Connecticut's act number and date. The legislature sites refused connections from here.
+
+**Changed: TikTok's Upgraded Smart+ cutoff**
+
+- From **1 Jan 2027**, TikTok's Marketing API stops creating or copying non-Search **Legacy Manual Flow** campaigns (Sales, App Promotion, Lead Generation) through `/campaign/create/`, `/campaign/copy/task/create/`, `/adgroup/create/`, `/ad/create/` and `/ad/aco/create/`. New campaigns go through the Upgraded Smart+ APIs (`/smart_plus/...`), which still offer a fully manual option.
+- Sources: TikTok's Marketing API docs, read through the search index because TikTok's sites are blocked in India, and TikTok's official SDK (`github.com/tiktok/tiktok-business-api-sdk`). No TikTok API was called.
+- `scripts/connector_resolver.py`: the TikTok row in `API_VERSIONS` is now verified (2026-10-27) and carries the cutoff as a dated `deadlines` entry listing the affected paths. The launch template enables campaigns built in the upgraded flow through `/smart_plus/campaign/status/update/`, and keeps `/campaign/status/update/` as `legacy_flow_url` for Legacy Manual Flow and Search campaigns.
+- `/digital-marketing-pro:paid-advertising` (`tiktok-ads.md` and the "Since August 2026" list) and `/digital-marketing-pro:launch-ad-campaign` step 4 explain the change.
+
+**Fixed: no agent pins a model**
+
+- `agents/quality-assurance.md` had `model: sonnet`, so it ran on whatever that name meant on each host instead of the session's model. The line is removed. Agents inherit the session's model, in line with the rule that models are chosen by job at run time, never by name.
+
+**Fixed: `tests/run_all.py` runs only on flags it knows**
+
+- `python tests/run_all.py --help` used to run the whole suite, because unknown arguments were ignored. Now `--help` and `-h` print the usage and exit 0. Any other unknown argument prints the usage to stderr and exits 2 without loading a test. Accepted flags: `-v`, `--dated`.
+
+**Tests**
+
+- `tests/test_compliance_dates.py`: no Section 1 jurisdiction may stay "pending re-check", and six new retired claims, each from the 3.37.0 text: the AED 20 million fine, the issued UAE regulations, Saudi localisation, NCC, "nearly banning" and Colorado's "reported" note. On 3.37.0 text: 2 failures.
+- `tests/test_api_versions.py`, new `TestVendorDeadlines`: a template that still calls an endpoint listed in a vendor deadline fails 30 days before the date. It also checks that the TikTok cutoff is recorded and that the launch template targets Smart+. On 3.37.0 code: 1 failure and 1 error.
+- `tests/test_agent_descriptions.py`, new `TestNoAgentPinsAModel`: any `model:` in an agent's frontmatter other than `inherit` fails. On 3.37.0: 1 failure.
+- New: `tests/test_run_all_args.py`. An unknown flag exits 2 without running, `--help` exits 0 without running, and the known flags are fixed. On the 3.37.0 runner: 3 errors (its `--help` ran the suite until the test's 60-second timeout).
+- Suite: 769 tests.
+
 ## [3.37.0] - 2026-10-27
 
 ### Google's new crawler tokens, Cloudflare's block modes, Bing's citation gaps, Google's AI-feature control and Preferred Sources
