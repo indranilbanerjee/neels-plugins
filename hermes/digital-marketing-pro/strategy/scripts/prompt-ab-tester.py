@@ -66,7 +66,7 @@ def sanitize_test_name(name):
     if not raw or ".." in raw or "/" in raw or "\\" in raw:
         return None, ("Invalid --test-name: must be non-empty and must not "
                       "contain path separators or '..'.")
-    slug = re.sub(r"[^a-z0-9-]+", "-", raw.lower()).strip("-")
+    slug = re.sub(r"[^a-z0-9-]+", "-", raw.lower()).strip("-")[:80].rstrip("-")  # a long name is cut, not an OSError
     if not slug:
         return None, ("Invalid --test-name: no usable characters after "
                       "slugifying (use letters, digits, hyphens).")
@@ -90,7 +90,7 @@ def get_tests_dir(slug):
 
 def load_test(tests_dir, test_name):
     """Load a test file by name. Returns (data, error)."""
-    filepath = tests_dir / f"{test_name}.json"
+    filepath = tests_dir / f"{test_name}.json"  # path-safe: slugged by sanitize_test_name in main() before any action runs
     if not filepath.exists():
         return None, f"Test '{test_name}' not found."
     try:
@@ -101,7 +101,7 @@ def load_test(tests_dir, test_name):
 
 def save_test(tests_dir, test_name, data):
     """Save a test file."""
-    filepath = tests_dir / f"{test_name}.json"
+    filepath = tests_dir / f"{test_name}.json"  # path-safe: slugged by sanitize_test_name in main() before any action runs
     filepath.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
@@ -116,7 +116,7 @@ def action_create_test(slug, test_name, data):
         return {"error": err}
 
     # Check if test already exists
-    filepath = tests_dir / f"{test_name}.json"
+    filepath = tests_dir / f"{test_name}.json"  # path-safe: slugged by sanitize_test_name in main() before any action runs
     if filepath.exists():
         return {"error": f"Test '{test_name}' already exists. Choose a different name."}
 

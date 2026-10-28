@@ -281,7 +281,7 @@ def prepare_graph(slug, data):
     pending_dir = memory_dir / "pending"
     pending_dir.mkdir(exist_ok=True)
     entity_hash = hashlib.sha256(f"{entity}:{entity_type}".encode()).hexdigest()[:12]
-    filepath = pending_dir / f"graph-{entity_hash}.json"
+    filepath = pending_dir / f"graph-{entity_hash}.json"  # path-safe: a sha256 hex digest
     _save_json(filepath, payload)
 
     return {"status": "prepared", "entity": entity, "path": str(filepath), "payload": payload}
@@ -391,7 +391,7 @@ def main():
             print(json.dumps({"error": "Provide --data with content JSON"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)
@@ -402,7 +402,7 @@ def main():
             print(json.dumps({"error": "Provide --data with storage confirmation JSON"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)
@@ -418,7 +418,7 @@ def main():
             print(json.dumps({"error": "Provide --data with entity/relationship JSON"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)

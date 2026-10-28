@@ -63,7 +63,7 @@ keeps the copies identical. Stdlib only, Python 3.10+.
 CLI (prints one JSON object; exit 0 chosen, 2 refused or bad input):
     python model_router.py --hints FILE --job JOB --provider anthropic|google|openai \\
         --credential-name NAME [--requested ID] [--default-model ID] \\
-        [--cache FILE] [--anthropic-version VERSION] [--ignore-deprecations-record]
+        [--cache FILE] [--anthropic-version VERSION] [--ignore-deprecations-record] [--backend NAME]
 """
 from __future__ import annotations
 
@@ -189,7 +189,9 @@ def _pages(first_url: str, headers: dict, api_key: str, cursor: str, timeout: fl
         full = url + (("&" if "?" in url else "?") + urllib.parse.urlencode({cursor: after}) if after else "")
         req = urllib.request.Request(full, method="GET")
         for name, value in headers.items():
-            req.add_header(name, value)
+            # Unredirected: urllib copies ordinary headers to whatever host a redirect names,
+            # and the key is in them. These stay on the request to the provider.
+            req.add_unredirected_header(name, value)
         try:
             page = _get_json(req, opener, timeout, api_key, items, omit_empty=bool(next_token))
         except FetchError as exc:
@@ -361,6 +363,9 @@ ADAPTERS = {
     "openai": {"fetch": fetch_openai, "source": OPENAI_MODELS_URL,
                "normalize": _norm_openai, "requested": _requested_openai},
 }
+# The service each adapter's list call reaches, which is also the service its deprecations record
+# describes. A registry entry's replacement_by_backend is keyed by these names.
+PROVIDER_BACKEND = {"anthropic": "anthropic", "openai": "openai", "google": "gemini-api"}
 
 
 # --- selection -------------------------------------------------------------------------------
@@ -537,7 +542,7 @@ def _fresh(entry, now: datetime) -> bool:
 def route(job: str, hints: dict, *, provider: str, credential_name: str, api_key: str,
           default_model: str | None, requested: str | None = None, fetch=None, cache_path=None,
           now: datetime | None = None, anthropic_version: str | None = None, env=None,
-          registry: dict | None = None, record_applies: bool = True) -> dict:
+          registry: dict | None = None, record_applies: bool = True, backend: str | None = None) -> dict:
     """The model to send for `job`, with where the answer came from. Raises RouterError.
 
     `registry` is the plugin's shipped model registry (its `models` list). With no live list
@@ -547,7 +552,11 @@ def route(job: str, hints: dict, *, provider: str, credential_name: str, api_key
 
     `record_applies=False` says that record describes another service than the one this call
     goes to (a Vertex AI run, for example: Vertex retires Gemini models on its own schedule).
-    The record is then ignored for this call, live and offline, and no cache is used."""
+    The record is then ignored for this call, live and offline, and no cache is used.
+
+    `backend` names the service the request goes to when it isn't the provider's own API (default
+    PROVIDER_BACKEND[provider]). It picks a registry entry's replacement for that service from its
+    replacement_by_backend; a Vertex AI run passes backend="vertex" with record_applies=False."""
     env = os.environ if env is None else env
     now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
     if not isinstance(credential_name, str) or not CREDENTIAL_NAME.match(credential_name):
@@ -562,6 +571,7 @@ def route(job: str, hints: dict, *, provider: str, credential_name: str, api_key
     if rule["provider"] != provider:
         raise RouterError(f"job {job!r} is for {rule['provider']!r}, not {provider!r}")
     adapter = ADAPTERS[provider]
+    backend = backend or PROVIDER_BACKEND.get(provider)
     if not record_applies:
         # The record describes another service: ignore it everywhere, and keep this call's
         # answers out of a cache that record-based calls read.
@@ -579,7 +589,7 @@ def route(job: str, hints: dict, *, provider: str, credential_name: str, api_key
                  f"deprecations record" if adapter.get("dates_from_record") and record else None)
 
     if str(env.get(OFFLINE_ENV, "")).strip().lower() in ("1", "true", "yes"):
-        return _offline(base, requested, default_model, f"{OFFLINE_ENV} is set", registry, now, record)
+        return _offline(base, requested, default_model, f"{OFFLINE_ENV} is set", registry, now, record, backend)
 
     cache, cache_warning = _load_cache(cache_path)
     if cache_warning:
@@ -604,12 +614,12 @@ def route(job: str, hints: dict, *, provider: str, credential_name: str, api_key
                               f"check {credential_name}") from None
         return _offline(base, requested, default_model,
                         f"{provider} model list unavailable ({exc.kind}: {_scrub(exc.detail, api_key)})",
-                        registry, now, record)
+                        registry, now, record, backend)
     if not listed:
         raise RouterError(f"{provider} returned no models for {credential_name}; check the key's access")
     models, problem = adapter["normalize"](listed, hints, now)
     if problem:
-        return _offline(base, requested, default_model, problem, registry, now, record)
+        return _offline(base, requested, default_model, problem, registry, now, record, backend)
 
     source, stamp = adapter["source"], _iso(now)
     for key in [k for k in entries if k.startswith(f"{provider}|") and k.endswith(f"|{credential_name}")]:
@@ -648,7 +658,13 @@ def registry_entry(registry: dict | None, model_id: str) -> tuple:
 SEVERITY = {"known": 0, "deprecated": 1, "redirected": 2, "retired": 3}
 
 
-def _registry_verdict(registry: dict | None, model: str, today: date) -> dict | None:
+def registry_replacement(entry: dict, backend: str | None = None) -> str | None:
+    """A registry entry's replacement for the service a request goes to: its replacement_by_backend
+    entry for that backend, else its replacement_id (the default for one-id readers)."""
+    return (entry.get("replacement_by_backend") or {}).get(backend) or entry.get("replacement_id")
+
+
+def _registry_verdict(registry: dict | None, model: str, today: date, backend: str | None = None) -> dict | None:
     entry, matched = registry_entry(registry, model)
     if entry is None:
         return None
@@ -656,7 +672,7 @@ def _registry_verdict(registry: dict | None, model: str, today: date) -> dict | 
     when = shut.date() if shut else None
     kind = ("retired" if entry.get("status") == "retired" or (when and when <= today) else
             "deprecated" if entry.get("status") == "deprecated" or when else "known")
-    return {"kind": kind, "shutdown": when, "replacement": entry.get("replacement_id"),
+    return {"kind": kind, "shutdown": when, "replacement": registry_replacement(entry, backend),
             "shown": model if matched == model else f"{model} ({matched})", "source": "the shipped registry"}
 
 
@@ -679,7 +695,8 @@ def _record_verdict(provider: str, record: dict | None, model: str, today: date)
 
 
 def _offline(base: dict, requested: str | None, default_model: str | None, reason: str,
-             registry: dict | None = None, now: datetime | None = None, record: dict | None = None) -> dict:
+             registry: dict | None = None, now: datetime | None = None, record: dict | None = None,
+             backend: str | None = None) -> dict:
     """The shipped default or the named model, tagged offline. With no live list, the model is
     checked against the shipped registry AND the hint book's deprecations record (local data,
     shipped beside this file). The stricter of the two wins, and its message names its source."""
@@ -691,7 +708,7 @@ def _offline(base: dict, requested: str | None, default_model: str | None, reaso
            "warnings": list(base["warnings"])}
     today = (now or datetime.now(timezone.utc)).astimezone(timezone.utc).date()
     found = [v for v in (_record_verdict(base["provider"], record, model, today),
-                         _registry_verdict(registry, model, today)) if v]
+                         _registry_verdict(registry, model, today, backend)) if v]
     if not found:
         if registry is not None:
             where = f" or the hint book's {base['provider']} deprecations record" if record else ""
@@ -789,6 +806,8 @@ def main(argv=None) -> int:
     p.add_argument("--ignore-deprecations-record", action="store_true",
                    help="the hint book's deprecations record describes another service than this call's "
                         "(for example Vertex AI, which retires Gemini models on its own schedule)")
+    p.add_argument("--backend", help="the service this call goes to, when it isn't the provider's own API "
+                                     "(for example vertex); picks a registry entry's replacement for it")
     args = p.parse_args(argv)
     if not CREDENTIAL_NAME.match(args.credential_name):
         # Never echo it: a key pasted here by mistake must not reach the output.
@@ -813,7 +832,7 @@ def main(argv=None) -> int:
         result = route(args.job, hints, provider=args.provider, credential_name=args.credential_name,
                        api_key=key, default_model=default_model, requested=args.requested,
                        cache_path=args.cache, anthropic_version=args.anthropic_version, registry=registry,
-                       record_applies=not args.ignore_deprecations_record)
+                       record_applies=not args.ignore_deprecations_record, backend=args.backend)
     except RouterError as exc:
         print(json.dumps({"error": exc.reason}))
         return 2

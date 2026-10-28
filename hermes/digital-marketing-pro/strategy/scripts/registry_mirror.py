@@ -23,6 +23,12 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+
+for _stream in (sys.stdout, sys.stderr):  # UTF-8 output, even where a Windows pipe defaults to cp1252
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 from pathlib import Path
 
 CANONICAL = Path(__file__).resolve().parent / "model_registry.json"
@@ -72,6 +78,8 @@ def mirror(canonical: dict, sibling: dict | None = None) -> dict:
     dangling = sorted(f"alias {k} -> {v}" for k, v in out.get("aliases", {}).items() if v not in ids)
     dangling += sorted(f"{m['id']} replacement -> {m['replacement_id']}" for m in out.get("models", [])
                        if m.get("replacement_id") and m["replacement_id"] not in ids)
+    dangling += sorted(f"{m['id']} replacement on {backend} -> {rep}" for m in out.get("models", [])
+                       for backend, rep in (m.get("replacement_by_backend") or {}).items() if rep not in ids)
     if dangling:
         raise ValueError("the mirror would point at DMP-only or missing entries: " + "; ".join(dangling))
     return out

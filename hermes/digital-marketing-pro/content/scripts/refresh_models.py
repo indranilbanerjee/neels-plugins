@@ -43,6 +43,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from resolve_model import _find_registry, get_registry  # noqa: E402
 
+for _stream in (sys.stdout, sys.stderr):  # UTF-8 output, even where a Windows pipe defaults to cp1252
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 # The largest page each provider allows (their defaults are 20 and 50), and a ceiling on how many pages one list may take.
 PAGE_SIZE = 1000
 MAX_PAGES = 20
@@ -50,8 +56,13 @@ MAX_PAGES = 20
 
 def _http_get(url: str, headers: dict[str, str], timeout: int = 15) -> dict | None:
     """The page as a dict, or None when the call failed in any way. No error text is kept: providers echo part of a rejected
-    key in it, and the report says only that the provider was skipped."""
-    req = urllib.request.Request(url, headers=headers)
+    key in it, and the report says only that the provider was skipped.
+
+    Every header goes in with add_unredirected_header. urllib copies a request's ordinary headers (the key's among them) to
+    whatever host a 30x answer names, so a key set the usual way would follow a redirect off the vendor."""
+    req = urllib.request.Request(url)
+    for name, value in headers.items():
+        req.add_unredirected_header(name, value)
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             return json.loads(resp.read().decode("utf-8"))
@@ -155,6 +166,9 @@ def diff(registry_statuses: dict[str, str], live_ids: set[str]) -> dict[str, lis
     }
 
 
+KEY_VARS = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY", "google": "GEMINI_API_KEY"}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Report model-registry drift")
     parser.add_argument("--json", action="store_true")
@@ -184,7 +198,8 @@ def main() -> int:
     ):
         live = fetcher()
         if live is None:
-            report[vendor] = {"status": "skipped (no API key or fetch failed)"}
+            # Whether the key exists is known before any call; a failed call keeps no text (it could echo the key).
+            report[vendor] = {"status": "skipped (fetch failed)" if os.environ.get(KEY_VARS[vendor]) else "skipped (no key)"}
             continue
         registry_statuses = by_vendor.get(vendor, {})
         d = diff(registry_statuses, live)
@@ -237,7 +252,8 @@ def main() -> int:
                             print(f"    {marker} {m}")
                 if not drift:
                     print("  no drift")
-    return 0
+    # A dead network or no keys at all must not read as "no drift": exit 1 when no provider's list could be read.
+    return 0 if any(report.get(v, {}).get("status") == "checked" for v in KEY_VARS) else 1
 
 
 if __name__ == "__main__":

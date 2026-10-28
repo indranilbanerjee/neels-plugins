@@ -38,6 +38,12 @@ import argparse
 import json
 import os
 import sys
+
+for _stream in (sys.stdout, sys.stderr):  # UTF-8 output, even where a Windows pipe defaults to cp1252
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -90,7 +96,8 @@ def list_evolink(urlopen=None) -> set[str] | None:
     after = None
     for _ in range(MAX_PAGES):
         url = EVOLINK_MODELS_URL + ("?" + urllib.parse.urlencode({"after": after}) if after else "")
-        req = urllib.request.Request(url, headers={"Authorization": f"Bearer {key}"})
+        req = urllib.request.Request(url)
+        req.add_unredirected_header("Authorization", f"Bearer {key}")  # never copied to a redirect's host
         try:
             with opener(req, timeout=TIMEOUT_S) as resp:
                 page = json.loads(resp.read().decode("utf-8-sig"))

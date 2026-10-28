@@ -5,6 +5,29 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.58.0] - 2026-10-28
+
+Three independent audits (a fresh read of Digital Marketing Pro's and ContentForge's code, and a run of real customer tasks through their installed copies) and a review of the guidance against the vendors' own pages. Every fix in Digital Marketing Pro and ContentForge has a test that fails on the previous release.
+
+- Digital Marketing Pro 3.40.0:
+  - Creating a brand no longer overwrites an existing one: it refuses unless you pass `--force`, and never takes another brand's folder. Brand names outside the Latin alphabet (Hindi and Chinese are pinned in tests) get their own folders.
+  - A user-supplied name can no longer steer a script outside its brand folder: `../`, colons and Windows device names are refused.
+  - Non-Latin and emoji names no longer crash a script on Windows, whatever the console code page.
+  - The quality gate applies each brand's own thresholds and blocks on a critical finding.
+  - Scripts exit non-zero when they fail and explain bad input. Several behaviours are stricter (a blocked draft is exit 3, nothing to score is exit 4, and `build_skills_index.py` checks unless you pass `--write`); the UPGRADE-GUIDE lists each.
+  - API keys go only to their vendor's own host.
+  - Platform limits live in one dated file whose review dates fail a test before they go stale (Instagram's five-hashtag cap among them). The guidance was corrected against primary pages, among them Consent Mode v2, Google Ads' data-driven default, open rates under Apple Mail Privacy Protection, Threads ad formats, AI Mode and ChatGPT's reach.
+  - The SEO, AEO, landing-page and campaign audits end with a table: each recommendation names its metric, the expected direction and a check-by date.
+  - A key-based connector proves it works with one read-only call; connectors that run through MCP or OAuth answer `not_probeable` instead.
+  - One glossary defines the AI-visibility metrics with their formulas.
+  - `gpt-5.1` is marked deprecated in the shared registry (shutdown 2027-04-01, replacement `gpt-6-sol`); ContentForge, SocialForge and CutForge mirror it.
+- ContentForge 4.6.0: a run's files stay inside the run, brands never share a folder, a feedback loop past its cap is refused, finalize re-runs the audit instead of trusting its record, and scripts that fail say so. The cf-social-adapt hero skill's platform specs are corrected; re-download it from the 4.6.0 release.
+- SocialForge 1.30.2: a retired model's replacement now depends on the service, so a user on the Gemini API is never pointed at a model only Vertex AI serves. The shared model router is re-copied from Digital Marketing Pro 3.40.0.
+- CutForge 1.1.2: the same per-service replacements.
+- In all four plugins, an API key sent by a script no longer follows a redirect to another host.
+- Each repository now creates its GitHub release automatically when its version changes, so the release shown on GitHub matches the one you install.
+- Hermes bundle rebuilt. Suite total 3,121 (CF 1036 + DMP 1027 + SF 812 + CutForge 187 + marketplace 59).
+
 ## [3.57.8] - 2026-10-27
 
 - Digital Marketing Pro 3.39.1 and SocialForge 1.30.1 (the same router file): when the router cannot read a provider's live list (offline, a timeout, provider trouble), a model you name is now checked against the deprecations record in the plugin's hint book as well as the shipped registry, and the stricter answer wins. Before, offline, a Gemini model that Google's page marks as shut down was sent with only a warning that the registry did not know it; now it is refused before anything is sent, naming the replacement. A model whose requests Google now routes to another is sent with a warning that the answer comes from that model. A model list still going after 20 pages is refused instead of being used short.

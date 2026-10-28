@@ -116,7 +116,9 @@ def log_execution(slug, data):
 
     # Save individual execution file (atomically — this is the source of truth
     # the index is rebuilt from).
-    filepath = executions_dir / f"{execution_id}.json"
+    filepath, err = _common.child_or_error(executions_dir, execution_id, ".json")
+    if err:
+        return {"error": f"platform: {err}"}
     _common.atomic_write_json(filepath, execution)
 
     # Update index
@@ -317,7 +319,7 @@ def main():
             print(json.dumps({"error": "Provide --data with execution JSON"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)
@@ -328,7 +330,7 @@ def main():
             print(json.dumps({"error": "Provide --data with {\"campaign_id\":..,\"from_step\":N}"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)

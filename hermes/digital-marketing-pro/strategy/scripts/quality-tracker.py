@@ -168,7 +168,7 @@ def action_log_eval(slug, data):
 
     # Save individual eval file
     evals_dir = quality_dir / "evals"
-    filepath = evals_dir / f"{eval_id}.json"
+    filepath = evals_dir / f"{eval_id}.json"  # path-safe: eval-<timestamp>
     filepath.write_text(json.dumps(record, indent=2), encoding="utf-8")
 
     # Update running summary
@@ -509,7 +509,7 @@ def main():
             print(json.dumps({"error": "Provide --data with eval JSON."}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data."}))
             sys.exit(1)

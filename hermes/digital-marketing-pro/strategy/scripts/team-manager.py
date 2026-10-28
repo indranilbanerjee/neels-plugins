@@ -402,7 +402,7 @@ def assign_task(slug, data):
         "updated_at": now,
     }
 
-    filepath = assignments_dir / f"{assignment_id}.json"
+    filepath = assignments_dir / f"{assignment_id}.json"  # path-safe: task-<uuid4 hex>
     filepath.write_text(json.dumps(assignment, indent=2), encoding="utf-8")
 
     return {
@@ -473,7 +473,7 @@ def main():
             print(json.dumps({"error": "Provide --data with member JSON"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)
@@ -496,7 +496,7 @@ def main():
             print(json.dumps({"error": "Provide --data with role/permissions JSON"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)
@@ -507,7 +507,7 @@ def main():
             print(json.dumps({"error": "Provide --data with action_type and risk_level"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)
@@ -521,7 +521,7 @@ def main():
             print(json.dumps({"error": "Provide --data with task assignment JSON"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)

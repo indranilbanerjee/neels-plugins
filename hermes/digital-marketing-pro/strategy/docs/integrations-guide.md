@@ -52,7 +52,7 @@ In practical terms: instead of you manually pulling a GA4 report, pasting it int
 
 The plugin ships no `.mcp.json` (it is gitignored) — nothing is pre-configured and nothing auto-connects. Vendor-hosted HTTP servers are listed in `.mcp.json.connectors-reference`. `.mcp.json.example` carries runnable entries only for packages the vendor itself publishes on npm, pinned to an exact version (Pinecone, DataForSEO and DeepL today); services with neither are set up from the vendor's own documentation. A package name the vendor does not publish could be registered by anyone, who would then receive the API keys in its environment block, so DMP never offers a command for one. You opt in by copying the entries you want into your own `.mcp.json`; the per-service sections below list each service's environment variables.
 
-This is the key design principle: **the plugin works fully without any integrations enabled.** All 164 skills, 177 reference knowledge files (including the v3.0 methodology + framework refs), scoring scripts, brand voice analysis, compliance checking, campaign planning features, and the v3.0 12-Part engagement methodology + v3.2 quality gates operate entirely offline using built-in benchmarks and reference data. MCP integrations layer real data on top of that foundation.
+This is the key design principle: **the plugin works fully without any integrations enabled.** All 164 skills, 178 reference knowledge files (including the v3.0 methodology + framework refs), scoring scripts, brand voice analysis, compliance checking, campaign planning features, and the v3.0 12-Part engagement methodology + v3.2 quality gates operate entirely offline using built-in benchmarks and reference data. MCP integrations layer real data on top of that foundation.
 
 ### What Happens Under the Hood
 
@@ -293,7 +293,7 @@ You: Pull my deal pipeline and identify which stages have the highest drop-off r
 **Where to get credentials:**
 1. Go to Mailchimp > Account & Billing > Extras > API Keys
 2. Create a new API key
-3. The key format is `xxxxxxxxxx-usXX` where `usXX` is your data center
+3. The key format is `xxxxxxxxxx-usXX` where `usXX` is your data center. DMP sends the key only to `<dc>.api.mailchimp.com`: a key whose ending isn't a data centre (letters then digits, such as `-us21`) is refused before any request is made
 
 **Example usage:**
 ```
@@ -1482,7 +1482,7 @@ You: Create a Marketo smart list of leads who engaged with our webinar but haven
 |---|---|
 | `PARDOT_BUSINESS_UNIT_ID` | Pardot business unit ID |
 | `SALESFORCE_ACCESS_TOKEN` | Salesforce OAuth access token (Pardot uses Salesforce SSO) |
-| `SALESFORCE_INSTANCE_URL` | Your Salesforce instance URL |
+| `SALESFORCE_INSTANCE_URL` | Your Salesforce instance URL, `https://<org>.my.salesforce.com` with nothing after the host. Any other host is refused, so the token goes only to Salesforce |
 
 **Where to get credentials:**
 1. Pardot now authenticates through Salesforce SSO

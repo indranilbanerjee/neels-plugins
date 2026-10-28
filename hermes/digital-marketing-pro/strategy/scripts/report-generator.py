@@ -81,7 +81,10 @@ def _format_metric_value(value):
     return str(value)
 
 
-def _build_markdown(report_type, period, metrics, highlights, recommendations, brand):
+REPORT_KEYS = ("report_type", "period", "summary", "metrics", "highlights", "recommendations")
+
+
+def _build_markdown(report_type, period, metrics, highlights, recommendations, brand, summary=""):
     """Build a structured markdown report."""
     title = REPORT_TITLES.get(report_type, "Performance Report")
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -91,6 +94,10 @@ def _build_markdown(report_type, period, metrics, highlights, recommendations, b
         "",
         "---",
         "",
+    ]
+    if summary:
+        lines += ["## Executive Summary", "", str(summary), ""]
+    lines += [
         "## Key Metrics",
         "",
         "| Metric | Value |",
@@ -128,13 +135,20 @@ def generate_report(slug, data):
     period = data.get("period", datetime.now().strftime("%Y-W%V"))
     highlights = data.get("highlights", [])
     recommendations = data.get("recommendations", [])
+    summary = data.get("summary", "")
+    # Before 3.40.0 a "title", "summary" or "sections" key was dropped without a word, so the
+    # executive summary the client-report skill asks for never reached the file.
+    ignored = sorted(k for k in data if k not in REPORT_KEYS)
 
-    markdown = _build_markdown(report_type, period, metrics, highlights, recommendations, slug)
+    markdown = _build_markdown(report_type, period, metrics, highlights, recommendations, slug, summary)
 
     # Save report
     reports_dir = brand_dir / "reports"
     reports_dir.mkdir(exist_ok=True)
-    report_id = f"{report_type}-{period}"
+    # The period is free text ("2026-W43", "10/2026", "Q3: Jul–Sep"): slug it for the file name.
+    # Before 3.40.0 a slash crashed, a colon wrote an NTFS alternate data stream (an empty file)
+    # and "../../../x" wrote outside reports/. The record keeps the period as given.
+    report_id = f"{report_type}-{_common.safe_slug(str(period), 'period')}"
     report_record = {
         "report_id": report_id,
         "report_type": report_type,
@@ -146,15 +160,19 @@ def generate_report(slug, data):
         "recommendations": recommendations,
         "markdown": markdown,
     }
-    filepath = reports_dir / f"{report_id}.json"
+    filepath = _common.safe_child(reports_dir, report_id, ".json")
     _save_json(filepath, report_record)
 
-    return {
+    out = {
         "status": "generated",
         "report_id": report_id,
         "path": str(filepath),
         "markdown": markdown,
     }
+    if ignored:
+        out["ignored_keys"] = ignored
+        out["note"] = "Only " + ", ".join(REPORT_KEYS) + " are used; put other content in summary or highlights."
+    return out
 
 
 def _load_report_markdown(slug, data=None, report_id=None):
@@ -166,7 +184,9 @@ def _load_report_markdown(slug, data=None, report_id=None):
         brand_dir, err = get_brand_dir(slug)
         if err:
             return None, err
-        filepath = brand_dir / "reports" / f"{report_id}.json"
+        filepath, err = _common.child_or_error(brand_dir / "reports", report_id, ".json")
+        if err:
+            return None, err
         report = _load_json(filepath, {})
         if not report:
             return None, f"Report '{report_id}' not found."
@@ -176,7 +196,9 @@ def _load_report_markdown(slug, data=None, report_id=None):
         brand_dir, err = get_brand_dir(slug)
         if err:
             return None, err
-        filepath = brand_dir / "reports" / f"{data['report_id']}.json"
+        filepath, err = _common.child_or_error(brand_dir / "reports", str(data["report_id"]), ".json")
+        if err:
+            return None, err
         report = _load_json(filepath, {})
         if not report:
             return None, f"Report '{data['report_id']}' not found."
@@ -351,7 +373,7 @@ def main():
             print(json.dumps({"error": "Provide --data with report JSON"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)
@@ -361,7 +383,7 @@ def main():
         data = None
         if args.data:
             try:
-                data = json.loads(args.data)
+                data = _common.json_arg(args.data, "--data")
             except json.JSONDecodeError:
                 print(json.dumps({"error": "Invalid JSON in --data"}))
                 sys.exit(1)
@@ -371,7 +393,7 @@ def main():
         data = None
         if args.data:
             try:
-                data = json.loads(args.data)
+                data = _common.json_arg(args.data, "--data")
             except json.JSONDecodeError:
                 print(json.dumps({"error": "Invalid JSON in --data"}))
                 sys.exit(1)
@@ -382,7 +404,7 @@ def main():
             print(json.dumps({"error": "Provide --data with metrics JSON"}))
             sys.exit(1)
         try:
-            data = json.loads(args.data)
+            data = _common.json_arg(args.data, "--data")
         except json.JSONDecodeError:
             print(json.dumps({"error": "Invalid JSON in --data"}))
             sys.exit(1)
