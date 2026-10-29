@@ -5,6 +5,20 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.59.0] - 2026-10-29
+
+The work the 3.58.0 round deferred, finished.
+
+- Digital Marketing Pro 3.41.0:
+  - A zero-context review of client deliverables (`/digital-marketing-pro:check --goldfish`). `goldfish-review.py` writes one file holding only the deliverable, its brief and the brand profile, flags money figures the brief never states and benchmark rates with no source (exit 3), and gives the quality-assurance agent a prompt that names only that file. Hosts without subagents get a same-session form labelled weaker. Proposals, client reports, plans and summaries end with this step.
+  - What AI crawlers actually did (`crawler-log-report.py`, in the agent-readiness audit). It reads the site's own access logs and checks each crawler request against the IP addresses its vendor publishes (OpenAI, Anthropic, Perplexity, Google, Microsoft, Apple): verified, spoofed or unverified. The logs stay on the machine and the report prints no full IP address; `--refresh-ranges`, which downloads the vendors' public lists, is its only network call.
+  - New ad products wait on a dated watch list (`scripts/paid_products.json`, 15 rows) that says whether each was read at its source or only reported, and whether it is live or only announced. Among them are Meta Andromeda, Google campaign total budgets and AI Brief, TikTok's 2026-10-05 announcements, LinkedIn Qualified Leads Optimization, Pinterest Performance+ and X's ad-text rules.
+  - Platform facts: TikTok's posting reference settles the caption (2,200 for a video; the 4,000 quoted elsewhere is a photo post's description), and five docs that still said 4,000 are corrected. Facebook's 63,206 and 477 are marked reported. Facebook Stories follow Meta's Page Stories API, and the formatter's story row takes 3 hashtags instead of 5. Bluesky's hashtag advice cites its lexicon. Threads links, text attachments and ghost posts, Instagram's "Your Algorithm" and an X Ads section are added.
+- ContentForge 4.6.1: the TikTok caption note rests on TikTok's posting references instead of waiting for an in-app check. Only the cf-social-adapt hero skill changes.
+- SocialForge 1.30.3: the TikTok note says where the 4,000 comes from; the limit stays 2,200 and the entry stays unsourced, because the page itself still doesn't load from here.
+- CutForge is unchanged at 1.1.2.
+- Hermes bundle rebuilt. Suite total 3,158 (CF 1037 + DMP 1063 + SF 812 + CutForge 187 + marketplace 59).
+
 ## [3.58.0] - 2026-10-28
 
 Three independent audits (a fresh read of Digital Marketing Pro's and ContentForge's code, and a run of real customer tasks through their installed copies) and a review of the guidance against the vendors' own pages. Every fix in Digital Marketing Pro and ContentForge has a test that fails on the previous release.
