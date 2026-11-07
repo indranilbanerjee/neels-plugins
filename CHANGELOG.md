@@ -5,6 +5,18 @@ All notable changes to the neels-plugins marketplace will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.60.0] - 2026-11-07
+
+Security fixes from the 2026-11-05 review of the three main plugins and this marketplace.
+
+- Every entry is pinned to its release. The Claude Code and Copilot manifests carry `ref: "v<version>"` and the tag's full commit `sha`; the Codex manifest carries the `ref`. An install or update now takes the released commit, not the plugin's default branch. Cursor's and Grok's formats document no pin field, so those entries are unchanged. `tests/test_supply_chain.py` checks each pin, that the hosts agree, that the Hermes bundle folds the pinned commits, and (with network) that each tag points at its commit.
+- `SECURITY.md` rewritten to match the repository: it ships listing manifests and the Hermes bundle (plugin code included), the supported row is 3.60.x, each advisory link points at its own repository, the data and key locations are each plugin's real ones (SocialForge's keychain and `credentials.json` included), and the connector list says which endpoints are third-party gateways, third-party services or community code. `tests/test_security_policy.py` keeps it current.
+- Digital Marketing Pro 3.42.0: no skill or command pre-approves the shell beyond named local scripts; a PreToolUse hook makes Claude Code ask before each prepare, approve and fire step of a live write; the send, publish, launch and sync skills start only when the user runs them; every agent, skill and command treats fetched or client text as data; JSON options take `@file` or stdin and the docs pass JSON through a file; reference docs no longer describe approval-free sends; the CI job holding a secret pins its tool and action; the connector catalogue names who runs each endpoint.
+- ContentForge 4.7.0: JSON options take `@file` or stdin and the docs pass JSON through a file; every agent and the skills and commands that read outside text carry the untrusted-content rule; the publish preview lists every outbound link and marks the unverified ones; `cf-publish` starts only when the user runs it; the auto-publish passage is gone.
+- SocialForge 1.31.0: a key in the environment is never written to a file (only its variable name); a typed or piped key goes to the OS keychain when `keyring` is installed; the service-account file is used where it is, not copied; on Windows the credentials file is limited to your account with `icacls`; `--api-key` and `--api-secret` are refused; finalize, client review and approval reminders start only when the user runs them.
+- CutForge is unchanged at 1.1.2 (now pinned to its v1.1.2 commit).
+- Hermes bundle rebuilt from the pinned commits. Suite total 3,250.
+
 ## [3.59.0] - 2026-10-29
 
 The work the 3.58.0 round deferred, finished.
